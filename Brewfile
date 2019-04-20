@@ -1,8 +1,5 @@
 tap 'beeftornado/rmtree'
-tap 'caskroom/cask'
 
-brew 'aria2'
-brew 'atool'
 brew 'autojump'
 brew 'bash'
 brew 'bat'
