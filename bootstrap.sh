@@ -1,0 +1,51 @@
+#!/bin/bash
+
+# Ask for the administrator password upfront
+sudo -v
+
+# Prestage folders for symlinking
+mkdir "$HOME/.config"
+mkdir -p "$HONE/.config/fish/conf.d"
+mkdir -p "$HOME/.config/mpv"
+mkdir "$HOME/.ssh"
+
+# Symlinks
+dot="bash_profile bashrc bin config/fish/conf.d config/mpv hushlogin ssh/config tvnamer"
+for file in $dot; do
+	echo "Symlinking $file"
+	ln -s "$(pwd)/$file" "$HOME/.$file"
+done
+
+# if macOS run below
+if [ "$(uname -s)" == "Darwin" ]; then
+  # macOS defaults
+  source macos.sh
+
+  # get the command line tools and accept the license
+  xcode-select --install
+  sudo xcodebuild -license accept
+
+  # install brew
+    if [[ $(command -v brew) == "" ]]; then 
+        echo "Installing Homebrew.. "
+        ruby -e "$(curl -fsSL https://raw.githubusercontent.com/Homebrew/install/master/install)"
+    fi
+    brew update
+    brew upgrade
+    brew bundle
+    brew cleanup
+fi
+
+# If Linux do below
+if [ "$(uname -s)" == "Linux" ]; then
+  # Check for apt when on Debian/Ubuntu
+  if [ -f /usr/bin/apt ]; then
+    packages="build-essential docker.io fish gnome-tweaks git nodejs npm python3-pip ruby"
+    for pkg in $packages
+      do
+        echo "install $pkg -y"
+      done
+    #add ~/.local/bin to PATH
+    pip3 install docker-compose
+  fi
+fi
