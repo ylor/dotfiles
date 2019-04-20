@@ -80,6 +80,10 @@ alias vnc="open vnc://Server.local"
 alias wget="curl -LO"
 alias rd="rmdir"
 
+# Set terminal
+function fish_title
+end
+
 # Functions
 function cdf
   cd (osascript -e 'tell application "Finder" to if (count of Finder windows) > 0 then get POSIX path of (target of front Finder window as text)')
