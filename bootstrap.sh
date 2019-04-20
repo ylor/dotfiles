@@ -49,3 +49,7 @@ if [ "$(uname -s)" == "Linux" ]; then
     pip3 install docker-compose
   fi
 fi
+
+# Change shell to fish
+echo /usr/local/bin/fish | sudo tee -a /etc/shells
+chsh -s /usr/local/bin/fish
