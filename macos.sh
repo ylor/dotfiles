@@ -18,6 +18,7 @@ while true; do sudo -n true; sleep 60; kill -0 "$$" || exit; done 2>/dev/null &
 
 # Set computer name (as done via System Preferences → Sharing)
 read -p "Enter desired hostname: " MacHostname
+
 sudo scutil --set ComputerName $MacHostname
 sudo scutil --set HostName $MacHostname
 sudo scutil --set LocalHostName $MacHostname
@@ -457,7 +458,7 @@ sudo mdutil -i on / > /dev/null
 sudo mdutil -E / > /dev/null
 
 ###############################################################################
-# Terminal & iTerm 2                                                          #
+# Terminal.                                                                   #
 ###############################################################################
 
 # Disable the annoying line marks

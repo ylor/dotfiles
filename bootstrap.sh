@@ -5,7 +5,7 @@ sudo -v
 
 # Prestage folders for symlinking
 mkdir "$HOME/.config"
-mkdir -p "$HONE/.config/fish/conf.d"
+mkdir -p "$HOME/.config/fish"
 mkdir -p "$HOME/.config/mpv"
 mkdir "$HOME/.ssh"
 

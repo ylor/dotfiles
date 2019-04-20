@@ -1,5 +1,6 @@
 # General
 set fish_greeting
+set fish_title
 set -x EDITOR 'vim'
 set -x VISUAL 'vim'
 set -x LANG en_US.UTF-8
@@ -58,7 +59,7 @@ alias dscleanup="sudo find / -name '*.DS_Store' -type f -ls -delete"
 alias etrash="sudo rm -rfv /Volumes/*/.Trashes; and sudo rm -rfv ~/.Trash; and sudo rm -rfv /private/var/log/asl/*.asl"
 alias find="fd"
 alias flush="dscacheutil -flushcache; and sudo killall -HUP mDNSResponder"
-alias grep="rg"
+#alias grep="rg"
 alias hide="defaults write com.apple.finder AppleShowAllFiles -bool false; and killall Finder"
 alias home="cd $HOME"
 alias http="python -m SimpleHTTPServer"
@@ -79,10 +80,6 @@ alias vim="nvim"
 alias vnc="open vnc://Server.local"
 alias wget="curl -LO"
 alias rd="rmdir"
-
-# Set terminal
-function fish_title
-end
 
 # Functions
 function cdf
