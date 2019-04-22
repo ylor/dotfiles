@@ -1,4 +1,5 @@
 tap 'beeftornado/rmtree'
+tap 'homebrew/cask-fonts'
 
 brew 'autojump'
 brew 'bash'
@@ -30,6 +31,7 @@ cask 'appcleaner'
 cask 'backblaze'
 cask 'hazel'
 cask 'hwsensors'
+cask 'inter'
 cask 'mkvtools'
 cask 'mp4tools'
 cask 'omnidisksweeper'
