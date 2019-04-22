@@ -51,12 +51,8 @@ if [ $(uname -s) = "Linux" ]; then
       done
     # Change shell to fish
     echo /usr/bin/fish | sudo tee -a /etc/shells
-    hsh -s /usr/bin/fish
+    chsh -s /usr/bin/fish
     #add ~/.local/bin to PATH
     pip3 install docker-compose
   fi
 fi
-
-# Change shell to fish
-echo /usr/local/bin/fish | sudo tee -a /etc/shells
-chsh -s /usr/local/bin/fish
