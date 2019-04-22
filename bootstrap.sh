@@ -44,15 +44,14 @@ fi
 if [ $(uname -s) = "Linux" ]; then
   # Check for apt on Debian/Ubuntu
   if [ -f /usr/bin/apt ]; then
-    packages="autojump build-essential curl docker.io exa fish gnome-tweaks git nodejs npm python3-pip ripgrep ruby"
+    packages="build-essential gnome-tweaks git linuxbrew-wrapper"
     for pkg in $packages
       do
         sudo apt install $pkg -y
       done
     # Change shell to fish
-    echo /usr/bin/fish | sudo tee -a /etc/shells
-    chsh -s /usr/bin/fish
+    #echo /usr/bin/fish | sudo tee -a /etc/shells
+    #chsh -s /usr/bin/fish
     #add ~/.local/bin to PATH
-    pip3 install docker-compose
   fi
 fi
