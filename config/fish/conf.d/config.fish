@@ -40,8 +40,8 @@ if test -d /home/linuxbrew/
   set -x HOMEBREW_CELLAR "/home/linuxbrew/.linuxbrew/Cellar"
   set -x HOMEBREW_REPOSITORY "/home/linuxbrew/.linuxbrew/Homebrew"
   set -x PATH "/home/linuxbrew/.linuxbrew/bin /home/linuxbrew/.linuxbrew/sbin"
-  set -x MANPATH="/home/linuxbrew/.linuxbrew/share/man"
-  set -x INFOPATH="/home/linuxbrew/.linuxbrew/share/info"
+  set -x MANPATH "/home/linuxbrew/.linuxbrew/share/man"
+  set -x INFOPATH "/home/linuxbrew/.linuxbrew/share/info"
 end
 if test -d "$HOME/.linuxbrew"
   set -x PATH "$HOME/.linuxbrew/bin"
