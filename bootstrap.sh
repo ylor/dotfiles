@@ -44,12 +44,11 @@ fi
 if [ $(uname -s) = "Linux" ]; then
   # Check for apt on Debian/Ubuntu
   if [ -f /usr/bin/apt ]; then
-    packages="build-essential curl gnome-tweaks git"
+    packages="build-essential curl gnome-tweaks git linuxbrew-wrapper"
     for pkg in $packages
       do
         sudo apt install $pkg -y
       done
-    sh -c "$(curl -fsSL https://raw.githubusercontent.com/Linuxbrew/install/master/install.sh)"
     # Change shell to fish
     #echo /usr/bin/fish | sudo tee -a /etc/shells
     #chsh -s /usr/bin/fish
