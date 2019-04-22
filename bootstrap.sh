@@ -17,7 +17,7 @@ for file in $dot; do
 done
 
 # if macOS run below
-if [ "$(uname -s)" == "Darwin" ]; then
+if [ $(uname -s) = "Darwin" ]; then
   # macOS defaults
   source macos.sh
 
@@ -26,7 +26,7 @@ if [ "$(uname -s)" == "Darwin" ]; then
   sudo xcodebuild -license accept
 
   # install brew
-    if [[ $(command -v brew) == "" ]]; then 
+    if [ ! -f /usr/local/bin/brew ]; then
         echo "Installing Homebrew.. "
         ruby -e "$(curl -fsSL https://raw.githubusercontent.com/Homebrew/install/master/install)"
     fi
@@ -37,8 +37,8 @@ if [ "$(uname -s)" == "Darwin" ]; then
 fi
 
 # If Linux do below
-if [ "$(uname -s)" == "Linux" ]; then
-  # Check for apt when on Debian/Ubuntu
+if [ $(uname -s) = "Linux" ]; then
+  # Check for apt on Debian/Ubuntu
   if [ -f /usr/bin/apt ]; then
     packages="build-essential docker.io fish gnome-tweaks git nodejs npm python3-pip ruby"
     for pkg in $packages
