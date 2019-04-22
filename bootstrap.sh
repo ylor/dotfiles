@@ -43,7 +43,7 @@ if [ $(uname -s) = "Linux" ]; then
     packages="build-essential docker.io fish gnome-tweaks git nodejs npm python3-pip ruby"
     for pkg in $packages
       do
-        echo sudo apt install $pkg -y
+        sudo apt install $pkg -y
       done
     #add ~/.local/bin to PATH
     pip3 install docker-compose
