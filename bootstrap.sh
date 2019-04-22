@@ -44,7 +44,7 @@ fi
 if [ $(uname -s) = "Linux" ]; then
   # Check for apt on Debian/Ubuntu
   if [ -f /usr/bin/apt ]; then
-    packages="build-essential docker.io fish gnome-tweaks git nodejs npm python3-pip ruby"
+    packages="build-essential docker.io exa fish gnome-tweaks git nodejs npm python3-pip ripgrep ruby"
     for pkg in $packages
       do
         sudo apt install $pkg -y
