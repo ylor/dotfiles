@@ -48,11 +48,10 @@ if [ $(uname -s) = "Linux" ]; then
     for pkg in $packages
       do
         sudo apt install $pkg -y
-	
-	# Change shell to fish
-        echo /usr/bin/fish | sudo tee -a /etc/shells
-        chsh -s /usr/bin/fish
       done
+    # Change shell to fish
+    echo /usr/bin/fish | sudo tee -a /etc/shells
+    hsh -s /usr/bin/fish
     #add ~/.local/bin to PATH
     pip3 install docker-compose
   fi
