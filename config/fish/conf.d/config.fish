@@ -39,7 +39,6 @@ test -d "/home/linuxbrew/.linuxbrew/bin"; and set PATH "/home/linuxbrew/.linuxbr
 test -d "/home/linuxbrew/.linuxbrew/share/man"; and set MANPATH "/home/linuxbrew/.linuxbrew/share/man $MANPATH"
 test -d "/home/linuxbrew/.linuxbrew/share/info"; and set INFOPATH ""/home/linuxbrew/.linuxbrew/share/info $INFOPATH"
 
-
 # Abbreviations
 if status --is-interactive
   set -g fish_user_abbr --addeviations
