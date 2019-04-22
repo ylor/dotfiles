@@ -44,7 +44,7 @@ fi
 if [ $(uname -s) = "Linux" ]; then
   # Check for apt on Debian/Ubuntu
   if [ -f /usr/bin/apt ]; then
-    packages="build-essential curl gnome-tweaks git linuxbrew-wrapper"
+    packages="build-essential curl file gnome-tweaks git linuxbrew-wrapper"
     for pkg in $packages
       do
         sudo apt install $pkg -y
