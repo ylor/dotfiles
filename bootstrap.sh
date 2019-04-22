@@ -52,6 +52,7 @@ if [ $(uname -s) = "Linux" ]; then
     echo "Installing Homebrew..."
     sh -c "$(curl -fsSL https://raw.githubusercontent.com/Linuxbrew/install/master/install.sh)"
     test -d ~/.linuxbrew && eval $(~/.linuxbrew/bin/brew shellenv)
+    test -d /home/linuxbrew/.linuxbrew && eval $(/home/linuxbrew/.linuxbrew/bin/brew shellenv)
     brew install fish
     # Change shell to fish
     #echo /usr/bin/fish | sudo tee -a /etc/shells
