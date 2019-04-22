@@ -37,7 +37,7 @@ test -d ~/.bin ; and set PATH ~/.bin $PATH
 # Linuxbrew Paths
 test -d "/home/linuxbrew/.linuxbrew/bin"; and set PATH "/home/linuxbrew/.linuxbrew/bin $PATH"
 test -d "/home/linuxbrew/.linuxbrew/share/man"; and set MANPATH "/home/linuxbrew/.linuxbrew/share/man $MANPATH"
-test -d "/home/linuxbrew/.linuxbrew/share/info"; and set INFOPATH ""/home/linuxbrew/.linuxbrew/share/info $INFOPATH"
+test -d "/home/linuxbrew/.linuxbrew/share/info"; and set INFOPATH "/home/linuxbrew/.linuxbrew/share/info $INFOPATH"
 
 # Abbreviations
 if status --is-interactive
