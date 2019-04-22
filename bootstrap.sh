@@ -34,6 +34,10 @@ if [ $(uname -s) = "Darwin" ]; then
     brew upgrade
     brew bundle
     brew cleanup
+    
+    # Change shell to fish
+    echo /usr/local/bin/fish | sudo tee -a /etc/shells
+    chsh -s /usr/local/bin/fish
 fi
 
 # If Linux do below
@@ -44,6 +48,10 @@ if [ $(uname -s) = "Linux" ]; then
     for pkg in $packages
       do
         sudo apt install $pkg -y
+	
+	# Change shell to fish
+        echo /usr/bin/fish | sudo tee -a /etc/shells
+        chsh -s /usr/bin/fish
       done
     #add ~/.local/bin to PATH
     pip3 install docker-compose
