@@ -59,5 +59,8 @@ if [ $(uname -s) = "Linux" ]; then
     brew upgrade
     brew cleanup
     #add ~/.local/bin to PATH
+    if ! [ $(cat /etc/shells | grep fish) ]; then
+      echo $(which fish) | sudo tee -a /etc/shells && chsh -s $(which fish)
+    fi
   fi
 fi
