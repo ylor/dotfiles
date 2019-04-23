@@ -51,8 +51,9 @@ if [ $(uname -s) = "Linux" ]; then
       done
     echo "Installing Homebrew..."
     git clone https://github.com/Homebrew/brew ~/.linuxbrew/Homebrew
+    test -d ~/.linuxbrew && eval $(~/.linuxbrew/bin/brew shellenv)
+    test -d /home/linuxbrew/.linuxbrew && eval $(/home/linuxbrew/.linuxbrew/bin/brew shellenv)
     echo "eval \$($(brew --prefix)/bin/brew shellenv)" >>~/.profile
-    eval $(~/.linuxbrew/bin/brew shellenv)
     brew install fish
     # Change shell to fish
     #echo /usr/bin/fish | sudo tee -a /etc/shells
