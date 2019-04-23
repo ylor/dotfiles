@@ -56,7 +56,6 @@ if [ $(uname -s) = "Linux" ]; then
     eval $(~/.linuxbrew/bin/brew shellenv) && echo "eval \$(~/.linuxbrew/bin/brew shellenv)" >> ~/.profile
     brew update
     brew upgrade
-    brew bundle
     brew cleanup
     # Change shell to fish
     #echo (which fish) | sudo tee -a /etc/shells
@@ -64,3 +63,6 @@ if [ $(uname -s) = "Linux" ]; then
     #add ~/.local/bin to PATH
   fi
 fi
+
+echo (which fish) | sudo tee -a /etc/shells
+chsh -s (which fish)
