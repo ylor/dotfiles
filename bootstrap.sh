@@ -29,3 +29,17 @@ case $(uname) in
     echo "Unknown operating system. Aborting script." 
     ;;
 esac
+
+# Check if Fish is installed
+if which fish > /dev/null; then
+	# If fish is installed check for it in /etc/shells
+	if ! [ $(cat /etc/shells | grep fish) ]; then
+      		echo $(which fish) | sudo tee -a /etc/shells
+    	fi
+    # If fish is in /etc/shells, change shell to it, if it's not already
+	if ! grep -q fish $SHELL; then
+		chsh -s $(which fish)
+	fi
+else
+	echo Fish is not installed
+fi
