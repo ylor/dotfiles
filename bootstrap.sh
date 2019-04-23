@@ -6,8 +6,8 @@ while true; do sudo -n true; sleep 60; kill -0 "$$" || exit; done 2>/dev/null &
 
 # Prestage folders for symlinking
 mkdir "$HOME/.config"
-mkdir -p "$HOME/.config/fish"
-mkdir -p "$HOME/.config/mpv"
+mkdir "$HOME/.config/fish"
+mkdir "$HOME/.config/mpv"
 mkdir "$HOME/.ssh"
 
 # Symlinks
