@@ -34,8 +34,6 @@ set fish_color_cwd_root red
 # Add directory to PATH if it exists
 test -d ~/.bin ; and set PATH ~/.bin $PATH
 
-# Linuxbrew Paths
-
 # Abbreviations
 if status --is-interactive
   set -g fish_user_abbr --addeviations
