@@ -1,9 +1,7 @@
 #!/bin/bash
 
-# Ask for the administrator password upfront
+# Ask for the administrator password upfront & keep it active until script has finished
 sudo -v
-
-# Keep-alive: update existing `sudo` time stamp until `.macos` has finished
 while true; do sudo -n true; sleep 60; kill -0 "$$" || exit; done 2>/dev/null &
 
 # Prestage folders for symlinking
@@ -62,4 +60,5 @@ if [ $(uname -s) = "Linux" ]; then
     brew update && brew upgrade && brew cleanup
     #add ~/.local/bin to PATH
   fi
+  fish
 fi
