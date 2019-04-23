@@ -56,8 +56,8 @@ if [ $(uname -s) = "Linux" ]; then
     eval $(~/.linuxbrew/bin/brew shellenv)
     echo "eval $(~/.linuxbrew/bin/brew shellenv)" >> ~/.profile
     # Change shell to fish
-    #echo /usr/bin/fish | sudo tee -a /etc/shells
-    #chsh -s /usr/bin/fish
+    #echo (which fish) | sudo tee -a /etc/shells
+    #chsh -s (which fish)
     #add ~/.local/bin to PATH
   fi
 fi
