@@ -54,14 +54,12 @@ if [ $(uname -s) = "Linux" ]; then
     git clone https://github.com/Homebrew/brew ~/.linuxbrew/Homebrew
     mkdir ~/.linuxbrew/bin
     ln -s ../Homebrew/bin/brew ~/.linuxbrew/bin
-    eval $(~/.linuxbrew/bin/brew shellenv) && echo "eval \$(~/.linuxbrew/bin/brew shellenv)" >> ~/.profile
+    echo "eval \$(~/.linuxbrew/bin/brew shellenv)" >> ~/.profile
     brew update
     brew upgrade
     brew install fish
     brew cleanup
-    if ! [ $(cat /etc/shells | grep fish) ]; then
-      echo $(which fish) | sudo tee -a /etc/shells && chsh -s $(which fish)
-    fi
     #add ~/.local/bin to PATH
   fi
+  eval $(~/.linuxbrew/bin/brew shellenv)
 fi
