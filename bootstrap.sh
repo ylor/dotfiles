@@ -45,7 +45,7 @@ fi
 if [ $(uname -s) = "Linux" ]; then
   # Check for apt on Debian/Ubuntu
   if [ -f /usr/bin/apt ]; then
-    packages="build-essential curl file gnome-tweaks git"
+    packages="build-essential curl file fish gnome-tweaks git"
     for pkg in $packages
       do
         sudo apt install $pkg -y
@@ -57,10 +57,6 @@ if [ $(uname -s) = "Linux" ]; then
     eval $(~/.linuxbrew/bin/brew shellenv) && echo "eval \$(~/.linuxbrew/bin/brew shellenv)" >> ~/.profile
     brew update
     brew upgrade
-    brew install fish
-    if ! [ $(cat /etc/shells | grep fish) ]; then
-      echo $(which fish) | sudo tee -a /etc/shells && chsh -s $(which fish)
-    fi
     brew cleanup
     #add ~/.local/bin to PATH
   fi
