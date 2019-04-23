@@ -7,6 +7,7 @@ export LC_ALL='en_US.UTF-8'
 
 # Linuxbrew
 #test -d "/home/linuxbrew/.linuxbrew/bin" && eval $(/home/linuxbrew/.linuxbrew/bin/brew shellenv)
+test -d "$HOME/.linuxbrew" && eval $(~/.linuxbrew/bin/brew shellenv)
 
 # Colors
 RED="$(tput setaf 1)"
