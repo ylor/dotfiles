@@ -50,11 +50,11 @@ if [ $(uname -s) = "Linux" ]; then
         sudo apt install $pkg -y
       done
     echo "Installing Homebrew..."
-    sh -c "$(curl -fsSL https://raw.githubusercontent.com/Linuxbrew/install/master/install.sh)"
-    test -d ~/.linuxbrew && eval $(~/.linuxbrew/bin/brew shellenv)
-    test -d /home/linuxbrew/.linuxbrew && eval $(/home/linuxbrew/.linuxbrew/bin/brew shellenv)
-    echo "eval \$($(brew --prefix)/bin/brew shellenv)" >>~/.profile
-    brew install fish
+    git clone https://github.com/Homebrew/brew ~/.linuxbrew/Homebrew
+    mkdir ~/.linuxbrew/bin
+    ln -s ../Homebrew/bin/brew ~/.linuxbrew/bin
+    eval $(~/.linuxbrew/bin/brew shellenv)
+    echo "eval $(~/.linuxbrew/bin/brew shellenv)" >> ~/.profile
     # Change shell to fish
     #echo /usr/bin/fish | sudo tee -a /etc/shells
     #chsh -s /usr/bin/fish
