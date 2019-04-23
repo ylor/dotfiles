@@ -57,7 +57,7 @@ if [ $(uname -s) = "Linux" ]; then
     brew upgrade
     brew install fish
     brew cleanup
-    echo (which fish) | sudo tee -a /etc/shells & chsh -s (which fish)
+    echo (which fish) | sudo tee -a /etc/shells && chsh -s (which fish)
     #add ~/.local/bin to PATH
   fi
 fi
