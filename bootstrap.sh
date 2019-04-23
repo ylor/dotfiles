@@ -1,4 +1,4 @@
-#!/bin/bash
+#!/usr/bin/env bash
 
 # Ask for the administrator password upfront & keep it active until script has finished
 sudo -v
