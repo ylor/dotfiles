@@ -19,9 +19,6 @@ done
 
 # if macOS run below
 if [ $(uname -s) = "Darwin" ]; then
-  # macOS defaults
-  source macos.sh
-
   # get the command line tools and accept the license
   xcode-select --install
   sudo xcodebuild -license accept
@@ -36,6 +33,9 @@ if [ $(uname -s) = "Darwin" ]; then
     if ! [ $(cat /etc/shells | grep fish) ]; then
       echo $(which fish) | sudo tee -a /etc/shells && chsh -s $(which fish)
     fi
+    
+    # macOS defaults
+    source macos.sh
 fi
 
 # If on Linux below
