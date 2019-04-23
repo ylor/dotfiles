@@ -50,17 +50,18 @@ if [ $(uname -s) = "Linux" ]; then
       do
         sudo apt install $pkg -y
       done
+    
+    if ! [ $(cat /etc/shells | grep fish) ]; then
+      echo $(which fish) | sudo tee -a /etc/shells && chsh -s $(which fish)
+    fi
     echo "Installing Homebrew..."
     git clone https://github.com/Homebrew/brew ~/.linuxbrew/Homebrew
     mkdir ~/.linuxbrew/bin
     ln -s ../Homebrew/bin/brew ~/.linuxbrew/bin
-    eval $(~/.linuxbrew/bin/brew shellenv) && echo "eval \$(~/.linuxbrew/bin/brew shellenv)" >> ~/.profile
+    #eval $(~/.linuxbrew/bin/brew shellenv) && echo "eval \$(~/.linuxbrew/bin/brew shellenv)" >> ~/.profile
     brew update
     brew upgrade
     brew cleanup
     #add ~/.local/bin to PATH
-    if ! [ $(cat /etc/shells | grep fish) ]; then
-      echo $(which fish) | sudo tee -a /etc/shells && chsh -s $(which fish)
-    fi
   fi
 fi
