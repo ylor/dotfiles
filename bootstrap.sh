@@ -50,10 +50,10 @@ if [ $(uname -s) = "Linux" ]; then
       do
         sudo apt install $pkg -y
       done
-    
-    if ! [ $(cat /etc/shells | grep fish) ]; then
-      echo $(which fish) | sudo tee -a /etc/shells && chsh -s $(which fish)
-    fi
+    chsh -s $(which fish)
+  fi
+  
+  if ! [ -d ~./linuxbrew ]; then
     echo "Installing Homebrew..."
     git clone https://github.com/Homebrew/brew ~/.linuxbrew/Homebrew
     mkdir ~/.linuxbrew/bin
