@@ -50,6 +50,7 @@ if [ $(uname -s) = "Linux" ]; then
       do
         sudo apt install $pkg -y
       done
+    sudo apt autoremove
     chsh -s $(which fish)
   fi
   
