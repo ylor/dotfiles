@@ -54,6 +54,10 @@ if [ $(uname -s) = "Linux" ]; then
     mkdir ~/.linuxbrew/bin
     ln -s ../Homebrew/bin/brew ~/.linuxbrew/bin
     eval $(~/.linuxbrew/bin/brew shellenv) && echo "eval \$(~/.linuxbrew/bin/brew shellenv)" >> ~/.profile
+    brew update
+    brew upgrade
+    brew bundle
+    brew cleanup
     # Change shell to fish
     #echo (which fish) | sudo tee -a /etc/shells
     #chsh -s (which fish)
