@@ -36,7 +36,9 @@ if [ $(uname -s) = "Darwin" ]; then
     brew cleanup
     
     # Change shell to fish
-    echo $(which fish) | sudo tee -a /etc/shells && chsh -s $(which fish)
+    if ! [ $(cat /etc/shells | grep fish) ]; then
+      echo $(which fish) | sudo tee -a /etc/shells && chsh -s $(which fish)
+   fi
 fi
 
 # If Linux do below
@@ -57,7 +59,9 @@ if [ $(uname -s) = "Linux" ]; then
     brew upgrade
     brew install fish
     brew cleanup
-    echo $(which fish) | sudo tee -a /etc/shells && chsh -s $(which fish)
+    if ! [ $(cat /etc/shells | grep fish) ]; then
+      echo $(which fish) | sudo tee -a /etc/shells && chsh -s $(which fish)
+    fi
     #add ~/.local/bin to PATH
   fi
 fi
