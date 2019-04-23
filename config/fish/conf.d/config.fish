@@ -33,6 +33,7 @@ set fish_color_cwd_root red
 
 # Add directory to PATH if it exists
 test -d ~/.bin ; and set PATH ~/.bin $PATH
+test -d ~/.linuxbrew; and eval (~/.linuxbrew/bin/brew shellenv)
 
 # Abbreviations
 if status --is-interactive
