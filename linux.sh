@@ -7,7 +7,7 @@
   # Check for apt on Debian/Ubuntu
 if [ -f /usr/bin/apt ]; then
   sudo apt update
-  sudo apt upgrade
+  sudo apt upgrade -y
   packages="build-essential curl exa fd-find file fish gnome-tweaks git nodejs npm ripgrep"
   for pkg in $packages
     do
