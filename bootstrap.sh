@@ -30,7 +30,7 @@ case $(uname) in
     ;;
 esac
 
-if [[ command -v fish ]]; then
+if command -v fish; then
 	# If fish is installed check for it in /etc/shells
 	if ! grep -q fish /etc/shells; then
       		echo $(command -v fish) | sudo tee -a /etc/shells
