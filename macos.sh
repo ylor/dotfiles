@@ -21,6 +21,10 @@ fi
 if ! command -v brew; then
         ruby -e "$(curl -fsSL https://raw.githubusercontent.com/Homebrew/install/master/install)" && brew update && brew upgrade && brew bundle && brew cleanup
 fi
+
+if [ -d "/Applications/Utilities/Terminal.app/Contents/Resources/Fonts/" ]; then
+	open "/Applications/Utilities/Terminal.app/Contents/Resources/Fonts/"SFMono*.otf
+fi
     
 ###############################################################################
 # General UI/UX                                                               #
