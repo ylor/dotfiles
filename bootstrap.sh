@@ -40,6 +40,7 @@ if which fish > /dev/null; then
 	if ! grep -q fish $SHELL; then
 		chsh -s $(which fish)
 	fi
+	exec fish
 else
 	echo Fish is not installed
 fi
