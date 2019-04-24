@@ -20,10 +20,10 @@ done
 # Check for operating system
 case $(uname) in
   'Darwin') 
-    . macos.sh
+    source macos.sh
     ;;
   'Linux')
-    . linux.sh
+    source linux.sh
     ;;
    *)        
     echo "Unknown operating system. Aborting script." 
