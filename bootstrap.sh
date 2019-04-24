@@ -11,10 +11,10 @@ mkdir "$HOME/.config/mpv"
 mkdir "$HOME/.ssh"
 
 # Symlinks
-dot="bash_profile bashrc bin config/fish/conf.d/ config/mpv/ hushlogin ssh/config tvnamer"
+dot="bash_profile bashrc bin config/fish/conf.d config/mpv hushlogin ssh/config tvnamer"
 for file in $dot; do
     echo "Symlinking $file"
-    ln -sf "$file" "$HOME/.$file"
+    ln -sf "$(pwd)/$file" "$HOME/.$file"
 done
 
 # Check for operating system
