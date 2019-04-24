@@ -7,7 +7,7 @@ if [ -f /usr/bin/apt ]; then
   packages="build-essential curl exa fd-find file fish gnome-tweaks git nodejs npm ripgrep"
   for pkg in $packages
     do
-      #sudo apt install $pkg -y
+      echo test#sudo apt install $pkg -y
     done
     sudo apt install fish
   sudo apt autoremove -y
