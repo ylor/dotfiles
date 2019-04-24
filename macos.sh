@@ -18,9 +18,8 @@ if ! xcode-select -p &> /dev/null; then
   sudo xcodebuild -license accept &> /dev/null
 fi
 
-# Install Homebrew, if not installed
-if [ ! -f /usr/local/bin/brew ]; then
-	ruby -e "$(curl -fsSL https://raw.githubusercontent.com/Homebrew/install/master/install)" && brew update && brew upgrade && brew bundle && brew cleanup
+if ! command -v brew; then
+        ruby -e "$(curl -fsSL https://raw.githubusercontent.com/Homebrew/install/master/install)" && brew update && brew upgrade && brew bundle && brew cleanup
 fi
     
 ###############################################################################
@@ -28,12 +27,12 @@ fi
 ###############################################################################
 
 # Set computer name (as done via System Preferences → Sharing)
-read -p "Enter desired hostname: " MacHostname
+read -rp "Enter desired hostname: " MacHostname
 
-sudo scutil --set ComputerName $MacHostname
-sudo scutil --set HostName $MacHostname
-sudo scutil --set LocalHostName $MacHostname
-sudo defaults write /Library/Preferences/SystemConfiguration/com.apple.smb.server NetBIOSName -string $MacHostname
+sudo scutil --set ComputerName "$MacHostname"
+sudo scutil --set HostName "$MacHostname"
+sudo scutil --set LocalHostName "$MacHostname"
+sudo defaults write /Library/Preferences/SystemConfiguration/com.apple.smb.server NetBIOSName -string "$MacHostname"
 
 # Set standby delay to 24 hours (default is 1 hour)
 #sudo pmset -a standbydelay 86400
