@@ -39,7 +39,7 @@ if command -v fish; then
 	if ! grep -q fish "$SHELL"; then
 		chsh -s $(command -v fish)
 	fi
-	exec fish
+	command fish
 else
 	echo Fish is not installed
 fi
