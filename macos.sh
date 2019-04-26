@@ -1,53 +1,70 @@
 #!/usr/bin/env bash
 # ~/.macos — https://mths.be/macos
 
+prepareMac () {
 # Close any open System Preferences panes, to prevent them from overriding
 # settings we’re about to change
 osascript -e 'tell application "System Preferences" to quit'
 
-# Ask for the administrator password upfront
-#sudo -v
-
-# Keep-alive: update existing `sudo` time stamp until `.macos` has finished
-#while true; do sudo -n true; sleep 60; kill -0 "$$" || exit; done 2>/dev/null &
-
 # Get the command line tools and accept the license, if not installed/accepted
 if ! xcode-select -p &> /dev/null; then
-  # Prompt user to install the XCode Command Line Tools
-  xcode-select --install &> /dev/null
-  sudo xcodebuild -license accept &> /dev/null
+  	xcode-select --install &> /dev/null
+	sudo xcodebuild -license accept &> /dev/null
 fi
 
 if ! command -v brew; then
-        ruby -e "$(curl -fsSL https://raw.githubusercontent.com/Homebrew/install/master/install)" && brew update && brew upgrade && brew bundle && brew cleanup
+	ruby -e "$(curl -fsSL https://raw.githubusercontent.com/Homebrew/install/master/install)" && brew update && brew upgrade && brew bundle && brew cleanup
 fi
 
 if [ -d "/Applications/Utilities/Terminal.app/Contents/Resources/Fonts/" ]; then
 	open "/Applications/Utilities/Terminal.app/Contents/Resources/Fonts/"SFMono*.otf
 fi
-    
+}
 ###############################################################################
 # General UI/UX                                                               #
 ###############################################################################
 
+
+identifyMac
+renameMac
+macPrefs
+serverPrefs
+
+# Name Mac based
+identifyMac () {
+	macModel=$(sysctl hw.model | cut -d ' ' -f2)
+	case $macModel in
+	*MacBook*)
+		echo macbook
+		;;
+	*Macmini*)
+		echo mini
+		;;
+	*iMac*)
+		echo imac
+		;;
+	*)
+		;;
+	esac
+}
+
 # Set computer name (as done via System Preferences → Sharing)
-read -rp "Enter desired hostname: " newHostname
+renameMac() {
+	read -rp "Enter desired hostname: " newHostname
+	sudo scutil --set ComputerName "$newHostname"
+	sudo scutil --set HostName "$newHostname"
+	sudo scutil --set LocalHostName "$newHostname"
+	sudo defaults write /Library/Preferences/SystemConfiguration/com.apple.smb.server NetBIOSName -string "$newHostname"
+}
 
-sudo scutil --set ComputerName "$newHostname"
-sudo scutil --set HostName "$newHostname"
-sudo scutil --set LocalHostName "$newHostname"
-sudo defaults write /Library/Preferences/SystemConfiguration/com.apple.smb.server NetBIOSName -string "$newHostname"
-
-read -rp "Enter desired hostname: " newHostname
-if [[ "$newHostname" == "Server" ]] ; then
-	echo "$newHostname Server"
+# Apply these defaults if bootstrapping a Mac Server
+serverPrefs() {
 	# Always show scrollbars
 	defaults write NSGlobalDomain AppleShowScrollBars -string "Always"
 	# Possible values: `WhenScrolling`, `Automatic` and `Always`
-elif [[ $newHostname == "Macbook" ]] ; then
-	echo "$newHostname Macbook"
-fi
+}
 
+macPrefs() {
 # Set standby delay to 24 hours (default is 1 hour)
 #sudo pmset -a standbydelay 86400
 
@@ -116,7 +133,7 @@ defaults write NSGlobalDomain ApplePressAndHoldEnabled -bool false
 
 # Set a blazingly fast keyboard repeat rate
 defaults write NSGlobalDomain KeyRepeat -int 1
-defaults write NSGlobalDomain InitialKeyRepeat -int 10
+#defaults write NSGlobalDomain InitialKeyRepeat -int 25
 
 # Stop iTunes from responding to the keyboard media keys
 launchctl unload -w /System/Library/LaunchAgents/com.apple.rcd.plist 2> /dev/null
@@ -503,13 +520,6 @@ defaults write org.m0k.transmission WarningLegal -bool false
 defaults write org.m0k.transmission RandomPort -bool true
 
 ###############################################################################
-# Tweetbot.app                                                                #
-###############################################################################
-
-# Bypass the annoyingly slow t.co URL shortener
-defaults write com.tapbots.TweetbotMac OpenURLsDirectly -bool true
-
-###############################################################################
 # Kill affected applications                                                  #
 ###############################################################################
 
@@ -520,20 +530,14 @@ for app in "Activity Monitor" \
 	"Contacts" \
 	"Dock" \
 	"Finder" \
-	"Google Chrome" \
 	"Mail" \
 	"Messages" \
-	"Opera" \
 	"Photos" \
 	"Safari" \
-	"SizeUp" \
-	"Spectacle" \
 	"SystemUIServer" \
 	"Terminal" \
-	"Transmission" \
-	"Tweetbot" \
-	"Twitter" \
 	"iCal"; do
 	killall "${app}" &> /dev/null
 done
 echo "Done. Note that some of these changes require a logout/restart to take effect."
+}
