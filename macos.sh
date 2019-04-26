@@ -11,10 +11,12 @@ if ! xcode-select -p &> /dev/null; then
 	sudo xcodebuild -license accept &> /dev/null
 fi
 
+# Install Homebrew if it's not already installed
 if ! command -v brew; then
 	ruby -e "$(curl -fsSL https://raw.githubusercontent.com/Homebrew/install/master/install)" && brew update && brew upgrade && brew bundle && brew cleanup
 fi
 
+# Make SFMono available to other apps
 if [ -d "/Applications/Utilities/Terminal.app/Contents/Resources/Fonts/" ] && [ ! -f "$HOME/Library/Fonts/SFMono-Regular.otf" ]; then
 	open "/Applications/Utilities/Terminal.app/Contents/Resources/Fonts/"SFMono*.otf
 fi
