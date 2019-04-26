@@ -16,54 +16,21 @@ if ! command -v brew; then
 	ruby -e "$(curl -fsSL https://raw.githubusercontent.com/Homebrew/install/master/install)" && brew update && brew upgrade && brew bundle && brew cleanup
 fi
 
-if [ -d "/Applications/Utilities/Terminal.app/Contents/Resources/Fonts/" ]; then
+if [ -d "/Applications/Utilities/Terminal.app/Contents/Resources/Fonts/" ] && [ ! -f "$HOME/Library/Fonts/SFMono-Regular.otf" ]; then
 	open "/Applications/Utilities/Terminal.app/Contents/Resources/Fonts/"SFMono*.otf
 fi
-}
+
+
 ###############################################################################
 # General UI/UX                                                               #
 ###############################################################################
 
-identifyMac
-renameMac
-macPrefs
-serverPrefs
+read -rp "Enter desired hostname: " newHostname
+sudo scutil --set ComputerName "$newHostname"
+sudo scutil --set HostName "$newHostname"
+sudo scutil --set LocalHostName "$newHostname"
+sudo defaults write /Library/Preferences/SystemConfiguration/com.apple.smb.server NetBIOSName -string "$newHostname"
 
-# Name Mac based
-identifyMac () {
-	macModel=$(sysctl hw.model | cut -d ' ' -f2)
-	case $macModel in
-	*MacBook*)
-		echo macbook
-		;;
-	*Macmini*)
-		echo mini
-		;;
-	*iMac*)
-		echo imac
-		;;
-	*)
-		;;
-	esac
-}
-
-# Set computer name (as done via System Preferences → Sharing)
-renameMac() {
-	read -rp "Enter desired hostname: " newHostname
-	sudo scutil --set ComputerName "$newHostname"
-	sudo scutil --set HostName "$newHostname"
-	sudo scutil --set LocalHostName "$newHostname"
-	sudo defaults write /Library/Preferences/SystemConfiguration/com.apple.smb.server NetBIOSName -string "$newHostname"
-}
-
-# Apply these defaults if bootstrapping a Mac Server
-serverPrefs() {
-	# Always show scrollbars
-	defaults write NSGlobalDomain AppleShowScrollBars -string "Always"
-	# Possible values: `WhenScrolling`, `Automatic` and `Always`
-}
-
-macPrefs() {
 # Set standby delay to 24 hours (default is 1 hour)
 #sudo pmset -a standbydelay 86400
 
@@ -518,6 +485,14 @@ defaults write org.m0k.transmission WarningLegal -bool false
 # Randomize port on launch
 defaults write org.m0k.transmission RandomPort -bool true
 
+# Apply these defaults if bootstrapping a Mac Server
+
+if hostname === "Server"; then
+	# Always show scrollbars
+	defaults write NSGlobalDomain AppleShowScrollBars -string "Always"
+	# Possible values: `WhenScrolling`, `Automatic` and `Always`
+end
+
 ###############################################################################
 # Kill affected applications                                                  #
 ###############################################################################
@@ -539,4 +514,3 @@ for app in "Activity Monitor" \
 	killall "${app}" &> /dev/null
 done
 echo "Done. Note that some of these changes require a logout/restart to take effect."
-}
