@@ -1,7 +1,6 @@
 #!/usr/bin/env bash
 # ~/.macos — https://mths.be/macos
 
-prepareMac () {
 # Close any open System Preferences panes, to prevent them from overriding
 # settings we’re about to change
 osascript -e 'tell application "System Preferences" to quit'
@@ -19,7 +18,6 @@ fi
 if [ -d "/Applications/Utilities/Terminal.app/Contents/Resources/Fonts/" ] && [ ! -f "$HOME/Library/Fonts/SFMono-Regular.otf" ]; then
 	open "/Applications/Utilities/Terminal.app/Contents/Resources/Fonts/"SFMono*.otf
 fi
-
 
 ###############################################################################
 # General UI/UX                                                               #
