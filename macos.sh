@@ -17,7 +17,7 @@ if ! command -v brew; then
 fi
 
 # Make SFMono available to other apps
-if [ -d "/Applications/Utilities/Terminal.app/Contents/Resources/Fonts/" ] && [ ! -f "$HOME/Library/Fonts/SFMono-Regular.otf" ]; then
+if [[ -d "/Applications/Utilities/Terminal.app/Contents/Resources/Fonts/" ]] && [[ ! -f "$HOME/Library/Fonts/SFMono-Regular.otf" ]]; then
 	open "/Applications/Utilities/Terminal.app/Contents/Resources/Fonts/"SFMono*.otf
 fi
 
@@ -487,11 +487,11 @@ defaults write org.m0k.transmission RandomPort -bool true
 
 # Apply these defaults if bootstrapping a Mac Server
 
-if hostname === "Server"; then
-	# Always show scrollbars
+if [[ "$(hostname)" == "Macbook" ]]; then
+    	# Always show scrollbars
 	defaults write NSGlobalDomain AppleShowScrollBars -string "Always"
 	# Possible values: `WhenScrolling`, `Automatic` and `Always`
-end
+fi
 
 ###############################################################################
 # Kill affected applications                                                  #
@@ -510,7 +510,7 @@ for app in "Activity Monitor" \
 	"Safari" \
 	"SystemUIServer" \
 	"Terminal" \
-	"iCal"; do
+	; do
 	killall "${app}" &> /dev/null
 done
 echo "Done. Note that some of these changes require a logout/restart to take effect."
