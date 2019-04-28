@@ -1,9 +1,5 @@
 #!/usr/bin/env bash
 
-# Ask for the administrator password upfront & keep it active until script has finished
-sudo -v
-while true; do sudo -n true; sleep 60; kill -0 "$$" || exit; done 2>/dev/null &
-
 # Prestage folders for symlinking
 mkdir "$HOME/.config"
 mkdir "$HOME/.config/fish"
@@ -16,6 +12,10 @@ for file in $dot; do
     echo "Symlinking $file"
     ln -sf "$(pwd)/$file" "$HOME/.$file"
 done
+
+# Ask for the administrator password upfront & keep it active until script has finished
+sudo -v
+while true; do sudo -n true; sleep 60; kill -0 "$$" || exit; done 2>/dev/null &
 
 # Check for operating system
 case $(uname) in
