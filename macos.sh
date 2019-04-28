@@ -59,13 +59,6 @@ defaults write com.apple.LaunchServices LSQuarantine -bool false
 # Disable the crash reporter
 defaults write com.apple.CrashReporter DialogType -string "none"
 
-# Reveal IP address, hostname, OS version, etc. when clicking the clock
-# in the login window
-sudo defaults write /Library/Preferences/com.apple.loginwindow AdminHostInfo HostName
-
-# Restart automatically if the computer freezes
-sudo systemsetup -setrestartfreeze on
-
 # Disable automatic capitalization as it’s annoying when typing code
 #defaults write NSGlobalDomain NSAutomaticCapitalizationEnabled -bool false
 
@@ -117,9 +110,6 @@ defaults write com.apple.screencapture location -string "${HOME}/Desktop"
 
 # Save screenshots in PNG format (other options: BMP, GIF, JPG, PDF, TIFF)
 defaults write com.apple.screencapture type -string "png"
-
-# Disable shadow in screenshots
-#defaults write com.apple.screencapture disable-shadow -bool true
 
 ###############################################################################
 # Finder                                                                      #
@@ -203,31 +193,13 @@ defaults write com.apple.finder FXInfoPanesExpanded -dict \
 defaults write com.apple.dock mouse-over-hilite-stack -bool true
 
 # Set the icon size of Dock items to 36 pixels
-defaults write com.apple.dock tilesize -int 36
+defaults write com.apple.dock tilesize -int 64
 
 # Change minimize/maximize window effect
 defaults write com.apple.dock mineffect -string "scale"
 
 # Enable spring loading for all Dock items
 defaults write com.apple.dock enable-spring-load-actions-on-all-items -bool true
-
-# Show indicator lights for open applications in the Dock
-#defaults write com.apple.dock show-process-indicators -bool true
-
-# Wipe all (default) app icons from the Dock
-# This is only really useful when setting up a new Mac, or if you don’t use
-# the Dock to launch apps.
-#defaults write com.apple.dock persistent-apps -array
-
-# Show only open applications in the Dock
-#defaults write com.apple.dock static-only -bool true
-
-# Speed up Mission Control animations
-#defaults write com.apple.dock expose-animation-duration -float 0.1
-
-# Don’t group windows by application in Mission Control
-# (i.e. use the old Exposé behavior instead)
-#defaults write com.apple.dock expose-group-by-app -bool false
 
 # Disable Dashboard
 defaults write com.apple.dashboard mcx-disabled -bool true
@@ -239,12 +211,10 @@ defaults write com.apple.dock dashboard-in-overlay -bool true
 #defaults write com.apple.dock mru-spaces -bool false
 
 # Remove the auto-hiding Dock delay
-#defaults write com.apple.dock autohide-delay -float 0
-# Remove the animation when hiding/showing the Dock
-#defaults write com.apple.dock autohide-time-modifier -float 0
+defaults write com.apple.dock autohide-delay -float 0
 
 # Automatically hide and show the Dock
-#defaults write com.apple.dock autohide -bool true
+defaults write com.apple.dock autohide -bool true
 
 # Don’t show recent applications in Dock
 defaults write com.apple.dock show-recents -bool false
