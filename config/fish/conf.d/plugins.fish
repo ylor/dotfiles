@@ -5,6 +5,9 @@ if not functions -q fisher
     fish -c fisher
 end
 
+# Source Functions
+[ -d ~/.config/fish/functions ]; and source ~/.config/fish/functions/*.fish
+
 # Source Autojump
 [ -f /usr/local/share/autojump/autojump.fish ]; and source /usr/local/share/autojump/autojump.fish
 
