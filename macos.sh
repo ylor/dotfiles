@@ -25,6 +25,8 @@ fi
 # General UI/UX                                                               #
 ###############################################################################
 
+# Change hostname
+echo "Current hostname is $(hostname)"
 read -rp "Enter desired hostname: " newHostname
 sudo scutil --set ComputerName "$newHostname"
 sudo scutil --set HostName "$newHostname"
