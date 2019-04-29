@@ -34,7 +34,7 @@ sudo defaults write /Library/Preferences/SystemConfiguration/com.apple.smb.serve
 ###############################################################################
 
 # Dark Mode
-osascript -e 'tell application "System Events" to tell appearance preferences to set dark mode to 1'
+osascript -e 'tell application "System Events" to tell appearance preferences to set dark mode to true'
 
 # Set standby delay to 24 hours (default is 1 hour)
 #sudo pmset -a standbydelay 86400
