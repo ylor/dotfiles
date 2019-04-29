@@ -21,10 +21,6 @@ if [[ -d "/Applications/Utilities/Terminal.app/Contents/Resources/Fonts/" ]] && 
 	open "/Applications/Utilities/Terminal.app/Contents/Resources/Fonts/"SFMono*.otf
 fi
 
-###############################################################################
-# General UI/UX                                                               #
-###############################################################################
-
 # Change hostname
 echo "Current hostname is $(hostname)"
 read -rp "Enter desired hostname: " newHostname
@@ -32,6 +28,13 @@ sudo scutil --set ComputerName "$newHostname"
 sudo scutil --set HostName "$newHostname"
 sudo scutil --set LocalHostName "$newHostname"
 sudo defaults write /Library/Preferences/SystemConfiguration/com.apple.smb.server NetBIOSName -string "$newHostname"
+
+###############################################################################
+# General UI/UX                                                               #
+###############################################################################
+
+# Dark Mode
+defaults write NSGlobalDomain AppleInterfaceStyle -string "Dark"
 
 # Set standby delay to 24 hours (default is 1 hour)
 #sudo pmset -a standbydelay 86400
