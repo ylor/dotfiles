@@ -1,8 +1,4 @@
 #!/usr/bin/env bash
-# Install nix if not already installed
-if ! command -v nix; then
-	curl https://nixos.org/nix/install | sh
-fi
 
 # Check for apt on Debian/Ubuntu
 if [ -f /usr/bin/apt ]; then
@@ -12,6 +8,12 @@ if [ -f /usr/bin/apt ]; then
   for pkg in $packages
     do
       echo sudo apt install "$pkg" -y
+      sudo apt install curl
     done
   sudo apt autoremove -y
+fi
+
+# Install nix if not already installed
+if ! command -v nix; then
+	curl https://nixos.org/nix/install | sh
 fi
