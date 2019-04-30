@@ -60,37 +60,31 @@ alias dscleanup="sudo find / -name '*.DS_Store' -type f -ls -delete"
 alias etrash="sudo rm -rfv /Volumes/*/.Trashes; and sudo rm -rfv ~/.Trash; and sudo rm -rfv /private/var/log/asl/*.asl"
 alias find="fd"
 alias flush="dscacheutil -flushcache; and sudo killall -HUP mDNSResponder"
-alias grep="rg"
 alias hide="defaults write com.apple.finder AppleShowAllFiles -bool false; and killall Finder"
 alias home="cd $HOME"
 alias http="python -m SimpleHTTPServer"
-alias la="exa -la"
-alias ll="exa -l"
-alias ls="exa"
 alias lscleanup="/System/Library/Frameworks/CoreServices.framework/Frameworks/LaunchServices.framework/Support/lsregister -kill -r -domain local -domain system -domain user; and killall Finder"
 alias md="mkdir -p"
 alias mkdir="mkdir -p"
 alias myip="dig +short myip.opendns.com @resolver1.opendns.com"
-alias nix="nix-env"
 alias reboot="sudo shutdown -r now"
 alias reload="exec fish"
 alias show="defaults write com.apple.finder AppleShowAllFiles -bool true; and killall Finder"
 alias shutdown="sudo shutdown -s now"
-alias top="htop"
-alias vi="nvim"
-alias vim="nvim"
 alias vnc="open vnc://Server.local"
-alias wget="curl -LO"
 alias rd="rmdir"
 
 # Functions
-function cdf
-  cd (osascript -e 'tell application "Finder" to if (count of Finder windows) > 0 then get POSIX path of (target of front Finder window as text)')
-end
 
+## Quality of Life
 function gc
   git clone --recurse-submodules "$argv"; and cd (basename $argv)
 end
+
+alias nixi="nix-env -i"
+alias nixu="nix-env -u"
+alias nixun="nix-env --uninstall"
+alias nixup="nix-env --upgrade"
 
 function mdcd
   mkdir $argv; and cd $argv
@@ -108,4 +102,29 @@ function update-full -d "Update all software"
   echo (set_color white --bold)"// mpv"(set_color normal); and brew reinstall mpv --with-bundle
   echo (set_color white --bold)"// Ruby"(set_color normal); and gem update
   echo (set_color white --bold)"// Python"(set_color normal); and python -m pip list --outdated | cut -d ' ' -f1 | xargs -n1 python -m pip install -U; and python3 -m pip list --outdated | cut -d ' ' -f1 | xargs -n1 python3 -m pip install -U
+end
+
+## Utility Replacements if available
+if command -v rg
+  alias grep="rg"
+end
+ 
+if command -v exa
+  alias la="exa -la"
+  alias ll="exa -l"
+  alias ls="exa"
+end
+
+if command -v htop
+  alias top="htop"
+end
+
+if command -v nvim
+  alias vi="nvim"
+  alias vim="nvim"
+end
+
+## Mac Specific
+function cdf
+  cd (osascript -e 'tell application "Finder" to if (count of Finder windows) > 0 then get POSIX path of (target of front Finder window as text)')
 end
