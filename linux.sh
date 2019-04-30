@@ -1,4 +1,8 @@
 #!/usr/bin/env bash
+# Install nix if not already installed
+if ! command -v nix; then
+	curl https://nixos.org/nix/install | sh
+fi
 
 # Check for apt on Debian/Ubuntu
 if [ -f /usr/bin/apt ]; then
