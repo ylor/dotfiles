@@ -105,21 +105,21 @@ function update-full -d "Update all software"
 end
 
 ## Utility Replacements if available
-if command -v rg
+if command -vq rg
   alias grep="rg"
 end
  
-if command -v exa
+if command -vq exa
   alias la="exa -la"
   alias ll="exa -l"
   alias ls="exa"
 end
 
-if command -v htop
+if command -vq htop
   alias top="htop"
 end
 
-if command -v nvim
+if command -vq nvim
   alias vi="nvim"
   alias vim="nvim"
 end
