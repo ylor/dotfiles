@@ -5,6 +5,8 @@
 export LANG='en_US.UTF-8'
 export LC_ALL='en_US.UTF-8'
 
+[ -d ~/.nix-profile/ ] && source ~/.nix-profile/etc/profile.d/nix.sh 
+
 # Colors
 RED="$(tput setaf 1)"
 GREEN="$(tput setaf 2)"
