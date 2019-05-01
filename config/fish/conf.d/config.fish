@@ -7,6 +7,7 @@ set -x LANG en_US.UTF-8
 set -x LC_ALL en_US.UTF-8
 
 # Prompt
+function fish_title; echo; end
 set SPACEFISH_DIR_TRUNC 3
 set SPACEFISH_GIT_SYMBOL '•'
 
