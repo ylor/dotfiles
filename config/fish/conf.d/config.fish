@@ -124,7 +124,7 @@ if command -v nvim > /dev/null 2>&1
 end
 
 ## Mac Specific
-if (uname) = Darwin > /dev/null 2>&1
+if test (uname) = Darwin
   alias afk="/System/Library/CoreServices/Menu\ Extras/User.menu/Contents/Resources/CGSession -suspend"
   alias dscleanup="sudo find / -name '*.DS_Store' -type f -ls -delete"
   alias etrash="sudo rm -rfv /Volumes/*/.Trashes; and sudo rm -rfv ~/.Trash; and sudo rm -rfv /private/var/log/asl/*.asl"
