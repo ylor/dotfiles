@@ -106,9 +106,7 @@ function update-full -d "Update all software"
 end
 
 ## Utility Replacements if available
-if command -vq rg
-  alias grep="rg"
-end
+
  
 if command -vq exa
   alias la="exa -la"
