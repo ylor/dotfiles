@@ -11,5 +11,8 @@ end
 # Source Autojump
 [ -f /usr/local/share/autojump/autojump.fish ]; and source /usr/local/share/autojump/autojump.fish
 
+# Source linuxbrew if installed
+[ -d ~/.linuxbrew ]; and eval (~/.linuxbrew/bin/brew shellenv)
+
 # Source Nix
 [ -d ~.nix-profile ]; and bass source ~/.nix-profile/etc/profile.d/nix.sh
