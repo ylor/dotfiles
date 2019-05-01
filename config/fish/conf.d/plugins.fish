@@ -9,7 +9,7 @@ if not functions -q fisher
 end
 
 # Source thefuck
-if command -v thefuck
+if command -vq thefuck
     thefuck --alias | source
 end
 
