@@ -8,9 +8,6 @@ if not functions -q fisher
     fish -c fisher
 end
 
-# Source Autojump
-[ -f /usr/local/share/autojump/autojump.fish ]; and source /usr/local/share/autojump/autojump.fish
-
 # Source linuxbrew if installed
 [ -d ~/.linuxbrew ]; and eval (~/.linuxbrew/bin/brew shellenv)
 
