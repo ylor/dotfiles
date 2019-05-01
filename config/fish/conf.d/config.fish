@@ -106,7 +106,7 @@ function update-full -d "Update all software"
 end
 
 ## Utility Replacements if available
-if command -vq rg
+if (which rg)
   alias grep="rg"
 end
  
