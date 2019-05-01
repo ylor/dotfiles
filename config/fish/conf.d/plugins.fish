@@ -8,11 +8,6 @@ if not functions -q fisher
     fish -c fisher
 end
 
-# Source thefuck
-if command -vq thefuck
-    thefuck --alias | source
-end
-
 # Source linuxbrew if installed
 [ -d ~/.linuxbrew ]; and eval (~/.linuxbrew/bin/brew shellenv)
 
