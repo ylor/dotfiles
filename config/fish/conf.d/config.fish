@@ -104,9 +104,8 @@ function update-full -d "Update all software"
   echo (set_color white --bold)"// Ruby"(set_color normal); and gem update
   echo (set_color white --bold)"// Python"(set_color normal); and python -m pip list --outdated | cut -d ' ' -f1 | xargs -n1 python -m pip install -U; and python3 -m pip list --outdated | cut -d ' ' -f1 | xargs -n1 python3 -m pip install -U
 end
-alias grep="rg"
-## Utility Replacements if available
 
+## Utility Replacements if available
  
 if command -vq exa
   alias la="exa -la"
