@@ -53,18 +53,14 @@ alias ..="cd .."
 alias ...="cd ../.."
 alias ....="cd ../../.."
 alias .....="cd ../../../.."
-
 alias dotpull="git -C ~/Documents/dotfiles pull; exec fish"
-
 alias home="cd $HOME"
 alias http="python -m SimpleHTTPServer"
 alias j="z"
-
 alias md="mkdir -p"
 alias myip="dig +short myip.opendns.com @resolver1.opendns.com"
 alias reboot="sudo shutdown -r now"
 alias reload="exec fish"
-
 alias shutdown="sudo shutdown -s now"
 alias rd="rmdir"
 
