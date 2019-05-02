@@ -24,8 +24,3 @@ if [ -f /usr/bin/apt ]; then
     done
   sudo apt autoremove -y
 fi
-
-# Install nix if not already installed
-if ! command -v nix; then
-	curl https://nixos.org/nix/install | sh
-fi
