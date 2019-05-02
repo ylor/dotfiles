@@ -93,6 +93,21 @@ if [[ -d "/Applications/Utilities/Terminal.app/Contents/Resources/Fonts/" ]] && 
 	open "/Applications/Utilities/Terminal.app/Contents/Resources/Fonts/"SFMono*.otf
 fi
 
+# Prompt for hostname change
+read -t 30 -rp "Current hostname is $(hostname). Would you like to change it?
+Please confirm within 30 seconds. [Y/n]" changeHostname
+case $changeHostname in
+    [Yy][Ee][Ss]|[Yy])
+        read -rp "Enter new hostname: " newHostname
+        sudo scutil --set ComputerName "$newHostname"
+        sudo scutil --set HostName "$newHostname"
+        sudo scutil --set LocalHostName "$newHostname"
+        sudo defaults write /Library/Preferences/SystemConfiguration/com.apple.smb.server NetBIOSName -string "$newHostname"
+    ;;
+    *)
+    ;;
+esac
+
 ###############################################################################
 # General UI/UX                                                               #
 ###############################################################################
