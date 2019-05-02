@@ -94,12 +94,19 @@ if [[ -d "/Applications/Utilities/Terminal.app/Contents/Resources/Fonts/" ]] && 
 fi
 
 # Change hostname
-echo "Current hostname is $(hostname)"
-read -rp "Enter desired hostname: " newHostname
-sudo scutil --set ComputerName "$newHostname"
-sudo scutil --set HostName "$newHostname"
-sudo scutil --set LocalHostName "$newHostname"
-sudo defaults write /Library/Preferences/SystemConfiguration/com.apple.smb.server NetBIOSName -string "$newHostname"
+
+read -n1 -p "Do that? [y,n]" renameHostname 
+case $renameHostname in  
+  y|Y|yes|Yes) 
+  echo "Current hostname is $(hostname)"
+  read -rp "Enter desired hostname: " newHostname
+  sudo scutil --set ComputerName "$newHostname"
+  sudo scutil --set HostName "$newHostname"
+  sudo scutil --set LocalHostName "$newHostname"
+  sudo defaults write /Library/Preferences/SystemConfiguration/com.apple.smb.server NetBIOSName -string "$newHostname"
+  ;; 
+  *) ;; 
+esac
 
 ###############################################################################
 # General UI/UX                                                               #
