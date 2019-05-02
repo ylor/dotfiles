@@ -83,11 +83,6 @@ if ! command -v brew; then
 	done  
 fi
 
-# Install Nix if it's not already been installed 
-if ! command -v nix; then
-	curl https://nixos.org/nix/install | sh
-fi
-
 # Make SFMono available to other apps
 if [[ -d "/Applications/Utilities/Terminal.app/Contents/Resources/Fonts/" ]] && [[ ! -f "$HOME/Library/Fonts/SFMono-Regular.otf" ]]; then
 	open "/Applications/Utilities/Terminal.app/Contents/Resources/Fonts/"SFMono*.otf
