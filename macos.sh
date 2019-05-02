@@ -11,9 +11,37 @@ if ! xcode-select -p &> /dev/null; then
 	sudo xcodebuild -license accept &> /dev/null
 fi
 
-# Install Homebrew if it's not already installed
+# Install Homebrew if it's not already installed and install packages
 if ! command -v brew; then
 	ruby -e "$(curl -fsSL https://raw.githubusercontent.com/Homebrew/install/master/install)" && brew update && brew upgrade && brew bundle && brew cleanup
+	
+	# Brew taps
+	taps=(beeftornado/rmtree homebrew/cask-fonts)  
+	for tap in "${taps[@]}"  
+	do  
+	    echo brew tap $tap
+	done
+	
+	# Brew packages
+	pkgs=(bash bat exa fd ffmpeg fish fzf git htop iperf3 mas media-info mkvtoolnix neovim nnn rename ripgrep tmux trash tree)  
+	for pkg in "${pkgs[@]}"  
+	do  
+	    echo brew install $pkg
+	done
+	
+	# Brew casks
+	casks=(1password appcleaner hazel hwsensors font-inter keyboardcleantools mkvtools mp4tools mpv omnidisksweeper superduper the-unarchiver visual-studio-code xld)  
+	for cask in "${casks[@]}"  
+	do  
+	    echo brew cask install $cask
+	done
+	
+	# mas
+	apps=(John Harry Jake Scott Philis)  
+	for app in "${apps[@]}"  
+	do  
+	    echo mas $app
+	done  
 fi
 
 # Install Nix if it's not already been installed 
