@@ -5,7 +5,7 @@
 [ -d ~/.linuxbrew ]; and eval (~/.linuxbrew/bin/brew shellenv)
 
 # Source Nix, if installed
-[ -d ~.nix-profile ]; and bass source ~/.nix-profile/etc/profile.d/nix.sh
+[ -d ~/.nix-profile ]; and bass source ~/.nix-profile/etc/profile.d/nix.sh
 
 # Bootstrap fisher if not installed
 if not functions -q fisher

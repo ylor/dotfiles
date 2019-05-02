@@ -105,7 +105,7 @@ if command -v fd > /dev/null 2>&1
 end
 
 if command -v rg > /dev/null 2>&1
-  alias grep="rg"
+  #alias grep="rg"
 end
  
 if command -v exa > /dev/null 2>&1

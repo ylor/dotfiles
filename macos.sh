@@ -314,7 +314,9 @@ sudo ln -sf "/Applications/Xcode.app/Contents/Developer/Applications/Simulator.a
 sudo ln -sf "/Applications/Xcode.app/Contents/Developer/Applications/Simulator (Watch).app" "/Applications/Simulator (Watch).app"
 
 # Add a spacer to the left side of the Dock (where the applications are)
-defaults write com.apple.dock persistent-apps -array-add '{tile-data={}; tile-type="spacer-tile";}'
+if ! defaults read com.apple.dock persistent-apps | grep -q 'spacer-tile'; then
+	defaults write com.apple.dock persistent-apps -array-add '{tile-data={}; tile-type="spacer-tile";}'
+fi
 
 # Hot corners
 # Possible values:
@@ -331,9 +333,6 @@ defaults write com.apple.dock persistent-apps -array-add '{tile-data={}; tile-ty
 
 # Top right screen corner → Desktop
 defaults write com.apple.dock wvous-br-corner -int 12
-defaults write com.apple.dock wvous-br-modifier -int 0
-# Bottom right screen corner → Start screen saver
-defaults write com.apple.dock wvous-br-corner -int 4
 defaults write com.apple.dock wvous-br-modifier -int 0
 
 ###############################################################################
