@@ -45,7 +45,6 @@ if ! command -v brew; then
 fi
 
 # Install Nix if it's not already been installed 
-
 if ! command -v nix; then
 	curl https://nixos.org/nix/install | sh
 fi
