@@ -13,5 +13,3 @@ end
 
 # Source Nix, if installed
 [ -d ~/.nix-profile ]; and bass source ~/.nix-profile/etc/profile.d/nix.sh
-
-
