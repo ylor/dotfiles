@@ -17,7 +17,7 @@ if [ -f /usr/bin/apt ]; then
 
   sudo apt update
   sudo apt upgrade -y
-  packages="build-essential curl exa fd-find file fish gnome-tweaks git nodejs npm ripgrep"
+  packages="build-essential curl exa fd-find file fish gnome-tweaks git ripgrep"
   for pkg in $packages
     do
       sudo apt install "$pkg" -y
