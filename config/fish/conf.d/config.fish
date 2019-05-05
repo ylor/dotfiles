@@ -70,7 +70,7 @@ alias rd="rmdir"
 
 ### git clone && cd to it
 function gc
-  git clone --recurse-submodules "$argv" && cd (basename $argv)
+  git clone --recurse-submodules "https://github.com/$argv" && cd (basename $argv)
 end
 
 ### Nix
