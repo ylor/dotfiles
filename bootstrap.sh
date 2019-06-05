@@ -1,4 +1,4 @@
-#!/usr/bin/env bash
+s#!/usr/bin/env bash
 
 # Prestage folders for symlinking
 mkdir "$HOME/.config"
@@ -32,9 +32,9 @@ esac
 
 
 # Install nix if not already installed
-if ! command -v nix; then
-	curl https://nixos.org/nix/install | sh
-fi
+#if ! command -v nix; then
+#	curl https://nixos.org/nix/install | sh
+#fi
 
 if command -v fish; then
 	# If fish is installed check for it in /etc/shells

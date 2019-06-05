@@ -22,7 +22,7 @@ if ! command -v brew; then
 	)  
 	for tap in "${taps[@]}"  
 	do  
-	    echo brew tap $tap
+        brew tap $tap
 	done
 	
 	# Brew packages
@@ -50,7 +50,7 @@ if ! command -v brew; then
 	)  
 	for pkg in "${pkgs[@]}"  
 	do  
-	    echo brew install $pkg
+        brew install $pkg
 	done
 	
 	# Brew casks
@@ -72,7 +72,7 @@ if ! command -v brew; then
 	)  
 	for cask in "${casks[@]}"  
 	do  
-	    echo brew cask install $cask
+        brew cask install $cask
 	done
 	
 	# mas
