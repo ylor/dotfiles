@@ -1,4 +1,4 @@
-s#!/usr/bin/env bash
+#!/usr/bin/env bash
 
 # Prestage folders for symlinking
 mkdir "$HOME/.config"
@@ -39,11 +39,11 @@ esac
 if command -v fish; then
 	# If fish is installed check for it in /etc/shells
 	if ! grep -q fish /etc/shells; then
-      		command -v fish | sudo tee -a /etc/shells
+      		echo $(command -v fish) | sudo tee -a /etc/shells
     	fi
     # If fish is in /etc/shells, change shell to it, if it's not already
 	if ! grep -q fish "$SHELL"; then
-		chsh -s "$(command -v fish)"
+		chsh -s $(command -v fish)
 	fi
 	command fish
 else
