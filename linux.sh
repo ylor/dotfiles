@@ -5,7 +5,7 @@ if [ -f /usr/bin/apt ]; then
   sudo add-apt-repository ppa:daniruiz/flat-remix
   sudo apt update
   sudo apt upgrade -y
-  packages="build-essential curl exa fd-find fish flat-remix-gnome gnome-tweaks git ripgrep"
+  packages="build-essential curl exa fd-find fish flat-remix flat-remix-gnome flat-remix-gtk gnome-tweaks git ripgrep"
   for pkg in $packages
     do
       sudo apt install "$pkg" -y
@@ -19,7 +19,7 @@ if [ -f /usr/bin/dnf ]; then
   sudo dnf copr enable daniruiz/flat-remix
   sudo dnf update
   sudo dnf upgrade -y
-  packages="chsh exa fd-find file fish flat-remix-gnome gnome-tweaks ripgrep"
+  packages="chsh exa fd-find file fish flat-remix flat-remix-gnome flat-remix-gtk gnome-tweaks ripgrep"
   for pkg in $packages
     do
       sudo dnf install "$pkg" -y
