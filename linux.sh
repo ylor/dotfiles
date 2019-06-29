@@ -19,7 +19,7 @@ if [ -f /usr/bin/dnf ]; then
   sudo dnf copr enable daniruiz/flat-remix
   sudo dnf update
   sudo dnf upgrade -y
-  packages="exa fd-find file fish flat-remix-gnome gnome-tweaks ripgrep"
+  packages="chsh exa fd-find file fish flat-remix-gnome gnome-tweaks ripgrep"
   for pkg in $packages
     do
       sudo dnf install "$pkg" -y
