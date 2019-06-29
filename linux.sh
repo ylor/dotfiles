@@ -2,25 +2,27 @@
 
 # Check for apt on Debian/Ubuntu
 if [ -f /usr/bin/apt ]; then
-
-    # Prompt for hostname change
-    read -t 30 -rp "Current hostname is $(hostname). Would you like to change it?
-    Please confirm within 30 seconds. [Y/n]" changeHostname
-    case $changeHostname in
-        [Yy][Ee][Ss]|[Yy])
-            read -rp "Enter new hostname: " newHostname
-            hostnamectl set-hostname $newHostname        
-        ;;
-        *)
-        ;;
-    esac
-
+  sudo add-apt-repository ppa:daniruiz/flat-remix
   sudo apt update
   sudo apt upgrade -y
-  packages="build-essential curl exa fd-find file fish gnome-tweaks git ripgrep"
+  packages="build-essential curl exa fd-find fish flat-remix-gnome gnome-tweaks git ripgrep"
   for pkg in $packages
     do
       sudo apt install "$pkg" -y
+    done
+  sudo apt autoremove -y
+fi
+
+if [ -f /usr/bin/dnf ]; then
+  sudo dnf install https://download1.rpmfusion.org/free/fedora/rpmfusion-free-release-$(rpm -E %fedora).noarch.rpm https://download1.rpmfusion.org/nonfree/fedora/rpmfusion-nonfree-release-$(rpm -E %fedora).noarch.rpm
+  sudo flatpak remote-add --if-not-exists flathub https://flathub.org/repo/flathub.flatpakrepo
+  sudo dnf copr enable daniruiz/flat-remix
+  sudo dnf update
+  sudo dnf upgrade -y
+  packages="exa fd-find file fish flat-remix-gnome gnome-tweaks ripgrep"
+  for pkg in $packages
+    do
+      sudo dnf install "$pkg" -y
     done
   sudo apt autoremove -y
 fi
