@@ -1,1 +1,0 @@
-/Users/roly/Documents/dotfiles/config/fish/conf.d
