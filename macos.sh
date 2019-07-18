@@ -6,81 +6,78 @@
 osascript -e 'tell application "System Preferences" to quit'
 
 # Get the command line tools and accept the license, if not installed/accepted
-if ! xcode-select -p &> /dev/null; then
-  	xcode-select --install &> /dev/null
-	sudo xcodebuild -license accept &> /dev/null
+if ! xcode-select -p &>/dev/null; then
+	xcode-select --install &>/dev/null
+	sudo xcodebuild -license accept &>/dev/null
 fi
 
 # Install Homebrew if it's not already installed and install packages
 if ! command -v brew; then
 	ruby -e "$(curl -fsSL https://raw.githubusercontent.com/Homebrew/install/master/install)" && brew update && brew upgrade && brew bundle && brew cleanup
-	
+
 	# Brew taps
 	taps=(
-	beeftornado/rmtree
-	homebrew/cask-fonts
-	)  
-	for tap in "${taps[@]}"  
-	do  
-        brew tap $tap
+		beeftornado/rmtree
+		homebrew/cask-fonts
+	)
+	for tap in "${taps[@]}"; do
+		brew tap $tap
 	done
-	
+
 	# Brew packages
 	pkgs=(
-	bash
-	bat
-	exa
-	fd
-	ffmpeg
-	fish
-	fzf
-	git
-	htop
-	iperf3
-	mas
-	media-info
-	mkvtoolnix
-	neovim
-	nnn
-	rename
-	ripgrep
-	tmux
-	trash
-	tree
-	)  
-	for pkg in "${pkgs[@]}"  
-	do  
-        brew install $pkg
+		bash
+		bat
+		exa
+		fd
+		ffmpeg
+		fish
+		fzf
+		git
+		htop
+		iperf3
+		mas
+		media-info
+		mkvtoolnix
+		neovim
+		nnn
+		rename
+		ripgrep
+		tmux
+		trash
+		tree
+		yarn
+	)
+	for pkg in "${pkgs[@]}"; do
+		brew install $pkg
 	done
-	
+
 	# Brew casks
 	casks=(
-	1password
-	appcleaner
-	hazel
-	hwsensors
-	font-inter
-	keyboardcleantools
-	mkvtools
-	mp4tools
-	mpv
-	omnidisksweeper
-	superduper
-	the-unarchiver
-	visual-studio-code
-	xld
-	)  
-	for cask in "${casks[@]}"  
-	do  
-        brew cask install $cask
+		1password
+		appcleaner
+		hazel
+		hwsensors
+		font-inter
+		keyboardcleantools
+		mkvtools
+		mp4tools
+		mpv
+		omnidisksweeper
+		superduper
+		the-unarchiver
+		visual-studio-code
+		xld
+	)
+	for cask in "${casks[@]}"; do
+		brew cask install $cask
 	done
-	
+
 	# mas
-	apps=(John Harry Jake Scott Philis)  
-	for app in "${apps[@]}"  
-	do  
-	    echo mas $app
-	done  
+	apps=(John Harry Jake Scott Philis)
+	for app in "${apps[@]}"; do
+		echo mas $app
+	done
 fi
 
 # Make SFMono available to other apps
@@ -92,15 +89,15 @@ fi
 read -t 30 -rp "Current hostname is $(hostname). Would you like to change it?
 Please confirm within 30 seconds. [Y/n]" changeHostname
 case $changeHostname in
-    [Yy][Ee][Ss]|[Yy])
-        read -rp "Enter new hostname: " newHostname
-        sudo scutil --set ComputerName "$newHostname"
-        sudo scutil --set HostName "$newHostname"
-        sudo scutil --set LocalHostName "$newHostname"
-        sudo defaults write /Library/Preferences/SystemConfiguration/com.apple.smb.server NetBIOSName -string "$newHostname"
-    ;;
-    *)
-    ;;
+[Yy][Ee][Ss] | [Yy])
+	read -rp "Enter new hostname: " newHostname
+	sudo scutil --set ComputerName "$newHostname"
+	sudo scutil --set HostName "$newHostname"
+	sudo scutil --set LocalHostName "$newHostname"
+	sudo defaults write /Library/Preferences/SystemConfiguration/com.apple.smb.server NetBIOSName -string "$newHostname"
+	;;
+*) ;;
+
 esac
 
 ###############################################################################
@@ -174,7 +171,7 @@ defaults write NSGlobalDomain KeyRepeat -int 2
 defaults write NSGlobalDomain InitialKeyRepeat -int 25
 
 # Stop iTunes from responding to the keyboard media keys
-launchctl unload -w /System/Library/LaunchAgents/com.apple.rcd.plist 2> /dev/null
+launchctl unload -w /System/Library/LaunchAgents/com.apple.rcd.plist 2>/dev/null
 
 ###############################################################################
 # Screen                                                                      #
@@ -434,11 +431,11 @@ defaults write com.apple.spotlight orderedItems -array \
 	'{"enabled" = 0;"name" = "MENU_WEBSEARCH";}' \
 	'{"enabled" = 0;"name" = "MENU_SPOTLIGHT_SUGGESTIONS";}'
 # Load new settings before rebuilding the index
-killall mds > /dev/null 2>&1
+killall mds >/dev/null 2>&1
 # Make sure indexing is enabled for the main volume
-sudo mdutil -i on / > /dev/null
+sudo mdutil -i on / >/dev/null
 # Rebuild the index from scratch
-sudo mdutil -E / > /dev/null
+sudo mdutil -E / >/dev/null
 
 ###############################################################################
 # Terminal.                                                                   #
@@ -455,7 +452,7 @@ defaults write com.apple.Terminal ShowLineMarks -int 0
 defaults write com.apple.TimeMachine DoNotOfferNewDisksForBackup -bool true
 
 # Disable local Time Machine backups
-hash tmutil &> /dev/null && sudo tmutil disablelocal
+hash tmutil &>/dev/null && sudo tmutil disablelocal
 
 ###############################################################################
 # Activity Monitor                                                            #
@@ -536,7 +533,7 @@ defaults write org.m0k.transmission RandomPort -bool true
 # Apply these defaults if bootstrapping a Mac Server
 
 if [[ "$(hostname)" == "Macbook" ]]; then
-    	# Always show scrollbars
+	# Always show scrollbars
 	defaults write NSGlobalDomain AppleShowScrollBars -string "Always"
 	# Possible values: `WhenScrolling`, `Automatic` and `Always`
 fi
@@ -557,8 +554,7 @@ for app in "Activity Monitor" \
 	"Photos" \
 	"Safari" \
 	"SystemUIServer" \
-	"Terminal" \
-	; do
-	killall "${app}" &> /dev/null
+	"Terminal"; do
+	killall "${app}" &>/dev/null
 done
 echo "Done. Note that some of these changes require a logout/restart to take effect."

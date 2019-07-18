@@ -1,15 +1,15 @@
 # General
 set fish_greeting
 set fish_title
-set -x EDITOR 'vim'
-set -x VISUAL 'vim'
+set -x EDITOR 'vi'
+set -x VISUAL 'code'
 set -x LANG en_US.UTF-8
 set -x LC_ALL en_US.UTF-8
 
 # Prompt
 function fish_title; echo; end
-set SPACEFISH_DIR_TRUNC 0
-set SPACEFISH_GIT_SYMBOL '•'
+#set SPACEFISH_DIR_TRUNC 0
+set SPACEFISH_GIT_SYMBOL '◉'
 
 # Colors, Syntax Highlighting
 set fish_color_command green
@@ -34,13 +34,15 @@ set fish_color_cwd_root red
 
 # Add directory to PATH if it exists
 test -d ~/.bin ; and set PATH ~/.bin $PATH
+test -d ~/.npm/bin ; and set PATH ~/.npm/bin $PATH
+test -d ~/.yarn/bin ; and set PATH ~/.yarn/bin $PATH
 
 # Abbreviations
 if status --is-interactive
   set -g fish_user_abbr --addeviations
+  abbr --add dp 'dotpull'
   abbr --add g 'git'
   abbr --add gp 'git pull'
-  abbr --add dot 'dotpull'
   abbr --add h 'home'
   abbr --add o 'open'
   abbr --add u 'update'
@@ -70,18 +72,15 @@ alias rd="rmdir"
 
 ### git clone && cd to it
 function gc
-  if test (echo "$argv" | awk -F "/" '{print NF-1}') >/dev/null -eq 1
-    git clone --recurse-submodules "https://github.com/$argv" && cd (basename $argv)
+  if test (echo "$argv" | awk -F "/" '{print NF-1}') >/dev/null -eq 0
+    git clone --recurse-submodules "https://github.com/ylor/$argv"
+  else if test (echo "$argv" | awk -F "/" '{print NF-1}') >/dev/null -eq 1
+    git clone --recurse-submodules "https://github.com/$argv"
   else
-    git clone --recurse-submodules "$argv" && cd (basename $argv)
+    git clone --recurse-submodules "$argv" 
   end
+  cd (basename $argv)
 end
-
-### Nix
-alias nixi="nix-env -i"
-alias nixu="nix-env -u"
-alias nixun="nix-env --uninstall"
-alias nixup="nix-env --upgrade"
 
 ### mkdir & cd to it
 function mdcd
@@ -104,12 +103,8 @@ function update-full -d "Update all software"
 end
 
 ## Utility Replacements if available
-if command -v fd > /dev/null 2>&1
+if command -vq fd
   alias find="fd"
-end
-
-if command -v rg > /dev/null 2>&1
-  #alias grep="rg"
 end
  
 if command -v exa > /dev/null 2>&1
