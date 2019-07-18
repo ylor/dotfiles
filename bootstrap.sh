@@ -39,13 +39,11 @@ case $(uname) in
   ;;
 esac
 
-if command -v npm >/dev/null; then
-  npm config set prefix "${HOME}/.npm"
-fi
+command -v stow >/dev/null && source link.sh
 
-if command -v yarn >/dev/null; then
-  yarn config set prefix "${HOME}/.yarn"
-fi
+command -v npm >/dev/null && npm config set prefix "${HOME}/.npm"
+
+command -v yarn >/dev/null && yarn config set prefix "${HOME}/.yarn"
 
 if command -v fish; then
   # If fish is installed check for it in /etc/shells
