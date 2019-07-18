@@ -41,6 +41,7 @@ if ! command -v brew; then
 		mkvtoolnix
 		neovim
 		nnn
+		node
 		rename
 		ripgrep
 		rust
@@ -533,7 +534,7 @@ defaults write org.m0k.transmission RandomPort -bool true
 
 # Apply these defaults if bootstrapping a Mac Server
 
-if [[ "$(hostname)" == "Macbook" ]]; then
+if [[ "$(hostname)" != "Macbook" ]]; then
 	# Always show scrollbars
 	defaults write NSGlobalDomain AppleShowScrollBars -string "Always"
 	# Possible values: `WhenScrolling`, `Automatic` and `Always`
