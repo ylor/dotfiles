@@ -476,10 +476,10 @@ defaults write com.apple.ActivityMonitor SortDirection -int 0
 ###############################################################################
 # Address Book, Dashboard, iCal, TextEdit, and Disk Utility                   #
 ###############################################################################
-
 # Enable the debug menu in Address Book
 defaults write com.apple.addressbook ABShowDebugMenu -bool true
 
+# Textedit.app
 # Use plain text mode for new TextEdit documents
 defaults write com.apple.TextEdit RichText -int 0
 # Open and save files as UTF-8 in TextEdit
@@ -501,7 +501,7 @@ defaults -currentHost write com.apple.ImageCapture disableHotPlug -bool true
 defaults write com.apple.messageshelper.MessageController SOInputLineSettings -dict-add "automaticEmojiSubstitutionEnablediMessage" -bool false
 
 # Disable continuous spell checking
-#defaults write com.apple.messageshelper.MessageController SOInputLineSettings -dict-add "continuousSpellCheckingEnabled" -bool false
+defaults write com.apple.messageshelper.MessageController SOInputLineSettings -dict-add "continuousSpellCheckingEnabled" -bool false
 
 ###############################################################################
 # Transmission.app                                                            #
@@ -510,30 +510,23 @@ defaults write com.apple.messageshelper.MessageController SOInputLineSettings -d
 # Use `~/Documents/Torrents` to store incomplete downloads
 defaults write org.m0k.transmission UseIncompleteDownloadFolder -bool true
 defaults write org.m0k.transmission IncompleteDownloadFolder -string "${HOME}/Documents/Torrents"
-
 # Use `~/Downloads` to store completed downloads
 defaults write org.m0k.transmission DownloadLocationConstant -bool true
-
 # Don’t prompt for confirmation before downloading
 defaults write org.m0k.transmission DownloadAsk -bool false
 defaults write org.m0k.transmission MagnetOpenAsk -bool false
-
 # Don’t prompt for confirmation before removing non-downloading active transfers
 defaults write org.m0k.transmission CheckRemoveDownloading -bool true
-
 # Trash original torrent files
 defaults write org.m0k.transmission DeleteOriginalTorrent -bool true
-
 # Hide the donate message
 defaults write org.m0k.transmission WarningDonate -bool false
 # Hide the legal disclaimer
 defaults write org.m0k.transmission WarningLegal -bool false
-
 # Randomize port on launch
 defaults write org.m0k.transmission RandomPort -bool true
 
-# Apply these defaults if bootstrapping a Mac Server
-
+# Apply these defaults if bootstrapping a Desktop Mac
 if [[ "$(hostname)" != "Macbook" ]]; then
 	# Always show scrollbars
 	defaults write NSGlobalDomain AppleShowScrollBars -string "Always"
