@@ -1,5 +1,7 @@
 ## Mac Specific
 if test (uname) = Darwin
+  function fish_title; echo; end
+
   alias afk="/System/Library/CoreServices/Menu\ Extras/User.menu/Contents/Resources/CGSession -suspend"
   alias dscleanup="sudo find / -name '*.DS_Store' -type f -ls -delete"
   alias etrash="sudo rm -rfv /Volumes/*/.Trashes && sudo rm -rfv ~/.Trash && sudo rm -rfv /private/var/log/asl/*.asl"

@@ -6,9 +6,6 @@ set -x VISUAL 'code'
 set -x LANG en_US.UTF-8
 set -x LC_ALL en_US.UTF-8
 
-# Prompt
-function fish_title; echo; end
-
 # Colors, Syntax Highlighting
 set fish_color_command green
 set fish_color_quote yellow
@@ -57,7 +54,6 @@ alias .....="cd ../../../.."
 alias dotpull="git -C ~/Documents/dotfiles pull; exec fish"
 alias home="cd $HOME"
 alias http="python -m SimpleHTTPServer"
-alias j="z"
 alias md="mkdir -p"
 alias myip="dig +short myip.opendns.com @resolver1.opendns.com"
 alias reboot="sudo shutdown -r now"
@@ -117,9 +113,12 @@ if command -vq nvim
 end
 
 # Autojumper - https://github.com/euank/pazi
-if command -v pazi >/dev/null
+if command -vq pazi
   status --is-interactive; and pazi init fish | source
+  alias j="z"
 end
 
 # Prompt - https://github.com/starship/starship
-eval (starship init fish)
+if command -vq starship 
+  eval (starship init fish)
+end
