@@ -1,4 +1,4 @@
-#!/usr/bin/env bash
+#!/usr/bin/env sh
 
 # # Prestage folders for symlinking
 # folders=".config/fish .npm .yarn"
@@ -39,11 +39,11 @@ case $(uname) in
   ;;
 esac
 
-command -v stow >/dev/null && source link.sh
-
 command -v npm >/dev/null && npm config set prefix "${HOME}/.npm"
 
 command -v yarn >/dev/null && yarn config set prefix "${HOME}/.yarn"
+
+command -v stow >/dev/null && source link.sh
 
 if command -v fish; then
   # If fish is installed check for it in /etc/shells

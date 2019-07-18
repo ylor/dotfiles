@@ -40,6 +40,7 @@ if [ -f /usr/bin/dnf ]; then
 
   sudo dnf update
   sudo dnf upgrade -y
+  sudo dnf groupinstall "Development Tools"
   packages=(
     "chsh"
     "exa"

@@ -1,4 +1,4 @@
-#!/usr/bin/env bash
+#!/usr/bin/env sh
 # inspired by https://mths.be/macos
 
 # Close any open System Preferences panes, to prevent them from overriding
