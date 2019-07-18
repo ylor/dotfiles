@@ -2,7 +2,11 @@
 
 # Check for apt on Debian/Ubuntu
 if [ -f /usr/bin/apt ]; then
+  # Add custom repositories
   sudo add-apt-repository ppa:daniruiz/flat-remix
+  curl -sL https://deb.nodesource.com/setup_12.x | sudo -E bash -
+  echo "deb https://dl.yarnpkg.com/debian/ stable main" | sudo tee /etc/apt/sources.list.d/yarn.list
+
   sudo apt update
   sudo apt upgrade -y
   packages=(
@@ -14,15 +18,15 @@ if [ -f /usr/bin/apt ]; then
     "flat-remix" "flat-remix-gnome" "flat-remix-gtk"
     "git"
     "gnome-tweaks"
+    "nodejs"
     "ripgrep"
-    "rust"
+    "rustc" "cargo"
     "stow"
     "yarn"
   )
   for pkg in $packages; do
     sudo apt install "$pkg" -y
   done
-  curl -sL https://deb.nodesource.com/setup_12.x | bash - && apt-get install -y nodejs
   sudo apt autoremove -y
 fi
 
