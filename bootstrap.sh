@@ -1,22 +1,22 @@
 #!/usr/bin/env bash
 
-# Prestage folders for symlinking
-folders=".config/fish .npm .yarn"
-for folder in $folders; do
-  mkdir -p "$HOME/$folder"
-done
+# # Prestage folders for symlinking
+# folders=".config/fish .npm .yarn"
+# for folder in $folders; do
+#   mkdir -p "$HOME/$folder"
+# done
 
-# Symlinks
-dotfiles="bash_profile bashrc bin hushlogin ssh/config tvnamer zshrc"
-for file in $dotfiles; do
-  ln -sfnv "$PWD/$file" "$HOME/.$file"
-done
+# # Symlinks
+# dotfiles="bash_profile bashrc bin hushlogin ssh/config tvnamer zshrc"
+# for file in $dotfiles; do
+#   ln -sfnv "$PWD/$file" "$HOME/.$file"
+# done
 
-dotfolders="config/fish/conf.d/ config/mpv/"
-for folder in $dotfolders; do
-  target="$HOME/.$folder"
-  ln -sfnv "$PWD/$folder" "$target"
-done
+# dotfolders="config/fish/conf.d/ config/mpv/"
+# for folder in $dotfolders; do
+#   target="$HOME/.$folder"
+#   ln -sfnv "$PWD/$folder" "$target"
+# done
 
 # Ask for the administrator password upfront & keep it active until script has finished
 sudo -v

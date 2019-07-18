@@ -5,7 +5,19 @@ if [ -f /usr/bin/apt ]; then
   sudo add-apt-repository ppa:daniruiz/flat-remix
   sudo apt update
   sudo apt upgrade -y
-  packages="build-essential curl exa fd-find fish flat-remix flat-remix-gnome flat-remix-gtk gnome-tweaks git ripgrep"
+  packages=(
+    "build-essential "
+    "curl"
+    "exa"
+    "fd-find"
+    "fish"
+    "flat-remix"
+    "flat-remix-gnome"
+    "flat-remix-gtk"
+    "git"
+    "gnome-tweaks"
+    "ripgrep"
+  )
   for pkg in $packages; do
     sudo apt install "$pkg" -y
   done
