@@ -33,13 +33,14 @@ set fish_color_cwd_root red
 #set -x LSCOLORS "GxFxCxDxBxegedabagaced"
 
 # Add directory to PATH if it exists
-test -d ~/.bin ; and set PATH ~/.bin $PATH
-test -d ~/.npm/bin ; and set PATH ~/.npm/bin $PATH
-test -d ~/.yarn/bin ; and set PATH ~/.yarn/bin $PATH
+test -d ~/.bin && set PATH ~/.bin $PATH
+test -d ~/.npm/bin && set PATH ~/.npm/bin $PATH
+test -d ~/.yarn/bin && set PATH ~/.yarn/bin $PATH
+test -d ~/.cargo/bin && set PATH ~/.cargo/bin $PATH
 
 # Abbreviations
 if status --is-interactive
-  set -g fish_user_abbr --addeviations
+  set -g fish_user_abbr --abbreviations
   abbr --add dp 'dotpull'
   abbr --add g 'git'
   abbr --add gp 'git pull'
@@ -137,3 +138,5 @@ if test (uname) = Darwin
     cd (osascript -e 'tell application "Finder" to if (count of Finder windows) > 0 then get POSIX path of (target of front Finder window as text)')
   end
 end
+
+eval (starship init fish)

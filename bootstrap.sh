@@ -7,7 +7,7 @@ for folder in $folders; do
 done
 
 # Symlinks
-dot="bash_profile bashrc bin config/fish config/mpv hushlogin ssh/config tvnamer"
+dot="bash_profile bashrc bin config/fish config/mpv hushlogin ssh/config tvnamer zshrc"
 for file in $dot; do
   echo "Symlinking $file"
   ln -sf "$(pwd)/$file" "$HOME/.$file"
@@ -33,6 +33,14 @@ case $(uname) in
   echo "Unknown operating system. Aborting script."
   ;;
 esac
+
+if command -v npm >/dev/null; then
+  npm config set prefix "${HOME}/.npm"
+fi
+
+if command -v yarn >/dev/null; then
+  yarn config set prefix "${HOME}/.yarn"
+fi
 
 if command -v fish; then
   # If fish is installed check for it in /etc/shells

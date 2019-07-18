@@ -43,6 +43,7 @@ if ! command -v brew; then
 		nnn
 		rename
 		ripgrep
+		rust
 		tmux
 		trash
 		tree
@@ -81,8 +82,8 @@ if ! command -v brew; then
 fi
 
 # Make SFMono available to other apps
-if [[ -d "/Applications/Utilities/Terminal.app/Contents/Resources/Fonts/" ]] && [[ ! -f "$HOME/Library/Fonts/SFMono-Regular.otf" ]]; then
-	open "/Applications/Utilities/Terminal.app/Contents/Resources/Fonts/"SFMono*.otf
+if [[ -d "System/Applications/Utilities/Terminal.app/Contents/Resources/Fonts/" || "/Applications/Utilities/Terminal.app/Contents/Resources/Fonts/" ]] && [[ ! -f "$HOME/Library/Fonts/SFMono-Regular.otf" ]]; then
+	cp -r "/Applications/Utilities/Terminal.app/Contents/Resources/Fonts/" "$HOME/Library/Fonts"
 fi
 
 # Prompt for hostname change

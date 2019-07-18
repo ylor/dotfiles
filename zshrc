@@ -21,8 +21,8 @@ export CLICOLOR=1
 export LSCOLORS=GxFxCxDxBxegedabagaced
 
 if command -v starship; then
-	PS1="$(
-		printf "\n${RED}BASH"
-		starship prompt --status=$?
-	)"
+    PROMPT="$(
+        printf "\n${RED}ZSH"
+        starship prompt --status=$?
+    )"
 fi
