@@ -39,6 +39,8 @@ case $(uname) in
   ;;
 esac
 
+command -v cargo >/dev/null && cargo install pazi starship
+
 command -v npm >/dev/null && npm config set prefix "${HOME}/.npm"
 
 command -v yarn >/dev/null && yarn config set prefix "${HOME}/.yarn"
