@@ -1,0 +1,23 @@
+# This file contains fish universal variable definitions.
+# VERSION: 3.0
+SETUVAR __fish_init_3_x:\x1d
+SETUVAR _fish_abbr_dp:dotpull
+SETUVAR _fish_abbr_g:git
+SETUVAR _fish_abbr_gp:git\x20pull
+SETUVAR _fish_abbr_h:home
+SETUVAR _fish_abbr_o:open
+SETUVAR _fish_abbr_u:update
+SETUVAR _fish_abbr_uf:update\x2dfull
+SETUVAR _fish_abbr_v:vim
+SETUVAR fish_color_autosuggestion:555\x1ebrblack
+SETUVAR fish_color_cancel:\x2dr
+SETUVAR fish_color_history_current:\x2d\x2dbold
+SETUVAR fish_color_host:normal
+SETUVAR fish_color_normal:normal
+SETUVAR fish_color_selection:white\x1e\x2d\x2dbold\x1e\x2d\x2dbackground\x3dbrblack
+SETUVAR fish_color_user:brgreen
+SETUVAR fish_color_valid_path:\x2d\x2dunderline
+SETUVAR fish_key_bindings:fish_default_key_bindings
+SETUVAR fish_pager_color_description:B3A06D\x1eyellow
+SETUVAR fish_pager_color_prefix:white\x1e\x2d\x2dbold\x1e\x2d\x2dunderline
+SETUVAR fish_pager_color_progress:brwhite\x1e\x2d\x2dbackground\x3dcyan
