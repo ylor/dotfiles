@@ -68,11 +68,11 @@ alias rd="rmdir"
 ### git clone && cd to it
 function gc
   if test (echo "$argv" | awk -F "/" '{print NF-1}') >/dev/null -eq 0
-    git clone --recurse-submodules "https://github.com/ylor/$argv"
+  git clone --recurse-submodules "https://github.com/ylor/$argv"
   else if test (echo "$argv" | awk -F "/" '{print NF-1}') >/dev/null -eq 1
-    git clone --recurse-submodules "https://github.com/$argv"
+  git clone --recurse-submodules "https://github.com/$argv"
   else
-    git clone --recurse-submodules "$argv" 
+  git clone --recurse-submodules "$argv"
   end
   cd (basename $argv)
 end
@@ -82,31 +82,31 @@ function mdcd
   mkdir $argv && cd $argv
 end
 
-### Easy Updates
-function update
-  echo (set_color white --bold)"// Homebrew"(set_color normal); and brew update; and brew upgrade; brew cleanup; brew cask cleanup
-  echo (set_color white --bold)"// dotfiles"(set_color normal); and git -C ~/Documents/dotfiles/ pull
-end
-
 ## Utility Replacements if available
+
+# Replaces find with fd - https://github.com/sharkdp/fd
 if command -vq fd
   alias find="fd"
 end
- 
+
+# Replaces ls with exa - https://github.com/ogham/exa
 if command -vq exa
   alias la="exa -la"
   alias ll="exa -l"
   alias ls="exa"
 end
 
+# Replaces top with htop - https://github.com/hishamhm/htop
 if command -vq htop
   alias top="htop"
 end
 
+# Replaces grep with ripgrep (lol) - https://github.com/BurntSushi/ripgrep
 if command -vq rg
   alias grep="rg"
 end
 
+# Replaces vi(m) with neovim - https://github.com/neovim/neovim
 if command -vq nvim
   alias vi="nvim"
   alias vim="nvim"
@@ -114,11 +114,12 @@ end
 
 # Autojumper - https://github.com/euank/pazi
 if command -vq pazi
-  status --is-interactive; and pazi init fish | source
+  status --is-interactive
+  and pazi init fish | source
   alias j="z"
 end
 
 # Prompt - https://github.com/starship/starship
-if command -vq starship 
+if command -vq starship
   eval (starship init fish)
 end
