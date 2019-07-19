@@ -38,7 +38,10 @@ if status --is-interactive
   set -g fish_user_abbr --abbreviations
   abbr --add dp 'dotpull'
   abbr --add g 'git'
+  abbr --add ga 'git add -A'
+  abbr --add gcm 'git commit -m'
   abbr --add gp 'git pull'
+  abbr --add gpsh 'git push'
   abbr --add h 'home'
   abbr --add o 'open'
   abbr --add u 'update'
@@ -62,9 +65,7 @@ alias shutdown="sudo shutdown -s now"
 alias rd="rmdir"
 
 # Functions
-
 ## Quality of Life
-
 ### git clone && cd to it
 function gc
   if test (echo "$argv" | awk -F "/" '{print NF-1}') >/dev/null -eq 0
