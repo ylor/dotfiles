@@ -56,7 +56,6 @@ if ! command -v brew; then
 
 	# Brew casks
 	casks=(
-		1password
 		appcleaner
 		hazel
 		hwsensors
@@ -84,7 +83,7 @@ fi
 
 # Make SFMono available to other apps
 if [[ -d "System/Applications/Utilities/Terminal.app/Contents/Resources/Fonts/" || "/Applications/Utilities/Terminal.app/Contents/Resources/Fonts/" ]] && [[ ! -f "$HOME/Library/Fonts/SFMono-Regular.otf" ]]; then
-	cp -r "/Applications/Utilities/Terminal.app/Contents/Resources/Fonts/" "$HOME/Library/Fonts"
+	cp "/Applications/Utilities/Terminal.app/Contents/Resources/Fonts/SFMono*.otf" "$HOME/Library/Fonts"
 fi
 
 # Prompt for hostname change

@@ -33,7 +33,10 @@ fi
 
 command -v npm >/dev/null && npm config set prefix "${HOME}/.npm"
 
-command -v yarn >/dev/null && yarn config set prefix "${HOME}/.yarn"
+if command -v yarn >/dev/null; then
+  yarn config set prefix "${HOME}/.yarn"
+  yarn global add gatsby-cli npm-check-updates
+fi
 
 command -v stow >/dev/null && source link.sh
 
@@ -45,7 +48,7 @@ if command -v fish; then
   if ! grep -q fish "$SHELL"; then
     chsh -s "$(command -v fish)"
   fi
-  # command fish
+  command fish
 else
   echo Fish is not installed
 fi
