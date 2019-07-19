@@ -7,7 +7,7 @@ if [ -f /usr/bin/apt ]; then
   sudo apt install build-essential curl -y
 
   # Add custom repositories
-  ## UI
+  ## Flat Remix
   sudo add-apt-repository ppa:daniruiz/flat-remix -y
   ## VSCode
   curl https://packages.microsoft.com/keys/microsoft.asc | gpg --dearmor >/tmp/microsoft.gpg
@@ -39,32 +39,39 @@ fi
 # Check for dnf on Fedora
 if [ -f /usr/bin/dnf ]; then
 
-  sudo dnf install https://download1.rpmfusion.org/free/fedora/rpmfusion-free-release-$(rpm -E %fedora).noarch.rpm https://download1.rpmfusion.org/nonfree/fedora/rpmfusion-nonfree-release-$(rpm -E %fedora).noarch.rpm
+  # Configure extra repositories
 
+  # RPM Fusion
+  sudo dnf -y install https://download1.rpmfusion.org/free/fedora/rpmfusion-free-release-$(rpm -E %fedora).noarch.rpm https://download1.rpmfusion.org/nonfree/fedora/rpmfusion-nonfree-release-$(rpm -E %fedora).noarch.rpm
+
+  # Flatpak
   sudo flatpak remote-add --if-not-exists flathub https://flathub.org/repo/flathub.flatpakrepo
-  sudo dnf copr enable daniruiz/flat-remix
+
+  # Flat Remix
+  sudo dnf -y copr enable daniruiz/flat-remix
 
   # VSCode -
   sudo rpm --import https://packages.microsoft.com/keys/microsoft.asc
-  sudo sh -c 'echo -e "[code]\nname=Visual Studio Code\nbaseurl=https://packages.microsoft.com/yumrepos/vscode\nenabled=1\ntype=rpm-md\ngpgcheck=1\ngpgkey=https://packages.microsoft.com/keys/microsoft.asc" > /etc/zypp/repos.d/vscode.repo'
+  sudo sh -c 'echo -e "[code]\nname=Visual Studio Code\nbaseurl=https://packages.microsoft.com/yumrepos/vscode\nenabled=1\ngpgcheck=1\ngpgkey=https://packages.microsoft.com/keys/microsoft.asc" > /etc/yum.repos.d/vscode.repo'
+
+  # Yarn
+  curl --silent --location https://dl.yarnpkg.com/rpm/yarn.repo | sudo tee /etc/yum.repos.d/yarn.repo
 
   sudo dnf update
-  sudo dnf upgrade -y
-  sudo dnf groupinstall "Development Tools"
+  sudo dnf -y upgrade
+  sudo dnf -y groupinstall "Development Tools"
   pkgs=(
-    "chsh"
+    "code"
     "exa"
     "fd-find"
-    "fish"
+    "fish util-linux-user"
     "flat-remix flat-remix-gnome flat-remix-gtk"
     "gnome-tweaks"
-    "openssl-devel"
+    "nodejs"
     "ripgrep"
-    "rust cargo"
+    "rust cargo openssl-devel"
     "stow"
     "yarn"
   )
-  sudo dnf install ${pkgs[@]} -y
-
-  sudo curl -sL https://rpm.nodesource.com/setup_12.x | bash -
+  sudo dnf -y install ${pkgs[@]}
 fi
