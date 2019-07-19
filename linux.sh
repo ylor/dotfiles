@@ -8,29 +8,28 @@ if [ -f /usr/bin/apt ]; then
 
   # Add custom repositories
   sudo add-apt-repository ppa:daniruiz/flat-remix -y
-  curl -sL https://deb.nodesource.com/setup_12.x | sudo -E bash -
   echo "deb https://dl.yarnpkg.com/debian/ stable main" | sudo tee /etc/apt/sources.list.d/yarn.list
 
   sudo apt update
+  sudo apt upgrade -y
   packages=(
-    "exa"
-    "fd-find"
-    "fish"
-    "flat-remix" "flat-remix-gnome" "flat-remix-gtk"
-    "git"
-    "gnome-tweaks"
-    "libssl-devel"
-    "nodejs"
-    "pkg-config"
-    "ripgrep"
-    "rustc" "cargo"
-    "stow"
-    "yarn"
+    exa
+    fd-find
+    fish
+    flat-remix flat-remix-gnome flat-remix-gtk
+    git
+    gnome-tweaks
+    libssl-devel
+    nodejs
+    pkg-config
+    ripgrep
+    rustc cargo
+    stow
+    yarn
   )
   for pkg in $packages; do
     sudo apt install "$pkg" -y
   done
-  sudo apt upgrade -y
   sudo apt autoremove -y
 fi
 
@@ -50,17 +49,17 @@ if [ -f /usr/bin/dnf ]; then
   sudo dnf upgrade -y
   sudo dnf groupinstall "Development Tools"
   packages=(
-    "chsh"
-    "exa"
-    "fd-find"
-    "fish"
-    "flat-remix" "flat-remix-gnome" "flat-remix-gtk"
-    "gnome-tweaks"
-    "openssl-devel"
-    "ripgrep"
-    "rust" "cargo"
-    "stow"
-    "yarn"
+    chsh
+    exa
+    fd-find
+    fish
+    flat-remix flat-remix-gnome flat-remix-gtk
+    gnome-tweaks
+    openssl-devel
+    ripgrep
+    rust cargo
+    stow
+    yarn
   )
   for pkg in $packages; do
     sudo dnf install "$pkg" -y
