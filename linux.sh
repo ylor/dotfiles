@@ -28,7 +28,7 @@ if [ -f /usr/bin/apt ]; then
     "gnome-tweaks"
     "nodejs"
     "ripgrep"
-    "rustc cargo libssl-devel pkg-config"
+    "rustc cargo libssl-dev pkg-config"
     "stow"
     "yarn"
   )
