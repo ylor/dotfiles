@@ -46,9 +46,9 @@ if command -v fish; then
     command -v fish | sudo tee -a /etc/shells
   fi
   if ! grep -q fish "$SHELL"; then
-    chsh -s "$(command -v fish)"
+    sudo chsh -s $(command -v fish) $(whoami)
   fi
   command fish
 else
-  echo Fish is not installed
+  echo "Fish is not installed"
 fi
