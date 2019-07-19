@@ -21,7 +21,15 @@ case $(uname) in
   ;;
 esac
 
-command -v cargo >/dev/null && cargo install pazi starship
+if command -v cargo >/dev/null; then
+  if [ ! -f "$HOME/.cargo/bin/pazi" ]; then
+    cargo install pazi
+  fi
+
+  if [ ! -f "$HOME/.cargo/bin/starship" ]; then
+    cargo install starship
+  fi
+fi
 
 command -v npm >/dev/null && npm config set prefix "${HOME}/.npm"
 

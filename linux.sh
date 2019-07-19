@@ -12,7 +12,6 @@ if [ -f /usr/bin/apt ]; then
   echo "deb https://dl.yarnpkg.com/debian/ stable main" | sudo tee /etc/apt/sources.list.d/yarn.list
 
   sudo apt update
-  sudo apt upgrade -y
   packages=(
     "exa"
     "fd-find"
@@ -31,6 +30,7 @@ if [ -f /usr/bin/apt ]; then
   for pkg in $packages; do
     sudo apt install "$pkg" -y
   done
+  sudo apt upgrade -y
   sudo apt autoremove -y
 fi
 
