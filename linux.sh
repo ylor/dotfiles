@@ -4,18 +4,16 @@
 if [ -f /usr/bin/apt ]; then
 
   # Bootstrap Ubuntu so it can actually do literally anything
-  sudo apt install build-essential curl
+  sudo apt install build-essential curl -y
 
   # Add custom repositories
-  sudo add-apt-repository ppa:daniruiz/flat-remix
-  curl -sL https://deb.nodesource.com/setup_12.x | sudo -E bash - && added
+  sudo add-apt-repository ppa:daniruiz/flat-remix -y
+  curl -sL https://deb.nodesource.com/setup_12.x | sudo -E bash -
   echo "deb https://dl.yarnpkg.com/debian/ stable main" | sudo tee /etc/apt/sources.list.d/yarn.list
 
   sudo apt update
   sudo apt upgrade -y
   packages=(
-    "build-essential"
-    "curl"
     "exa"
     "fd-find"
     "fish"
