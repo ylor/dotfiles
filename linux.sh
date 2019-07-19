@@ -2,9 +2,13 @@
 
 # Check for apt on Debian/Ubuntu
 if [ -f /usr/bin/apt ]; then
+
+  # Bootstrap Ubuntu so it can actually do literally anything
+  sudo apt install build-essential curl
+
   # Add custom repositories
   sudo add-apt-repository ppa:daniruiz/flat-remix
-  curl -sL https://deb.nodesource.com/setup_12.x | sudo -E bash -
+  curl -sL https://deb.nodesource.com/setup_12.x | sudo -E bash - && added
   echo "deb https://dl.yarnpkg.com/debian/ stable main" | sudo tee /etc/apt/sources.list.d/yarn.list
 
   sudo apt update
@@ -20,6 +24,7 @@ if [ -f /usr/bin/apt ]; then
     "gnome-tweaks"
     "libssl-devel"
     "nodejs"
+    "pkg-config"
     "ripgrep"
     "rustc" "cargo"
     "stow"
