@@ -4,7 +4,7 @@ SETUVAR __fish_init_2_3_0:\x1d
 SETUVAR __fish_init_3_x:\x1d
 SETUVAR _fish_abbr_dp:dotpull
 SETUVAR _fish_abbr_g:git
-SETUVAR _fish_abbr_ga:git\x20add\x20\x2dA
+SETUVAR _fish_abbr_ga:git\x20add\x20\x2dA\x3b
 SETUVAR _fish_abbr_gcm:git\x20commit\x20\x2dm
 SETUVAR _fish_abbr_gp:git\x20pull
 SETUVAR _fish_abbr_gpsh:git\x20push

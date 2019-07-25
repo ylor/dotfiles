@@ -38,7 +38,7 @@ if status --is-interactive
   set -g fish_user_abbr --abbreviations
   abbr --add dp 'dotpull'
   abbr --add g 'git'
-  abbr --add ga 'git add -A'
+  abbr --add ga 'git add -A;'
   abbr --add gcm 'git commit -m'
   abbr --add gp 'git pull'
   abbr --add gpsh 'git push'
