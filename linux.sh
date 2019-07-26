@@ -6,13 +6,16 @@ if [ -f /usr/bin/apt ]; then
   # Bootstrap Ubuntu so it can actually do literally anything
   sudo apt install -y build-essential curl
 
+  snap install code --classic
+  sudo snap install node --classic --channel=12
+
   # Add custom repositories
   ## Flat Remix
   sudo add-apt-repository -y ppa:daniruiz/flat-remix
   ## VSCode
-  curl https://packages.microsoft.com/keys/microsoft.asc | gpg --dearmor >/tmp/microsoft.gpg
-  sudo install -o root -g root -m 644 microsoft.gpg /etc/apt/trusted.gpg.d/
-  sudo sh -c 'echo "deb [arch=amd64] https://packages.microsoft.com/repos/vscode stable main" > /etc/apt/sources.list.d/vscode.list'
+  #curl https://packages.microsoft.com/keys/microsoft.asc | gpg --dearmor >/tmp/microsoft.gpg
+  #sudo install -o root -g root -m 644 /tmp/microsoft.gpg /etc/apt/trusted.gpg.d/
+  #sudo sh -c 'echo "deb [arch=amd64] https://packages.microsoft.com/repos/vscode stable main" > /etc/apt/sources.list.d/vscode.list'
   ## Yarn
   curl -sS https://dl.yarnpkg.com/debian/pubkey.gpg | sudo apt-key add -
   echo "deb https://dl.yarnpkg.com/debian/ stable main" | sudo tee /etc/apt/sources.list.d/yarn.list
@@ -23,10 +26,9 @@ if [ -f /usr/bin/apt ]; then
     "exa"
     "fd-find"
     "fish"
-    "flat-remix flat-remix-gnome flat-remix-gtk"
+    "flat-remix-gnome flat-remix-gtk"
     "git"
     "gnome-tweaks"
-    "nodejs"
     "ripgrep"
     "rustc cargo libssl-dev pkg-config"
     "stow"
@@ -65,7 +67,7 @@ if [ -f /usr/bin/dnf ]; then
     "exa"
     "fd-find"
     "fish util-linux-user"
-    "flat-remix flat-remix-gnome flat-remix-gtk"
+    "flat-remix-gnome flat-remix-gtk"
     "gnome-tweaks"
     "nodejs"
     "ripgrep"
@@ -75,3 +77,6 @@ if [ -f /usr/bin/dnf ]; then
   )
   sudo dnf -y install ${pkgs[@]}
 fi
+
+git config --global user.email "rolyreyes@me.com"
+git config --global user.name "Roly Reyes"
