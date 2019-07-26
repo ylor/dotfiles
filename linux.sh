@@ -32,6 +32,7 @@ if [ -f /usr/bin/apt ]; then
     "ripgrep"
     "rustc cargo libssl-dev pkg-config"
     "stow"
+    "trash-cli"
     "yarn"
   )
   sudo apt -y install ${pkgs[@]}
@@ -73,6 +74,7 @@ if [ -f /usr/bin/dnf ]; then
     "ripgrep"
     "rust cargo openssl-devel"
     "stow"
+    "trash-cli"
     "yarn"
   )
   sudo dnf -y install ${pkgs[@]}
