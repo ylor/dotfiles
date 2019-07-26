@@ -28,7 +28,7 @@ if [ -f /usr/bin/apt ]; then
     "fish"
     "flat-remix-gnome flat-remix-gtk"
     "git"
-    "gnome-tweaks"
+    "gnome-shell-extensions gnome-tweaks"
     "ripgrep"
     "rustc cargo libssl-dev pkg-config"
     "stow"
