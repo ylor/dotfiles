@@ -27,6 +27,7 @@ if [ -f /usr/bin/apt ]; then
     "fd-find"
     "fish"
     "flat-remix-gnome flat-remix-gtk"
+    "fonts-noto-color-emoji"
     "git"
     "gnome-shell-extensions gnome-tweaks"
     "ripgrep"
