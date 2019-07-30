@@ -75,15 +75,10 @@ if ! command -v brew; then
 	done
 
 	# mas
-	apps=(John Harry Jake Scott Philis)
-	for app in "${apps[@]}"; do
-		echo mas $app
-	done
-fi
-
-# Make SFMono available to other apps
-if [[ -d "System/Applications/Utilities/Terminal.app/Contents/Resources/Fonts/" || "/Applications/Utilities/Terminal.app/Contents/Resources/Fonts/" ]] && [[ ! -f "$HOME/Library/Fonts/SFMono-Regular.otf" ]]; then
-	cp "/Applications/Utilities/Terminal.app/Contents/Resources/Fonts/SFMono*.otf" "$HOME/Library/Fonts"
+	# apps=(John Harry Jake Scott Philis)
+	# for app in "${apps[@]}"; do
+	# 	echo mas $app
+	# done
 fi
 
 # Prompt for hostname change
