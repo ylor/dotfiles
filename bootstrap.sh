@@ -21,16 +21,6 @@ case $(uname) in
   ;;
 esac
 
-if command -v cargo >/dev/null; then
-  if [ ! -f "$HOME/.cargo/bin/cargo-update" ]; then
-    cargo install cargo-update
-  fi
-
-  if [ ! -f "$HOME/.cargo/bin/pazi" ]; then
-    cargo install pazi
-  fi
-fi
-
 command -v npm >/dev/null && npm config set prefix "${HOME}/.npm"
 
 if command -v yarn >/dev/null; then

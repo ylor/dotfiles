@@ -36,6 +36,7 @@ if ! command -v brew; then
 		git
 		htop
 		iperf3
+		lua
 		mas
 		media-info
 		mkvtoolnix

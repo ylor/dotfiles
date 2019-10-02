@@ -28,6 +28,7 @@ set fish_color_cwd_root red
 #set -x LSCOLORS "GxFxCxDxBxegedabagaced"
 
 # Add directory to PATH if it exists
+test -d ~/bin && set PATH ~/bin $PATH
 test -d ~/.bin && set PATH ~/.bin $PATH
 test -d ~/.npm/bin && set PATH ~/.npm/bin $PATH
 test -d ~/.yarn/bin && set PATH ~/.yarn/bin $PATH
@@ -114,10 +115,9 @@ if command -vq nvim
   alias vim="nvim"
 end
 
-# Autojumper - https://github.com/euank/pazi
-if command -vq pazi
-  status --is-interactive
-  and pazi init fish | source
+# Autojumper - https://github.com/skywind3000/z.lua
+if command -vq lua ~/bin/z.lua
+  source (lua ~/bin/z.lua --init fish enhanced | psub)
   alias j="z"
 end
 
