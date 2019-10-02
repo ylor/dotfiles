@@ -45,6 +45,7 @@ if ! command -v brew; then
 		rename
 		ripgrep
 		rust
+		starship
 		tmux
 		trash
 		tree
@@ -56,6 +57,7 @@ if ! command -v brew; then
 
 	# Brew casks
 	casks=(
+		adguard
 		appcleaner
 		hazel
 		hwsensors

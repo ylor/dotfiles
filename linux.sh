@@ -44,21 +44,20 @@ fi
 if [ -f /usr/bin/dnf ]; then
 
   # Configure extra repositories
-
-  # RPM Fusion
+  ## RPM Fusion
   sudo dnf -y install https://download1.rpmfusion.org/free/fedora/rpmfusion-free-release-$(rpm -E %fedora).noarch.rpm https://download1.rpmfusion.org/nonfree/fedora/rpmfusion-nonfree-release-$(rpm -E %fedora).noarch.rpm
 
-  # Flatpak
+  ## Flatpak
   sudo flatpak remote-add --if-not-exists flathub https://flathub.org/repo/flathub.flatpakrepo
 
-  # Flat Remix
+  ## Flat Remix
   sudo dnf -y copr enable daniruiz/flat-remix
 
-  # VSCode -
+  ## VSCode -
   sudo rpm --import https://packages.microsoft.com/keys/microsoft.asc
   sudo sh -c 'echo -e "[code]\nname=Visual Studio Code\nbaseurl=https://packages.microsoft.com/yumrepos/vscode\nenabled=1\ngpgcheck=1\ngpgkey=https://packages.microsoft.com/keys/microsoft.asc" > /etc/yum.repos.d/vscode.repo'
 
-  # Yarn
+  ## Yarn
   curl --silent --location https://dl.yarnpkg.com/rpm/yarn.repo | sudo tee /etc/yum.repos.d/yarn.repo
 
   sudo dnf -y update
@@ -79,6 +78,10 @@ if [ -f /usr/bin/dnf ]; then
     "yarn"
   )
   sudo dnf -y install ${pkgs[@]}
+fi
+
+if command -v cargo >/dev/null && [ ! -f "$HOME/.cargo/bin/starship" ]; then
+    cargo install starship
 fi
 
 git config --global user.email "rolyreyes@me.com"

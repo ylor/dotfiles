@@ -20,9 +20,13 @@ NOCOLOR="$(tput sgr0)"
 export CLICOLOR=1
 export LSCOLORS=GxFxCxDxBxegedabagaced
 
-if command -v starship; then
-    PROMPT="$(
-        printf "\n${RED}ZSH"
-        starship prompt --status=$?
-    )"
-fi
+# if command -v starship; then
+#     PROMPT="$(
+#         printf "\n${RED}ZSH"
+#         starship prompt --status=$?
+#     )"
+# fi
+
+PROMPT="
+${CYAN}${PWD} ${NOCOLOR}via ${RED}BASH
+${GREEN}❯${NOCOLOR} "

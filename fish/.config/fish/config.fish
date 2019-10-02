@@ -123,5 +123,5 @@ end
 
 # Prompt - https://github.com/starship/starship
 if command -vq starship
-  eval (starship init fish)
+  source ("/usr/local/bin/starship" init fish --print-full-init | psub)
 end
