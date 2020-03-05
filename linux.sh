@@ -6,12 +6,7 @@ if [ -f /usr/bin/apt ]; then
   # Bootstrap Ubuntu so it can actually do literally anything
   sudo apt install -y build-essential curl
 
-  snap install code --classic
-  sudo snap install node --classic --channel=12
-
   # Add custom repositories
-  ## Flat Remix
-  sudo add-apt-repository -y ppa:daniruiz/flat-remix
   ## VSCode
   #curl https://packages.microsoft.com/keys/microsoft.asc | gpg --dearmor >/tmp/microsoft.gpg
   #sudo install -o root -g root -m 644 /tmp/microsoft.gpg /etc/apt/trusted.gpg.d/
@@ -26,7 +21,6 @@ if [ -f /usr/bin/apt ]; then
     "exa"
     "fd-find"
     "fish"
-    "flat-remix-gnome flat-remix-gtk"
     "fonts-noto-color-emoji"
     "git"
     "gnome-shell-extensions gnome-tweaks"
@@ -51,9 +45,6 @@ if [ -f /usr/bin/dnf ]; then
   ## Flatpak
   sudo flatpak remote-add --if-not-exists flathub https://flathub.org/repo/flathub.flatpakrepo
 
-  ## Flat Remix
-  sudo dnf -y copr enable daniruiz/flat-remix
-
   ## VSCode -
   sudo rpm --import https://packages.microsoft.com/keys/microsoft.asc
   sudo sh -c 'echo -e "[code]\nname=Visual Studio Code\nbaseurl=https://packages.microsoft.com/yumrepos/vscode\nenabled=1\ngpgcheck=1\ngpgkey=https://packages.microsoft.com/keys/microsoft.asc" > /etc/yum.repos.d/vscode.repo'
@@ -69,7 +60,6 @@ if [ -f /usr/bin/dnf ]; then
     "exa"
     "fd-find"
     "fish util-linux-user"
-    "flat-remix-gnome flat-remix-gtk"
     "gnome-tweaks"
     "lua"
     "nodejs"
@@ -87,4 +77,4 @@ if command -v cargo >/dev/null && [ ! -f "$HOME/.cargo/bin/starship" ]; then
 fi
 
 git config --global user.email "rolyreyes@me.com"
-git config --global user.name "Roly Reyes"
+git config --global user.name "ylor"
