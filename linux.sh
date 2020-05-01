@@ -73,6 +73,7 @@ if [ -f /usr/bin/dnf ]; then
   sudo dnf -y install ${pkgs[@]}
 fi
 
+<<<<<<< HEAD
 # Install Starship prompt
 curl -fsSL https://starship.rs/install.sh | bash
 =======
