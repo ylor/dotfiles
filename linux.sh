@@ -6,12 +6,7 @@ if [ -f /usr/bin/apt ]; then
   # Bootstrap Ubuntu so it can actually do literally anything
   sudo apt install -y build-essential curl
 
-  snap install code --classic
-  sudo snap install node --classic --channel=12
-
   # Add custom repositories
-  ## Flat Remix
-  sudo add-apt-repository -y ppa:daniruiz/flat-remix
   ## VSCode
   #curl https://packages.microsoft.com/keys/microsoft.asc | gpg --dearmor >/tmp/microsoft.gpg
   #sudo install -o root -g root -m 644 /tmp/microsoft.gpg /etc/apt/trusted.gpg.d/
@@ -26,13 +21,11 @@ if [ -f /usr/bin/apt ]; then
     "exa"
     "fd-find"
     "fish"
-    "flat-remix-gnome flat-remix-gtk"
     "fonts-noto-color-emoji"
     "git"
     "gnome-shell-extensions gnome-tweaks"
     "lua"
     "ripgrep"
-    "rustc cargo libssl-dev pkg-config"
     "stow"
     "trash-cli"
     "yarn"
@@ -47,12 +40,6 @@ if [ -f /usr/bin/dnf ]; then
   # Configure extra repositories
   ## RPM Fusion
   sudo dnf -y install https://download1.rpmfusion.org/free/fedora/rpmfusion-free-release-$(rpm -E %fedora).noarch.rpm https://download1.rpmfusion.org/nonfree/fedora/rpmfusion-nonfree-release-$(rpm -E %fedora).noarch.rpm
-
-  ## Flatpak
-  sudo flatpak remote-add --if-not-exists flathub https://flathub.org/repo/flathub.flatpakrepo
-
-  ## Flat Remix
-  sudo dnf -y copr enable daniruiz/flat-remix
 
   ## VSCode -
   sudo rpm --import https://packages.microsoft.com/keys/microsoft.asc
@@ -74,7 +61,6 @@ if [ -f /usr/bin/dnf ]; then
     "lua"
     "nodejs"
     "ripgrep"
-    "rust cargo openssl-devel"
     "stow"
     "trash-cli"
     "yarn"
@@ -82,9 +68,5 @@ if [ -f /usr/bin/dnf ]; then
   sudo dnf -y install ${pkgs[@]}
 fi
 
-if command -v cargo >/dev/null && [ ! -f "$HOME/.cargo/bin/starship" ]; then
-    cargo install starship
-fi
-
-git config --global user.email "rolyreyes@me.com"
-git config --global user.name "Roly Reyes"
+# Install Starship prompt
+curl -fsSL https://starship.rs/install.sh | bash

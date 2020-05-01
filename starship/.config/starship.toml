@@ -1,0 +1,5 @@
+[custom.shell]
+description = "The shell currently running, if it is not Fish"
+style="red"
+command = "echo $0"  # shows output of command
+when = """ test "$0" != "" """

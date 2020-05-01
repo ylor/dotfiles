@@ -1,14 +1,11 @@
 #!/usr/bin/env sh
 
-# Ask for the administrator password upfront & keep it active until script has finished
+# Ask for the administrator password upfront
 sudo -v
-while true; do
-  sudo -n true
-  sleep 60
-  kill -0 "$$" || exit
-done 2>/dev/null &
+# Keep-alive: update existing `sudo` time stamp until `.macos` has finished
+while true; do sudo -n true; sleep 60; kill -0 "$$" || exit; done 2>/dev/null &
 
-# Check for operating system
+# OS Check
 case $(uname) in
 'Darwin')
   source macos.sh
@@ -22,20 +19,15 @@ case $(uname) in
 esac
 
 command -v npm >/dev/null && npm config set prefix "${HOME}/.npm"
-
-if command -v yarn >/dev/null; then
-  yarn config set prefix "${HOME}/.yarn"
-  yarn global add gatsby-cli npm-check-updates
-fi
-
+command -v yarn >/dev/null && yarn config set prefix "${HOME}/.yarn"
 command -v stow >/dev/null && source link.sh
 
 if command -v fish; then
   # If fish is installed check for it in /etc/shells
-  if ! grep -q fish /etc/shells; then
+  if ! grep --quiet fish /etc/shells; then
     command -v fish | sudo tee -a /etc/shells
   fi
-  if ! grep -q fish "$SHELL"; then
+  if ! grep --quiet fish "$SHELL"; then
     sudo chsh -s $(command -v fish) $(whoami)
   fi
   command fish

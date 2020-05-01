@@ -7,3 +7,6 @@
 # Windows
 Thumbs.db
 desktop.ini
+
+# Machine specific
+fish_variables
