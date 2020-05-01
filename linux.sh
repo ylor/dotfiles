@@ -73,14 +73,5 @@ if [ -f /usr/bin/dnf ]; then
   sudo dnf -y install ${pkgs[@]}
 fi
 
-<<<<<<< HEAD
 # Install Starship prompt
 curl -fsSL https://starship.rs/install.sh | bash
-=======
-if command -v cargo >/dev/null && [ ! -f "$HOME/.cargo/bin/starship" ]; then
-    cargo install starship
-fi
-
-git config --global user.email "rolyreyes@me.com"
-git config --global user.name "ylor"
->>>>>>> e8fc7ea41f7eeb0cad9477da89747c94697ae58c
