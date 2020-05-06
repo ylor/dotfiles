@@ -9,7 +9,7 @@ files=$(find "$PWD" \
 -not -path "./*.sh" \
 -not -path "*.DS_Store" | sort)
 
-mkdir -p "$(echo "$folders" | sed "s|$PWD|$HOME|")"
+mkdir -p "$("$folders" | sed "s|$PWD|$HOME|")"
 
 for file in $files; do
     ln -sfnv "$file" "$(echo "$file" | sed "s|$PWD|$HOME|")"
