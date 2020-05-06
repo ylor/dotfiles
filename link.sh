@@ -1,5 +1,11 @@
 #!/usr/bin/env sh
-mkdir -p "$(find "$PWD" -type d -not -path "$PWD" -not -path "*.git*" | sed "s|$PWD|$HOME|")"
+folders=$(find $PWD \
+-type d \
+-not -path "$PWD" \
+-not -path "*.git*" | sed "s|$PWD|$HOME|" | tr '\n' ' ')
+
+echo mkdir -p "$folders"
+
 
 files=$(find "$PWD" \
 -type f \
