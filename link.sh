@@ -17,6 +17,6 @@ files=$(find "$PWD" \
 -not -path "*.DS_Store" | sort)
 # Symlink them
 for source in $files; do
-    target=$(echo "$file" | sed "s|$PWD|$HOME|")
+    target=$(echo "$source" | sed "s|$PWD|$HOME|")
     ln -sfnv "$source" "$target"
 done
