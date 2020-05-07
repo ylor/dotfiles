@@ -1,18 +1,22 @@
 #!/usr/bin/env sh
-# Make all necessary directories so that symlinks below don't fail
+# Find all necesssary folders that symlinks succeed
 folders=$(find $PWD \
 -type d \
 -not -path "$PWD" \
--not -path "*.git*" | sed "s|$PWD|$HOME|")
+-not -path "*.git*" | sort | sed "s|$PWD|$HOME|")
+# Make those necessary directories
 for folder in $folders; do
     mkdir -pv "$folder"
 done
 
+# Find all dotfiles we'd like to symlink
 files=$(find "$PWD" \
 -type f \
 -not -path "*.git*" \
 -not -path "./*.sh" \
 -not -path "*.DS_Store" | sort)
-for file in $files; do
-    ln -sfnv "$file" "$(echo "$file" | sed "s|$PWD|$HOME|")"
+# Symlink them
+for source in $files; do
+    target=$(echo "$file" | sed "s|$PWD|$HOME|")
+    ln -sfnv "$source" "$target"
 done
