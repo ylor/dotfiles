@@ -1,11 +1,12 @@
 #!/usr/bin/env sh
+# Make all necessary directories so that symlinks below don't fail
 folders=$(find $PWD \
 -type d \
 -not -path "$PWD" \
--not -path "*.git*" | sed "s|$PWD|$HOME|" | tr '\n' ' ')
-
-echo mkdir -p "$folders"
-
+-not -path "*.git*" | sed "s|$PWD|$HOME|")
+for folder in $folders; do
+    mkdir -pv "$folder"
+done
 
 files=$(find "$PWD" \
 -type f \
