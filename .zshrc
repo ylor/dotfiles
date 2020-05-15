@@ -9,4 +9,3 @@ export CLICOLOR=1
 if command -v starship > /dev/null; then
     eval "$(starship init zsh)"
 fi
-

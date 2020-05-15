@@ -384,7 +384,7 @@ if os.native.status then
 			return hr ~= nil and ffi.string(buffer) or nil
 		end
 	end
-	function os.native.tickcount() 
+	function os.native.tickcount()
 		if windows then
 			return os.native.GetTickCount()
 		else
@@ -904,8 +904,8 @@ function os.environ(name, default)
 		end
 	elseif type(default) == 'number' then
 		value = tonumber(value)
-		if value == nil then 
-			return default 
+		if value == nil then
+			return default
 		else
 			return value
 		end
@@ -2675,7 +2675,7 @@ if os.lfs.enable ~= nil then
 			end
 			os.path.isdir = function (name)
 				local mode = lfs.attributes(name)
-				if not mode then 
+				if not mode then
 					return false
 				end
 				return (mode.mode == 'directory') and true or false
@@ -2697,5 +2697,3 @@ if not pcall(debug.getlocal, 4, 1) then
 		main()
 	end
 end
-
-

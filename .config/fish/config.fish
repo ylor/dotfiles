@@ -25,10 +25,6 @@ set fish_color_param normal
 #set fish_pager_color_description yellow
 #set fish_pager_color_progress cyan
 
-if not status --is-interactive # Access /usr/local/bin from non-interactive 
-    set PATH $PATH /usr/local/bin
-end
-
 # Add binary folders to PATH
 for bin in ~/bin ~/.bin ~/.npm/bin ~/.yarn/bin ~/.cargo/bin
     test -d $bin && set PATH $bin $PATH
