@@ -34,18 +34,15 @@ case $(uname) in
 
     sudo apt update
     sudo apt -y upgrade
-    sudo apt install -y curl fish git lua ripgrep trash-cli yarn
-    sudo apt -y autoremove
+    sudo apt install -y bat curl fish git ripgrep trash-cli
   fi
 
   # Check for dnf on Fedora
   if [ -f /usr/bin/dnf ]; then
-    pkgs=""
-
     sudo dnf -y update
     sudo dnf -y upgrade
     sudo dnf -y groupinstall "Development Tools"
-    sudo dnf -y install bat fish util-linux-user lua ripgrep trash-cli yarn
+    sudo dnf -y install bat fish ripgrep trash-cli
   fi
 
   # Install Starship prompt
@@ -60,15 +57,23 @@ command -v npm >/dev/null && npm config set prefix "${HOME}/.npm"
 command -v yarn >/dev/null && yarn config set prefix "${HOME}/.yarn"
 . link.sh
 
-if command -v fish; then
-  # If fish is installed check for it in /etc/shells
-  if ! grep --quiet fish /etc/shells; then
-    command -v fish | sudo tee -a /etc/shells
+if command -v fish; then # If fish is found in $PATH
+
+  if ! grep --quiet fish /etc/shells; then   # If fish is in PATH check for it in /etc/shells
+    command -v fish | sudo tee -a /etc/shells # Add if missing
   fi
-  if ! grep --quiet fish "$SHELL"; then
-    sudo chsh -s "$(command -v fish)" "$(whoami)"
+
+  if ! grep --quiet fish "$SHELL"; then # If fish is not the shell, make it so
+
+    if command -v usermod; then # Ubuntu and Fedora have usermod
+      sudo usermod -s "$(command -v fish)" "$(whoami)"
+    else # macOS only has chsh
+      sudo chsh -s "$(command -v fish)" "$(whoami)"
+    fi
+
   fi
-  command fish
+
+  command fish # Finally start fish!
 else
-  echo "Fish is not installed"
+  echo "fish was not found in PATH"
 fi
