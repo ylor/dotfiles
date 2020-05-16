@@ -128,24 +128,27 @@ function ff # function that wraps ffmpeg
 
         switch $argv[1]
             case 'aac'
-                set acodec "-acodec aac_at -aq 7"
+                set aencoder aac_at -aq 7
             case 'ac3'
-                set acodec "-acodec eac3 -ab 640k"
+                set aencoder eac3 -ab 640k
             case 'flac'
-                set acodec "-acodec flac"
+                set aencoder flac
         end
 
         set --erase argv[1]
 
         if test (count $argv) -eq 1
             set -l output (basename $argv .mkv).conv.mkv
-            ffmpeg -i $argv -map 0 -codec copy $acodec $output
+            echo $argv
+            echo $acodec
+            echo $output
+            ffmpeg -i $argv -map 0 -codec copy -acodec $aencoder $output
             #and trash $argv; and mv $output $argv
         else
 
             for input in $argv
                 set -l output (basename $input .mkv).conv.mkv
-                ffmpeg -i $input -map 0 -codec copy $acodec $output
+                ffmpeg -i $input -map 0 -codec copy -acodec $aencoder $output
                 #and trash $input; and mv $output $input
             end
 
