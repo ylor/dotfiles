@@ -80,9 +80,8 @@ if command -vq nvim # Replaces vi(m) with neovim - https://github.com/neovim/neo
     alias vim="nvim"
 end
 
-if command -vq lua ~/bin/z.lua # Autojumper - https://github.com/skywind3000/z.lua
-    source (lua ~/bin/z.lua --init fish enhanced | psub)
-    alias j="z"
+if command -vq zoxide # Autojumper - https://github.com/ajeetdsouza/zoxide
+    zoxide init fish --cmd j | source
 end
 
 # Functions
