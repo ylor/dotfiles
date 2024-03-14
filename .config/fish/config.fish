@@ -5,6 +5,8 @@ set fish_color_command green
 set fish_color_param normal
 
 # Aliases
+alias g="git"
+alias h="cd $HOME"
 alias la="ls -la"
 alias ll="ls -l"
 alias md="mkdir -p"
@@ -12,13 +14,7 @@ alias re="exec fish"
 alias rd="rmdir"
 
 # Abbreviations
-abbr ~ 'cd $HOME'
-abbr g git
-abbr ga 'git add -A;'
-abbr gcm 'git commit -m'
-abbr gp 'git pull'
-abbr gpsh 'git push'
-abbr o open
+abbr --add o open
 
 # Functions
 function gc ### git clone && cd to it
