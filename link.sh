@@ -1,8 +1,13 @@
 #!/bin/sh
+
+# Clean up broken symlinks
+find -L $HOME/.config -type l -exec rm -v {} \;
+
 # Find all necesssary folders that symlinks succeed
 folders=$(find ${PWD} \
     -type d \
     -mindepth 1 \
+    -not -path "*brew" \
     -not -path "*.git*" | sed "s_${PWD}_${HOME}_")
 # Make those necessary directories
 for folder in ${folders}; do
