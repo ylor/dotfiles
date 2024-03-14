@@ -40,16 +40,13 @@ end
 
 ## macOS
 if test (uname) = Darwin
-    set -gx HOMEBREW_NO_ANALYTICS 1
 
     # brew
     if test -d /opt/homebrew
         fish_add_path -pP /opt/homebrew/bin /opt/homebrew/sbin
+        set -gx HOMEBREW_NO_ANALYTICS 1
     end
 
-    # if test -d /usr/local/homebrew
-    #     fish_add_path -pP /usr/local/bin /usr/local/sbin
-    # end
     if command -q brew
         alias b="brew"
         alias bi="brew install"
@@ -57,12 +54,10 @@ if test (uname) = Darwin
         alias bs="brew search"
         alias bu="brew uninstall"
         alias bup="brew update && brew upgrade"
-    else
-        echo Brew is missing
     end
 
     # macOS Aliases
-    alias dscleanup="find / -name '.DS_Store' -delete 2>/dev/null"
+    # alias dscleanup="find $HOME -name '.DS_Store' -delete 2>/dev/null"
     # alias flushdns="sudo dscacheutil -flushcache; sudo killall -HUP mDNSResponder"
     # alias hide="defaults write com.apple.finder AppleShowAllFiles -bool false && killall Finder"
     # alias showhidden="defaults write com.apple.finder AppleShowAllFiles -bool true && killall Finder"
@@ -71,6 +66,7 @@ if test (uname) = Darwin
     function cdf
         cd (osascript -e 'tell application "Finder" to if (count of Finder windows) > 0 then get POSIX path of (target of front Finder window as text)')
     end
+
     function vnc
         open "vnc://$argv"
     end
