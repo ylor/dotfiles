@@ -63,7 +63,7 @@ if test (uname) = Darwin
 
     # macOS Aliases
     alias dscleanup="find / -name '.DS_Store' -delete 2>/dev/null"
-    # alias flushdns="dscacheutil -flushcache && sudo killall -HUP mDNSResponder"
+    # alias flushdns="sudo dscacheutil -flushcache; sudo killall -HUP mDNSResponder"
     # alias hide="defaults write com.apple.finder AppleShowAllFiles -bool false && killall Finder"
     # alias showhidden="defaults write com.apple.finder AppleShowAllFiles -bool true && killall Finder"
 
@@ -91,20 +91,22 @@ if command -q code #Shortcut for vscode
     end
 end
 
-if command -q exa #Replaces ls with exa - https://github.com/ogham/exa
-    alias ls="exa"
+if command -q eza #Replaces ls with eza - https://github.com/eza-community/eza
+    alias ls="eza"
 end
 
-if command -q pnpm #Replaces npm with pnpm - https://pnpm.io/
-    alias npm="pnpm"
-end
+# if command -q pnpm #Replaces npm with pnpm - https://pnpm.io/
+#     alias npm="pnpm"
+# end
 
 if command -q rg #Replaces grep with ripgrep - https://github.com/BurntSushi/ripgrep
     alias grep="rg"
 end
 
 if command -q zoxide #Autojumper - https://github.com/ajeetdsouza/zoxide
-    zoxide init fish --cmd j | source
+    zoxide init fish | source
+    alias j="z"
+    alias ji="zi"
 end
 
 # Hydro Prompt - https://github.com/jorgebucaran/hydro
