@@ -1,0 +1,17 @@
+tap "homebrew/core"
+tap "homebrew/bundle"
+
+brew "bat"
+brew "exa"
+brew "fish"
+brew "rg"
+brew "trash"
+brew "zoxide"
+
+cask "1password"
+cask "arc"
+cask "firefox"
+cask "hiddenbar"
+cask "iina"
+cask "maccy"
+cask "the-unarchiver"

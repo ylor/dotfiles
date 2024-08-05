@@ -1,0 +1,12 @@
+# macOS
+._*
+.DS_Store
+.Spotlight-V100
+.Trashes
+
+# Windows
+desktop.ini
+Thumbs.db
+
+# Machine specific
+Brewfile.lock.json
