@@ -6,9 +6,10 @@ set fish_color_param normal
 
 # Aliases
 alias h="cd $HOME"
+alias liberate="xattr -d com.apple.quarantine"
 alias md="mkdir -p"
-alias re="exec fish"
 alias rd="rmdir"
+alias re="exec fish"
 
 # Abbreviations
 abbr --add o open
