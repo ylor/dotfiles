@@ -12,6 +12,8 @@ if test (uname) = Darwin
     if test -d /opt/homebrew
         fish_add_path /opt/homebrew/bin /opt/homebrew/sbin
         set -gx HOMEBREW_NO_ANALYTICS 1
+        # set -gx HOMEBREW_DEVELOPER 1
+        set -gx HOMEBREW_NO_ENV_HINTS 1
     end
 
     if command -q brew

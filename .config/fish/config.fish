@@ -29,6 +29,16 @@ function gc # git clone && cd to it
     git clone $repo && cd "$(basename "$repo" .git)"
 end
 
+function git-me
+    git config --global user.email 2200609+ylor@users.noreply.github.comm
+    git config --global user.name ylor
+end
+
+function git-papa
+    git config --global user.email rreyes@papa.com
+    git config --global user.name papa-rreyes
+end
+
 function mdcd ### mkdir & cd to it
     mkdir $argv && cd $argv
 end
