@@ -1,10 +1,12 @@
 # Fish
-set fish_greeting #disable greeting
+# set fish_greeting #disable greeting
 ## Syntax highlighting
 set fish_color_command green
 set fish_color_param normal
+set fish_cursor_default block
+# Set the insert mode cursor to a line
+set fish_cursor_insert line# Aliases
 
-# Aliases
 alias h="cd $HOME"
 alias liberate="xattr -d com.apple.quarantine"
 alias md="mkdir -p"
@@ -88,5 +90,13 @@ end
 
 # Source all .fish files found in .config/fish/plugins/
 for plugin in $__fish_config_dir/plugins/**.fish
-    source $plugin
-end
+     source $plugin
+ end
+
+# function spin
+#     set -l symbols "⣾" "⣽" "⣻" "⢿" "⡿" "⣟" "⣯" "⣷"
+#     while sleep 0.1
+#         echo -e -n "\b$symbols[1]"
+#         set symbols $symbols[2..-1] $symbols[1]
+#     end
+# end

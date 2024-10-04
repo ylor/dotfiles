@@ -1,12 +1,11 @@
-function cdf
-    cd (osascript -e 'tell application "Finder" to POSIX path of (target of window 1 as alias)')
-end
-
-function vnc
-    open "vnc://$argv"
-end
-
 if test (uname) = Darwin
+    function cdf
+        cd (osascript -e 'tell application "Finder" to POSIX path of (target of window 1 as alias)')
+    end
+
+    function vnc
+        open "vnc://$argv"
+    end
 
     # brew
     if test -d /opt/homebrew
