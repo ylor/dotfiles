@@ -1,0 +1,10 @@
+command = /opt/homebrew/bin/fish
+font-family = 'SF Mono'
+#theme = catppuccin-macchiato
+macos-option-as-alt = true
+#background = #000000
+cursor-style = block_hollow
+window-padding-x = 4
+font-thicken=true
+keybind = global:grave_accent=toggle_quick_terminal
+font-size = 16
