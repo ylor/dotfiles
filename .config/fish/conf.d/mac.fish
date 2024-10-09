@@ -3,24 +3,13 @@ if test (uname) = Darwin
         cd (osascript -e 'tell application "Finder" to POSIX path of (target of window 1 as alias)')
     end
 
+    function open
+        test (count $argv) -eq 0 && command open . || command open $argv
+        abbr o open
+    end
+
     function vnc
         open "vnc://$argv"
-    end
-
-    # brew
-    if test -d /opt/homebrew
-        fish_add_path /opt/homebrew/bin /opt/homebrew/sbin
-        set -gx HOMEBREW_NO_ANALYTICS 1
-        # set -gx HOMEBREW_DEVELOPER 1
-        set -gx HOMEBREW_NO_ENV_HINTS 1
-    end
-
-    if command -q brew
-        abbr --add b brew
-        alias bi="brew install"
-        alias bs="brew search"
-        alias bu="brew uninstall"
-        alias bup="brew update && brew upgrade"
     end
 
     # macOS Aliases

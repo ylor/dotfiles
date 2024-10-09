@@ -68,6 +68,9 @@ if command -q eza # https://github.com/eza-community/eza - modern ls
     alias la="ls -la"
 end
 
+if command -q brew # https://github.com/Homebrew/brew
+    abbr b brew
+end
 # if command -q fzf # https://github.com/eza-community/fzf - fuzzy finder
 #     if command -q fd
 #         alias cdi="cd (fd $PWD --type d | fzf)"
