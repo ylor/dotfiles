@@ -55,6 +55,18 @@ if command -q bat # https://github.com/sharkdp/bat - modern cat
     alias cat="bat --pager=never"
 end
 
+if command -q brew # https://github.com/Homebrew/brew
+    function brew
+        if [ $argv[1] = "up" ]
+            # command brew update && command brew upgrade
+            echo $argv[1]
+            return
+        end
+        command brew $argv
+    end
+    abbr b brew
+end
+
 if command -q code # https://code.visualstudio.com/ - vscode shorthand
     function c
         # test (count $argv) -eq 0 && code . || code $argv
@@ -68,9 +80,6 @@ if command -q eza # https://github.com/eza-community/eza - modern ls
     alias la="ls -la"
 end
 
-if command -q brew # https://github.com/Homebrew/brew
-    abbr b brew
-end
 # if command -q fzf # https://github.com/eza-community/fzf - fuzzy finder
 #     if command -q fd
 #         alias cdi="cd (fd $PWD --type d | fzf)"
@@ -87,10 +96,6 @@ if command -q rg # https://github.com/BurntSushi/ripgrep - modern grep
     alias grep="rg"
 end
 
-if command -q starship # starship.rs
-    source (/opt/homebrew/bin/starship init fish --print-full-init | psub)
-end
-
 if command -q zed; or command -q zed-preview # http://zed.dev - zed shorthand
     function z
         set --local zed (which zed-preview || which zed)
@@ -104,15 +109,20 @@ if command -q zoxide # https://github.com/ajeetdsouza/zoxide - smarter cd
     # alias cdi="ji"
 end
 
+if command -q starship # starship.rs
+    starship init fish | source
+    # enable_transience
+end
+
 # Source all .fish files found in .config/fish/plugins/
-# for plugin in $__fish_config_dir/plugins/**.fish
-#      source $plugin
-#  end
+for plugin in $__fish_config_dir/plugins/**.fish
+     source $plugin
+ end
 
 # function spin
-#     set -l symbols "⣾" "⣽" "⣻" "⢿" "⡿" "⣟" "⣯" "⣷"
-#     while sleep 0.1
-#         echo -e -n "\b$symbols[1]"
-#         set symbols $symbols[2..-1] $symbols[1]
-#     end
-# end
+#      set -l symbols "⣾" "⣽" "⣻" "⢿" "⡿" "⣟" "⣯" "⣷"
+#      while sleep 0.1
+#          echo -e -n "\b$symbols[1]"
+#          set symbols $symbols[2..-1] $symbols[1]
+#      end
+#  end

@@ -4,7 +4,7 @@ cursor-style = block_hollow
 font-family = 'SF Mono'
 font-size = 16
 font-thicken=true
-keybind = global:grave_accent=toggle_quick_terminal
+#keybind = global:grave_accent=toggle_quick_terminal
 macos-option-as-alt = true
 #theme = catppuccin-macchiato
 window-padding-x = 4
