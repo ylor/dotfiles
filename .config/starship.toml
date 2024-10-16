@@ -1,6 +1,7 @@
 format = """\
 [╭╴](fg:arrow)\
 $os\
+$hostname\
 $username\
 $directory\
 $time\
@@ -46,11 +47,16 @@ format = "[](fg:os)[$symbol ]($style)"
 style = "bg:os fg:text_color"
 disabled=false
 
+[hostname]
+ssh_only = false
+format = "[](fg:os)[$hostname]($style) "
+style = "bg:os fg:text_color"
+disabled = false
+
 [username]
 style_user = 'os'
 style_root = 'os_admin'
-#format = '[]($style)[󰊬 mii](bg:$style fg:text_color)[]($style)'
-format = '[$user](bg:$style fg:text_color)[]($style)'
+format = '[]($style)[󰊬 mii](bg:$style fg:text_color)[]($style)'
 disabled = false
 show_always = true
 
