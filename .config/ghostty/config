@@ -1,7 +1,8 @@
 #background = #000000
 command = /opt/homebrew/bin/fish
 cursor-style = block_hollow
-font-family = 'Berkeley Mono'
+font-family = "Berkeley Mono"
+#font-family = "Symbols Nerd Font Mono"
 font-size = 16
 font-thicken=true
 #keybind = global:grave_accent=toggle_quick_terminal
