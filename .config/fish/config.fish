@@ -75,12 +75,12 @@ if command -q code # https://code.visualstudio.com/ - vscode shorthand
 end
 
 if command -q eza # https://github.com/eza-community/eza - modern ls
-    alias ls="eza"
+    alias ls="eza --hyperlink --icons"
     alias ll="ls -l"
     alias la="ls -la"
 end
 
-# if command -q fzf # https://github.com/eza-community/fzf - fuzzy finder
+# if command -q fzf # https://github.com/junegunn/fzf - fuzzy finder
 #     if command -q fd
 #         alias cdi="cd (fd $PWD --type d | fzf)"
 #     else

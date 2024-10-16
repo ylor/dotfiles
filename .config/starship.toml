@@ -84,7 +84,7 @@ style = "fg:text_color bg:time"
 [cmd_duration]
 format = " [](fg:duration)[ $duration]($style)[](fg:duration)"
 style = "fg:text_light bg:duration"
-min_time = 500
+min_time = 5000
 
 [git_branch]
 format = " [](fg:git)[$symbol$branch](fg:text_light bg:git)[](fg:git)"
