@@ -1,8 +1,8 @@
 format = """\
 [╭╴](fg:arrow)\
+$username\
 $os\
 $hostname\
-$username\
 $directory\
 $time\
 (\
@@ -28,7 +28,8 @@ palette = "adwaita-dark"
 [palettes.adwaita-dark]
 arrow = "white"
 os = "#FFFFFF"
-os_admin = "#FFFFFF"
+user = "blue"
+root = "red"
 directory = "#c061cb"
 time = "#FFDC72"
 git = "#f5c211"
@@ -49,14 +50,14 @@ disabled=false
 
 [hostname]
 ssh_only = false
-format = "[](fg:os)[$hostname]($style) "
+format = "[](fg:os)[$hostname]($style)"
 style = "bg:os fg:text_color"
 disabled = false
 
 [username]
-style_user = 'os'
-style_root = 'os_admin'
-format = '[]($style)[󰊬 mii](bg:$style fg:text_color)[]($style)'
+style_user = 'user'
+style_root = 'root'
+format = '[]($style)[ $user](bg:$style fg:text_color)[]($style) '
 disabled = false
 show_always = true
 
