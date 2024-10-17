@@ -21,9 +21,10 @@ palette = "adwaita-dark"
  
 [palettes.adwaita-dark]
 arrow = "#bac2de"
-os = "#cdd6f4"
+error = "#f38ba8"
 user = "#89b4fa"
 root = "#f38ba8"
+os = "#cdd6f4"
 directory = "#cba6f7"
 time = "#FFDC72"
 git = "#f9e2af"
@@ -32,7 +33,7 @@ duration = "#74c7ec"
 text_color = "#11111b"
 
 [os]
-format = "[](fg:os)[$symbol ]($style)"
+format = "[](fg:os)[$symbol]($style)"
 style = "bg:os fg:text_color"
 disabled=false
 
@@ -45,13 +46,13 @@ disabled = false
 [username]
 style_user = 'user'
 style_root = 'root'
-format = '[]($style)[ $user](bg:$style fg:text_color)[]($style) '
+format = '[]($style)[ $user](bg:$style fg:text_color)[]($style) '
 disabled = false
 show_always = true
 
 [character]
 success_symbol = "[](fg:arrow)"
-error_symbol = "[](fg:red)"
+error_symbol = "[](fg:error)"
 
 [directory]
 format = " [](fg:directory)[  $path]($style)[$read_only]($read_only_style)[](fg:directory)"
@@ -84,19 +85,23 @@ style = "fg:text_color bg:git_status"
 
 [os.symbols]
 Alpine = " "
+AlmaLinux = " "
 Amazon = " "
 Arch = " "
 CentOS = " "
 Debian = " "
-Fedora = " "
+Fedora = " "
 FreeBSD = " "
+Kali = " "
 Linux = " "
-Macos = ""
+Macos = " "
 NixOS = " "
-Pop = " "
+Pop = " "
 Redhat = " "
 RedHatEnterprise = " "
+RockyLinux = " "
 Redox = " "
 Ubuntu = " "
 Unknown = " "
+Void = " "
 Windows = "󰨡 "
