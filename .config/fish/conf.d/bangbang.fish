@@ -2,4 +2,4 @@ function last_history_item # https://fishshell.com/docs/current/relnotes.html#fi
     echo $history[1]
 end
 
-abbr -a !! --position anywhere --function last_history_item
+abbr --add !! --position anywhere --function last_history_item

@@ -1,3 +1,4 @@
+# https://github.com/ghostty-org/ghostty/blob/main/src/config/Config.zig
 #background = #000000
 command = /opt/homebrew/bin/fish
 cursor-style = block_hollow
@@ -7,5 +8,7 @@ font-size = 16
 font-thicken=true
 #keybind = global:grave_accent=toggle_quick_terminal
 macos-option-as-alt = true
-#theme = catppuccin-macchiato
+theme = catppuccin-mocha
 window-padding-x = 4
+#background-opacity = 0.75
+#background-blur-radius = 15

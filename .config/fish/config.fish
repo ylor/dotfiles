@@ -2,21 +2,21 @@
 set fish_greeting #disable greeting
 ## Syntax highlighting
 set fish_color_command green
-set fish_color_param normal
-set fish_cursor_default block
+# set fish_color_param normal
+# set fish_cursor_default block
 # Set the insert mode cursor to a line
 #set fish_cursor_insert line
-# Aliases
 
+# Abbreviations
+abbr --add o open
+abbr --add g git
+
+# Aliases
 alias h="cd $HOME"
 alias liberate="xattr -d com.apple.quarantine"
 alias md="mkdir -p"
 alias rd="rmdir"
 alias re="exec fish"
-
-# Abbreviations
-abbr --add o open
-abbr --add g git
 
 # Functions
 function gc # git clone && cd to it
@@ -115,9 +115,9 @@ if command -q starship # starship.rs
 end
 
 # Source all .fish files found in .config/fish/plugins/
-for plugin in $__fish_config_dir/plugins/**.fish
-     source $plugin
- end
+# for plugin in $__fish_config_dir/plugins/**.fish
+#      source $plugin
+#  end
 
 # function spin
 #      set -l symbols "⣾" "⣽" "⣻" "⢿" "⡿" "⣟" "⣯" "⣷"
