@@ -1,7 +1,7 @@
 # https://github.com/ghostty-org/ghostty/blob/main/src/config/Config.zig
-#background = #000000
+background = #000000
 command = /opt/homebrew/bin/fish
-cursor-style = block_hollow
+#cursor-style = block_hollow
 font-family = "Berkeley Mono"
 #font-family = "Symbols Nerd Font Mono"
 font-size = 16

@@ -15,7 +15,11 @@
     }
   },
   "buffer_font_family": "Zed Plex Mono",
-  "buffer_font_fallbacks": ["Symbols Nerd Font", "Apple Color Emoji","Apple Symbols"],
+  "buffer_font_fallbacks": [
+    "Symbols Nerd Font",
+    "Apple Color Emoji",
+    "Apple Symbols"
+  ],
   "buffer_font_weight": 400,
   "cursor_blink": false,
   "cursor_shape": "bar",
@@ -26,5 +30,6 @@
     "diagnostics": false,
     "metrics": false
   },
-  "ui_font_family": ".SystemUIFont"
+  "ui_font_family": ".SystemUIFont",
+  "vim_mode": true
 }

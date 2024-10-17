@@ -53,6 +53,7 @@ show_always = true
 [character]
 success_symbol = "[](fg:arrow)"
 error_symbol = "[](fg:error)"
+vimcmd_symbol = "[](fg:arrow)"
 
 [directory]
 format = " [](fg:directory)[  $path]($style)[$read_only]($read_only_style)[](fg:directory)"
@@ -60,9 +61,9 @@ truncation_length = 2
 style = "fg:text_color bg:directory"
 read_only_style = "fg:text_color bg:directory"
 before_repo_root_style = "fg:text_color bg:directory"
-truncation_symbol = "…/"
-truncate_to_repo = true
 read_only ="  "
+truncate_to_repo = true
+truncation_symbol = "…/"
 
 [time]
 disabled = true
