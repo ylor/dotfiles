@@ -2,26 +2,16 @@
 set fish_greeting #disable greeting
 ## Syntax highlighting
 set fish_color_command green
-# set fish_color_param normal
+set fish_color_param normal
 
 # Only run this in interactive shells
 if status is-interactive
     # I'm trying to grow a neckbeard
     fish_vi_key_bindings
     # Set the cursor shapes for the different vi modes.
-    # Emulates vim's cursor shape behavior
-    # Set the normal and visual mode cursors to a block
     set fish_cursor_default block
-    # Set the insert mode cursor to a line
     set fish_cursor_insert line
-    # Set the replace mode cursors to an underscore
     set fish_cursor_replace_one underscore
-    set fish_cursor_replace underscore
-    # Set the external cursor to a line. The external cursor appears when a command is started.
-    # The cursor shape takes the value of fish_cursor_default when fish_cursor_external is not specified.
-    set fish_cursor_external line
-    # The following variable can be used to configure cursor shape in
-    # visual mode, but due to fish_cursor_default, is redundant here
     set fish_cursor_visual block
 end
 
@@ -73,18 +63,6 @@ if command -q bat # https://github.com/sharkdp/bat - modern cat
     alias cat="bat --pager=never"
 end
 
-if command -q brew # https://github.com/Homebrew/brew
-    function brew
-        if [ $argv[1] = up ]
-            # command brew update && command brew upgrade
-            echo $argv[1]
-            return
-        end
-        command brew $argv
-    end
-    abbr b brew
-end
-
 if command -q code # https://code.visualstudio.com/ - vscode shorthand
     function c
         # test (count $argv) -eq 0 && code . || code $argv
@@ -127,55 +105,46 @@ if command -q zoxide # https://github.com/ajeetdsouza/zoxide - smarter cd
     # alias cdi="ji"
 end
 
-function fish_prompt
-    set --local last_status $status #must be first
-
-    set --local directory $(basename $PWD)
-    set --local time $(date +"%-I:%M %p")
-    set --local symbol_color $([ $last_status -eq 0 ] && set_color green || set_color red)
-    set --local symbol "➜"
-    # set --local git_branch $(git rev-parse --abbrev-ref HEAD)
-    echo "$directory $symbol_color$symbol $(set_color normal)"
-end
-
-function fish_mode_prompt
-    # function fish_mode_prompt
-    #   switch $fish_bind_mode
-    #     case default
-    #       set_color --bold red
-    #       echo 'N'
-    #     case insert
-    #       set_color --bold green
-    #       echo 'I'
-    #     case replace_one
-    #       set_color --bold green
-    #       echo 'R'
-    #     case visual
-    #       set_color --bold brmagenta
-    #       echo 'V'
-    #     case '*'
-    #       set_color --bold red
-    #       echo '?'
-    #   end
-    #   set_color normal
-    # end
-    #
-    fish_default_mode_prompt
-end
-
-function fish_right_prompt -d "Write out the right prompt"
-    date '+%m/%d/%y'
+for prompt in $__fish_config_dir/prompt/**.fish
+     source $prompt
 end
 
 # if command -q starship # starship.rs
 #     starship init fish | source
-#     # enable_transience
+# end
+
+# function fish_prompt
+# set --local last_status $status
+
+# function detect_os
+# switch $(uname)
+#         case Linux
+#             echo "🐧"
+#         case Darwin
+#                 echo ""
+#         case '*'
+#                 echo "⊙"
+#     end
+# end
+
+# set --local os $(detect_os)
+# set --local directory $(basename $PWD)
+# set --local symbol_color $([ $last_status -eq 0 ] && set_color green || set_color red )
+# set --local symbol "➜"
+
+# echo "$os $directory $symbol_color$symbol $(set_color normal)"
+# end
+
+# function fish_right_prompt
+#     set --local last_status $status
+#     set --local time $(date +"%-I:%M %p")
+#     echo "$time"
 # end
 
 # Source all .fish files found in .config/fish/plugins/
 # for plugin in $__fish_config_dir/plugins/**.fish
 #      source $plugin
-#  end
+# end
 
 # function spin
 #      set -l symbols "⣾" "⣽" "⣻" "⢿" "⡿" "⣟" "⣯" "⣷"

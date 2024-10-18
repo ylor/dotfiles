@@ -1,8 +1,6 @@
-set new_session 0
-
+set fish_session 0
 function fish_title
-    if [ $new_session -eq 0 ] || [ $PWD = $HOME ]
-        set new_session 1
+    if [ $fish_session -eq 0 ] || [ $PWD = $HOME ]
         echo 👻
     else
         set --query SSH_CLIENT || set --query SSH_TTY && set --local ssh "[$(prompt_hostname )]" # check if SSH
@@ -15,4 +13,5 @@ function fish_title
             echo $ssh $command (basename $PWD)
         end
     end
+    set fish_session 1
 end

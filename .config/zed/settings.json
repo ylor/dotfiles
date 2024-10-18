@@ -31,5 +31,6 @@
     "metrics": false
   },
   "ui_font_family": ".SystemUIFont",
-  "vim_mode": true
+  "vim_mode": true,
+  "relative_line_numbers": true
 }
