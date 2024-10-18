@@ -6,3 +6,4 @@ set hydro_color_prompt "green"
 
 set hydro_symbol_prompt	"➜"
 set fish_prompt_pwd_dir_length 0
+# set hydro_fetch	"true"
