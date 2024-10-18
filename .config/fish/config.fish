@@ -2,7 +2,7 @@
 set fish_greeting #disable greeting
 ## Syntax highlighting
 set fish_color_command green
-set fish_color_param normal
+set fish_color_param white
 
 # Only run this in interactive shells
 if status is-interactive
