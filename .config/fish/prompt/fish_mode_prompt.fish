@@ -18,5 +18,5 @@ function fish_mode_prompt
     #     end
     #     echo -e "$vi_mode_color $vi_mode_symbol \x1b[0m "
     # end
-    fish_default_mode_prompt
+    # fish_default_mode_prompt
 end

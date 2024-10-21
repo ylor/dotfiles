@@ -1,4 +1,5 @@
 # Fish
+set TERM alacritty
 set fish_greeting #disable greeting
 ## Syntax highlighting
 set fish_color_command green
