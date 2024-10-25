@@ -32,5 +32,10 @@
   },
   "ui_font_family": ".SystemUIFont",
   "vim_mode": true,
-  "relative_line_numbers": true
+  "relative_line_numbers": true,
+  "terminal": {
+    "shell": {
+      "program": "fish"
+    }
+  }
 }

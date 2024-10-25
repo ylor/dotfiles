@@ -1,5 +1,5 @@
 # Fish
-set TERM alacritty
+set TERM xterm-256color
 set fish_greeting #disable greeting
 ## Syntax highlighting
 set fish_color_command green
@@ -107,7 +107,7 @@ if command -q zoxide # https://github.com/ajeetdsouza/zoxide - smarter cd
 end
 
 for prompt in $__fish_config_dir/prompt/**.fish
-     source $prompt
+    source $prompt
 end
 
 # if command -q starship # starship.rs

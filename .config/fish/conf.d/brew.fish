@@ -1,6 +1,6 @@
 for path in \
-"~/bin" \
-"~/.local/bin" \
+"$HOME/bin" \
+"$HOME/.local/bin" \
 "/opt/homebrew/bin" \
 "/opt/homebrew/opt/mise/bin"
     [ -d $path ] && fish_add_path $path
@@ -13,7 +13,7 @@ if command -q brew # https://github.com/Homebrew/brew
     function brew
         if [ $argv[1] = up ]
             # command brew update && command brew upgrade
-            echo $argv[1]
+            command brew update && brew upgrade
             return
         end
         command brew $argv
