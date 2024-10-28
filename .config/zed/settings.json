@@ -8,6 +8,24 @@
 // from the command palette or from `Zed` application menu.
 {
   // "theme": "Ayu Dark",
+  "ssh_connections": [
+    {
+      "host": "10.0.1.2",
+      "username": "roly",
+      "projects": [
+        {
+          "paths": [
+            "~/Developer"
+          ]
+        },
+        {
+          "paths": [
+            "~/Developer"
+          ]
+        }
+      ]
+    }
+  ],
   "theme": "One Dark",
   "autosave": {
     "after_delay": {
