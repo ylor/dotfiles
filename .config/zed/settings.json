@@ -14,14 +14,10 @@
       "username": "roly",
       "projects": [
         {
-          "paths": [
-            "~/Developer"
-          ]
+          "paths": ["~/Developer"]
         },
         {
-          "paths": [
-            "~/Developer"
-          ]
+          "paths": ["~/Developer"]
         }
       ]
     }
@@ -38,7 +34,7 @@
     "Apple Color Emoji",
     "Apple Symbols"
   ],
-  "buffer_font_weight": 400,
+  "buffer_font_size": 14,
   "cursor_blink": false,
   "cursor_shape": "bar",
   "format_on_save": "on",

@@ -46,7 +46,7 @@ function fopen
 end
 
 function git-me
-    git config --global user.email 2200609+ylor@users.noreply.github.comm
+    git config --global user.email 2200609+ylor@users.noreply.github.com
     git config --global user.name ylor
 end
 
