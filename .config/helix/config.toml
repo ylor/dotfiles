@@ -8,3 +8,10 @@ select = "underline"
 
 [editor.file-picker]
 hidden = false
+
+[editor.soft-wrap]
+enable = true
+
+[editor.auto-save]
+focus-lost = true
+after-delay.enable = true

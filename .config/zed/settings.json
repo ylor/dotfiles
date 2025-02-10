@@ -45,7 +45,7 @@
     "metrics": false
   },
   "ui_font_family": ".SystemUIFont",
-  "vim_mode": true,
+  "vim_mode": false,
   "relative_line_numbers": true,
   "terminal": {
     "shell": {
