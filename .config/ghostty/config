@@ -1,11 +1,11 @@
 # https://ghostty.org/docs/config
 background = #000000
-command = fish
+command = /opt/homebrew/bin/fish
 #cursor-style = block_hollow
 font-family = "Adwaita Mono"
 font-family = "Berkeley Mono"
 font-family = "Symbols Nerd Font Mono"
-font-size = 12
+font-size = 16
 font-thicken=true
 #keybind = global:grave_accent=toggle_quick_terminal
 theme = catppuccin-mocha

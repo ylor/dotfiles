@@ -1,0 +1,21 @@
+" Enabling filetype support provides filetype-specific indenting,
+" syntax highlighting, omni-completion and other useful settings.
+filetype plugin indent on
+syntax on
+
+" various settings
+set autoindent                 " Minimal automatic indenting for any filetype.
+set backspace=indent,eol,start " Intuitive backspace behavior.
+set incsearch                  " Incremental search, hit `<CR>` to stop.
+set ruler                      " Shows the current line number at the bottom-right
+                               " of the screen.
+set wildmenu                   " Great command-line completion, use `<Tab>` to move
+                               " around and `<CR>` to validate.
+
+set autoread
+augroup autosave
+    autocmd!
+    autocmd BufRead * if &filetype == "" | setlocal ft=text | endif
+    autocmd FileType * autocmd TextChanged,InsertLeave <buffer> if &readonly == 0 | silent write | endif
+augroup END
+set mouse=a

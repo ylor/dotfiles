@@ -1,7 +1,7 @@
 #!/bin/sh
 
 # Clean up broken symlinks
-find -L "$HOME/.config" "$HOME/.local" -type l -exec rm -v {} \;
+find -L "$HOME/.config" -type l -exec rm {} \;
 # Find all necesssary folders that symlinks succeed
 folders=$(
     find ${PWD} \
