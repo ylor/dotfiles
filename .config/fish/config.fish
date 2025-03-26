@@ -86,7 +86,7 @@ end
 # end
 
 if command -q ollama # https://github.com/BurntSushi/ripgrep - modern grep
-    alias llm="ollama run deepseek-r1:1.5b"
+    alias llm="ollama run gemma3"
 end
 
 if command -q rg # https://github.com/BurntSushi/ripgrep - modern grep

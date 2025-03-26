@@ -11,6 +11,12 @@ set ruler                      " Shows the current line number at the bottom-rig
                                " of the screen.
 set wildmenu                   " Great command-line completion, use `<Tab>` to move
                                " around and `<CR>` to validate.
+set number                     " Show current line number
+set relativenumber             " Show relative line numbers
+"set textwidth=0
+"set wrapmargin=0
+set wrap
+set linebreak " (optional - breaks by word rather than character)
 
 set autoread
 augroup autosave
@@ -19,3 +25,19 @@ augroup autosave
     autocmd FileType * autocmd TextChanged,InsertLeave <buffer> if &readonly == 0 | silent write | endif
 augroup END
 set mouse=a
+
+
+"Mode Settings
+
+let &t_SI.="\e[5 q" "SI = INSERT mode
+let &t_SR.="\e[4 q" "SR = REPLACE mode
+let &t_EI.="\e[1 q" "EI = NORMAL mode (ELSE)
+
+"Cursor settings:
+
+"  1 -> blinking block
+"  2 -> solid block 
+"  3 -> blinking underscore
+"  4 -> solid underscore
+"  5 -> blinking vertical bar
+"  6 -> solid vertical bar
