@@ -60,6 +60,10 @@ function mdcd ### mkdir & cd to it
 end
 
 ## Plugins
+if test -d '/Applications/1Password.app'
+    set SSH_AUTH_SOCK "$HOME/Library/Group Containers/2BUA8C4S2C.com.1password/t/agent.sock"
+end
+
 if command -q bat # https://github.com/sharkdp/bat - modern cat
     alias cat="bat --pager=never"
 end
