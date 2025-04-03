@@ -2,19 +2,7 @@
 
 # https://macos-defaults.com
 # https://github.com/mathiasbynens/dotfiles/blob/main/.macos
-
-# Prompt to set hostname
-if read -t 10 -p "Do you want to set the device hostname? (y/n): " response && [[ $response == [yY] ]]; then
-    # Prompt for the new hostname
-    read -p "Enter the new hostname: " name
-    # Set the hostname (this will vary depending on the system, for example, on Linux)
-    echo sudo hostnamectl set-hostname "$name"
-    echo "Hostname has been set to $name."
-    # Set computer name (as done via System Preferences → Sharing)
-    #sudo scutil --set ComputerName "0x6D746873"
-    #sudo scutil --set HostName "0x6D746873"
-    #sudo scutil --set LocalHostName "0x6D746873"
-fi
+# https://github.com/darrylabbate/dotfiles
 
 # Activity Monitor
 ## set update period to 1s
@@ -122,5 +110,30 @@ defaults write com.apple.TextEdit "SmartQuotes" -bool "false"
 ## Top left screen corner → Mission Control
 defaults write com.apple.dock wvous-br-corner -int 2
 defaults write com.apple.dock wvous-br-modifier -int 0
+
+# Prompt to set hostname
+if read -t 10 -p "Do you want to set the device hostname? (y/n): " response && [[ $response == [yY] ]]; then
+    # Prompt for the new hostname
+    read -p "Enter the new hostname: " name
+    # Set the hostname (this will vary depending on the system, for example, on Linux)
+    echo sudo hostnamectl set-hostname "$name"
+    echo "Hostname has been set to $name."
+    # Set computer name (as done via System Preferences → Sharing)
+    #sudo scutil --set ComputerName "0x6D746873"
+    #sudo scutil --set HostName "0x6D746873"
+    #sudo scutil --set LocalHostName "0x6D746873"
+fi
+
+# Install Homebrew
+if ! command -v brew &>/dev/null; then
+    echo "Installing Homebrew..."
+    /bin/bash -c "$(curl -fsSL https://raw.githubusercontent.com/Homebrew/install/HEAD/install.sh)"
+    eval "$(/opt/homebrew/bin/brew shellenv)"
+fi
+
+if command -v brew &>/dev/null; then
+    brew install --quiet fish mise zoxide
+    brew install --cask --quiet 1password appcleaner betterdisplay ghostty linearmouse
+fi
 
 killall "Activity Monitor" "Dock" "Finder" "TextEdit"

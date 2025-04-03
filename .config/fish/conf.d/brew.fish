@@ -1,3 +1,5 @@
+# /opt/homebrew/bin/brew shellenv
+
 for path in \
 "$HOME/bin" \
 "$HOME/.local/bin" \
