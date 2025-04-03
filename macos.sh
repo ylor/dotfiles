@@ -3,19 +3,18 @@
 # https://macos-defaults.com
 # https://github.com/mathiasbynens/dotfiles/blob/main/.macos
 
-# Check the user's response
-if read -p -t 10 "Do you want to set the device hostname? (y/n): " response && [[ $response == [yY] ]]; then
+# Prompt to set hostname
+if read -t 10 -p "Do you want to set the device hostname? (y/n): " response && [[ $response == [yY] ]]; then
     # Prompt for the new hostname
-    read -p "Enter the new hostname: " new_hostname
+    read -p "Enter the new hostname: " name
     # Set the hostname (this will vary depending on the system, for example, on Linux)
-    echo sudo hostnamectl set-hostname "$new_hostname"
-    echo "Hostname has been set to $new_hostname."
+    echo sudo hostnamectl set-hostname "$name"
+    echo "Hostname has been set to $name."
+    # Set computer name (as done via System Preferences → Sharing)
+    #sudo scutil --set ComputerName "0x6D746873"
+    #sudo scutil --set HostName "0x6D746873"
+    #sudo scutil --set LocalHostName "0x6D746873"
 fi
-
-# Set computer name (as done via System Preferences → Sharing)
-#sudo scutil --set ComputerName "0x6D746873"
-#sudo scutil --set HostName "0x6D746873"
-#sudo scutil --set LocalHostName "0x6D746873"
 
 # Activity Monitor
 ## set update period to 1s
