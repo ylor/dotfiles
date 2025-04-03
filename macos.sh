@@ -4,7 +4,7 @@
 # https://github.com/mathiasbynens/dotfiles/blob/main/.macos
 
 # Check the user's response
-if read -p "Do you want to set the device hostname? (y/n): " response && [[ $response == [yY] ]]; then
+if read -p -t 10 "Do you want to set the device hostname? (y/n): " response && [[ $response == [yY] ]]; then
     # Prompt for the new hostname
     read -p "Enter the new hostname: " new_hostname
     # Set the hostname (this will vary depending on the system, for example, on Linux)
