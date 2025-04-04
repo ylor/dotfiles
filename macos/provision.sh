@@ -69,7 +69,9 @@ if ! command -v brew &>/dev/null; then
     eval "$(/opt/homebrew/bin/brew shellenv)"
 fi
 
-if command -v brew &>/dev/null; then
-    brew install bat fish gum mise tldr zoxide # fd fzf yazi
-    brew install --cask 1password appcleaner betterdisplay ghostty hyperkey linearmouse maccy #alt-tab utm visual-studio-code helix zed jordanbaird-ice
-fi
+# if read -t 10 -p "Is this a workstation? (y/n): " response && [[ $response == [yY] ]]; then
+    if command -v brew &>/dev/null; then
+        brew install bat fish gum mise tldr zoxide # fd fzf yazi
+        brew install --cask 1password appcleaner betterdisplay ghostty hyperkey linearmouse maccy #alt-tab utm visual-studio-code helix zed jordanbaird-ice
+    fi
+# fi
