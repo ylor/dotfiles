@@ -1,27 +1,13 @@
 #!/usr/bin/env sh
 
-#Ask for the administrator password upfront
-sudo -v
-#Keep-alive: update existing `sudo` time stamp until `.macos` has finished
-while true; do
-  sudo -n true
-  sleep 60
-  kill -0 "$$" || exit
-done 2>/dev/null &
-
 #OS Check
 case $(uname) in
 'Darwin')
-  #Install Xcode command-line tools, if not installed
-  if ! xcode-select -p >/dev/null; then
-    xcode-select --install >/dev/null
-    sudo xcodebuild -license accept >/dev/null
-  fi
-
   #Install Homebrew, if it's not already installed and install packages
-  if ! command -v brew; then
-    /bin/bash -c "$(curl -fsSL https://raw.githubusercontent.com/Homebrew/install/HEAD/install.sh)"
+  if ! command -v brew &>/dev/null; then
+    source macos/provision.sh
   fi
+  source macos/defaults.sh
   ;;
 *)
   echo "Unknown operating system. Aborting script."
