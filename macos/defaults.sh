@@ -19,7 +19,6 @@ defaults write com.apple.dock "autohide-delay" -float "0"
 defaults write com.apple.dock "show-recents" -bool "false"
 ## set minimize animation to scale
 defaults write com.apple.dock "mineffect" -string "scale"
-
 # Enable spring loading for directories
 defaults write NSGlobalDomain com.apple.springing.enabled -bool true
 # Remove the spring loading delay for directories
