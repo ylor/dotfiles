@@ -38,7 +38,7 @@
   "cursor_blink": false,
   "cursor_shape": "bar",
   "format_on_save": "on",
-  "preferred_line_length": 80,
+  "preferred_line_length": 100,
   "soft_wrap": "preferred_line_length",
   "telemetry": {
     "diagnostics": false,
