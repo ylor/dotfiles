@@ -3,18 +3,15 @@
 #OS Check
 case $(uname) in
 'Darwin')
-  #Install Homebrew, if it's not already installed and install packages
-  if ! command -v brew &>/dev/null; then
-    source macos/provision.sh
-  fi
-  source macos/defaults.sh
-  ;;
+	sh macos/provision.sh
+	sh macos/defaults.sh
+	;;
 *)
-  echo "Unknown operating system. Aborting script."
-  ;;
+	echo "Unknown operating system. Aborting..."
+	;;
 esac
 
- #Link dotfiles
+#Link dotfiles
 sh link.sh
 
 # if command -v fish; then #If fish is found in $PATH

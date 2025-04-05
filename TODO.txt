@@ -1,3 +1,2 @@
-- dotfiles
-- macos defaults
-    - add applications folder to dock
+- deployment method
+- arch
