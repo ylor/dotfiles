@@ -13,7 +13,7 @@ find "${PWD}" \
 	-type d \
 	-mindepth 2 \
 	-not -path "*.git*" | while read folder; do
-    	mkdir -pv "$(rehome "${file}")"
+    	mkdir -pv "$(rehome "${folder}")"
     done
 
 # Find all files that will be symlinked
