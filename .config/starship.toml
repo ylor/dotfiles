@@ -1,3 +1,4 @@
+# ln ~/.config/starship.toml
 format = """\
 [╭╴](fg:arrow)\
 $username\
@@ -18,7 +19,6 @@ add_newline = true
 
 palette = "adwaita-dark"
 
- 
 [palettes.adwaita-dark]
 arrow = "#bac2de"
 error = "#f38ba8"
@@ -35,7 +35,7 @@ text_color = "#11111b"
 [os]
 format = "[](fg:os)[$symbol]($style)"
 style = "bg:os fg:text_color"
-disabled=false
+disabled = false
 
 [hostname]
 ssh_only = false
@@ -61,7 +61,7 @@ truncation_length = 2
 style = "fg:text_color bg:directory"
 read_only_style = "fg:text_color bg:directory"
 before_repo_root_style = "fg:text_color bg:directory"
-read_only ="  "
+read_only = "  "
 truncate_to_repo = true
 truncation_symbol = "…/"
 

@@ -7,7 +7,6 @@ folders=$(
     find ${PWD} \
         -type d \
         -mindepth 1 \
-        -not -path "*brew" \
         -not -path "*.git*" | sed "s_${PWD}_${HOME}_"
 )
 # Make those necessary directories
