@@ -1,0 +1,21 @@
+# Hot Corners
+## com.apple.dock wvous-[bl|br|tl|tr]-corner
+
+## Possible values wvous-*-corner:
+###  0: no-op
+###  2: Mission Control
+###  3: Show application windows
+###  4: Desktop
+###  5: Start screen saver
+###  6: Disable screen saver
+###  7: Dashboard
+### 10: Put display to sleep
+### 11: Launchpad
+### 12: Notification Center
+### 13: Lock Screen
+
+## Possible values wvous-*-modifier
+### 0: no modifier
+### 524288: option
+### 1048576: command
+### 1573864: option + command
