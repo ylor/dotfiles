@@ -93,4 +93,4 @@ defaults write com.apple.TextEdit "SmartQuotes" -bool "false"
 defaults write com.apple.dock wvous-br-corner -int 2
 defaults write com.apple.dock wvous-br-modifier -int 0
 
-killall "Activity Monitor" "Dock" "Finder" "TextEdit"
+killall "Finder"

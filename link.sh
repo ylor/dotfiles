@@ -1,20 +1,20 @@
 #!/bin/sh -e
 # dotfile "management"
 
-wd=$(dirname $(realpath "$0"))
+home="$(dirname $(realpath "$0"))/home"
 
 rehome() {
-	echo "$1" | sed "s_${wd}_${HOME}_g"
+	echo "$1" | sed "s_${home}_${HOME}_g"
 }
 
 # find and stage folders for symlinks
-find "$wd" -type d | while read folder; do
-	mkdir -p "$(rehome "${folder}")"
+find "$home" -type d | while read folder; do
+	mkdir -pv "$(rehome "$folder")"
 done
 
 # find and symlink dotfiles
-find "$wd" -type f -mindepth 2 | while read file; do
-	ln -sfn "$file" "$(rehome "${file}")"
+find "$home" -type f | while read file; do
+	ln -sfnv "$file" "$(rehome "$file")"
 done
 
 # delete empty folders
