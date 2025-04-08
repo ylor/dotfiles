@@ -5,11 +5,14 @@ repo="https://github.com/ylor/env"
 dest="$HOME/.local/share/env"
 
 # Prompt the user to press Enter to continue
-echo "zero to env in 60"
-echo "press Enter to proceed... (or ctrl+c to abort)"
-read
+echo "hey" && sleep 1
+echo "hey hi" && sleep 2
+echo "hello!" && sleep 1
+echo
+echo "Press any key to continue (or abort with ctrl+c)..." && sleep 1
+read -s -n 1
 
-echo "cloning..."
+echo "Cloning..."
 rm -rf "$dest" && mkdir -p "$dest"
 # if command -v git >/dev/null; then
 # 	git clone --quiet --recursive "$repo.git" "$dest"
@@ -17,7 +20,7 @@ rm -rf "$dest" && mkdir -p "$dest"
 # 	curl --fail --show-error --location "$repo/archive/master.tar.gz" | tar --extract --strip-components=1 --directory "$dest"
 # fi
 cp -ri . "$HOME/.local/share/env"
-echo "cloned!"
+echo "Cloned!"
 
 echo "initializing..."
 if [ -d "$dest" ]; then
