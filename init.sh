@@ -11,5 +11,7 @@ source lib.sh
 	source "$f"
 done
 
-gum spin --spinner=$(spin) --title="Linking dotfiles..." sh link.sh
+echo "Linking dotfiles..."
+sh link.sh
+success "Linked!"
 command fish
