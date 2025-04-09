@@ -35,16 +35,15 @@ if ! exist git; then
 	if exist xcode-select; then
 		/bin/bash -c "$(curl -fsSL https://raw.githubusercontent.com/Homebrew/install/HEAD/install.sh)"
 		eval "$(/opt/homebrew/bin/brew shellenv)"
-		brew install fish gum
+		brew install gum
 	fi
 
-	exist apt && sudo apt -y fish git
-	exist pacman && sudo pacman -S --noconfirm fish git
+	exist apt && sudo apt -y git
+	exist pacman && sudo pacman -S --noconfirm git
 fi
 
-rm -rf "$dest" && mkdir -p "$dest"
-git clone "https://github.com/ylor/env.git" "$dest"
-# cp -ri . "$dest"
+rm -rf "$dest" && git clone "https://github.com/ylor/env.git" "$dest"
+# rm -rf "$dest" && cp -ri . "$dest"
 
 if [ -d "$dest" ] && clear && sh "$dest/init.sh"; then
 	success "see you, space cowboy"
