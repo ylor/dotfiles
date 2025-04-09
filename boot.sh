@@ -30,20 +30,21 @@ echo "hey listen!" && sleep 1
 echo "it's dangerous to go alone. take this!" && sleep 1
 echo "press any key to continue (or abort with ctrl+c)..." && read -n 1 -r -s
 
-if ! exist brew; then
-    echo 'Installing homebrew...'
-	exist apt && sudo apt install -y git # Debian, Ubuntu
-	exist pacman && sudo pacman -S --noconfirm git # Arch
-	/bin/bash -c "$(curl -fsSL https://raw.githubusercontent.com/Homebrew/install/HEAD/install.sh)" && brew install fish gum
+if ! exist git; then
+	echo 'Installing git...'
+	if exist xcode-select; then
+		/bin/bash -c "$(curl -fsSL https://raw.githubusercontent.com/Homebrew/install/HEAD/install.sh)"
+		eval "$(/opt/homebrew/bin/brew shellenv)"
+		brew install fish gum
+	fi
+
+	exist apt && sudo apt -y fish git
+	exist pacman && sudo pacman -S --noconfirm fish git
 fi
 
-if exist git; then
-	rm -rf "$dest" && mkdir -p "$dest"
-	gum spin --title "cloning..." -- git clone "https://github.com/ylor/env.git" "$dest"
-	# gum spin --title "cloning..." -- cp -ri . "$dest"
-else
-	err "'git' is required to continue"
-fi
+rm -rf "$dest" && mkdir -p "$dest"
+git clone "https://github.com/ylor/env.git" "$dest"
+# cp -ri . "$dest"
 
 if [ -d "$dest" ] && clear && sh "$dest/init.sh"; then
 	success "see you, space cowboy"

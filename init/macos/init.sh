@@ -2,13 +2,19 @@
 set -eu
 
 touch /Applications/Xcode.app # enable spotlight category
-touch "${HOME}/.hushlogin" # shut up terminal
-mkdir -p "${HOME}/Developer" # pretty finder icon
+touch "${HOME}/.hushlogin"    # shut up terminal
+mkdir -p "${HOME}/Developer"  # pretty finder icon
 
 # homebrew
-pkgs="bat eza fish gum mise zoxide"
-gum_pkgs=$(gum choose --header "homebrew packages" --no-limit $pkgs)
-[ -n "$gum_pkgs" ] && brew install "$gum_pkgs"
+if ! exist brew; then
+	/bin/bash -c "$(curl -fsSL https://raw.githubusercontent.com/Homebrew/install/HEAD/install.sh)"
+	eval "$(/opt/homebrew/bin/brew shellenv)"
+fi
+
+brew install bat eza fish gum mise zoxide
+# pkgs="bat eza fish gum mise zoxide"
+# gum_pkgs=$(gum choose --header "homebrew packages" --no-limit $pkgs)
+# [ -n "$gum_pkgs" ] && brew install "$gum_pkgs"
 
 casks="1password alt-tab appcleaner betterdisplay ghostty hyperkey linearmouse maccy zed"
 gum_casks=$(gum choose --header "homebrew casks" --no-limit $casks)
