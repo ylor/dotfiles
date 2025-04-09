@@ -1,15 +1,15 @@
-#!/bin/sh -e
+#!/bin/sh
 set -eu
-cd $(dirname $(realpath "$0"))
+cd "$(dirname "$(realpath "$0")")"
 
 source lib.sh
 
-case $(uname) in
-'Darwin')
-	source init/macos/init.sh
-	source init/macos/defaults.sh
-	;;
-esac
+[ "$(uname)" = "Darwin" ] && ID="macos"
+[ -f "/etc/os-release" ] && source "/etc/os-release"
 
-# sh link.sh
-# exec fish
+for f in init/"$ID"/*.sh; do
+    source "$f"
+done
+
+gum spin --spinner=$(spin) --title="Linking dotfiles..." sh link.sh
+command fish

@@ -5,39 +5,22 @@ exist() {
 	command -v "$1" >/dev/null
 }
 
-log() {
-	if exists gum; then
-		gum log "$@"
-	else
-		echo "$@"
-	fi
-}
-
 success() {
-	if exists gum; then
-		gum log --prefix=SUCCESS --prefix.foreground=#32D74B "$*"
-	else
-		bold='\033[1m'
-		green='\033[32m'
-		reset='\033[0m'
-		#✓
-		echo "${bold}${green}SUCCESS${reset} $*"
-	fi
+	bold='\033[1m'
+	green='\033[32m'
+	reset='\033[0m'
+	echo "${bold}${green}✓ SUCCESS${reset} $*"
 }
 
 err() {
-	if exists gum; then
-		gum log --level=error "$@"
-	else
-		bold='\033[1m'
-		red='\033[31m'
-		reset='\033[0m'
-		#✗
-		echo "${bold}${red}ERROR${reset} $*"
-	fi
+	bold='\033[1m'
+	red='\033[31m'
+	reset='\033[0m'
+	echo "${bold}${red}✗ ERROR${reset} $*"
+	exit 1
 }
 
 spin() {
 	spinners=(line dot minidot jump pulse points meter hamburger)
-	shuf -e "${spinners[*]}" -n 1
+	shuf -e "${spinners[@]}" -n 1
 }

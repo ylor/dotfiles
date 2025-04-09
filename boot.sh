@@ -1,6 +1,5 @@
 #!/bin/sh
 # Usage: sh -c "$(curl -fsSL env.roly.sh)"
-
 set -eu
 
 dest="${HOME}/.local/share/env"
@@ -25,32 +24,28 @@ err() {
 }
 
 clear
-# echo "hey" && sleep 1
-# echo "hello..." && sleep 1
-# echo "hey listen!" && sleep 1
-# echo "it's dangerous to go alone. take this!" && sleep 1
-# echo "press any key to continue (or abort with ctrl+c)..." && read -n 1 -r -s
+echo "hey" && sleep 1
+echo "hello..." && sleep 1
+echo "hey listen!" && sleep 1
+echo "it's dangerous to go alone. take this!" && sleep 1
+echo "press any key to continue (or abort with ctrl+c)..." && read -n 1 -r -s
 
 if ! exist brew; then
     echo 'Installing homebrew...'
 	exist apt && sudo apt install -y git # Debian, Ubuntu
 	exist pacman && sudo pacman -S --noconfirm git # Arch
-	/bin/bash -c "$(curl -fsSL https://raw.githubusercontent.com/Homebrew/install/HEAD/install.sh)" && brew install gum
+	/bin/bash -c "$(curl -fsSL https://raw.githubusercontent.com/Homebrew/install/HEAD/install.sh)" && brew install fish gum
 fi
-
 
 if exist git; then
 	rm -rf "$dest" && mkdir -p "$dest"
 	gum spin --title "cloning..." -- git clone "https://github.com/ylor/env.git" "$dest"
 	# gum spin --title "cloning..." -- cp -ri . "$dest"
-	success "env cloned!"
 else
 	err "'git' is required to continue"
 fi
 
-echo "initializing..."
-# clear
-if [ -d "$dest" ] && sh "$dest/init.sh"; then
+if [ -d "$dest" ] && clear && sh "$dest/init.sh"; then
 	success "see you, space cowboy"
 else
 	err "you're gonna carry that weight"
