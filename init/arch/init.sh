@@ -1,6 +1,8 @@
 #!/bin/sh
 # https://github.com/typecraft-dev/crucible
 
-if exist gsettings; then
+pacman -S --noconfirm fish gum
+
+gum spin --title="guh-nome" && if exist gsettings; then
   gsettings set org.gnome.mutter experimental-features "['scale-monitor-framebuffer']"
-fi
+fi && echo "you got gnomed!"
