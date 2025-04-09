@@ -64,17 +64,13 @@ defaults write NSGlobalDomain NSAutomaticPeriodSubstitutionEnabled -bool false
 ## disable mouse acceleration
 defaults write NSGlobalDomain com.apple.mouse.linear -bool "true"
 
-# Security
-## enable touch id for sudo
-#auth sufficient pam_tid.so
-
 # Trackpad
 ## three finger drag
 defaults write com.apple.AppleMultitouchTrackpad "TrackpadThreeFingerDrag" -bool "true"
 ## enable tap to click
 defaults write com.apple.driver.AppleBluetoothMultitouch.trackpad Clicking -bool true
-defaults -currentHost write NSGlobalDomain com.apple.mouse.tapBehavior -int 1
 defaults write NSGlobalDomain com.apple.mouse.tapBehavior -int 1
+defaults -currentHost write NSGlobalDomain com.apple.mouse.tapBehavior -int 1
 
 # Mission Control
 ## DON'T REARRANGE MY SPACES

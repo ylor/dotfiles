@@ -24,25 +24,23 @@ err() {
 }
 
 clear
-# echo "hey" && sleep 1
-# echo "hello..." && sleep 1
 echo "hey listen!" && sleep 1
 echo "it's dangerous to go alone. take this!" && sleep 1
 echo "press any key to continue (or abort with ctrl+c)..." && read -n 1 -r -s
 
 if ! exist git; then
 	echo 'Installing git...'
+	exist apt && sudo apt -y git                   # Debian/Ubuntu
+	exist pacman && sudo pacman -S --noconfirm git # Arch
+
+	# macOS
 	if exist xcode-select; then
 		/bin/bash -c "$(curl -fsSL https://raw.githubusercontent.com/Homebrew/install/HEAD/install.sh)"
 		eval "$(/opt/homebrew/bin/brew shellenv)"
-		brew install gum
 	fi
-
-	exist apt && sudo apt -y git
-	exist pacman && sudo pacman -S --noconfirm git
 fi
 
-rm -rf "$dest" && mkdir -p "$dest" && git clone "https://github.com/ylor/env.git" "$dest"
+rm -rf "$dest" && git clone "https://github.com/ylor/env.git" "$dest"
 # rm -rf "$dest" && cp -ri . "$dest"
 
 if [ -d "$dest" ] && clear && sh "$dest/init.sh"; then

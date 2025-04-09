@@ -6,10 +6,21 @@ touch "${HOME}/.hushlogin"    # shut up terminal
 mkdir -p "${HOME}/Developer"  # pretty finder icon
 
 # homebrew
-brew install bat eza fish gum mise zoxide; clear
-# pkgs="bat eza fish gum mise zoxide"
+if ! exist brew; then
+	/bin/bash -c "$(curl -fsSL https://raw.githubusercontent.com/Homebrew/install/HEAD/install.sh)"
+	eval "$(/opt/homebrew/bin/brew shellenv)"
+fi
+
+pkgs="bat eza fish gum mise zoxide"
 # gum_pkgs=$(gum choose --header "homebrew packages" --no-limit $pkgs)
 # [ -n "$gum_pkgs" ] && brew install "$gum_pkgs"
+for pkg in $pkgs; do
+	if ! brew list | grep -iq $pkg; then
+		gum spin --title="brewing $pkg" -- brew install $pkg
+	fi
+done
+exit 0
+clear
 
 casks="1password alt-tab appcleaner betterdisplay ghostty hyperkey linearmouse maccy zed"
 gum_casks=$(gum choose --header "homebrew casks" --no-limit $casks)
