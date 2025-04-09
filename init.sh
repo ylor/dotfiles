@@ -1,4 +1,4 @@
-#!/bin/sh
+#!/bin/env sh
 set -eu
 cd "$(dirname "$(realpath "$0")")"
 
