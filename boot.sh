@@ -3,7 +3,9 @@
 
 set -eu
 
-exists() {
+dest="${HOME}/.local/share/env"
+
+exist() {
 	command -v "$1" >/dev/null
 }
 
@@ -11,68 +13,45 @@ success() {
 	bold='\033[1m'
 	green='\033[32m'
 	reset='\033[0m'
-	#✓
-	echo "${bold}${green}SUCCESS${reset} $*"
+	echo "${bold}${green}✓ SUCCESS${reset} $*"
 }
 
 err() {
 	bold='\033[1m'
 	red='\033[31m'
 	reset='\033[0m'
-	#✗
-	echo "${bold}${red}ERROR${reset} $*"
+	echo "${bold}${red}✗ ERROR${reset} $*"
 	exit 1
 }
 
-# Prompt the user to press Enter to continue
-echo "hey" && sleep 1
-echo "hello..." && sleep 2
-echo "hey listen!" && sleep 1
-echo "i'm here to set up your computer" && sleep 1
-echo "press any key to continue (or abort with ctrl+c)..." && read -s -n 1
+clear
+# echo "hey" && sleep 1
+# echo "hello..." && sleep 1
+# echo "hey listen!" && sleep 1
+# echo "it's dangerous to go alone. take this!" && sleep 1
+# echo "press any key to continue (or abort with ctrl+c)..." && read -n 1 -r -s
 
-if ! command -v git >/dev/null; then
-	echo "Installing git..."
-	case $(uname) in
-	'Darwin')
-		# stolen from homebrew
-		xclt_tmp="/tmp/.com.apple.dt.CommandLineTools.installondemand.in-progress"
-		sudo_askpass touch "$xclt_tmp"
-		xclt_pkg=$(softwareupdate -l |
-			grep -B 1 "Command Line Tools" |
-			awk -F"*" '/^ *\*/ {print $2}' |
-			sed -e 's/^ *Label: //' -e 's/^ *//' |
-			sort -V |
-			tail -n1)
-		softwareupdate --install "$xclt_pkg" --verbose
-		rm -f "$xclt_tmp"
-		;;
-	'Linux')
-		command -v pacman >/dev/null && sudo pacman -S --noconfirm git
-		command -v apt >/dev/null && sudo apt install -y git
-		;;
-	*)
-		err "Unknown operating system. Aborting..."
-		;;
-	esac
+if ! exist brew; then
+    echo 'Installing homebrew...'
+	exist apt && sudo apt install -y git # Debian, Ubuntu
+	exist pacman && sudo pacman -S --noconfirm git # Arch
+	/bin/bash -c "$(curl -fsSL https://raw.githubusercontent.com/Homebrew/install/HEAD/install.sh)" && brew install gum
 fi
 
-if command -v git >/dev/null; then
-	echo "Cloning..."
-	dest="${HOME}/.local/share/env"
 
+if exist git; then
 	rm -rf "$dest" && mkdir -p "$dest"
-	# git clone --quiet --recursive "https://github.com/ylor/env.git" "$dest"
-	cp -ri . "$dest"
-	echo "Cloned!"
+	gum spin --title "cloning..." -- git clone "https://github.com/ylor/env.git" "$dest"
+	# gum spin --title "cloning..." -- cp -ri . "$dest"
+	success "env cloned!"
 else
-	err "'git' is required to continue" # and also should definitely, definitely be here by this point
+	err "'git' is required to continue"
 fi
 
 echo "initializing..."
-if [ -d "$dest" ]; then
-	sh "$dest/init.sh"
-	success "they said we'd never do it"
+# clear
+if [ -d "$dest" ] && sh "$dest/init.sh"; then
+	success "see you, space cowboy"
 else
-	err 'uh oh'
+	err "you're gonna carry that weight"
 fi

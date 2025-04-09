@@ -5,7 +5,7 @@ touch "$HOME"/.hushlogin
 touch /Applications/Xcode.app
 
 # homebrew
-if ! exists brew; then
+if ! exist brew; then
 	echo "Installing Homebrew..."
 	/bin/bash -c "$(curl -fsSL https://raw.githubusercontent.com/Homebrew/install/HEAD/install.sh)"
 	# echo 'eval "$(/opt/homebrew/bin/brew shellenv)"' > /Users/roly/.zprofile
@@ -45,6 +45,6 @@ if [ ! -f /etc/pam.d/sudo_local ] && bioutil --read | grep -q 1 && gum confirm "
 fi
 
 # firewall
-if ! defaults read /Library/Preferences/com.apple.alf globalstate | grep 1 && gum confirm "Enable Firewall?"; then
-    sudo defaults write /Library/Preferences/com.apple.alf globalstate -int 1
+if ! defaults read /Library/Preferences/com.apple.alf globalstate | grep -q 1 && gum confirm "Enable Firewall?"; then
+	sudo defaults write /Library/Preferences/com.apple.alf globalstate -int 1
 fi
