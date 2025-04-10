@@ -30,7 +30,7 @@ cd "$(dirname "$(realpath "$0")")"
 [ "$(uname)" = "Darwin" ] && ID="macos"
 [ -f "/etc/os-release" ] && source "/etc/os-release"
 [ -z $ID ] && err "OS not detected. Aborting..."
-[ -d init/"$ID" ] && for f in init/"$ID"/*.sh; do
+[ -d os/"$ID" ] && for f in os/"$ID"/*.sh; do
 	. "$f"
 done
 
