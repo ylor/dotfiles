@@ -24,7 +24,7 @@ err() {
 }
 
 clear
-echo "hey listen!" && sleep 1
+echo "hey listen." && sleep 1
 echo "it's dangerous to go alone..." && sleep 1
 echo "take this!" && sleep 1
 echo "press any key to continue (or abort with ctrl+c)..." && read -n 1 -r -s
