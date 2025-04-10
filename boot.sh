@@ -25,12 +25,13 @@ err() {
 
 clear
 echo "hey listen!" && sleep 1
-echo "it's dangerous to go alone. take this!" && sleep 1
+echo "it's dangerous to go alone..." && sleep 1
+echo "take this!" && sleep 1
 echo "press any key to continue (or abort with ctrl+c)..." && read -n 1 -r -s
 
 if ! exist git; then
 	echo 'Installing git...'
-	exist apt && sudo apt -y git                   # Debian/Ubuntu
+	exist apt && sudo apt -y git                   # Debian / Ubuntu
 	exist pacman && sudo pacman -S --noconfirm git # Arch
 
 	# macOS
@@ -43,7 +44,7 @@ fi
 rm -rf "$dest" && git clone "https://github.com/ylor/env.git" "$dest"
 # rm -rf "$dest" && cp -ri . "$dest"
 
-if [ -d "$dest" ] && clear && sh "$dest/init.sh"; then
+if [ -d "$dest" ] && sh "$dest/init.sh"; then
 	success "see you, space cowboy"
 else
 	err "you're gonna carry that weight"

@@ -1,8 +1,5 @@
-#!/bin/env sh
+#!/bin/sh
 set -eu
-cd "$(dirname "$(realpath "$0")")"
-
-# . lib.sh
 
 exist() {
 	command -v "$1" >/dev/null
@@ -28,9 +25,11 @@ spin() {
 	shuf -e "${spinners[@]}" -n 1
 }
 
+cd "$(dirname "$(realpath "$0")")"
 
 [ "$(uname)" = "Darwin" ] && ID="macos"
 [ -f "/etc/os-release" ] && source "/etc/os-release"
+[ -z $ID ] && err "OS not detected. Aborting..."
 [ -d init/"$ID" ] && for f in init/"$ID"/*.sh; do
 	. "$f"
 done

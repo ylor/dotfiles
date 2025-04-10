@@ -14,11 +14,11 @@ fi
 pkgs="bat eza fish gum mise zoxide"
 gum_pkgs=$(gum choose --header "homebrew packages" --no-limit $pkgs --selected=*)
 [ -n "$gum_pkgs" ] && # brew install "$gum_pkgs"
-for pkg in $gum_pkgs; do
-	if ! brew list | grep -iq $pkg; then
-		gum spin --title="brewing $pkg" -- brew install $pkg
-	fi
-done
+	for pkg in $gum_pkgs; do
+		if ! brew list | grep -iq $pkg; then
+			gum spin --title="brewing $pkg" -- brew install $pkg
+		fi
+	done
 exit 0
 clear
 
