@@ -23,11 +23,19 @@ err() {
 	exit 1
 }
 
+type() {
+	echo $1 | while IFS="" read -r -n1 char; do
+		printf "%s" "$char"
+		sleep 0.01
+	done
+	sleep 0.5
+}
+
 clear
-echo "hey listen." && sleep 1
-echo "it's dangerous to go alone..." && sleep 1
-echo "take this!" && sleep 1
-echo "press any key to continue (or abort with ctrl+c)..." && read -n 1 -r -s
+type "hey..." && echo
+type "hey listen!" && echo
+type "it's dangerous to go alone." && printf " " && type "take this!" && echo
+type "press any key to continue (or abort with ctrl+c)..." && read -n 1 -r -s
 
 if ! exist git; then
 	echo 'Installing git...'

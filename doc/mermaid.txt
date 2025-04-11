@@ -1,0 +1,3 @@
+graph TD
+boot.sh --> init.sh
+init.sh --> os/mac/*.sh & os/linux/*.sh --> link.sh
