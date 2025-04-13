@@ -11,7 +11,8 @@ if ! exist brew; then
 	eval "$(/opt/homebrew/bin/brew shellenv)"
 fi
 
-pkgs="bat eza fish gum mise zoxide"
+brew install gum
+pkgs="bat eza fish mise zoxide"
 gum_pkgs=$(gum choose --header "homebrew packages" --no-limit $pkgs --selected=*)
 [ -n "$gum_pkgs" ] && # brew install "$gum_pkgs"
 	for pkg in $gum_pkgs; do
