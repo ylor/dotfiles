@@ -31,11 +31,14 @@ cd "$(dirname "$(realpath "$0")")"
 [ -f "/etc/os-release" ] && source "/etc/os-release"
 [ -z $ID ] && err "OS not detected. Aborting..."
 [ -d os/"$ID" ] && for f in os/"$ID"/*.sh; do
-    echo $f
+	echo $f
 	. "$f"
 done
 
-echo 1
-gum spin --title="Linking dotfiles..." sh link.sh
-echo 2
+if exist gum; then
+	gum spin --title="Linking dotfiles..." sh link.sh
+else
+	sh link.sh
+fi
+
 command fish

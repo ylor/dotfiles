@@ -25,6 +25,7 @@ gum_casks=$(gum choose --header "homebrew casks" --no-limit $casks)
 done
 
 # dock
+brew install --quiet dockutil
 if exist dockutil && defaults read com.apple.Dock | grep -q "com.apple.launchpad.launcher"; then
 	dockutil --remove all --add "/Applications" --add "${HOME}/Downloads" >/dev/null
 	log "dock initialized!"
