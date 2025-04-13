@@ -28,7 +28,6 @@ done
 brew install --quiet dockutil
 if exist dockutil && defaults read com.apple.Dock | grep -q "com.apple.launchpad.launcher"; then
 	dockutil --remove all --add "/Applications" --add "${HOME}/Downloads" >/dev/null
-	log "dock initialized!"
 fi
 
 # hostname
