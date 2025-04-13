@@ -20,8 +20,6 @@ gum_pkgs=$(gum choose --header "homebrew packages" --no-limit $pkgs --selected=*
 			gum spin --title="brewing $pkg" -- brew install $pkg
 		fi
 	done
-exit 0
-clear
 
 casks="1password alt-tab appcleaner betterdisplay ghostty hyperkey linearmouse maccy zed"
 gum_casks=$(gum choose --header "homebrew casks" --no-limit $casks)
