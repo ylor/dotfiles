@@ -2,6 +2,10 @@
 # https://macos-defaults.com
 # https://github.com/mathiasbynens/dotfiles/blob/main/.macos
 
+touch /Applications/Xcode.app # enable spotlight category
+touch "${HOME}/.hushlogin"    # shut up terminal
+mkdir -p "${HOME}/Developer"  # pretty finder icon
+
 # Activity Monitor
 ## set update period to 1s
 defaults write com.apple.ActivityMonitor "UpdatePeriod" -int "1"

@@ -1,10 +1,6 @@
 #!/bin/sh
 set -eu
 
-touch /Applications/Xcode.app # enable spotlight category
-touch "${HOME}/.hushlogin"    # shut up terminal
-mkdir -p "${HOME}/Developer"  # pretty finder icon
-
 # homebrew
 if ! exist /opt/homebrew/bin/brew; then
 	/bin/bash -c "$(curl -fsSL https://raw.githubusercontent.com/Homebrew/install/HEAD/install.sh)"
