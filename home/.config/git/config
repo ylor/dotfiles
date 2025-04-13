@@ -51,3 +51,6 @@
         # conflictstyle = zdiff3
 [pull]
         # rebase = true
+[user]
+	email = 2200609+ylor@users.noreply.github.com
+	name = ylor

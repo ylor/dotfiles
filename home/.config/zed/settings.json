@@ -8,12 +8,16 @@
 // from the command palette or from `Zed` application menu.
 {
   "buffer_font_family": "Zed Plex Mono",
-  "buffer_font_fallbacks": ["Symbols Nerd Font", "Apple Color Emoji", "Apple Symbols"],
+  "buffer_font_fallbacks": [
+    "Symbols Nerd Font",
+    "Apple Color Emoji",
+    "Apple Symbols"
+  ],
   "format_on_save": "on",
   "preferred_line_length": 80,
   // "relative_line_numbers": true,
   "soft_wrap": "preferred_line_length",
-  "theme": "Catppuccin Mocha",
+  "theme": "Catppuccin Mocha (Blur)",
   "ui_font_family": ".SystemUIFont",
   //  "vim_mode": true,
   "autosave": {
@@ -60,7 +64,7 @@
     "tab.inactive_background": "#00000000",
     "tab_bar.background": "#00000000",
     "terminal.background": "#00000000",
-    // "title_bar.background": "#000000d7",
+    "title_bar.background": "#000000d7",
     // "title_bar.inactive_background": "#181926d9",
     "toolbar.background": "#00000000"
   }
