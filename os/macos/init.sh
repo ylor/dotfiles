@@ -6,11 +6,11 @@ touch "${HOME}/.hushlogin"    # shut up terminal
 mkdir -p "${HOME}/Developer"  # pretty finder icon
 
 # homebrew
-if ! exist brew; then
+if ! exist /opt/homebrew/bin/brew; then
 	/bin/bash -c "$(curl -fsSL https://raw.githubusercontent.com/Homebrew/install/HEAD/install.sh)"
-	eval "$(/opt/homebrew/bin/brew shellenv)"
 fi
 
+eval "$(/opt/homebrew/bin/brew shellenv)"
 brew install gum
 pkgs="bat eza fish mise zoxide"
 gum_pkgs=$(gum choose --header "homebrew packages" --no-limit $pkgs --selected=*)
