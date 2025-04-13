@@ -26,6 +26,7 @@ gum_casks=$(gum choose --header "homebrew casks" --no-limit $casks)
 	if ! brew list --cask | grep -iq $cask; then
 		gum spin --title="brewing $cask" -- brew install $cask
 	fi
+done
 
 # dock
 if exist dockutil && defaults read com.apple.Dock | grep -q "com.apple.launchpad.launcher"; then
