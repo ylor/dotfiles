@@ -44,3 +44,22 @@ function git-papa
     git config --global user.email rreyes@papa.com
     git config --global user.name papa-rreyes
 end
+
+function convert_git_https_to_ssh
+    # Get the current remote URL of the origin
+    set current_url (git remote get-url origin)
+
+    # Check if the URL starts with https
+    if string match -r "^https://" $current_url
+        # Convert the https URL to ssh format
+        set ssh_url (string replace "https://" "git@" $current_url)
+        set ssh_url (string replace "/" ":" $ssh_url)
+
+        # Update the remote URL to the new SSH format
+        git remote set-url origin $ssh_url
+
+        echo "Converted remote URL from HTTPS to SSH: $ssh_url"
+    else
+        echo "The current remote URL is not using HTTPS."
+    end
+end
