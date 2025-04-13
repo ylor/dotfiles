@@ -52,7 +52,7 @@ fi
 
 # filevault
 if fdesetup status | grep -q "Off." && gum confirm "Enable FileVault?"; then
-	sudo fdesetup enable -user "$USER" && $logger set
+	sudo fdesetup enable -user "$USER"
 fi
 
 # firewall
