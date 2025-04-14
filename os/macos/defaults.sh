@@ -4,7 +4,6 @@
 
 mkdir -p /Applications/Xcode.app # enable spotlight category
 mkdir -p "${HOME}/Developer"  # pretty finder icon
-touch "${HOME}/Developer/mise.toml" 
 touch "${HOME}/.hushlogin"    # shut up terminal
 
 # Activity Monitor
