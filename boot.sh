@@ -51,10 +51,11 @@ if ! exist git; then
 fi
 
 dest="${HOME}/.local/share/env"
-rm -rf "$dest" && git clone "https://github.com/ylor/env.git" "$dest"
+rm -rf "$dest" 
+git clone "https://github.com/ylor/env.git" "$dest"
 # rm -rf "$dest" && cp -ri . "$dest"
 
-if [ -d "$dest" ] && sh "$dest/init.sh"; then
+if [ -d "$dest" ] && cd "$dest" && sh "$dest/init.sh"; then
 	success "see you, space cowboy"
 else
 	err "you're gonna carry that weight"
