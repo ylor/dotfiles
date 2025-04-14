@@ -1,5 +1,6 @@
-#!/bin/sh -e
+#!/bin/sh
 # dotfile "management"
+set -eu
 
 home="$(dirname $(realpath "$0"))/home"
 
