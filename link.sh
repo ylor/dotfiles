@@ -18,7 +18,7 @@ find "$home" -type f | while read file; do
 done
 
 # delete empty folders
-find "$HOME" -name "Library" -prune -or -type d -empty -delete 2>/dev/null || true
+find "$HOME" -name "Library" -prune -or -mindepth 1 -type d -empty -delete 2>/dev/null || true
 # rm broken symlinks
 find -L "$HOME" -path "$HOME"/Library -prune -or -type l -exec rm {} \+ 2>/dev/null || true
 # find -L "$HOME/.config" "$HOME/.local" -type l -exec rm {} \+
