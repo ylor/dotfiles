@@ -1,6 +1,5 @@
 # https://ghostty.org/docs/config
 
-# command = fish
 font-family = "Adwaita Mono"
 font-family = "Berkeley Mono"
 font-family = "Symbols Nerd Font Mono"
@@ -14,7 +13,6 @@ background-blur-radius = 80
 background-opacity = 0.85
 
 # experimental
-copy-on-select = clipboard
 keybind = super+r=reload_config
 macos-titlebar-style = tabs
 window-decoration = true
@@ -22,4 +20,4 @@ window-padding-balance = true
 window-padding-x = 8
 window-padding-y = 4
 window-save-state = always
-
+window-subtitle = working-directory

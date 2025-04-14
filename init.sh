@@ -31,7 +31,6 @@ cd "$(dirname "$(realpath "$0")")"
 [ -f "/etc/os-release" ] && source "/etc/os-release"
 [ -z $ID ] && err "OS not detected. Aborting..."
 [ -d os/"$ID" ] && for f in os/"$ID"/*.sh; do
-	echo $f
 	. "$f"
 done
 
