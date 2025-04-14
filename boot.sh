@@ -30,7 +30,7 @@ type() {
 }
 
 clear
-stty -echo #-icanon time 0 min 1
+stty -echo -icanon time 0 min 1
 type "hey..." && echo
 type "hey listen!" && echo
 type "it's dangerous to go alone." && printf " " && type "take this!" && echo
@@ -51,7 +51,7 @@ if ! exist git; then
 fi
 
 dest="${HOME}/.local/share/env"
-rm -rf "$dest" 
+rm -rf "$dest"
 git clone "https://github.com/ylor/env.git" "$dest"
 # rm -rf "$dest" && cp -ri . "$dest"
 
