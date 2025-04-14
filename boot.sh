@@ -52,7 +52,7 @@ fi
 
 dest="${HOME}/.local/share/env"
 rm -rf "$dest"
-git clone "https://github.com/ylor/env.git" "$dest"
+git clone --quiet "https://github.com/ylor/env.git" "$dest"
 # rm -rf "$dest" && cp -ri . "$dest"
 
 if [ -d "$dest" ] && cd "$dest" && sh "$dest/init.sh"; then

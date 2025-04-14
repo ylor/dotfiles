@@ -44,7 +44,7 @@ if fdesetup status | grep -q "Off." && gum confirm "Enable FileVault?"; then
 fi
 
 # firewall
-if ! defaults read /Library/Preferences/com.apple.alf globalstate 2>dev/null | grep -q 1 && gum confirm "Enable Firewall?"; then
+if ! defaults read /Library/Preferences/com.apple.alf globalstate 2>/dev/null | grep -q 1 && gum confirm "Enable Firewall?"; then
 	sudo defaults write /Library/Preferences/com.apple.alf globalstate -int 1
 fi
 
