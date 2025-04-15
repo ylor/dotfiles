@@ -25,8 +25,8 @@ spin() {
 	shuf -e "${spinners[@]}" -n 1
 }
 
-cd "$(dirname "$(realpath "$0")")"
 clear
+cd "$(dirname "$(realpath "$0")")"
 [ "$(uname)" = "Darwin" ] && ID="macos"
 [ -f "/etc/os-release" ] && source "/etc/os-release"
 [ -z $ID ] && err "OS not detected. Aborting..."
