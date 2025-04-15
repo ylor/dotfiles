@@ -22,7 +22,7 @@ err() {
 }
 
 npc() {
-	echo $1 | while IFS="" read -r -n1 char; do
+	echo "$1" | while IFS="" read -n 1 char; do
 		printf "%s" "$char"
 		sleep 0.01
 	done
@@ -39,9 +39,8 @@ stty sane # allow user input
 read -t 1 -r -s # munch buffered keypresses
 read -n 1 -r -s # actual prompt for keypresses
 
-
 if ! exist brew; then
-	! [ -d /opt/homebrew ] && /bin/bash -c "$(curl -fsSL https://raw.githubusercontent.com/Homebrew/install/HEAD/install.sh)"
+	! [ -x /opt/homebrew/bin/brew ] && echo 'Installing homebrew...' && /bin/bash -c "$(curl -fsSL https://raw.githubusercontent.com/Homebrew/install/HEAD/install.sh)"
 	eval "$(/opt/homebrew/bin/brew shellenv)"
 fi
 
@@ -53,9 +52,10 @@ fi
 
 dest="${HOME}/.local/share/env"
 rm -rf "$dest"
+echo "Pulling local copy of dotfiles..."
 git clone --quiet "https://github.com/ylor/env.git" "$dest"
-# rm -rf "$dest" && cp -ri . "$dest"
 
+echo "Initializing..."
 if [ -d "$dest" ] && cd "$dest" && sh "$dest/init.sh"; then
 	success "see you, space cowboy"
 else
