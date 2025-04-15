@@ -43,7 +43,7 @@ cd "$(dirname "$(realpath "$0")")"
 done
 
 if exist gum; then
-	gum spin --title="Linking dotfiles..." sh link.sh
+	gum spin --title="Linking dotfiles..." -- sh link.sh
 else
 	sh link.sh
 fi
