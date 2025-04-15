@@ -21,7 +21,7 @@ err() {
 	exit 1
 }
 
-type() {
+npc() {
 	echo $1 | while IFS="" read -r -n1 char; do
 		printf "%s" "$char"
 		sleep 0.01
@@ -30,14 +30,15 @@ type() {
 }
 
 clear
-stty -echo -icanon time 0 min 1
-type "hey..." && echo
-type "hey listen!" && echo
-type "it's dangerous to go alone." && printf " " && type "take this!" && echo
-type "press any key to continue (or abort with ctrl+c)..."
-while read -t 1 -n 1 dummy; do :; done # munch keypresses while printf
-stty sane
-read -n 1 -r -s
+stty -echo -icanon time 0 min 1 # block user input
+npc "hey..." && echo
+npc "hey listen!" && echo
+npc "it's dangerous to go alone." && printf " " && npc "take this!" && echo
+npc "press any key to continue (or abort with ctrl+c)..."
+stty sane # allow user input
+read -t 1 -r -s # munch buffered keypresses
+read -n 1 -r -s # actual prompt for keypresses
+
 
 if ! exist brew; then
 	! [ -d /opt/homebrew ] && /bin/bash -c "$(curl -fsSL https://raw.githubusercontent.com/Homebrew/install/HEAD/install.sh)"
