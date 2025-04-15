@@ -26,18 +26,17 @@ npc() {
 		printf "%s" "$char"
 		sleep 0.01
 	done
-	sleep 0.5
+	sleep 0.4
 }
 
 clear
-stty -echo -icanon time 0 min 1 # block user input
+stty -echo -icanon time 0 min 1 # prevent user input to prevent ludonarrative dissonence
 npc "hey..." && echo
 npc "hey listen!" && echo
 npc "it's dangerous to go alone." && printf " " && npc "take this!" && echo
 npc "press any key to continue (or abort with ctrl+c)..."
 stty sane # allow user input
-read -t 1 -r -s # munch buffered keypresses
-read -n 1 -r -s # actual prompt for keypresses
+read -t 1 || read -n 1 # munch buffered keypresses and wait for real one
 
 if ! exist brew; then
 	! [ -x /opt/homebrew/bin/brew ] && echo 'Installing homebrew...' && /bin/bash -c "$(curl -fsSL https://raw.githubusercontent.com/Homebrew/install/HEAD/install.sh)"

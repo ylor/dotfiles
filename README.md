@@ -16,9 +16,9 @@ This project should be considered personal software and was developed for an aud
 
 ## Acknowledgements
 
-- Omakub, Crucible, Strap - projects that embody the same spirit as this project
-- Homebrew - the first project I encountered that piped an install script from curl and a pillar of my computing life
-- Gum - a crucial utility that drastically transformed the DX, as a result, UX of env
+- Omakub, Crucible - spiritual kinship, inspiration
+- Homebrew - a pillar of my computing life
+- Gum - a crucial utility that drastically transformed the DX+UX of this project
 
 ## TODO
 
