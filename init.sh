@@ -39,7 +39,7 @@ cd "$(dirname "$(realpath "$0")")"
 [ "$(uname)" = "Darwin" ] && ID="macos" || . "/etc/os-release"
 [ -z $ID ] && err "OS not detected."
 [ ! -d os/"$ID" ] && "OS not supported."
-for script in os/"$ID"/*.sh; do
+for script in "os/${ID}/"*.sh; do
 	info "${script}"
 	. "$script"
 done
