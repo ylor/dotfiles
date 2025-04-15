@@ -20,10 +20,10 @@ err() {
 	exit 1
 }
 
-spin() {
-	spinners=(line dot minidot jump pulse points meter hamburger)
-	shuf -e "${spinners[@]}" -n 1
-}
+# spin() {
+# 	spinners=(line dot minidot jump pulse points meter hamburger)
+# 	shuf -e "${spinners[@]}" -n 1
+# }
 
 clear
 cd "$(dirname "$(realpath "$0")")"

@@ -3,8 +3,8 @@
 # https://github.com/mathiasbynens/dotfiles/blob/main/.macos
 
 mkdir -p /Applications/Xcode.app # enable spotlight category
-mkdir -p "${HOME}/Developer"  # pretty finder icon
-touch "${HOME}/.hushlogin"    # shut up terminal
+mkdir -p "${HOME}/Developer"     # pretty finder icon
+touch "${HOME}/.hushlogin"       # shut up terminal
 
 # Activity Monitor
 ## set update period to 1s
