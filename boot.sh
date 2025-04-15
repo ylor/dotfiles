@@ -10,6 +10,7 @@ info() {
 	bold='\033[1m'
 	blue='\033[34m'
 	reset='\033[0m'
+	#⊙
 	echo "${bold}${blue}INFO${reset} $*"
 }
 
@@ -17,6 +18,7 @@ success() {
 	bold='\033[1m'
 	green='\033[32m'
 	reset='\033[0m'
+	#✓
 	echo "${bold}${green}SUCCESS${reset} $*"
 }
 
@@ -24,6 +26,7 @@ err() {
 	bold='\033[1m'
 	red='\033[31m'
 	reset='\033[0m'
+	#✗
 	echo "${bold}${red}ERROR${reset} $*"
 	exit 1
 }
