@@ -31,8 +31,7 @@ npc() {
 
 clear
 stty -echo -icanon time 0 min 1 # prevent user input to prevent ludonarrative dissonence
-npc "hey..." && echo
-npc "hey listen!" && echo
+npc "hey..." && npc "listen!" && echo
 npc "it's dangerous to go alone." && printf " " && npc "take this!" && echo
 npc "press any key to continue (or abort with ctrl+c)..."
 stty sane # allow user input
@@ -49,9 +48,9 @@ if ! exist git; then
 	exist pacman && sudo pacman -S --noconfirm git # Arch
 fi
 
-dest="${HOME}/.local/share/env"
+dest="${HOME}/.env"
 rm -rf "$dest"
-echo "Pulling local copy of dotfiles..."
+echo "Cloning..."
 git clone --quiet "https://github.com/ylor/env.git" "$dest"
 
 echo "Initializing..."
