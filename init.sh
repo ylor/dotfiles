@@ -32,14 +32,13 @@ err() {
 # 	shuf -e "${spinners[@]}" -n 1
 # }
 
-clear
 cd "$(dirname "$(realpath "$0")")"
 [ "$(uname)" = "Darwin" ] && ID="macos"
 [ -f "/etc/os-release" ] && . "/etc/os-release"
 [ -z $ID ] && err "OS not detected. Aborting..."
 [ -d os/"$ID" ] && for script in os/"$ID"/*.sh; do
-    info "executing ${script}"
-	. "$script" && success "$script" || err "$script"
+	info "executing ${script}"
+	. "$script" && success || err
 done
 
 if exist gum; then

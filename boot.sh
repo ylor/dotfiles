@@ -6,18 +6,25 @@ exist() {
 	command -v "$1" >/dev/null
 }
 
+info() {
+	bold='\033[1m'
+	blue='\033[34m'
+	reset='\033[0m'
+	echo "${bold}${blue}INFO${reset} $*"
+}
+
 success() {
 	bold='\033[1m'
 	green='\033[32m'
 	reset='\033[0m'
-	echo "${bold}${green}✓ SUCCESS${reset} $*"
+	echo "${bold}${green}SUCCESS${reset} $*"
 }
 
 err() {
 	bold='\033[1m'
 	red='\033[31m'
 	reset='\033[0m'
-	echo "${bold}${red}✗ ERROR${reset} $*"
+	echo "${bold}${red}ERROR${reset} $*"
 	exit 1
 }
 
@@ -38,22 +45,25 @@ read -t 1 || read -n 1 # munch buffered keypresses and wait for real one
 echo
 
 if ! exist brew; then
-	! [ -x /opt/homebrew/bin/brew ] && echo 'Installing homebrew...' && /bin/bash -c "$(curl -fsSL https://raw.githubusercontent.com/Homebrew/install/HEAD/install.sh)"
+	if ! [ -x /opt/homebrew/bin/brew ]; then
+		info 'Installing homebrew...'
+		/bin/bash -c "$(curl -fsSL https://raw.githubusercontent.com/Homebrew/install/HEAD/install.sh)"
+	fi
 	eval "$(/opt/homebrew/bin/brew shellenv)"
 fi
 
 if ! exist git; then
-	echo 'Installing git...'
+	info 'Installing git...'
 	exist apt && sudo apt -y git                   # Debian / Ubuntu
 	exist pacman && sudo pacman -S --noconfirm git # Arch
 fi
 
 dest="${HOME}/.env"
+info "Cloning..."
 rm -rf "$dest"
-echo "Cloning..."
 git clone --quiet "https://github.com/ylor/env.git" "$dest"
 
-echo "Initializing..."
+info "Initializing..."
 if [ -d "$dest" ] && cd "$dest" && sh "$dest/init.sh"; then
 	success "see you, space cowboy"
 else
