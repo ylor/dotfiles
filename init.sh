@@ -5,6 +5,13 @@ exist() {
 	command -v "$1" >/dev/null
 }
 
+info() {
+	bold='\033[1m'
+	blue='\033[34m'
+	reset='\033[0m'
+	echo "${bold}${blue}⊙ INFO${reset} $*"
+}
+
 success() {
 	bold='\033[1m'
 	green='\033[32m'
@@ -28,10 +35,11 @@ err() {
 clear
 cd "$(dirname "$(realpath "$0")")"
 [ "$(uname)" = "Darwin" ] && ID="macos"
-[ -f "/etc/os-release" ] && source "/etc/os-release"
+[ -f "/etc/os-release" ] && . "/etc/os-release"
 [ -z $ID ] && err "OS not detected. Aborting..."
-[ -d os/"$ID" ] && for f in os/"$ID"/*.sh; do
-	. "$f"
+[ -d os/"$ID" ] && for script in os/"$ID"/*.sh; do
+    info "executing ${script}"
+	. "$script" && success "$script" || err "$script"
 done
 
 if exist gum; then

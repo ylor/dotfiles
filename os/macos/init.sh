@@ -3,8 +3,8 @@ set -eu
 
 # homebrew
 ! exist /opt/homebrew/bin/brew && bash -c "$(curl -fsSL https://raw.githubusercontent.com/Homebrew/install/HEAD/install.sh)"
-
 eval "$(/opt/homebrew/bin/brew shellenv)"
+
 brew install --quiet gum
 pkgs="bat eza fish mise zoxide"
 gum_pkgs=$(gum choose --header "homebrew packages" --no-limit $pkgs --selected=*)
