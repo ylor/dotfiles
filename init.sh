@@ -40,8 +40,8 @@ cd "$(dirname "$(realpath "$0")")"
 [ -f "/etc/os-release" ] && . "/etc/os-release"
 [ -z $ID ] && err "OS not detected. Aborting..."
 [ -d os/"$ID" ] && for script in os/"$ID"/*.sh; do
-	info "executing ${script}"
-	. "$script" && success || err
+	info "${script}"
+	. "$script"
 done
 
 if exist gum; then
