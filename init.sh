@@ -36,10 +36,10 @@ err() {
 # }
 
 cd "$(dirname "$(realpath "$0")")"
-[ "$(uname)" = "Darwin" ] && ID="macos"
-[ -f "/etc/os-release" ] && . "/etc/os-release"
-[ -z $ID ] && err "OS not detected. Aborting..."
-[ -d os/"$ID" ] && for script in os/"$ID"/*.sh; do
+[ "$(uname)" = "Darwin" ] && ID="macos" || . "/etc/os-release"
+[ -z $ID ] && err "OS not detected."
+[ ! -d os/"$ID" ] && "OS not supported."
+for script in os/"$ID"/*.sh; do
 	info "${script}"
 	. "$script"
 done
