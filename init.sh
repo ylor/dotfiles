@@ -26,7 +26,7 @@ spin() {
 }
 
 cd "$(dirname "$(realpath "$0")")"
-
+clear
 [ "$(uname)" = "Darwin" ] && ID="macos"
 [ -f "/etc/os-release" ] && source "/etc/os-release"
 [ -z $ID ] && err "OS not detected. Aborting..."

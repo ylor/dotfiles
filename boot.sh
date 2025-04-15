@@ -34,8 +34,8 @@ stty -echo -icanon time 0 min 1 # prevent user input to prevent ludonarrative di
 npc "hey..." && npc "listen!" && echo
 npc "it's dangerous to go alone." && printf " " && npc "take this!" && echo
 npc "press any key to continue (or abort with ctrl+c)..."
-stty sane # allow user input
 read -t 1 || read -n 1 # munch buffered keypresses and wait for real one
+echo
 
 if ! exist brew; then
 	! [ -x /opt/homebrew/bin/brew ] && echo 'Installing homebrew...' && /bin/bash -c "$(curl -fsSL https://raw.githubusercontent.com/Homebrew/install/HEAD/install.sh)"
@@ -59,3 +59,5 @@ if [ -d "$dest" ] && cd "$dest" && sh "$dest/init.sh"; then
 else
 	err "you're gonna carry that weight"
 fi
+
+stty sane # allow user input
