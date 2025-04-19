@@ -2,13 +2,18 @@
 set -eu
 
 # homebrew
-! exist /opt/homebrew/bin/brew && bash -c "$(curl -fsSL https://raw.githubusercontent.com/Homebrew/install/HEAD/install.sh)"
-eval "$(/opt/homebrew/bin/brew shellenv)"
+if ! exist brew; then
+	if ! exist "/opt/homebrew/bin/brew"; then
+		info 'Installing homebrew...'
+		/bin/bash -c "$(curl -fsSL https://raw.githubusercontent.com/Homebrew/install/HEAD/install.sh)"
+	fi
+	eval "$(/opt/homebrew/bin/brew shellenv)"
+fi
 
 brew install --quiet gum
-pkgs="bat eza fish mise zoxide"
+pkgs="bat eza fzf hyperfine fish jq mise zoxide"
 gum_pkgs=$(gum choose --header "homebrew packages" --no-limit $pkgs --selected=*)
-[ -n "$gum_pkgs" ] && for pkg in $gum_pkgs; do
+[ "$gum_pkgs" ] && for pkg in $gum_pkgs; do
 	if ! brew list | grep -iq $pkg; then
 		gum spin --title="brewing $pkg" -- brew install $pkg
 	fi
@@ -16,7 +21,7 @@ done
 
 casks="1password alt-tab appcleaner betterdisplay ghostty hyperkey linearmouse maccy zed"
 gum_casks=$(gum choose --header "homebrew casks" --no-limit $casks)
-[ -n "$gum_casks" ] && for cask in $gum_casks; do
+[ "$gum_casks" ] && for cask in $gum_casks; do
 	if ! brew list --cask | grep -iq $cask; then
 		gum spin --title="brewing $cask" -- brew install $cask
 	fi
@@ -31,7 +36,7 @@ fi
 # hostname
 if gum confirm "Change hostname? (Current: '$HOSTNAME')"; then
 	gum_hostname=$(gum input --placeholder "$HOSTNAME")
-	if [ -n "$gum_hostname" ]; then
+	if [ "$gum_hostname" ]; then
 		sudo scutil --set ComputerName "$gum_hostname"
 		sudo scutil --set HostName "$gum_hostname"
 		sudo scutil --set LocalHostName "$gum_hostname"

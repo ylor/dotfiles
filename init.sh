@@ -37,8 +37,8 @@ err() {
 
 cd "$(dirname "$(realpath "$0")")"
 [ "$(uname)" = "Darwin" ] && ID="macos" || . "/etc/os-release"
-[ -z $ID ] && err "OS not detected."
-[ ! -d os/"$ID" ] && "OS not supported."
+[ "$ID" ] || err "OS not detected."
+[ -d "os/${ID}" ] || err "OS not supported."
 for script in "os/${ID}/"*.sh; do
 	info "${script}"
 	. "$script"
@@ -50,4 +50,4 @@ else
 	sh link.sh
 fi
 
-command fish
+exist fish && exec fish --login --interactive

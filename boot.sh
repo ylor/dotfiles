@@ -48,11 +48,11 @@ read -t 1 || read -n 1 # munch buffered keypresses and wait for real one
 echo
 
 if ! exist brew; then
-	if ! [ -x /opt/homebrew/bin/brew ]; then
+	if ! exist "/opt/homebrew/bin/brew"; then
 		info 'Installing homebrew...'
 		/bin/bash -c "$(curl -fsSL https://raw.githubusercontent.com/Homebrew/install/HEAD/install.sh)"
 	fi
-	eval "$(/opt/homebrew/bin/brew shellenv)"
+	eval "$(/opt/homebrew/bin/brew shellenv)" || err ""
 fi
 
 if ! exist git; then
@@ -62,12 +62,12 @@ if ! exist git; then
 fi
 
 dest="${HOME}/.env"
-info "Cloning..."
 rm -rf "$dest"
 git clone --quiet "https://github.com/ylor/env.git" "$dest"
 
-info "Initializing..."
-if [ -d "$dest" ] && cd "$dest" && sh "$dest/init.sh"; then
+if [ -f "${dest}/init.sh" ]; then
+    info "Initializing..."
+    sh "${dest}/init.sh"
 	success "see you, space cowboy"
 else
 	err "you're gonna carry that weight"
