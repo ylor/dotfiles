@@ -35,10 +35,14 @@ err() {
 # 	shuf -e "${spinners[@]}" -n 1
 # }
 
-cd "$(dirname "$(realpath "$0")")"
-[ "$(uname)" = "Darwin" ] && ID="macos" || . "/etc/os-release"
+cd "$(dirname "$0")"
+
+kernel=$(uname)
+[ "$kernel" = "Darwin" ] && ID="macos"
+[ "$kernel" = "Linux" ] && . "/etc/os-release" || err "OS not detected."
 [ "$ID" ] || err "OS not detected."
 [ -d "os/${ID}" ] || err "OS not supported."
+
 for script in "os/${ID}/"*.sh; do
 	info "${script}"
 	. "$script"

@@ -5,7 +5,7 @@ font-family = "Berkeley Mono"
 font-family = "Symbols Nerd Font Mono"
 font-size = 16
 font-thicken=true
-keybind = global:cmd+alt+ctrl+p=toggle_quick_terminal
+keybind = global:cmd+alt+ctrl+enter=toggle_quick_terminal
 
 theme = catppuccin-mocha
 background = #000000
