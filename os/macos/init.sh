@@ -1,6 +1,8 @@
 #!/bin/sh
 set -eu
 
+exist() { command -v "$1" >/dev/null; }
+
 # homebrew
 if ! exist brew; then
 	if ! exist "/opt/homebrew/bin/brew"; then

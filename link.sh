@@ -15,7 +15,7 @@ done
 
 # find and symlink dotfiles
 find "$home" -type f | while read file; do
-	ln -sfnv "$file" "$(rehome "$file")"
+	ln -sfv "$file" "$(rehome "$file")"
 done
 
 # purge broken symlinks
