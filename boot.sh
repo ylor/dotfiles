@@ -2,6 +2,8 @@
 # Usage: sh -c "$(curl -fsSL env.roly.sh)"
 set -eu
 
+exist() { command -v "$1" >/dev/null; }
+
 if [ -x "$(command -v tput)" ]; then
 	RESET="$(tput sgr0)"
 	BOLD="$(tput bold)"
@@ -28,6 +30,8 @@ npc() {
 
 clear
 stty -echo -icanon time 0 min 1 # prevent user input to avoid ludonarrative dissonence
+echo " ▲"
+npc "▲ ▲" && echo
 npc "hey..." && npc "listen!" && echo
 npc "it's dangerous to go alone." && printf " " && npc "take this!" && echo
 npc "press any key to continue (or abort with ctrl+c)..."
