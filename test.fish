@@ -20,10 +20,6 @@ function success
     printf "\r%s%sSUCCESS%s %s%s\n" $BOLD $GREEN $RESET $argv $CLEAR_LINE
 end
 
-function spin
-    command --search --quiet gum || error "`gum` is missing"
-    argparse 't/title=' 'c/command=' -- $argv || return
-    set spinners line dot minidot jump pulse points meter hamburger
-    set spinner (random choice $spinners)
-    eval "gum spin --spinner="$spinner" --title="$_flag_title "-- "$_flag_command""
-end
+info "Linking dotfiles..."
+sleep 1
+success "Linked!"

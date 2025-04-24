@@ -1,9 +1,9 @@
 #!/bin/sh
 set -eu
-
 exist() { command -v "$1" >/dev/null; }
 
 # homebrew
+HOMEBREW_NO_ENV_HINTS=TRUE
 if ! exist brew; then
 	if ! exist "/opt/homebrew/bin/brew"; then
 		info 'Installing homebrew...'
@@ -14,24 +14,26 @@ fi
 
 brew install --quiet gum
 pkgs="bat eza fzf hyperfine fish jq mise zoxide"
+installed_pkgs=$(brew list --formula)
 gum_pkgs=$(gum choose --header "homebrew packages" --no-limit $pkgs --selected=*)
 [ "$gum_pkgs" ] && for pkg in $gum_pkgs; do
-	if ! brew list | grep -iq $pkg; then
-		gum spin --title="brewing $pkg" -- brew install $pkg
-	fi
+    if ! echo "$installed_pkgs" | grep -iq "$pkg"; then
+        gum spin --title="brewing $pkg..." -- brew install --force $pkg
+    fi
 done
 
 casks="1password alt-tab appcleaner betterdisplay ghostty hyperkey linearmouse maccy zed"
+installed_casks=$(brew list --formula)
 gum_casks=$(gum choose --header "homebrew casks" --no-limit $casks)
 [ "$gum_casks" ] && for cask in $gum_casks; do
-	if ! brew list --cask | grep -iq $cask; then
-		gum spin --title="brewing $cask" -- brew install $cask
-	fi
+    if ! echo "$installed_casks" | grep -iq "$cask"; then
+        gum spin --title="brewing $cask..." -- brew install --cask --force $cask
+    fi
 done
 
 # dock
-brew install --quiet dockutil
-if exist dockutil && defaults read com.apple.Dock | grep -q "com.apple.launchpad.launcher"; then
+if defaults read com.apple.Dock | grep -q "com.apple.launchpad.launcher" && gum confirm "Clear the Dock?"; then
+    brew install --quiet dockutil
 	dockutil --remove all --add "/Applications" --add "${HOME}/Downloads" >/dev/null
 fi
 

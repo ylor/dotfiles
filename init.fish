@@ -2,13 +2,11 @@
 cd (status dirname)
 source lib.fish
 
-spin sleep 5
-
 switch (uname)
     case "Darwin"
         set ID "macos"
     case "Linux"
-        source /etc/os-release
+        source "/etc/os-release"
     case '*'
         error "OS not detected or supported."
 end
@@ -18,16 +16,15 @@ if not test -d "os/$ID"
 end
 
 for sh in os/$ID/*.sh
-    info $sh
-    sh $sh && success || error
+    info $sh && sh $sh && success $sh || error $sh
 end
 
-if exist gum
-    gum spin --title="Linking dotfiles..." -- sh link.sh
+if info "Linking dotfiles..." && fish link.fish >/dev/null
+    success "Linked!"
 else
-    sh link.sh
+    error "Linking"
 end
 
-if exist fish
+if command --search --quiet fish
     exec fish --login --interactive
 end

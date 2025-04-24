@@ -43,4 +43,4 @@ else
 	sh link.sh
 fi
 
-exist fish && exec fish --login --interactive
+exec fish --login --interactive

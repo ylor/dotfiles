@@ -15,8 +15,8 @@ else
 fi
 
 info() { printf "${BOLD}${BLUE}INFO${RESET} %s\n" "$*"; }
-error() { printf "${BOLD}${RED}ERROR${RESET} %s\n" "$*" && exit 1; }
-success() { printf "${BOLD}${GREEN}SUCCESS${RESET} %s\n" "$*"; }
+error() { printf "\r${BOLD}${RED}ERROR${RESET} %s\n" "$*" && exit 1; }
+success() { printf "\r${BOLD}${GREEN}SUCCESS${RESET} %s\n" "$*"; }
 
 npc() {
 	str=$1
@@ -38,8 +38,8 @@ npc "press any key to continue (or abort with ctrl+c)..."
 read -t 1 || read -n 1 # munch buffered keypresses and wait for real one
 
 if [ "$(uname)" = "Darwin" ]; then
-	info 'Installing homebrew...'
 	if [ ! -x "/opt/homebrew/bin/brew" ]; then
+	   info 'Installing homebrew...'
 		/bin/bash -c "$(curl -fsSL https://raw.githubusercontent.com/Homebrew/install/HEAD/install.sh)"
 	fi
 	eval "$(/opt/homebrew/bin/brew shellenv)"

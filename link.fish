@@ -8,12 +8,12 @@ end
 
 # find and stage folders for symlinks
 find "$home" -type d | while read folder
-	mkdir -pv "$(rehome "$folder")"
+	echo mkdir -pv "$(rehome "$folder")"
 end
 
 # find and symlink dotfiles
 find "$home" -type f | while read file
-    ln -sfv "$file" "$(rehome "$file")"
+    echo ln -sfv "$file" "$(rehome "$file")"
 end
 
 # purge broken symlinks
