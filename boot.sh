@@ -58,7 +58,7 @@ rm -rf "$dest"
 git clone --quiet "https://github.com/ylor/env.git" "$dest"
 
 info "Initializing..."
-if sh "${dest}/init.sh"; then
+if fish "${dest}/init.fish"; then
 	success "see you, space cowboy"
 else
 	error "you're gonna carry that weight"
