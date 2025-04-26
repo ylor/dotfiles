@@ -15,7 +15,7 @@ if test -d "os/$ID"
     for script in os/$ID/*.fish
         run "$script"
     end
-    run link.fish
+    fish link.fish
     exec fish --login --interactive
 else
     error "'$ID' is not a supported operating system."

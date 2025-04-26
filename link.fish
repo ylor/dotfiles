@@ -6,18 +6,14 @@ function rehome
     string replace "$home" "$HOME" "$argv"
 end
 
-echo $home
-echo $HOME
-rehome $PWD 
-
 # stage folders
 find "$home" -type d | while read folder
-    echo echo mkdir -pv "$(rehome "$folder")"
+    mkdir -p "$(rehome "$folder")"
 end
 
 # symlink dotfiles
 find "$home" -type f | while read file
-    echo ln -sfv "$file" "$(rehome "$file")"
+    ln -sf "$file" "$(rehome "$file")"
 end
 
 # purge broken symlinks
