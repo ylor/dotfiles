@@ -1,27 +1,5 @@
 #!/usr/bin/env fish
 
-function ensure
-    exist $argv || brew install --quiet $argv
-end
-
-ensure gum
-
-# Install packages
-set pkgs bat eza fzf hyperfine fish jq mise zoxide
-set installed_pkgs (brew list --formula)
-set gum_pkgs (gum choose --header "homebrew packages" --no-limit $pkgs --selected='*')
-test -n "$gum_pkgs" && for pkg in $gum_pkgs
-    echo "$installed_pkgs" | grep -iq "$pkg" || gum spin --title="brewing $pkg..." -- brew install --force $pkg
-end
-
-# Install casks
-set casks 1password alt-tab appcleaner betterdisplay ghostty hyperkey linearmouse maccy zed
-set installed_casks (brew list --formula)
-set gum_casks (gum choose --header "homebrew casks" --no-limit $casks)
-test -n "$gum_casks" && for cask in $gum_casks
-    echo "$installed_casks" | grep -iq "$cask" || gum spin --title="brewing $cask..." -- brew install --cask --force $cask
-end
-
 # Configure dock
 defaults read com.apple.Dock | grep -q "com.apple.launchpad.launcher" && gum confirm "Clear the Dock?" && begin
     ensure dockutil
