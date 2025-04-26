@@ -10,12 +10,12 @@ rehome() {
 
 # find and stage folders for symlinks
 find "$home" -type d | while read folder; do
-	echo mkdir -pv "$(rehome "$folder")"
+	mkdir -pv "$(rehome "$folder")"
 done
 
 # find and symlink dotfiles
 find "$home" -type f | while read file; do
-	echo ln -sfv "$file" "$(rehome "$file")"
+	ln -sfv "$file" "$(rehome "$file")"
 done
 
 # purge broken symlinks

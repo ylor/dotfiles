@@ -1,6 +1,7 @@
 #!/bin/sh
 set -eu
 exist() { command -v "$1" >/dev/null; }
+ensure() { exist "$1" || brew install --quiet "$1"; }
 
 # homebrew
 HOMEBREW_NO_ENV_HINTS=TRUE
@@ -10,9 +11,9 @@ if ! exist brew; then
 		/bin/bash -c "$(curl -fsSL https://raw.githubusercontent.com/Homebrew/install/HEAD/install.sh)"
 	fi
 	eval "$(/opt/homebrew/bin/brew shellenv)"
+	ensure gum
 fi
 
-brew install --quiet gum
 pkgs="bat eza fzf hyperfine fish jq mise zoxide"
 installed_pkgs=$(brew list --formula)
 gum_pkgs=$(gum choose --header "homebrew packages" --no-limit $pkgs --selected=*)
@@ -33,7 +34,7 @@ done
 
 # dock
 if defaults read com.apple.Dock | grep -q "com.apple.launchpad.launcher" && gum confirm "Clear the Dock?"; then
-    brew install --quiet dockutil
+    ensure dockutil
 	dockutil --remove all --add "/Applications" --add "${HOME}/Downloads" >/dev/null
 fi
 

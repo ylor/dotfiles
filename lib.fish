@@ -1,4 +1,8 @@
-if type -q tput
+function exist
+    command --search --quiet "$argv"
+end
+
+if exist tput
     set RESET (tput sgr0)
     set BOLD (tput bold)
     set RED (tput setaf 1)
@@ -11,13 +15,18 @@ function info
     printf "\r%s%sINFO%s %s" $BOLD $BLUE $RESET $argv
 end
 
+function success
+    printf "\r%s%sSUCCESS%s %s%s\n" $BOLD $GREEN $RESET $argv $CLEAR_LINE
+end
+
 function error
     printf "\r%s%sERROR%s %s%s\n" $BOLD $RED $RESET $argv $CLEAR_LINE
     exit 1
 end
 
-function success
-    printf "\r%s%sSUCCESS%s %s%s\n" $BOLD $GREEN $RESET $argv $CLEAR_LINE
+function run
+    info $argv
+    source $argv && success $argv || error $argv
 end
 
 function spin

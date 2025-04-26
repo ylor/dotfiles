@@ -3,28 +3,20 @@ cd (status dirname)
 source lib.fish
 
 switch (uname)
-    case "Darwin"
-        set ID "macos"
-    case "Linux"
-        source "/etc/os-release"
+    case Darwin
+        set ID macos
+    case Linux
+        source /etc/os-release
     case '*'
-        error "OS not detected or supported."
+        error "Supported OS not detected."
 end
 
-if not test -d "os/$ID"
-    error "'$ID' is not a supported operating system."
-end
-
-for sh in os/$ID/*.sh
-    info $sh && sh $sh && success $sh || error $sh
-end
-
-if info "Linking dotfiles..." && fish link.fish >/dev/null
-    success "Linked!"
-else
-    error "Linking"
-end
-
-if command --search --quiet fish
+if test -d "os/$ID"
+    for script in os/$ID/*.fish
+        run "$script"
+    end
+    run link.fish
     exec fish --login --interactive
+else
+    error "'$ID' is not a supported operating system."
 end

@@ -3,15 +3,19 @@
 set home (realpath "$(status dirname)/home")
 
 function rehome
-	string replace "$home" "$HOME" "$argv"
+    string replace "$home" "$HOME" "$argv"
 end
 
-# find and stage folders for symlinks
+echo $home
+echo $HOME
+rehome $PWD 
+
+# stage folders
 find "$home" -type d | while read folder
-	echo mkdir -pv "$(rehome "$folder")"
+    echo echo mkdir -pv "$(rehome "$folder")"
 end
 
-# find and symlink dotfiles
+# symlink dotfiles
 find "$home" -type f | while read file
     echo ln -sfv "$file" "$(rehome "$file")"
 end
