@@ -34,8 +34,8 @@ end
 
 function homee
     for repo in (find $HOME -path $HOME/Library -prune -o -maxdepth 5 -type d -name ".git" 2>/dev/null)
-        echo $repo
-        if grep -q "url.*ylor/env.git" $repo/config
+        # echo $repo
+        if command grep -q "url.*ylor/env.git" $repo/config
             echo (dirname $repo)
         end
     end
