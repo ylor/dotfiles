@@ -29,6 +29,6 @@ if test -z (defaults read /Library/Preferences/com.apple.alf globalstate) && gum
 end
 
 # Configure TouchID for sudo
-if not test -f /etc/pam.d/sudo_local && gum confirm "Use TouchID for sudo?"
+if test ! -e /etc/pam.d/sudo_local && gum confirm "Use TouchID for sudo?"
     sed -e 's/^#auth/auth/' /etc/pam.d/sudo_local.template | sudo tee /etc/pam.d/sudo_local >/dev/null
 end
