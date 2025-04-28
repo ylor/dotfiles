@@ -7,7 +7,7 @@ defaults read com.apple.Dock | grep -q "com.apple.launchpad.launcher" && gum con
 end
 
 # Set hostname
-gum confirm "Change hostname? (Current: '$(hostname)')" && begin
+gum confirm "Change hostname? (Current: '$(hostname)')"
     set gum_hostname (gum input --placeholder (hostname))
     test -n "$gum_hostname" && begin
         sudo scutil --set ComputerName "$gum_hostname"
@@ -24,11 +24,11 @@ if fdesetup status | grep -q "Off."
 end
 
 # Enable Firewall
-if test -z (defaults read /Library/Preferences/com.apple.alf globalstate) && gum confirm "Enable Firewall?"
-    sudo defaults write /Library/Preferences/com.apple.alf globalstate -int 1
+if test -z (defaults read /Library/Preferences/com.apple.alf globalstate)
+    gum confirm "Enable Firewall?" && sudo defaults write /Library/Preferences/com.apple.alf globalstate -int 1
 end
 
 # Configure TouchID for sudo
-if test ! -e /etc/pam.d/sudo_local && gum confirm "Use TouchID for sudo?"
-    sed -e 's/^#auth/auth/' /etc/pam.d/sudo_local.template | sudo tee /etc/pam.d/sudo_local >/dev/null
-end
+# if test ! -e /etc/pam.d/sudo_local && gum confirm "Use TouchID for sudo?"
+#     sed -e 's/^#auth/auth/' /etc/pam.d/sudo_local.template | sudo tee /etc/pam.d/sudo_local >/dev/null
+# end
