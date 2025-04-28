@@ -29,6 +29,6 @@ if test (defaults read /Library/Preferences/com.apple.alf globalstate) -ne 1 && 
 end
 
 # Configure TouchID for sudo
-if test ! -f /etc/pam.d/sudo_local && bioutil --read | grep -q 1 && gum confirm "Use TouchID for sudo?"
+if not test -f /etc/pam.d/sudo_local && gum confirm "Use TouchID for sudo?"
     sed -e 's/^#auth/auth/' /etc/pam.d/sudo_local.template | sudo tee /etc/pam.d/sudo_local >/dev/null
 end
