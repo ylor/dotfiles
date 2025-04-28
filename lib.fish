@@ -58,3 +58,11 @@ function spin
     set spinner (random choice $spinners)
     eval "gum spin --spinner="$spinner" --title="$_flag_title "-- "$_flag_command""
 end
+
+function check_sudo
+    if sudo -n true
+        spin -- sudo $argv
+    else
+        sudo $argv
+    end
+end

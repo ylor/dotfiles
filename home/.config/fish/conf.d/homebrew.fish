@@ -1,4 +1,4 @@
-for path in "/opt/homebrew" "/home/linuxbrew/.linuxbrew"
+for path in /opt/homebrew "/home/linuxbrew/.linuxbrew"
     [ -d $path ] && "$path/bin/brew" shellenv | source
 end
 

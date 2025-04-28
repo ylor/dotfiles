@@ -7,9 +7,9 @@ defaults read com.apple.Dock | grep -q "com.apple.launchpad.launcher" && gum con
 end
 
 # Set hostname
-gum confirm "Change hostname? (Current: '$(hostname)')"
+if gum confirm "Change hostname? (Current: '$(hostname)')"
     set gum_hostname (gum input --placeholder (hostname))
-    test -n "$gum_hostname" && begin
+    if test -n "$gum_hostname"
         sudo scutil --set ComputerName "$gum_hostname"
         sudo scutil --set HostName "$gum_hostname"
         sudo scutil --set LocalHostName "$gum_hostname"
@@ -20,12 +20,14 @@ end
 
 # Enable FileVault
 if fdesetup status | grep -q "Off."
-    gum confirm "Enable FileVault?" && sudo fdesetup enable -user "$USER"
+    gum confirm "Enable FileVault?"
+    and sudo fdesetup enable -user "$USER"
 end
 
 # Enable Firewall
 if test -z (defaults read /Library/Preferences/com.apple.alf globalstate)
-    gum confirm "Enable Firewall?" && sudo defaults write /Library/Preferences/com.apple.alf globalstate -int 1
+    gum confirm "Enable Firewall?"
+    and sudo defaults write /Library/Preferences/com.apple.alf globalstate -int 1
 end
 
 # Configure TouchID for sudo

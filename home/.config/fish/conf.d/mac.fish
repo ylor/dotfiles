@@ -28,23 +28,23 @@ if test (uname) = Darwin
         # set ACTION $(gum choose $OPTIONS)
         # echo $ACTION
         set OPTIONS
-        set -a OPTIONS "dscleanup"
+        set -a OPTIONS dscleanup
         set -a OPTIONS "Flush DNS"
-        set -a OPTIONS "hide"
-        set -a OPTIONS "show"
+        set -a OPTIONS hide
+        set -a OPTIONS show
 
         switch $(gum choose $OPTIONS --header "asdfadf" )
-        case "dscleanup"
-            echo "dscleanup"
-        case "Flush DNS"
-            echo "flushdns"
-        case "hide"
-            echo "hide"
-        case "show"
-            echo "show"
-        case *
-            echo "frankly i have no idea how you got here but i'm impressed"
-            return 1
+            case dscleanup
+                echo dscleanup
+            case "Flush DNS"
+                echo flushdns
+            case hide
+                echo hide
+            case show
+                echo show
+            case *
+                echo "frankly i have no idea how you got here but i'm impressed"
+                return 1
         end
     end
 
