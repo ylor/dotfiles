@@ -2,6 +2,10 @@ function exist
     command --search --quiet "$argv"
 end
 
+function missing
+    ! command --search --quiet "$argv"
+end
+
 if exist tput
     set RESET (tput sgr0)
     set BOLD (tput bold)
@@ -24,13 +28,31 @@ function error
     exit 1
 end
 
+function link
+    set --global home (realpath "$(status dirname)/home")
+
+    function rehome
+        string replace "$home" "$HOME" "$argv"
+    end
+
+    # stage folders
+    find "$home" -type d | while read folder
+        mkdir -pv "$(rehome "$folder")"
+    end
+
+    # symlink dotfiles
+    find "$home" -type f | while read file
+        ln -sfv "$file" "$(rehome "$file")"
+    end
+end
+
 function run
     info $argv
     source $argv && success $argv || error $argv
 end
 
 function spin
-    command --search --quiet gum || error "`gum` is missing"
+    exist gum || error "`gum` is missing"
     argparse 't/title=' 'c/command=' -- $argv || return
     set spinners line dot minidot jump pulse points meter hamburger
     set spinner (random choice $spinners)

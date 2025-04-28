@@ -18,23 +18,23 @@ pkgs="bat eza fzf hyperfine fish jq mise zoxide"
 installed_pkgs=$(brew list --formula)
 gum_pkgs=$(gum choose --header "homebrew packages" --no-limit $pkgs --selected=*)
 [ "$gum_pkgs" ] && for pkg in $gum_pkgs; do
-    if ! echo "$installed_pkgs" | grep -iq "$pkg"; then
-        gum spin --title="brewing $pkg..." -- brew install --force $pkg
-    fi
+	if ! echo "$installed_pkgs" | grep -iq "$pkg"; then
+		gum spin --title="brewing $pkg..." -- brew install --force $pkg
+	fi
 done
 
 casks="1password alt-tab appcleaner betterdisplay ghostty hyperkey linearmouse maccy zed"
 installed_casks=$(brew list --formula)
 gum_casks=$(gum choose --header "homebrew casks" --no-limit $casks)
 [ "$gum_casks" ] && for cask in $gum_casks; do
-    if ! echo "$installed_casks" | grep -iq "$cask"; then
-        gum spin --title="brewing $cask..." -- brew install --cask --force $cask
-    fi
+	if ! echo "$installed_casks" | grep -iq "$cask"; then
+		gum spin --title="brewing $cask..." -- brew install --cask --force $cask
+	fi
 done
 
 # dock
 if defaults read com.apple.Dock | grep -q "com.apple.launchpad.launcher" && gum confirm "Clear the Dock?"; then
-    ensure dockutil
+	ensure dockutil
 	dockutil --remove all --add "/Applications" --add "${HOME}/Downloads" >/dev/null
 fi
 
