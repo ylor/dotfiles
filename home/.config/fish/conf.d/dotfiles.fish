@@ -24,7 +24,7 @@ function dot
     # find "$HOME/.config" "$HOME/.local" -type d -empty -delete
 end
 
-function findd
+function tmpfind
     if command -vq fd
         fd ".git" --hidden --type dir --max-depth 5 --exclude Library "$HOME"
     else
@@ -32,7 +32,7 @@ function findd
     end
 end
 
-function homee
+function tmphome
     for repo in (find $HOME -path $HOME/Library -prune -o -maxdepth 5 -type d -name ".git" 2>/dev/null)
         # echo $repo
         if command grep -q "url.*ylor/env.git" $repo/config
@@ -41,6 +41,6 @@ function homee
     end
 end
 
-function chooseenv
+function tmpchoose
     gum file --header="Set ENV" --height=50 --all --no-permissions --no-size --directory $HOME
 end
