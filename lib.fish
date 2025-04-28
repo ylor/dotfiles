@@ -37,12 +37,12 @@ function link
 
     # stage folders
     find "$home" -type d | while read folder
-        mkdir -pv "$(rehome "$folder")"
+        mkdir -p "$(rehome "$folder")"
     end
 
     # symlink dotfiles
     find "$home" -type f | while read file
-        ln -sfv "$file" "$(rehome "$file")"
+        ln -sf "$file" "$(rehome "$file")"
     end
 end
 

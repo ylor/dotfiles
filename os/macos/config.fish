@@ -24,7 +24,7 @@ if fdesetup status | grep -q "Off."
 end
 
 # Enable Firewall
-if test (defaults read /Library/Preferences/com.apple.alf globalstate) -ne 1 && gum confirm "Enable Firewall?"
+if test -z (defaults read /Library/Preferences/com.apple.alf globalstate) && gum confirm "Enable Firewall?"
     sudo defaults write /Library/Preferences/com.apple.alf globalstate -int 1
 end
 
