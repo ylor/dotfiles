@@ -18,7 +18,7 @@ ensure gum
 
 # TODO: if all packages are installed, skip this step
 # Install packages
-set pkgs bat eza fzf jq mise zoxide
+set pkgs bat eza fd fzf jq mise ripgrep zoxide
 set installed_pkgs (brew list --formula)
 # set gum_pkgs (gum choose --header "homebrew packages" --no-limit $pkgs --selected='*')
 # if test "$gum_pkgs"
