@@ -50,7 +50,7 @@ function convert_git_https_to_ssh
     set current_url (git remote get-url origin)
 
     # Check if the URL starts with https
-    if string match -r "^https://" $current_url
+    if string match --regex --quiet "^https://" $current_url
         # Convert the https URL to ssh format
         set ssh_url (string replace "https://" "git@" $current_url)
         set ssh_url (string replace "/" ":" $ssh_url)
