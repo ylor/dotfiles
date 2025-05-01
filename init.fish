@@ -7,7 +7,8 @@ switch (uname)
     case Darwin
         set ID macos
     case Linux
-        source /etc/os-release
+        # source /etc/os-release
+         set ID (cat /etc/os-release | grep "^ID=" | cut -d "=" -f 2)
     case '*'
         error "Supported OS not detected."
 end
