@@ -7,3 +7,7 @@
 if [[ $(command -v fish) && "$(ps -p $PPID -o comm=)" != "fish" && ${SHLVL} -eq 1 && -z "${ZSH_EXECUTION_STRING}" ]]; then
     exec fish --login --interactive
 fi
+
+# Added by OrbStack: command-line tools and integration
+# This won't be added again if you remove it.
+source ~/.orbstack/shell/init.zsh 2>/dev/null || :

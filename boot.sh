@@ -37,26 +37,25 @@ npc "press any key to continue (or abort with ctrl+c)..."
 read -t 1 || read -n 1 # munch buffered keypresses and wait for real one
 
 if [ "$(uname)" = "Darwin" ]; then
-	if missing brew; then
-		info 'Installing homebrew...'
+	if missing /opt/homebrew/bin/brew; then
 		/bin/bash -c "$(curl -fsSL https://raw.githubusercontent.com/Homebrew/install/HEAD/install.sh)"
 	fi
 	eval "$(/opt/homebrew/bin/brew shellenv)"
-	brew install --quiet fish gum
 fi
 
 if missing fish || missing git; then
-	info 'Installing git...'
+	info "Installing dependencies..."
 	exist apt && sudo apt -y fish git                   # Debian / Ubuntu
+	exist brew && brew install --force fish git         # macOS / Linux
+	exist dnf && dnf install -y fish git                # Fedora
 	exist pacman && sudo pacman -S --noconfirm fish git # Arch
-fi
+fi && success "Installed!"
 
-info "Cloning..."
+
+info "Initializing..."
 dest="${HOME}/.env"
 rm -rf "$dest"
 git clone --quiet "https://github.com/ylor/env.git" "$dest"
-
-info "Initializing..."
 if fish "${dest}/init.fish"; then
 	success "see you, space cowboy"
 else
