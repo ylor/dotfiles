@@ -23,10 +23,10 @@ abbr --add o open
 
 # Aliases
 alias h="cd $HOME"
-alias liberate="xattr -d com.apple.quarantine"
 alias md="mkdir -p"
 alias rd="rmdir"
 alias re="exec fish"
+alias fishfmt="fish_indent --write"
 
 function mdcd ### mkdir & cd to it
     md $argv && cd $argv

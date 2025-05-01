@@ -3,7 +3,7 @@
 set -e
 
 exist() { command -v "$1" >/dev/null; }
-missing() { ! exist "$1"; }
+missing() { ! command -v "$1" >/dev/null; }
 
 if exist tput; then
 	RESET="$(tput sgr0)"
@@ -28,7 +28,7 @@ npc() {
 }
 
 clear
-stty -echo -icanon time 0 min 1 # prevent user input to avoid ludonarrative dissonence
+stty -echo -icanon time 0 min 1 # prevent ludonarrative dissonence
 echo " ▲"
 npc "▲ ▲" && echo
 npc "hey..." && npc "listen!" && echo
@@ -41,16 +41,16 @@ if [ "$(uname)" = "Darwin" ]; then
 		/bin/bash -c "$(curl -fsSL https://raw.githubusercontent.com/Homebrew/install/HEAD/install.sh)"
 	fi
 	eval "$(/opt/homebrew/bin/brew shellenv)"
+	brew install --quiet fish git
 fi
 
 if missing fish || missing git; then
 	info "Installing dependencies..."
-	exist apt && sudo apt -y fish git                   # Debian / Ubuntu
-	exist brew && brew install --force fish git         # macOS / Linux
-	exist dnf && dnf install -y fish git                # Fedora
+	exist apk && sudo apk add fish git                  # Alpine
+	exist apt && sudo apt install -y fish git           # Debian / Ubuntu
+	exist dnf && sudo dnf install -y fish git           # Fedora
 	exist pacman && sudo pacman -S --noconfirm fish git # Arch
-fi && success "Installed!"
-
+fi && success "Dependencies installed!" || error "Dependency installation failed. Aborting..."
 
 info "Initializing..."
 dest="${HOME}/.env"

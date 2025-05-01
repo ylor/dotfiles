@@ -1,6 +1,7 @@
 #!/usr/bin/env fish
 cd (status dirname)
 source lib.fish
+link
 
 switch (uname)
     case Darwin
@@ -15,7 +16,6 @@ if test -d "os/$ID"
     for script in os/$ID/*.fish
         run "$script"
     end
-    link
     exec fish --login --interactive
 else
     error "'$ID' is not a supported operating system."

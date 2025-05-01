@@ -3,7 +3,7 @@ function exist
 end
 
 function missing
-    ! command --search --quiet "$argv"
+    not command --search --quiet "$argv"
 end
 
 if exist tput
@@ -37,12 +37,12 @@ function link
 
     # stage folders
     find "$home" -type d | while read folder
-        mkdir -p "$(rehome "$folder")"
+        echo mkdir -p "$(rehome "$folder")"
     end
 
     # symlink dotfiles
     find "$home" -type f | while read file
-        ln -sf "$file" "$(rehome "$file")"
+        echo ln -sf "$file" "$(rehome "$file")"
     end
 end
 
