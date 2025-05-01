@@ -8,7 +8,8 @@ switch (uname)
         set ID macos
     case Linux
         # source /etc/os-release
-         set ID (cat /etc/os-release | grep "^ID=" | cut -d "=" -f 2)
+        # set OS (cat /etc/os-release | grep "^ID=" | cut -d "=" -f 2)
+        set ID linux
     case '*'
         error "Supported OS not detected."
 end
