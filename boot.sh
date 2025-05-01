@@ -45,15 +45,15 @@ if [ "$(uname)" = "Darwin" ]; then
 		/bin/bash -c "$(curl -fsSL https://raw.githubusercontent.com/Homebrew/install/HEAD/install.sh)"
 	fi
 	eval "$(/opt/homebrew/bin/brew shellenv)"
-	brew install --quiet fish git
 fi
 
 if missing fish || missing git; then
 	info "Installing dependencies..."
-	exist apk && sudo apk add fish git                  # Alpine
-	exist apt && sudo apt install -y fish git           # Debian / Ubuntu
-	exist dnf && sudo dnf install -y fish git           # Fedora
-	exist pacman && sudo pacman -S --noconfirm fish git # Arch
+	exist apk && sudo apk add fish git || true            # Alpine
+	exist apt && sudo apt install -y fish git || true          # Debian / Ubuntu
+	exist brew && brew install --quiet fish git || true # macOS
+	exist dnf && sudo dnf install -y fish git || true           # Fedora
+	exist pacman && sudo pacman -S --noconfirm fish git || true # Arch
 fi && success "Dependencies installed!" || error "Dependency installation failed. Aborting..."
 
 info "Initializing..."
