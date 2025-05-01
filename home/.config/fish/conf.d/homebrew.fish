@@ -1,6 +1,6 @@
-for path in /opt/homebrew "/home/linuxbrew/.linuxbrew"
-    [ -d $path ] && "$path/bin/brew" shellenv | source
-end
+# for path in "/opt/homebrew" "/home/linuxbrew/.linuxbrew"
+#     [ -d $path ] && "$path/bin/brew" shellenv | source
+# end
 
 if command -q brew # https://github.com/Homebrew/brew
     function brew
