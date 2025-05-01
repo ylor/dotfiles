@@ -34,11 +34,14 @@ npc "▲ ▲" && echo
 npc "hey..." && npc "listen!" && echo
 npc "it's dangerous to go alone." && npc " take this!" && echo
 npc "press any key to continue (or abort with ctrl+c)..."
-read -t 1 || read -n 1 && echo # munch buffered keypresses and wait for real one
+read -t 1 || read -n 1 # munch buffered keypresses and wait for real one
 
-npc "let's see it"
-sudo echo
-while true; do sudo -n true; sleep 60; kill -0 "$$" || exit; done 2>/dev/null &
+npc "okay then" && npc " let's see it" && sudo echo
+while true; do
+	sudo -n true
+	sleep 60
+	kill -0 "$$" || exit
+done 2>/dev/null &
 
 if [ "$(uname)" = "Darwin" ]; then
 	if missing /opt/homebrew/bin/brew; then
@@ -49,12 +52,12 @@ fi
 
 if missing fish || missing git; then
 	info "Installing dependencies..."
-	exist apk && sudo apk add fish git || true            # Alpine
-	exist apt && sudo apt install -y fish git || true          # Debian / Ubuntu
-	exist brew && brew install --quiet fish git || true # macOS
-	exist dnf && sudo dnf install -y fish git || true           # Fedora
-	exist pacman && sudo pacman -S --noconfirm fish git || true # Arch
-fi && success "Dependencies installed!" || error "Dependency installation failed. Aborting..."
+	exist apk && sudo apk add fish git                  # Alpine
+	exist apt && sudo apt install -y fish git           # Debian
+	exist brew && brew install --quiet fish git         # macOS
+	exist dnf && sudo dnf install -y fish git           # Fedora
+	exist pacman && sudo pacman -S --noconfirm fish git # Arch
+fi && success "Dependencies installed!"
 
 info "Initializing..."
 dest="${HOME}/.env"
