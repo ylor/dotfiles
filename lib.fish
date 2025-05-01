@@ -35,15 +35,15 @@ function link
         string replace "$home" "$HOME" "$argv"
     end
 
-    # stage folders
-    find "$home" -type d | while read folder
-        echo mkdir -p "$(rehome "$folder")"
-    end
+    # # stage folders
+    # find "$home" -type d | while read folder
+    #     mkdir -p "$(rehome "$folder")"
+    # end
 
-    # symlink dotfiles
-    find "$home" -type f | while read file
-        echo ln -sf "$file" "$(rehome "$file")"
-    end
+    # # symlink dotfiles
+    # find "$home" -type f | while read file
+    #     ln -sf "$file" "$(rehome "$file")"
+    # end
 end
 
 function run
