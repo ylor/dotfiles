@@ -58,9 +58,9 @@ if missing fish || missing git; then
 	exist pacman && sudo pacman -S --noconfirm fish git # Arch
 fi && success "Dependencies installed!"
 
-info "Initializing..."
 dest="${HOME}/.env"
 rm -rf "$dest"
-git clone --quiet "https://github.com/ylor/env.git" "$dest"
+git clone "https://github.com/ylor/env.git" "$dest"
 stty sane
+info "Initializing..."
 fish "${dest}/main.fish"
