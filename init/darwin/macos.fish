@@ -1,5 +1,3 @@
-#!/usr/bin/env fish
-
 # Configure dock
 if defaults read com.apple.Dock | grep -q "com.apple.launchpad.launcher" && gum confirm "Clear the Dock?"
     and ensure dockutil

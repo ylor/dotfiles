@@ -1,4 +1,3 @@
-#!/bin/fish
 # https://macos-defaults.com
 # https://github.com/mathiasbynens/dotfiles/blob/main/.macos
 
@@ -89,7 +88,7 @@ defaults write NSGlobalDomain NSAutomaticSpellingCorrectionEnabled -bool false
 defaults write com.apple.TextEdit SmartQuotes -bool false
 
 # Hot Corners
-## top left → mission control
+## bottom right → mission control
 defaults write com.apple.dock wvous-br-corner -int 2
 defaults write com.apple.dock wvous-br-modifier -int 0
 

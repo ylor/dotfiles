@@ -46,6 +46,14 @@ function link
     # end
 end
 
+function arch
+    uname -m
+end
+
+function kernel
+   string lower (uname -s) 
+end
+
 function run
     info $argv
     source $argv && success $argv || error $argv
