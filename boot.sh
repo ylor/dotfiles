@@ -34,6 +34,7 @@ npc " ▲" && echo
 npc "▲ ▲" && echo
 npc "press any key to continue (or abort with ctrl+c)..."
 dd bs=1 count=1 2>/dev/null
+stty sane
 
 sudo echo
 while true; do
@@ -61,6 +62,5 @@ fi
 dest="${HOME}/.env"
 rm -rf "$dest"
 git clone "https://github.com/ylor/env.git" "$dest"
-stty sane
 info "Initializing..."
 fish "${dest}/main.fish"
