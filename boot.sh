@@ -1,4 +1,6 @@
 #!/bin/sh
+# Usage: bash -c "$(curl -fsSL env.roly.sh)"
+# Usage: zsh -c "$(curl -fsSL env.roly.sh)"
 # Usage: sh -c "$(curl -fsSL env.roly.sh)"
 set -e
 
@@ -24,17 +26,14 @@ npc() {
 		sleep 0.01
 		str=${str#?}
 	done
-	sleep 0.4
 }
 
 clear
 stty -echo -icanon time 0 min 1 # prevent ludonarrative dissonence
-echo " ▲"
+npc " ▲" && echo
 npc "▲ ▲" && echo
-npc "hey..." && npc "listen!" && echo
-npc "it's dangerous to go alone." && npc " take this!" && echo
 npc "press any key to continue (or abort with ctrl+c)..."
-read -t 1 || read -n 1 # munch buffered keypresses and wait for real one
+dd bs=1 count=1 2>/dev/null
 
 sudo echo
 while true; do
@@ -63,5 +62,5 @@ info "Initializing..."
 dest="${HOME}/.env"
 rm -rf "$dest"
 git clone --quiet "https://github.com/ylor/env.git" "$dest"
-stty sane # allow user input
+stty sane
 fish "${dest}/main.fish"
