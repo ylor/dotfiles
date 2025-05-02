@@ -56,7 +56,7 @@ if missing fish || missing git; then
 	exist brew && brew install --quiet fish git         # macOS
 	exist dnf && sudo dnf install -y fish git           # Fedora
 	exist pacman && sudo pacman -S --noconfirm fish git # Arch
-fi && success "Dependencies installed!"
+fi
 
 dest="${HOME}/.env"
 rm -rf "$dest"
