@@ -63,5 +63,5 @@ info "Initializing..."
 dest="${HOME}/.env"
 rm -rf "$dest"
 git clone --quiet "https://github.com/ylor/env.git" "$dest"
+stty sane # allow user input
 fish "${dest}/main.fish"
-# stty sane # allow user input
