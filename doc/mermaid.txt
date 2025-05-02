@@ -1,3 +1,3 @@
 graph TD
-boot.sh --> init.sh
-init.sh --> os/mac/*.sh & os/linux/*.sh --> link.sh
+boot.sh --> main.fish
+main.fish --> lib.fish --> macos/*.fish & linux/*.fish --> link.fish

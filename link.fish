@@ -1,19 +1,19 @@
 #!/bin/env fish
 # dotfile "management"
-set home (realpath "$(status dirname)/home")
+set env (realpath "$(status dirname)/home")
 
 function rehome
-    string replace "$home" "$HOME" "$argv"
+    string replace "$env" "$HOME" "$argv"
 end
 
 # stage folders
-find "$home" -type d | while read folder
+find "$env" -type d | while read folder
     mkdir -p "$(rehome "$folder")"
 end
 
 # symlink dotfiles
-find "$home" -type f | while read file
-    ln -sfv "$file" "$(rehome "$file")"
+find "$env" -type f | while read file
+    ln -sf "$file" "$(rehome "$file")"
 end
 
 # # purge broken symlinks

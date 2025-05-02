@@ -36,7 +36,7 @@ npc "it's dangerous to go alone." && npc " take this!" && echo
 npc "press any key to continue (or abort with ctrl+c)..."
 read -t 1 || read -n 1 # munch buffered keypresses and wait for real one
 
-npc "okay then" && npc " let's see it" && sudo echo
+sudo echo
 while true; do
 	sudo -n true
 	sleep 60
@@ -63,10 +63,5 @@ info "Initializing..."
 dest="${HOME}/.env"
 rm -rf "$dest"
 git clone --quiet "https://github.com/ylor/env.git" "$dest"
-if fish "${dest}/init.fish"; then
-	success "see you, space cowboy"
-else
-	error "you're gonna carry that weight"
-fi
-
-stty sane # allow user input
+fish "${dest}/main.fish"
+# stty sane # allow user input

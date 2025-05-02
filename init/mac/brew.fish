@@ -1,5 +1,4 @@
 #!/usr/bin/env fish
-
 function strap
     info "Installing homebrew..."
     bash -c "$(curl -fsSL https://raw.githubusercontent.com/Homebrew/install/HEAD/install.sh)"

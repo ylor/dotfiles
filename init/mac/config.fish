@@ -1,8 +1,7 @@
 #!/usr/bin/env fish
 
 # Configure dock
-if defaults read com.apple.Dock | grep -q "com.apple.launchpad.launcher"
-    and gum confirm "Clear the Dock?"
+if defaults read com.apple.Dock | grep -q "com.apple.launchpad.launcher" && gum confirm "Clear the Dock?"
     and ensure dockutil
     and dockutil --remove all --add /Applications --add "$HOME/Downloads" >/dev/null
 end
