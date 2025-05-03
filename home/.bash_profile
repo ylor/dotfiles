@@ -1,6 +1,9 @@
-#!/bin/env zsh
 # make homebrew happy
-[[ -d /opt/homebrew ]] && eval $(/opt/homebrew/bin/brew shellenv)
+if [[ -d /opt/homebrew ]]; then
+    eval $(/opt/homebrew/bin/brew shellenv)
+    export HOMEBREW_NO_ANALYTICS=1
+    export HOMEBREW_NO_ENV_HINTS=1
+fi
 
 # drop into fish for interactive shells
 # adapted from https://wiki.archlinux.org/title/Fish

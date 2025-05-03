@@ -6,26 +6,12 @@ function missing
     not command --search --quiet "$argv"
 end
 
-if exist tput
-    set RESET (tput sgr0)
-    set BOLD (tput bold)
-    set RED (tput setaf 1)
-    set GREEN (tput setaf 2)
-    set BLUE (tput setaf 4)
-    set CLEAR_LINE (tput el)
+function arch
+    uname -m
 end
 
-function info
-    printf "\r%s%sINFO%s %s" $BOLD $BLUE $RESET $argv
-end
-
-function success
-    printf "\r%s%sSUCCESS%s %s%s\n" $BOLD $GREEN $RESET $argv $CLEAR_LINE
-end
-
-function error
-    printf "\r%s%sERROR%s %s%s\n" $BOLD $RED $RESET $argv $CLEAR_LINE
-    exit 1
+function kernel
+    string lower (uname -s)
 end
 
 function link
@@ -46,31 +32,31 @@ function link
     # end
 end
 
-function arch
-    uname -m
-end
+function npc
+    argparse n/no-newline -- $argv
+    set str (string join " " $argv)
 
-function kernel
-   string lower (uname -s) 
-end
-
-function run
-    info $argv
-    source $argv && success $argv || error $argv
-end
-
-function spin
-    exist gum || error "`gum` is missing"
-    argparse 't/title=' 'c/command=' -- $argv || return
-    set spinners line dot minidot jump pulse points meter hamburger
-    set spinner (random choice $spinners)
-    eval "gum spin --spinner="$spinner" --title="$_flag_title "-- "$_flag_command""
-end
-
-function check_sudo
-    if sudo -n true
-        spin -- sudo $argv
-    else
-        sudo $argv
+    # print each character with delay
+    while test -n "$str"
+        printf "%s" (string sub -l 1 $str)
+        set str (string sub -s 2 $str)
+        sleep 0.01
     end
+
+    # add newline if needed
+    if not set -q _flag_no_newline
+        printf "\n"
+    end
+end
+
+function pls
+    exist gum || error "`gum` is missing"
+    if not sudo -n true 2>/dev/null
+        gum input --password --placeholder="password" --no-show-help | sudo --validate --stdin
+    end
+    command sudo $argv
+end
+
+function spinner
+    random choice spinners line dot minidot jump pulse points meter hamburger
 end

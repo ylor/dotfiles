@@ -7,31 +7,24 @@ set -e
 exist() { command -v "$1" >/dev/null; }
 missing() { ! command -v "$1" >/dev/null; }
 
-if exist tput; then
-	RESET="$(tput sgr0)"
-	BOLD="$(tput bold)"
-	RED="$(tput setaf 1)"
-	GREEN="$(tput setaf 2)"
-	BLUE="$(tput setaf 4)"
-fi
-
-info() { printf "${BOLD}${BLUE}INFO${RESET} %s\n" "$*"; }
-error() { printf "\r${BOLD}${RED}ERROR${RESET} %s\n" "$*" && exit 1; }
-success() { printf "\r${BOLD}${GREEN}SUCCESS${RESET} %s\n" "$*"; }
-
 npc() {
-	str=$1
-	while [ "$str" ]; do
-		printf "%s" "${str%"${str#?}"}"
-		sleep 0.01
-		str=${str#?}
-	done
+    newline=1
+    [ "$1" = "-n" ] || [ "$1" = "--no-newline" ] && { newline=0; shift; }
+
+    str="$*"
+    while [ -n "$str" ]; do
+        printf "%s" "${str%"${str#?}"}"
+        str="${str#?}"
+        sleep 0.01
+    done
+
+    [ "$newline" -eq 1 ] && printf "\n"
 }
 
-clear
 stty -echo -icanon time 0 min 1 # prevent ludonarrative dissonence
-npc " ▲" && echo
-npc "▲ ▲" && echo
+printf "\033[2J\033[H"
+npc " ▲"
+npc "▲ ▲"
 npc "press any key to continue (or abort with ctrl+c)..."
 dd bs=1 count=1 2>/dev/null
 stty sane
@@ -45,13 +38,13 @@ done 2>/dev/null &
 
 if [ "$(uname)" = "Darwin" ]; then
 	if missing /opt/homebrew/bin/brew; then
-		/bin/bash -c "$(curl -fsSL https://raw.githubusercontent.com/Homebrew/install/HEAD/install.sh)"
+		bash -c "$(curl -fsSL https://raw.githubusercontent.com/Homebrew/install/HEAD/install.sh)"
 	fi
 	eval "$(/opt/homebrew/bin/brew shellenv)"
 fi
 
 if missing fish || missing git; then
-	info "Installing dependencies..."
+	npc "Installing dependencies..."
 	exist apk && sudo apk add fish git                  # Alpine
 	exist apt && sudo apt install -y fish git           # Debian
 	exist brew && brew install --quiet fish git         # macOS
@@ -62,5 +55,5 @@ fi
 dest="${HOME}/.env"
 rm -rf "$dest"
 git clone "https://github.com/ylor/env.git" "$dest"
-info "Initializing..."
+npc "Initializing..."
 fish "${dest}/main.fish"
