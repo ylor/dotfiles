@@ -35,7 +35,6 @@ for cask in $casks
 end
 
 # Install Mac App Store apps
-ensure mas
 set apps 1Password-1569813296 Noir-1592917505 Wipr-1662217862
 set installed_apps (mas list)
 for app in $apps
