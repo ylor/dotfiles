@@ -26,7 +26,7 @@ printf "\033[2J\033[H"
 npc " ▲"
 npc "▲ ▲"
 npc "press any key to continue (or abort with ctrl+c)..."
-dd bs=1 count=1 2>/dev/null
+dd bs=1 count=1 2>/dev/null # wait for single keypress
 stty sane
 
 sudo echo
