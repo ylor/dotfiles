@@ -33,7 +33,7 @@ end
 # end
 
 if command -q ollama # https://github.com/BurntSushi/ripgrep - modern grep
-    alias llm="ollama run gemma3"
+    alias llm="ollama run gemma3:4b-it-qat"
 end
 
 if command -q rg # https://github.com/BurntSushi/ripgrep - modern grep
