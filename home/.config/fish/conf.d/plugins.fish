@@ -40,7 +40,12 @@ if command -q rg # https://github.com/BurntSushi/ripgrep - modern grep
     alias grep="rg"
 end
 
-if command -q zed; or command -q zed-preview # http://zed.dev - zed shorthand
+if command hx --version | grep -q evil
+    alias vi="hx"
+    alias vim="hx"
+end
+
+if command -q zed || command -q zeditor # http://zed.dev - zed shorthand
     function z
         set --local zed (which zed-preview || which zed)
         test (count $argv) -eq 0 && $zed . || $zed $argv
