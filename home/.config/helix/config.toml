@@ -3,6 +3,10 @@ theme = "catppuccin"
 [editor]
 line-number = "relative"
 
+[editor.auto-save]
+focus-lost = true
+after-delay.enable = true
+
 [editor.cursor-shape]
 insert = "bar"
 normal = "block"
@@ -10,3 +14,6 @@ select = "underline"
 
 [editor.file-picker]
 hidden = false
+
+[editor.soft-wrap]
+enable = true
