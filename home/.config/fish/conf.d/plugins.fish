@@ -40,9 +40,11 @@ if command -q rg # https://github.com/BurntSushi/ripgrep - modern grep
     alias grep="rg"
 end
 
-if command hx --version | grep -q evil
-    alias vi="hx"
-    alias vim="hx"
+if command -q hx
+   if hx --version | grep -q evil
+        alias vi="hx"
+        alias vim="hx"
+    end
 end
 
 if command -q zed || command -q zeditor # http://zed.dev - zed shorthand
