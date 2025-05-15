@@ -1,6 +1,6 @@
-# Fish
-set TERM xterm-256color
+set TERM xterm-256color #fix for ghostty
 set fish_greeting #disable greeting
+
 ## Syntax highlighting
 set fish_color_command green
 set fish_color_param white
@@ -27,10 +27,6 @@ alias md="mkdir -p"
 alias rd="rmdir"
 alias re="exec fish"
 alias fishfmt="fish_indent --write"
-
-function mdcd ### mkdir & cd to it
-    md $argv && cd $argv
-end
 
 for prompt in $__fish_config_dir/prompt/**.fish
     source $prompt

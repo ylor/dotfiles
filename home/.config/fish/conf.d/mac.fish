@@ -22,7 +22,7 @@ if test (uname) = Darwin
 
     # macOS Functions
     function mac
-        if not command -q gum
+        if not command -vq gum
             echo "Unknown command: gum" && return 127
         end
 

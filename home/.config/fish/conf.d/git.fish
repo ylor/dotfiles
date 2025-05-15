@@ -1,4 +1,4 @@
-if command -q git # https://git-scm.com
+if command -vq git # https://git-scm.com
     abbr --add g git
 
     abbr --command git b branch
@@ -15,10 +15,6 @@ if command -q git # https://git-scm.com
             command git $argv
         end
     end
-end
-
-function quick-commit
-    git add -A && git commit -m $(curl --silent --fail https://whatthecommit.com/index.txt) && git push
 end
 
 # Functions

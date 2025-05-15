@@ -2,7 +2,7 @@
 #     [ -d $path ] && "$path/bin/brew" shellenv | source
 # end
 
-if command -q brew # https://github.com/Homebrew/brew
+if command -vq brew # https://github.com/Homebrew/brew
     function brew
         if [ $argv[1] = up ]
             command brew update && brew upgrade

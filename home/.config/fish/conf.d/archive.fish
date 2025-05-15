@@ -1,4 +1,4 @@
-# if command -q starship # starship.rs
+# if command -vq starship # starship.rs
 #     starship init fish | source
 # end
 
