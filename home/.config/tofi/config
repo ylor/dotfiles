@@ -1,0 +1,18 @@
+border-width = 0
+height = 100%
+width = 100%
+padding-left = 35%
+padding-top = 35%
+
+
+num-results = 5
+result-spacing = 15
+
+font = "Adwaita Mono"
+prompt-text = "> "
+background-color = #000C
+
+input-color = #fafafa
+prompt-color = #00ff99ee
+default-result-color = #333C
+selection-color = #33ccffee
