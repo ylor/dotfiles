@@ -97,4 +97,6 @@ defaults write -g NSUserKeyEquivalents -dict-add "\033Window\033Fill" "@~^\\U219
 defaults write -g NSUserKeyEquivalents -dict-add "\033Window\033Move & Resize\033Left" "@~^\\U2190"
 defaults write -g NSUserKeyEquivalents -dict-add "\033Window\033Move & Resize\033Right" "@~^\\U2192"
 
+defaults write -g NSWindowShouldDragOnGesture -bool true
+
 killall Finder Dock
