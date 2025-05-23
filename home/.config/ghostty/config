@@ -5,7 +5,6 @@ font-family = "Berkeley Mono"
 font-family = "Symbols Nerd Font Mono"
 font-size = 16
 font-thicken=true
-keybind = global:cmd+alt+ctrl+enter=toggle_quick_terminal
 
 theme = catppuccin-mocha
 background = #000000
@@ -22,6 +21,8 @@ window-padding-y = 4
 window-save-state = always
 window-subtitle = working-directory
 
+keybind = global:cmd+alt+ctrl+`=toggle_quick_terminal
+keybind = global:cmd+alt+ctrl+escape=toggle_quick_terminal
 #keybind = ctrl+1=goto_tab:1
 #keybind = ctrl+2=goto_tab:2
 #keybind = ctrl+3=goto_tab:3
