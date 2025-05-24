@@ -92,11 +92,11 @@ defaults write com.apple.TextEdit SmartQuotes -bool false
 defaults write com.apple.dock wvous-br-corner -int 2
 defaults write com.apple.dock wvous-br-modifier -int 0
 
+# Window Management
 defaults write -g NSUserKeyEquivalents -dict-add "\033Window\033Center" "@~^\\U2193"
 defaults write -g NSUserKeyEquivalents -dict-add "\033Window\033Fill" "@~^\\U2191"
 defaults write -g NSUserKeyEquivalents -dict-add "\033Window\033Move & Resize\033Left" "@~^\\U2190"
 defaults write -g NSUserKeyEquivalents -dict-add "\033Window\033Move & Resize\033Right" "@~^\\U2192"
-
-defaults write -g NSWindowShouldDragOnGesture -bool true
+defaults write -g NSWindowShouldDragOnGesture -bool true # Drag with cmd+ctrl
 
 killall Finder Dock

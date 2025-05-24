@@ -25,7 +25,7 @@ for pkg in $pkgs
 end
 
 # Install casks
-set casks 1password alt-tab appcleaner betterdisplay ghostty hyperkey linearmouse maccy zed
+set casks 1password alt-tab appcleaner betterdisplay ghostty hammerspoon hyperkey linearmouse maccy zed
 set installed_casks (brew list --cask)
 for cask in $casks
     if not echo "$installed_casks" | grep -iq "$cask"
