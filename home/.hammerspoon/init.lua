@@ -1,18 +1,19 @@
 ---@diagnostic disable-next-line: undefined-global
-local hs         = hs
+local hs        = hs
 
 --Key Hierarchy
 ---Spaces = Control
 ---Global = Hyper
 ---Windows = Hyper
 
-local mod        = {}
-mod.hyper        = { "ctrl", "alt", "cmd" }
-mod.hyper.shift  = { "ctrl", "alt", "cmd", "shift" }
-mod.main         = { "ctrl" }
-mod.main.shift   = { "ctrl", "shift" }
-mod.second       = { "alt" }
-mod.second.shift = { "alt", "shift" }
+local mod       = {}
+mod.alt         = { "alt" }
+mod.main        = { "ctrl" }
+mod.hyper       = { "ctrl", "alt", "cmd" }
+mod.combined    = { "ctrl", "alt" }
+mod.hyper.shift = { "ctrl", "alt", "cmd", "shift" }
+mod.main.shift  = { "ctrl", "shift" }
+mod.alt.shift   = { "alt", "shift" }
 
 function App(mods, key, app)
     hs.hotkey.bind(mods, key, function()
@@ -60,8 +61,8 @@ hs.hotkey.bind(mod.hyper.shift, "j", function() Focus("down") end)
 hs.hotkey.bind(mod.hyper.shift, "k", function() Focus("up") end)
 hs.hotkey.bind(mod.hyper.shift, "l", function() Focus("right") end)
 
-hs.hotkey.bind(mod.main.shift, "left", function() Focus("left") end)
-hs.hotkey.bind(mod.main.shift, "right", function() Focus("right") end)
+hs.hotkey.bind(mod.combined, "left", function() Focus("left") end)
+hs.hotkey.bind(mod.combined, "right", function() Focus("right") end)
 
 
 hs.hotkey.bind(mod.main.shift, "c", function()
@@ -92,10 +93,10 @@ hs.hotkey.bind(mod.main.shift, "right", function()
     local win = hs.window.focusedWindow()
     local eastScreen = win:screen():toEast()
     -- win:moveToScreen(eastScreen)
-    app:selectMenuItem({ "Window", "Move to " .. eastScreen })
+    app:selectMenuItem({ "Window", "Move to " .. eastScreen:name() })
 end)
 
-local windowManager = hs.eventtap.new({ hs.eventtap.event.types.keyDown }, function(event)
+WindowManager = hs.eventtap.new({ hs.eventtap.event.types.keyDown }, function(event)
     local app = hs.application.frontmostApplication()
     local flags = event:getFlags()
     local ctrl = flags:containExactly({ "ctrl" }) or flags:containExactly({ "ctrl", "fn" })
@@ -117,7 +118,7 @@ local windowManager = hs.eventtap.new({ hs.eventtap.event.types.keyDown }, funct
 
     return false
 end)
-windowManager:start()
+WindowManager:start()
 
 -- hs.hotkey.bind(mod.hyper, "L", hs.caffeinate.lockScreen)
 -- hs.hotkey.bind(mod.hyperShift, "L", hs.caffeinate.systemSleep)
