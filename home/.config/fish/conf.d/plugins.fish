@@ -33,7 +33,8 @@ end
 # end
 
 if command -vq ollama # https://github.com/BurntSushi/ripgrep - modern grep
-    alias llm="ollama run gemma3:4b-it-qat"
+    set -q llm_model | set llm_model deepseek-r1
+    alias llm="ollama run $llm_model"
 end
 
 if command -vq rg # https://github.com/BurntSushi/ripgrep - modern grep
