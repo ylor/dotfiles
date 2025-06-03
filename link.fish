@@ -16,10 +16,10 @@ find "$env" -type f | while read file
     ln -sf "$file" "$(rehome "$file")"
 end
 
-# # purge broken symlinks
-# find -L "$HOME" -type l -maxdepth 1 -exec rm {} \+
-# find -L "$HOME/.config" "$HOME/.local" -type l -exec rm {} \+
+# purge broken symlinks
+find -L "$HOME" -type l -maxdepth 1 -exec rm {} \+
+find -L "$HOME/.config" "$HOME/.local" -type l -exec rm {} \+
 
-# # purge empty folders
-# find "$HOME" -type d -maxdepth 1 -empty -delete
-# find "$HOME/.config" "$HOME/.local" -type d -empty -delete
+# purge empty folders
+find "$HOME" -type d -maxdepth 1 -empty -delete
+find "$HOME/.config" "$HOME/.local" -type d -empty -delete

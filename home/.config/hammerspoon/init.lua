@@ -1,3 +1,8 @@
+require("lib.app")
+require("lib.mouse")
+require("lib.window")
+require("lib.macos")
+
 ---@diagnostic disable-next-line: undefined-global
 local hs        = hs
 
@@ -15,32 +20,6 @@ mod.hyper.shift = { "ctrl", "alt", "cmd", "shift" }
 mod.main.shift  = { "ctrl", "shift" }
 mod.alt.shift   = { "alt", "shift" }
 
-function App(mods, key, app)
-    hs.hotkey.bind(mods, key, function()
-        LaunchOrFocusOrRotate(app)
-        Focus()
-    end)
-end
-
--- launch, focus or rotate application
-function LaunchOrFocusOrRotate(app)
-    local focusedWindow = hs.window.focusedWindow()
-    -- If already focused, try to find the next window
-    if focusedWindow and focusedWindow:application():name() == app then
-        local appWindows = hs.application.get(app):allWindows()
-        if #appWindows > 0 then
-            -- It seems that this list order changes after one window get focused,
-            -- let's directly bring the last one to focus every time
-            appWindows[#appWindows]:focus()
-        else -- this should not happen, but just in case
-            hs.application.launchOrFocus(app)
-        end
-    else -- if not focused
-        hs.application.launchOrFocus(app)
-    end
-end
-
-App("cmd", "Return", "Ghostty")
 App(mod.hyper, "Return", "Ghostty")
 App(mod.main, "Return", "Ghostty")
 App(mod.main, "E", "Zed")
@@ -68,16 +47,38 @@ function Focus(direction)
         hs.window.focusedWindow():focusWindowEast()
     end
 
-    local win = hs.window.focusedWindow()
-    local frame = win:frame()
-    local center = hs.geometry.rectMidPoint(frame)
-    hs.mouse.absolutePosition(center)
+    -- local win = hs.window.focusedWindow()
+    -- local frame = win:frame()
+    -- local center = hs.geometry.rectMidPoint(frame)
+    -- hs.mouse.absolutePosition(center)
 end
+
+hs.hotkey.bind(mod.hyper, "h", function()
+    hs.application.frontmostApplication():selectMenuItem({ "Window", "Move & Resize", "Left" })
+end)
+hs.hotkey.bind(mod.hyper, "j", function()
+    hs.application.frontmostApplication():selectMenuItem({ "Window", "Center" })
+end)
+hs.hotkey.bind(mod.hyper, "k", function()
+    hs.application.frontmostApplication():selectMenuItem({ "Window", "Fill" })
+end)
+hs.hotkey.bind(mod.hyper, "l", function()
+    hs.application.frontmostApplication():selectMenuItem({ "Window", "Move & Resize", "Right" })
+end)
+
+hs.hotkey.bind(mod.hyper, "left", WindowLeft)
+hs.hotkey.bind(mod.hyper, "down", WindowCenter)
+hs.hotkey.bind(mod.hyper, "up", WindowFill)
+hs.hotkey.bind(mod.hyper, "right", WindowRight)
 
 hs.hotkey.bind(mod.hyper.shift, "h", function() Focus("left") end)
 hs.hotkey.bind(mod.hyper.shift, "j", function() Focus("down") end)
 hs.hotkey.bind(mod.hyper.shift, "k", function() Focus("up") end)
 hs.hotkey.bind(mod.hyper.shift, "l", function() Focus("right") end)
+hs.hotkey.bind(mod.hyper.shift, "left", function() Focus("left") end)
+hs.hotkey.bind(mod.hyper.shift, "down", function() Focus("down") end)
+hs.hotkey.bind(mod.hyper.shift, "up", function() Focus("up") end)
+hs.hotkey.bind(mod.hyper.shift, "right", function() Focus("right") end)
 
 hs.hotkey.bind(mod.combined, "left", function() Focus("left") end)
 hs.hotkey.bind(mod.combined, "right", function() Focus("right") end)
@@ -114,31 +115,7 @@ hs.hotkey.bind(mod.main.shift, "right", function()
     app:selectMenuItem({ "Window", "Move to " .. eastScreen:name() })
 end)
 
-WindowManager = hs.eventtap.new({ hs.eventtap.event.types.keyDown }, function(event)
-    local app = hs.application.frontmostApplication()
-    local flags = event:getFlags()
-    local ctrl = flags:containExactly({ "ctrl" }) or flags:containExactly({ "ctrl", "fn" })
-    local kc = event:getKeyCode()
-
-    if ctrl and kc == hs.keycodes.map["left"] then
-        app:selectMenuItem({ "Window", "Move & Resize", "Left" })
-        return true
-    elseif ctrl and kc == hs.keycodes.map["down"] then
-        app:selectMenuItem({ "Window", "Center" })
-        return true
-    elseif ctrl and kc == hs.keycodes.map["up"] then
-        app:selectMenuItem({ "Window", "Fill" })
-        return true
-    elseif ctrl and kc == hs.keycodes.map["right"] then
-        app:selectMenuItem({ "Window", "Move & Resize", "Right" })
-        return true
-    end
-
-    return false
-end)
-WindowManager:start()
-
 -- hs.hotkey.bind(mod.hyper, "L", hs.caffeinate.lockScreen)
--- hs.hotkey.bind(mod.hyperShift, "L", hs.caffeinate.systemSleep)
+--- hs.hotkey.bind(mod.hyperShift, "L", hs.caffeinate.systemSleep)
 hs.hotkey.bind(mod.hyper, "R", hs.reload)
 hs.alert.show("Config loaded")

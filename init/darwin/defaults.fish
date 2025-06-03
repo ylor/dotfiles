@@ -99,4 +99,7 @@ defaults write com.apple.dock wvous-br-modifier -int 0
 # defaults write -g NSUserKeyEquivalents -dict-add "\033Window\033Move & Resize\033Right" "@~^\\U2192"
 defaults write -g NSWindowShouldDragOnGesture -bool true # Drag with cmd+ctrl
 
+# Hammerspoon
+defaults write org.hammerspoon.Hammerspoon MJConfigFile "$HOME/.config/hammerspoon/init.lua"
+
 killall Finder Dock
