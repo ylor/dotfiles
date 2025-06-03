@@ -20,3 +20,24 @@ end
 function WindowRight()
     SelectMenuItem({ "Window", "Move & Resize", "Right" })
 end
+
+function ExtractText()
+    hs.execute("/Applications/TRex.app/Contents/MacOS/cli/trex")
+end
+
+function Focus(direction)
+    if direction == "left" then
+        hs.window.focusedWindow():focusWindowWest()
+    elseif direction == "down" then
+        hs.window.focusedWindow():focusWindowSouth()
+    elseif direction == "up" then
+        hs.window.focusedWindow():focusWindowNorth()
+    elseif direction == "right" then
+        hs.window.focusedWindow():focusWindowEast()
+    end
+
+    -- local win = hs.window.focusedWindow()
+    -- local frame = win:frame()
+    -- local center = hs.geometry.rectMidPoint(frame)
+    -- hs.mouse.absolutePosition(center)
+end

@@ -1,6 +1,21 @@
 ---@diagnostic disable-next-line: undefined-global
 local hs = hs
 
+function WindowHell()
+    local win = hs.window.focusedWindow()
+    local frame = win:screen():frame()
+
+    -- size
+    local w = frame.w / 1.5
+    local h = frame.h / 1.25
+
+    -- position
+    local x = frame.x + (frame.w - w) / 2
+    local y = frame.y + (frame.h - h) / 2
+
+    win:setFrame(hs.geometry.rect(x, y, w, h), 0)
+end
+
 WindowManager = hs.eventtap.new({ hs.eventtap.event.types.keyDown }, function(event)
     local app = hs.application.frontmostApplication()
     local flags = event:getFlags()

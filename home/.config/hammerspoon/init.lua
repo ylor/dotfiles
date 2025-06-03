@@ -24,27 +24,10 @@ App(mod.hyper, "T", "Ghostty")
 local work = string.find(hs.host.localizedName(), "^PAPA-")
 if work then
     App(mod.hyper, "I", "Arc")
-    App(mod.hyper, "O", "Safari")
+    App(mod.hyper.shift, "I", "Safari")
 else
     App(mod.hyper, "I", "Safari")
-    App(mod.hyper, "O", "Zen")
-end
-
-function Focus(direction)
-    if direction == "left" then
-        hs.window.focusedWindow():focusWindowWest()
-    elseif direction == "down" then
-        hs.window.focusedWindow():focusWindowSouth()
-    elseif direction == "up" then
-        hs.window.focusedWindow():focusWindowNorth()
-    elseif direction == "right" then
-        hs.window.focusedWindow():focusWindowEast()
-    end
-
-    -- local win = hs.window.focusedWindow()
-    -- local frame = win:frame()
-    -- local center = hs.geometry.rectMidPoint(frame)
-    -- hs.mouse.absolutePosition(center)
+    App(mod.hyper.shift, "I", "Zen")
 end
 
 hs.hotkey.bind(mod.hyper, "h", WindowLeft)
@@ -70,20 +53,8 @@ hs.hotkey.bind(mod.combined, "left", function() Focus("left") end)
 hs.hotkey.bind(mod.combined, "right", function() Focus("right") end)
 
 
-hs.hotkey.bind(mod.main.shift, "c", function()
-    local win = hs.window.focusedWindow()
-    local frame = win:screen():frame()
-
-    -- size
-    local w = frame.w / 1.5
-    local h = frame.h / 1.25
-
-    -- position
-    local x = frame.x + (frame.w - w) / 2
-    local y = frame.y + (frame.h - h) / 2
-
-    win:setFrame(hs.geometry.rect(x, y, w, h), 0)
-end)
+hs.hotkey.bind(mod.main.shift, "c", WindowHell)
+hs.hotkey.bind(mod.hyper, "o", ExtractText)
 
 hs.hotkey.bind(mod.main.shift, "left", function()
     local win = hs.window.focusedWindow()
