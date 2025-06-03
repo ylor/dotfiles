@@ -53,7 +53,7 @@ hs.hotkey.bind(mod.combined, "left", function() Focus("left") end)
 hs.hotkey.bind(mod.combined, "right", function() Focus("right") end)
 
 
-hs.hotkey.bind(mod.main.shift, "c", WindowHell)
+hs.hotkey.bind(mod.main.shift, "c", WindowFloat)
 hs.hotkey.bind(mod.hyper, "o", ExtractText)
 
 hs.hotkey.bind(mod.main.shift, "left", function()

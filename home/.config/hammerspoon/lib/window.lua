@@ -1,7 +1,7 @@
 ---@diagnostic disable-next-line: undefined-global
 local hs = hs
 
-function WindowHell()
+function WindowFloat()
     local win = hs.window.focusedWindow()
     local frame = win:screen():frame()
 
