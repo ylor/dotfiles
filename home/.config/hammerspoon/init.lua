@@ -6,11 +6,6 @@ require("lib.macos")
 ---@diagnostic disable-next-line: undefined-global
 local hs        = hs
 
---Key Hierarchy
----Spaces = Control
----Global = Hyper
----Windows = Hyper
-
 local mod       = {}
 mod.alt         = { "alt" }
 mod.main        = { "ctrl" }
@@ -21,19 +16,18 @@ mod.main.shift  = { "ctrl", "shift" }
 mod.alt.shift   = { "alt", "shift" }
 
 App(mod.hyper, "Return", "Ghostty")
-App(mod.main, "Return", "Ghostty")
-App(mod.main, "E", "Zed")
-App(mod.main, "F", "Finder")
-App(mod.main, "P", "1Password")
-App(mod.main, "T", "Ghostty")
+App(mod.hyper, "E", "Zed")
+App(mod.hyper, "F", "Finder")
+App(mod.hyper, "P", "1Password")
+App(mod.hyper, "T", "Ghostty")
 
 local work = string.find(hs.host.localizedName(), "^PAPA-")
 if work then
-    App(mod.main, "I", "Arc")
-    App(mod.main, "O", "Safari")
+    App(mod.hyper, "I", "Arc")
+    App(mod.hyper, "O", "Safari")
 else
-    App(mod.main, "I", "Safari")
-    App(mod.main, "O", "Zen")
+    App(mod.hyper, "I", "Safari")
+    App(mod.hyper, "O", "Zen")
 end
 
 function Focus(direction)
@@ -104,6 +98,6 @@ hs.hotkey.bind(mod.main.shift, "right", function()
 end)
 
 -- hs.hotkey.bind(mod.hyper, "L", hs.caffeinate.lockScreen)
---- hs.hotkey.bind(mod.hyperShift, "L", hs.caffeinate.systemSleep)
+-- hs.hotkey.bind(mod.hyperShift, "L", hs.caffeinate.systemSleep)
 hs.hotkey.bind(mod.hyper, "R", hs.reload)
 hs.alert.show("Config loaded")
