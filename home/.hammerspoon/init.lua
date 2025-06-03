@@ -17,9 +17,27 @@ mod.alt.shift   = { "alt", "shift" }
 
 function App(mods, key, app)
     hs.hotkey.bind(mods, key, function()
-        hs.application.launchOrFocus(app)
+        LaunchOrFocusOrRotate(app)
         Focus()
     end)
+end
+
+-- launch, focus or rotate application
+function LaunchOrFocusOrRotate(app)
+    local focusedWindow = hs.window.focusedWindow()
+    -- If already focused, try to find the next window
+    if focusedWindow and focusedWindow:application():name() == app then
+        local appWindows = hs.application.get(app):allWindows()
+        if #appWindows > 0 then
+            -- It seems that this list order changes after one window get focused,
+            -- let's directly bring the last one to focus every time
+            appWindows[#appWindows]:focus()
+        else -- this should not happen, but just in case
+            hs.application.launchOrFocus(app)
+        end
+    else -- if not focused
+        hs.application.launchOrFocus(app)
+    end
 end
 
 App("cmd", "Return", "Ghostty")
