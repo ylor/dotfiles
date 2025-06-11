@@ -72,3 +72,48 @@ end)
 -- hs.hotkey.bind(mod.hyperShift, "L", hs.caffeinate.systemSleep)
 hs.hotkey.bind(mod.hyper, "R", hs.reload)
 hs.alert.show("Config loaded")
+
+-- Get macOS version
+OperatingSystem = hs.host.operatingSystemVersion().major
+
+function IsActiveWindowSpotlight()
+    local focusedWindow = hs.window.focusedWindow()
+
+    if focusedWindow then
+        local app = focusedWindow:application()
+        if app:bundleID() == "com.apple.Spotlight" then
+            return true
+        end
+    end
+    return false
+end
+
+if OperatingSystem >= 16 then
+    hs.alert.show("You are running " .. OperatingSystem)
+
+    hs.hotkey.bind(mod.hyper, "space", function()
+        local spot = IsActiveWindowSpotlight()
+        if spot then
+            hs.eventtap.keyStroke({ "cmd" }, "1", 0)
+        else
+            hs.eventtap.keyStroke({ "cmd" }, "space", 0)
+            hs.timer.doAfter(0.1, function()
+                hs.eventtap.keyStroke({ "cmd" }, "1", 0)
+            end)
+        end
+    end)
+
+    hs.hotkey.bind(mod.hyper, "v", function()
+        local spot = IsActiveWindowSpotlight()
+        if spot then
+            hs.eventtap.keyStroke({ "cmd" }, "4", 0)
+        else
+            hs.eventtap.keyStroke({ "cmd" }, "space", 0)
+            hs.timer.doAfter(0.1, function()
+                hs.eventtap.keyStroke({ "cmd" }, "4", 0)
+            end)
+        end
+    end)
+end
+
+-- print(hs.inspect(osVersion))
