@@ -2,6 +2,7 @@ require("lib.app")
 require("lib.mouse")
 require("lib.window")
 require("lib.macos")
+-- require("lib.reload")
 
 ---@diagnostic disable-next-line: undefined-global
 local hs        = hs
@@ -89,7 +90,7 @@ function IsActiveWindowSpotlight()
 end
 
 if OperatingSystem >= 16 then
-    hs.alert.show("You are running " .. OperatingSystem)
+    hs.alert.show("macOS " .. OperatingSystem)
 
     hs.hotkey.bind(mod.hyper, "space", function()
         local spot = IsActiveWindowSpotlight()

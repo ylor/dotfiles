@@ -22,7 +22,9 @@ function WindowRight()
 end
 
 function ExtractText()
-    hs.execute("./")
+    local bin = hs.fs.pathToAbsolute(hs.configdir .. "/bin")
+    local ocr = bin .. "/ocr"
+    hs.execute(ocr)
 end
 
 function Focus(direction)
