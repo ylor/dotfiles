@@ -22,7 +22,7 @@ function WindowRight()
 end
 
 function ExtractText()
-    hs.execute("/Applications/TRex.app/Contents/MacOS/cli/trex")
+    hs.execute("./")
 end
 
 function Focus(direction)
