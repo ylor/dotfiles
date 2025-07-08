@@ -21,6 +21,7 @@ App(mod.hyper, "E", "Zed")
 App(mod.hyper, "F", "Finder")
 App(mod.hyper, "P", "1Password")
 App(mod.hyper, "T", "Ghostty")
+App(mod.hyper.shift, "T", "Terminal")
 
 local work = string.find(hs.host.localizedName(), "^PAPA-")
 if work then
@@ -54,7 +55,7 @@ hs.hotkey.bind(mod.combined, "left", function() Focus("left") end)
 hs.hotkey.bind(mod.combined, "right", function() Focus("right") end)
 
 
-hs.hotkey.bind(mod.main.shift, "c", WindowFloat)
+hs.hotkey.bind(mod.main.shift, "down", WindowFloat)
 hs.hotkey.bind(mod.hyper, "o", ExtractText)
 
 hs.hotkey.bind(mod.main.shift, "left", function()
@@ -89,32 +90,26 @@ function IsActiveWindowSpotlight()
     return false
 end
 
-if OperatingSystem >= 16 then
-    hs.alert.show("macOS " .. OperatingSystem)
-
-    hs.hotkey.bind(mod.hyper, "space", function()
-        local spot = IsActiveWindowSpotlight()
-        if spot then
-            hs.eventtap.keyStroke({ "cmd" }, "1", 0)
-        else
-            hs.eventtap.keyStroke({ "cmd" }, "space", 0)
-            hs.timer.doAfter(0.1, function()
-                hs.eventtap.keyStroke({ "cmd" }, "1", 0)
-            end)
-        end
-    end)
-
-    hs.hotkey.bind(mod.hyper, "v", function()
-        local spot = IsActiveWindowSpotlight()
-        if spot then
-            hs.eventtap.keyStroke({ "cmd" }, "4", 0)
-        else
-            hs.eventtap.keyStroke({ "cmd" }, "space", 0)
-            hs.timer.doAfter(0.1, function()
-                hs.eventtap.keyStroke({ "cmd" }, "4", 0)
-            end)
-        end
-    end)
+function AppExists(path)
+    local attr = hs.fs.attributes(path)
+    return attr and attr.mode == "directory"
 end
 
--- print(hs.inspect(osVersion))
+AppExists("/Applications/Ghostty.app")
+
+if OperatingSystem >= 16 then
+    hs.alert.show("macOS " .. OperatingSystem)
+    if not AppExists("/Applications/Maccy.app") then
+        hs.hotkey.bind(mod.hyper, "v", function()
+            local spot = IsActiveWindowSpotlight()
+            if spot then
+                hs.eventtap.keyStroke({ "cmd" }, "4", 0)
+            else
+                hs.eventtap.keyStroke({ "cmd" }, "space", 0)
+                hs.timer.doAfter(0.1, function()
+                    hs.eventtap.keyStroke({ "cmd" }, "4", 0)
+                end)
+            end
+        end)
+    end
+end

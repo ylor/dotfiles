@@ -1,9 +1,10 @@
 # https://ghostty.org/docs/config
+auto-update-channel = tip
 
 font-family = "Adwaita Mono"
 font-family = "Berkeley Mono"
 font-family = "Symbols Nerd Font Mono"
-font-size = 16
+font-size = 18
 font-thicken=true
 
 theme = catppuccin-mocha

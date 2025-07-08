@@ -21,11 +21,12 @@
     "Apple Color Emoji",
     "Apple Symbols"
   ],
+  "buffer_font_size": 16,
   "format_on_save": "on",
-  "preferred_line_length": 80,
+  "preferred_line_length": 100,
   // "relative_line_numbers": true,
   "soft_wrap": "preferred_line_length",
-  "theme": "One Dark",
+  "theme": "Catppuccin Mocha",
   "ui_font_family": ".SystemUIFont",
   //  "vim_mode": true,
   "autosave": {
