@@ -18,3 +18,8 @@ function App(mods, key, app)
         LaunchOrFocusOrCycle(app)
     end)
 end
+
+function AppExists(path)
+    local attr = hs.fs.attributes(path)
+    return attr and attr.mode == "directory"
+end

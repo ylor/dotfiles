@@ -90,13 +90,6 @@ function IsActiveWindowSpotlight()
     return false
 end
 
-function AppExists(path)
-    local attr = hs.fs.attributes(path)
-    return attr and attr.mode == "directory"
-end
-
-AppExists("/Applications/Ghostty.app")
-
 if OperatingSystem >= 16 then
     hs.alert.show("macOS " .. OperatingSystem)
     if not AppExists("/Applications/Maccy.app") then
