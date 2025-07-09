@@ -1,7 +1,8 @@
+require("lib.macos")
 require("lib.app")
 require("lib.mouse")
+require("lib.quit")
 require("lib.window")
-require("lib.macos")
 -- require("lib.reload")
 
 ---@diagnostic disable-next-line: undefined-global
