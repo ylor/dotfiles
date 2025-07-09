@@ -2,18 +2,16 @@
 local hs = hs
 
 local exempt = {
+    Finder = true,
     Hammerspoon = true,
-    Finder = true
+    -- Maccy = true,
 }
 
 local function hsQuit(app)
     if not app or exempt[app:name()] then return end
+    if app:kind() == 0 then return end
 
-    local visibleWindows = hs.fnutils.filter(app:allWindows(), function(win)
-        return win:isVisible()
-    end)
-
-    if #visibleWindows == 0 then
+    if #app:allWindows() == 0 then
         app:kill()
     end
 end

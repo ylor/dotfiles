@@ -19,7 +19,15 @@ function App(mods, key, app)
     end)
 end
 
-function AppExists(path)
-    local attr = hs.fs.attributes(path)
-    return attr and attr.mode == "directory"
+-- function AppExists(path)
+--     local attr = hs.fs.attributes(path)
+--     return attr and attr.mode == "directory"
+-- end
+
+function AppExists(app)
+    return hs.application.find(app) or false
+end
+
+function AppRunning(app)
+    return hs.application.find(app):isRunning() or false
 end
