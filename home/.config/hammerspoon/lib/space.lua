@@ -55,19 +55,24 @@ local spaceWatcher = hs.spaces.watcher.new(function()
 end)
 spaceWatcher:start()
 
+---------------------------------------------------
 
 local function moveWindowToSpace(window, spaceNumber)
+    local spaceId = hs.spaces.spacesForScreen()[spaceNumber]
     local mousePosition = hs.mouse.absolutePosition()
     local zoomButtonRect = window:zoomButtonRect()
     if not zoomButtonRect then return end
+    if hs.spaces.focusedSpace() == spaceId then return end
 
     local windowTarget = { x = zoomButtonRect.x + zoomButtonRect.w + 5, y = zoomButtonRect.y + (zoomButtonRect.h / 2) }
     hs.eventtap.event.newMouseEvent(hs.eventtap.event.types.leftMouseDown, windowTarget):post()
-    hs.timer.usleep(300000)
+    hs.timer.usleep(100000)
+    hs.alert.show(hs.inspect(hs.spaces.spacesForScreen()[spaceNumber]))
     hs.eventtap.keyStroke({ "ctrl" }, tostring(spaceNumber), 0)
-    hs.timer.usleep(300000)
+    hs.timer.usleep(100000)
     hs.eventtap.event.newMouseEvent(hs.eventtap.event.types.leftMouseUp, windowTarget):post()
     hs.mouse.absolutePosition(mousePosition)
+    window:focus()
 end
 
 local function getFocusedWindowAndScreen()
@@ -78,17 +83,30 @@ local function getFocusedWindowAndScreen()
 end
 
 hs.hotkey.bind({ "ctrl", "shift" }, "1", function()
-    local focusedWindow = getFocusedWindowAndScreen()
-    if not focusedWindow then return end
-    moveWindowToSpace(focusedWindow, 1)
+    -- local focusedWindow = getFocusedWindowAndScreen()
+    -- if not focusedWindow then return end
+    moveWindowToSpace(hs.window.focusedWindow(), 1)
 end)
 hs.hotkey.bind({ "ctrl", "shift" }, "2", function()
-    local focusedWindow = getFocusedWindowAndScreen()
-    if not focusedWindow then return end
-    moveWindowToSpace(focusedWindow, 2)
+    -- local focusedWindow = getFocusedWindowAndScreen()
+    -- if not focusedWindow then return end
+    moveWindowToSpace(hs.window.focusedWindow(), 2)
 end)
 hs.hotkey.bind({ "ctrl", "shift" }, "3", function()
-    local focusedWindow = getFocusedWindowAndScreen()
-    if not focusedWindow then return end
-    moveWindowToSpace(focusedWindow, 3)
+    -- local focusedWindow = getFocusedWindowAndScreen()
+    -- if not focusedWindow then return end
+    moveWindowToSpace(hs.window.focusedWindow(), 3)
 end)
+hs.hotkey.bind({ "ctrl", "shift" }, "4", function()
+    -- local focusedWindow = getFocusedWindowAndScreen()
+    -- if not focusedWindow then return end
+    moveWindowToSpace(hs.window.focusedWindow(), 4)
+end)
+
+---------
+function missionControl()
+    local mousePosition = hs.mouse.absolutePosition()
+    hs.mouse.absolutePosition({ x = 10, y = 10 })
+    hs.eventtap.keyStroke({ "fn", "ctrl" }, "up")
+    hs.mouse.absolutePosition(mousePosition)
+end

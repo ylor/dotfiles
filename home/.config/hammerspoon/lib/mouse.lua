@@ -19,14 +19,11 @@ end
 ScrollWheel = hs.eventtap.new({ hs.eventtap.event.types.scrollWheel }, function(event)
     -- detect if this is touchpad or mouse
     local isTrackpad = event:getProperty(hs.eventtap.event.properties.scrollWheelEventIsContinuous)
-    if isTrackpad == 1 then
-        return false -- trackpad: pass the event along
-    end
+    if isTrackpad == 1 then return false end
 
     event:setProperty(hs.eventtap.event.properties.scrollWheelEventDeltaAxis1,
         -event:getProperty(hs.eventtap.event.properties.scrollWheelEventDeltaAxis1))
-    return false -- pass the event along
-end):start()
+end)
 
 MouseWatcher = hs.eventtap.new({
     hs.eventtap.event.types.otherMouseDown,
@@ -42,13 +39,11 @@ MouseWatcher = hs.eventtap.new({
         elseif buttonNumber == 4 then             -- Mouse Button 5 (usually "forward")
             hs.eventtap.keyStroke({ "cmd" }, "]") -- Simulate Cmd + ] for "forward"
             return true                           -- Consume the event
+        else
+            return false
         end
-        -- elseif eventType == hs.eventtap.event.types.otherMouseUp then
-        --     if buttonNumber == 3 or buttonNumber == 4 then
-        --         return true -- Consume the event (for consistency with the down events)
-        --     end
-        -- else
-        --     return false
     end
-end):start()
--- MouseWatcher:start()
+end)
+
+ScrollWheel:start()
+MouseWatcher:start()

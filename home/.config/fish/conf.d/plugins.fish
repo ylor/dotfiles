@@ -21,16 +21,17 @@ end
 if command -vq eza # https://github.com/eza-community/eza - modern ls
     alias ls="eza --hyperlink --icons"
     alias ll="ls -l"
-    alias la="ls -la"
+    alias lla="ls -la"
+    alias lt='eza --tree --level=2 --long --icons --git'
+    alias lta='lt -a'
 end
 
-# if command -vq fzf # https://github.com/junegunn/fzf - fuzzy finder
-#     if command -vq fd
-#         alias cdi="cd (fd $PWD --type d | fzf)"
-#     else
-#         alias cdi="cd (find $PWD -type d | fzf)"
-#     end
-# end
+if command -vq fzf # https://github.com/junegunn/fzf - fuzzy finder
+    alias fcd="fzf --preview 'bat --style=numbers --color=always {}'"
+    alias ff="fzf --preview 'bat --style=numbers --color=always {}'"
+    alias formula="brew formulae | fzf --multi --layout reverse-list --preview 'brew info {1}' | xargs -ro brew install"
+    alias casks="brew casks | fzf --multi --layout reverse-list --preview 'brew info {1}' | xargs -ro brew install"
+end
 
 if command -vq ollama # https://github.com/BurntSushi/ripgrep - modern grep
     set -q llm_model | set llm_model deepseek-r1

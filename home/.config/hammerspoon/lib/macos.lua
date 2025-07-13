@@ -43,3 +43,11 @@ function Focus(direction)
     -- local center = hs.geometry.rectMidPoint(frame)
     -- hs.mouse.absolutePosition(center)
 end
+
+-- MARK: AutoQuit
+WindowFilter = hs.window.filter.new()
+WindowFilter:subscribe(hs.window.filter.windowDestroyed, function(window, application)
+    local app = hs.application.get(application)
+    if app:kind() == 0 or #app:allWindows() > 0 then return end
+    app:kill()
+end)

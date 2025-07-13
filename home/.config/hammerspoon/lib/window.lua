@@ -16,7 +16,7 @@ function WindowFloat()
     win:setFrame(hs.geometry.rect(x, y, w, h), 0)
 end
 
-WindowManager = hs.eventtap.new({ hs.eventtap.event.types.keyDown }, function(event)
+hs.eventtap.new({ hs.eventtap.event.types.keyDown }, function(event)
     local app = hs.application.frontmostApplication()
     local flags = event:getFlags()
     local ctrl = flags:containExactly({ "ctrl" }) or flags:containExactly({ "ctrl", "fn" })
@@ -37,5 +37,4 @@ WindowManager = hs.eventtap.new({ hs.eventtap.event.types.keyDown }, function(ev
     end
 
     return false
-end)
-WindowManager:start()
+end):start()

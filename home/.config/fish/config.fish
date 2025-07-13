@@ -1,4 +1,4 @@
-set TERM xterm-256color #fix for ghostty
+# set TERM xterm-256color #fix for ghostty
 set fish_greeting #disable greeting
 
 ## Syntax highlighting

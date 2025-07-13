@@ -7,16 +7,15 @@
 // custom settings, run the `open default settings` command
 // from the command palette or from `Zed` application menu.
 {
-  "agent": {
-    "model_parameters": [],
-    "default_model": {
-      "provider": "ollama",
-      "model": "gemma3:latest"
-    },
-    "version": "2"
-  },
-  "buffer_font_family": "Zed Plex Mono",
-  "buffer_font_fallbacks": ["Symbols Nerd Font", "Apple Color Emoji", "Apple Symbols"],
+  "buffer_font_family": "SF Mono",
+  "buffer_font_fallbacks": [
+    "Adwaita Mono",
+    "Zed Plex Mono",
+    "Symbols Nerd Font Mono",
+    "Apple Color Emoji",
+    "Apple Symbols",
+    "Noto Emoji"
+  ],
   "buffer_font_size": 16,
   "format_on_save": "on",
   "preferred_line_length": 100,

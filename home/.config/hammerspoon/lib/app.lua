@@ -1,7 +1,7 @@
 ---@diagnostic disable-next-line: undefined-global
 local hs = hs
 
--- launch, focus or cycle through instances of an application
+-- Launch, focus or cycle through instances of an application
 function LaunchOrFocusOrCycle(app)
     if hs.window.focusedWindow():application():name() == app then
         local appWindows = hs.application.get(app):allWindows()
@@ -19,13 +19,12 @@ function App(mods, key, app)
     end)
 end
 
--- function AppExists(path)
---     local attr = hs.fs.attributes(path)
---     return attr and attr.mode == "directory"
--- end
-
 function AppExists(app)
     return hs.application.find(app) or false
+end
+
+function AppActive(app)
+    return hs.application.get(app):isFrontmost()
 end
 
 function AppRunning(app)
