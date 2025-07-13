@@ -1,12 +1,14 @@
+---@diagnostic disable-next-line: undefined-global
+local hs = hs
+
 require("lib.macos")
 require("lib.app")
 require("lib.mouse")
 require("lib.quit")
+require("lib.space")
 require("lib.window")
+require("lib.focus")
 -- require("lib.reload")
-
----@diagnostic disable-next-line: undefined-global
-local hs        = hs
 
 local mod       = {}
 mod.alt         = { "alt" }

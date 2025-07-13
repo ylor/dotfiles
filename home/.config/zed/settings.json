@@ -16,11 +16,7 @@
     "version": "2"
   },
   "buffer_font_family": "Zed Plex Mono",
-  "buffer_font_fallbacks": [
-    "Symbols Nerd Font",
-    "Apple Color Emoji",
-    "Apple Symbols"
-  ],
+  "buffer_font_fallbacks": ["Symbols Nerd Font", "Apple Color Emoji", "Apple Symbols"],
   "buffer_font_size": 16,
   "format_on_save": "on",
   "preferred_line_length": 100,
@@ -56,6 +52,10 @@
     "shell": {
       "program": "fish"
     }
+  },
+  "title_bar": {
+    "show_branch_icon": true,
+    "show_sign_in": false
   },
   "experimental.theme_overrides": {
     "background.appearance": "blurred",

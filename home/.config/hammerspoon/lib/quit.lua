@@ -4,12 +4,12 @@ local hs = hs
 local exempt = {
     Finder = true,
     Hammerspoon = true,
-    -- Maccy = true,
 }
 
 local function hsQuit(app)
-    if not app or exempt[app:name()] then return end
+    if not app then return end
     if app:kind() == 0 then return end
+    if exempt[app:name()] then return end
 
     if #app:allWindows() == 0 then
         app:kill()
