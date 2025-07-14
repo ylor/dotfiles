@@ -76,8 +76,8 @@ hs.hotkey.bind(mod.main.shift, "right", function()
     SelectMenuItem({ "Window", "Move to " .. eastScreen:name() })
 end)
 
-hs.hotkey.bind(mod.hyper, "v", function()
-    if not AppRunning("Maccy") then
+if not AppRunning("Maccy") then
+    hs.hotkey.bind(mod.hyper, "v", function()
         -- local spot = IsActiveWindowSpotlight()
         -- if spot then
         --     hs.eventtap.keyStroke({ "cmd" }, "4", 0)
@@ -86,8 +86,8 @@ hs.hotkey.bind(mod.hyper, "v", function()
         hs.timer.doAfter(0.1, function()
             hs.eventtap.keyStroke({ "cmd" }, "4", 0)
         end)
-    end
-end)
+    end)
+end
 -- end
 
 hs.hotkey.bind(mod.hyper, "R", hs.reload)
