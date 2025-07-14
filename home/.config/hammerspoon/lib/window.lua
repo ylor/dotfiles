@@ -34,7 +34,7 @@ hs.eventtap.new({ hs.eventtap.event.types.keyDown }, function(event)
     elseif ctrl and kc == hs.keycodes.map["right"] then
         app:selectMenuItem({ "Window", "Move & Resize", "Right" })
         return true
+    else
+        return false
     end
-
-    return false
 end):start()

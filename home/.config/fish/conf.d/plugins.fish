@@ -7,6 +7,10 @@ if test -d '/Applications/1Password.app' #1Password SSH Agent
     set SSH_AUTH_SOCK "$HOME/Library/Group Containers/2BUA8C4S2C.com.1password/t/agent.sock"
 end
 
+# if command -vq atuin
+#     atuin init fish | source
+# end
+
 if command -vq bat # https://github.com/sharkdp/bat - modern cat
     alias cat="bat --pager=never"
 end
@@ -34,7 +38,7 @@ if command -vq fzf # https://github.com/junegunn/fzf - fuzzy finder
 end
 
 if command -vq ollama # https://github.com/BurntSushi/ripgrep - modern grep
-    set -q llm_model | set llm_model deepseek-r1
+    set -q llm_model || set llm_model deepseek-r1
     alias llm="ollama run $llm_model"
 end
 
