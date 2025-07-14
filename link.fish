@@ -2,6 +2,8 @@
 # dotfile "management"
 set env (realpath "$(status dirname)/home")
 
+sh test.sh
+
 function rehome
     string replace "$env" "$HOME" "$argv"
 end
