@@ -23,8 +23,9 @@ end
 
 function ExtractText()
     local bin = hs.fs.pathToAbsolute(hs.configdir .. "/bin")
-    local ocr = bin .. "/ocr"
-    hs.execute(ocr)
+    local ocr = bin .. "/trex"
+    local real = hs.fs.symlinkAttributes(ocr)
+    hs.execute(real.target)
 end
 
 function Focus(direction)

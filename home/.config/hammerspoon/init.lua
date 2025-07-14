@@ -44,6 +44,8 @@ hs.hotkey.bind(mod.hyper, "down", WindowCenter)
 hs.hotkey.bind(mod.hyper, "up", WindowFill)
 hs.hotkey.bind(mod.hyper, "right", WindowRight)
 
+
+
 -- hs.hotkey.bind(mod.hyper.shift, "h", function() Focus("left") end)
 -- hs.hotkey.bind(mod.hyper.shift, "j", function() Focus("down") end)
 -- hs.hotkey.bind(mod.hyper.shift, "k", function() Focus("up") end)

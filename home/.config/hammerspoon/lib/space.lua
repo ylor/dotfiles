@@ -37,8 +37,8 @@ end
 -- Function to update the menubar title
 local function updateSpace()
     local index = getSpaceIndex()
-    local dots = string.rep("􀀀", #hs.spaces.spacesForScreen("Primary"))
-    local filled = replace_unicode_char(dots, index, "􀨂")
+    local dots = string.rep("○", #hs.spaces.spacesForScreen("Primary"))
+    local filled = replace_unicode_char(dots, index, "●")
 
     spaceMenu:setTitle(filled)
     -- spaceMenu:setTitle(hs.styledtext.new(tostring(index),
