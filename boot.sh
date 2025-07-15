@@ -4,6 +4,15 @@
 # Usage: sh -c "$(curl -fsSL env.roly.sh)"
 set -e
 
+art="
+██████╗ ███████╗██╗   ██╗███████╗███╗   ██╗██╗   ██╗
+██╔══██╗██╔════╝██║   ██║██╔════╝████╗  ██║██║   ██║
+██║  ██║█████╗  ██║   ██║█████╗  ██╔██╗ ██║██║   ██║
+██║  ██║██╔══╝  ╚██╗ ██╔╝██╔══╝  ██║╚██╗██║╚██╗ ██╔╝
+██████╔╝███████╗ ╚████╔╝ ███████╗██║ ╚████║ ╚████╔╝
+╚═════╝ ╚══════╝  ╚═══╝  ╚══════╝╚═╝  ╚═══╝  ╚═══╝
+"
+
 exist() { command -v "$1" >/dev/null; }
 missing() { ! command -v "$1" >/dev/null; }
 
@@ -23,8 +32,9 @@ npc() {
 
 stty -echo -icanon time 0 min 1 # prevent ludonarrative dissonence
 printf "\033[2J\033[H"
-npc " ▲"
-npc "▲ ▲"
+# npc " ▲"
+# npc "▲ ▲"
+printf "$art" | sed '1d'
 npc "press any key to continue (or abort with ctrl+c)..."
 dd bs=1 count=1 2>/dev/null # wait for single keypress
 stty sane
@@ -43,13 +53,10 @@ if [ "$(uname)" = "Darwin" ]; then
 	eval "$(/opt/homebrew/bin/brew shellenv)"
 fi
 
-if missing fish || missing git; then
+if missing fish || missing git || missing gum; then
 	npc "Installing dependencies..."
-	exist apk && sudo apk add fish git                  # Alpine
-	exist apt && sudo apt install -y fish git           # Debian
-	exist brew && brew install --quiet fish git         # macOS
-	exist dnf && sudo dnf install -y fish git           # Fedora
-	exist pacman && sudo pacman -S --noconfirm fish git # Arch
+	exist brew && brew install --quiet fish git gum         # macOS
+	exist pacman && sudo pacman -S --noconfirm fish git gum # Arch
 fi
 
 dest="${HOME}/.env"

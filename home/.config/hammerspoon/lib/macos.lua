@@ -39,10 +39,10 @@ function Focus(direction)
         hs.window.focusedWindow():focusWindowEast()
     end
 
-    -- local win = hs.window.focusedWindow()
-    -- local frame = win:frame()
-    -- local center = hs.geometry.rectMidPoint(frame)
-    -- hs.mouse.absolutePosition(center)
+    local win = hs.window.focusedWindow()
+    local frame = win:frame()
+    local center = hs.geometry.rectMidPoint(frame)
+    hs.mouse.absolutePosition(center)
 end
 
 -- MARK: AutoQuit

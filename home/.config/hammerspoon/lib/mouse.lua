@@ -32,7 +32,7 @@ MouseWatcher = hs.eventtap.new({
     local buttonNumber = event:getProperty(hs.eventtap.event.properties.mouseEventButtonNumber)
     local eventType = event:getType()
 
-    if eventType == hs.eventtap.event.types.otherMouseDown then
+    if eventType == hs.eventtap.event.types.otherMouseUp then
         if buttonNumber == 3 then                 -- Mouse Button 4 (usually "back")
             hs.eventtap.keyStroke({ "cmd" }, "[") -- Simulate Cmd + [ for "back"
             return true                           -- Consume the event

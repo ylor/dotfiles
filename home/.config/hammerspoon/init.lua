@@ -34,34 +34,44 @@ else
     App(mod.hyper.shift, "I", "Zen")
 end
 
+hs.hotkey.bind(mod.hyper, "o", ExtractText)
+
+hs.hotkey.bind(mod.main, "w", WindowFill)
+hs.hotkey.bind(mod.main, "a", WindowLeft)
+hs.hotkey.bind(mod.main, "s", WindowCenter)
+hs.hotkey.bind(mod.main, "d", WindowRight)
+hs.hotkey.bind(mod.hyper, "w", WindowFill)
+hs.hotkey.bind(mod.hyper, "a", WindowLeft)
+hs.hotkey.bind(mod.hyper, "s", WindowCenter)
+hs.hotkey.bind(mod.hyper, "d", WindowRight)
+hs.hotkey.bind(mod.hyper.shift, "w", function() Focus("up") end)
+hs.hotkey.bind(mod.hyper.shift, "a", function() Focus("left") end)
+hs.hotkey.bind(mod.hyper.shift, "s", function() Focus("down") end)
+hs.hotkey.bind(mod.hyper.shift, "d", function() Focus("right") end)
+
 hs.hotkey.bind(mod.hyper, "h", WindowLeft)
 hs.hotkey.bind(mod.hyper, "j", WindowCenter)
 hs.hotkey.bind(mod.hyper, "k", WindowFill)
 hs.hotkey.bind(mod.hyper, "l", WindowRight)
-
 hs.hotkey.bind(mod.hyper, "left", WindowLeft)
 hs.hotkey.bind(mod.hyper, "down", WindowCenter)
 hs.hotkey.bind(mod.hyper, "up", WindowFill)
 hs.hotkey.bind(mod.hyper, "right", WindowRight)
+hs.hotkey.bind(mod.hyper.shift, "h", function() Focus("left") end)
+hs.hotkey.bind(mod.hyper.shift, "j", function() Focus("down") end)
+hs.hotkey.bind(mod.hyper.shift, "k", function() Focus("up") end)
+hs.hotkey.bind(mod.hyper.shift, "l", function() Focus("right") end)
+hs.hotkey.bind(mod.hyper.shift, "left", function() Focus("left") end)
+hs.hotkey.bind(mod.hyper.shift, "down", function() Focus("down") end)
+hs.hotkey.bind(mod.hyper.shift, "up", function() Focus("up") end)
+hs.hotkey.bind(mod.hyper.shift, "right", function() Focus("right") end)
 
-
-
--- hs.hotkey.bind(mod.hyper.shift, "h", function() Focus("left") end)
--- hs.hotkey.bind(mod.hyper.shift, "j", function() Focus("down") end)
--- hs.hotkey.bind(mod.hyper.shift, "k", function() Focus("up") end)
--- hs.hotkey.bind(mod.hyper.shift, "l", function() Focus("right") end)
--- hs.hotkey.bind(mod.hyper.shift, "left", function() Focus("left") end)
--- hs.hotkey.bind(mod.hyper.shift, "down", function() Focus("down") end)
--- hs.hotkey.bind(mod.hyper.shift, "up", function() Focus("up") end)
--- hs.hotkey.bind(mod.hyper.shift, "right", function() Focus("right") end)
-
--- hs.hotkey.bind(mod.combined, "left", function() Focus("left") end)
--- hs.hotkey.bind(mod.combined, "right", function() Focus("right") end)
-
+hs.hotkey.bind(mod.combined, "left", function() Focus("left") end)
+hs.hotkey.bind(mod.combined, "down", function() Focus("down") end)
+hs.hotkey.bind(mod.combined, "up", function() Focus("up") end)
+hs.hotkey.bind(mod.combined, "right", function() Focus("right") end)
 
 hs.hotkey.bind(mod.main.shift, "down", WindowFloat)
-hs.hotkey.bind(mod.hyper, "o", ExtractText)
-
 hs.hotkey.bind(mod.main.shift, "left", function()
     local win = hs.window.focusedWindow()
     local westScreen = win:screen():toWest()
