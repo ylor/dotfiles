@@ -12,26 +12,28 @@ require("lib.window")
 local mod       = {}
 mod.alt         = { "alt" }
 mod.main        = { "ctrl" }
+mod.cmd         = { "cmd" }
 mod.hyper       = { "ctrl", "alt", "cmd" }
 mod.combined    = { "ctrl", "alt" }
 mod.hyper.shift = { "ctrl", "alt", "cmd", "shift" }
 mod.main.shift  = { "ctrl", "shift" }
 mod.alt.shift   = { "alt", "shift" }
 
-App(mod.hyper, "Return", "Ghostty")
-App(mod.hyper, "E", "Zed")
-App(mod.hyper, "F", "Finder")
-App(mod.hyper, "P", "1Password")
-App(mod.hyper, "T", "Ghostty")
-App(mod.hyper.shift, "T", "Terminal")
+App(mod.cmd, "Return", "Ghostty")
+App(mod.main, "Return", "Ghostty")
+App(mod.main, "E", "Zed")
+App(mod.main, "F", "Finder")
+App(mod.main, "P", "1Password")
+App(mod.main, "T", "Ghostty")
+App(mod.main.shift, "T", "Terminal")
 
 local work = string.find(hs.host.localizedName(), "^PAPA-")
 if work then
-    App(mod.hyper, "I", "Arc")
-    App(mod.hyper.shift, "I", "Safari")
+    App(mod.main, "I", "Arc")
+    App(mod.main.shift, "I", "Safari")
 else
-    App(mod.hyper, "I", "Safari")
-    App(mod.hyper.shift, "I", "Zen")
+    App(mod.main, "I", "Safari")
+    App(mod.main.shift, "I", "Zen")
 end
 
 hs.hotkey.bind(mod.hyper, "o", ExtractText)
@@ -40,32 +42,28 @@ hs.hotkey.bind(mod.main, "w", WindowFill)
 hs.hotkey.bind(mod.main, "a", WindowLeft)
 hs.hotkey.bind(mod.main, "s", WindowCenter)
 hs.hotkey.bind(mod.main, "d", WindowRight)
-hs.hotkey.bind(mod.hyper, "w", WindowFill)
-hs.hotkey.bind(mod.hyper, "a", WindowLeft)
-hs.hotkey.bind(mod.hyper, "s", WindowCenter)
-hs.hotkey.bind(mod.hyper, "d", WindowRight)
-hs.hotkey.bind(mod.hyper.shift, "w", function() Focus("up") end)
-hs.hotkey.bind(mod.hyper.shift, "a", function() Focus("left") end)
-hs.hotkey.bind(mod.hyper.shift, "s", function() Focus("down") end)
-hs.hotkey.bind(mod.hyper.shift, "d", function() Focus("right") end)
+hs.hotkey.bind(mod.main.shift, "w", function() Focus("up") end)
+hs.hotkey.bind(mod.main.shift, "a", function() Focus("left") end)
+hs.hotkey.bind(mod.main.shift, "s", function() Focus("down") end)
+hs.hotkey.bind(mod.main.shift, "d", function() Focus("right") end)
 
-hs.hotkey.bind(mod.hyper, "h", WindowLeft)
-hs.hotkey.bind(mod.hyper, "j", WindowCenter)
-hs.hotkey.bind(mod.hyper, "k", WindowFill)
-hs.hotkey.bind(mod.hyper, "l", WindowRight)
-hs.hotkey.bind(mod.hyper.shift, "h", function() Focus("left") end)
-hs.hotkey.bind(mod.hyper.shift, "j", function() Focus("down") end)
-hs.hotkey.bind(mod.hyper.shift, "k", function() Focus("up") end)
-hs.hotkey.bind(mod.hyper.shift, "l", function() Focus("right") end)
+hs.hotkey.bind(mod.main, "h", WindowLeft)
+hs.hotkey.bind(mod.main, "j", WindowCenter)
+hs.hotkey.bind(mod.main, "k", WindowFill)
+hs.hotkey.bind(mod.main, "l", WindowRight)
+hs.hotkey.bind(mod.main.shift, "h", function() Focus("left") end)
+hs.hotkey.bind(mod.main.shift, "j", function() Focus("down") end)
+hs.hotkey.bind(mod.main.shift, "k", function() Focus("up") end)
+hs.hotkey.bind(mod.main.shift, "l", function() Focus("right") end)
 
-hs.hotkey.bind(mod.hyper, "left", WindowLeft)
-hs.hotkey.bind(mod.hyper, "down", WindowCenter)
-hs.hotkey.bind(mod.hyper, "up", WindowFill)
-hs.hotkey.bind(mod.hyper, "right", WindowRight)
-hs.hotkey.bind(mod.hyper.shift, "left", function() Focus("left") end)
-hs.hotkey.bind(mod.hyper.shift, "down", function() Focus("down") end)
-hs.hotkey.bind(mod.hyper.shift, "up", function() Focus("up") end)
-hs.hotkey.bind(mod.hyper.shift, "right", function() Focus("right") end)
+hs.hotkey.bind(mod.main, "left", WindowLeft)
+hs.hotkey.bind(mod.main, "down", WindowCenter)
+hs.hotkey.bind(mod.main, "up", WindowFill)
+hs.hotkey.bind(mod.main, "right", WindowRight)
+hs.hotkey.bind(mod.main.shift, "left", function() Focus("left") end)
+hs.hotkey.bind(mod.main.shift, "down", function() Focus("down") end)
+hs.hotkey.bind(mod.main.shift, "up", function() Focus("up") end)
+hs.hotkey.bind(mod.main.shift, "right", function() Focus("right") end)
 
 hs.hotkey.bind(mod.combined, "left", function() Focus("left") end)
 hs.hotkey.bind(mod.combined, "down", function() Focus("down") end)

@@ -49,6 +49,6 @@ end
 WindowFilter = hs.window.filter.new()
 WindowFilter:subscribe(hs.window.filter.windowDestroyed, function(window, application)
     local app = hs.application.get(application)
-    if app and app:kind() == 0 or #app:allWindows() > 0 then return end
+    if not app or app:kind() == 0 or #app:allWindows() > 0 then return end
     app:kill()
 end)
