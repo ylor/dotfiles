@@ -23,8 +23,9 @@ end
 
 function ExtractText()
     local bin = hs.fs.pathToAbsolute(hs.configdir .. "/bin")
-    local ocr = bin .. "/trex"
-    local real = hs.fs.symlinkAttributes(ocr)
+    local ocr = bin .. "/ocr"
+    local trex = bin .. "/trex"
+    local real = hs.fs.symlinkAttributes(trex)
     hs.execute(real.target)
 end
 
