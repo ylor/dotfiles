@@ -21,12 +21,10 @@ function WindowRight()
     SelectMenuItem({ "Window", "Move & Resize", "Right" })
 end
 
-function ExtractText()
-    local bin = hs.fs.pathToAbsolute(hs.configdir .. "/bin")
-    local ocr = bin .. "/ocr"
-    local trex = bin .. "/trex"
-    local real = hs.fs.symlinkAttributes(trex)
-    hs.execute(real.target)
+function RunCommand(bin)
+    local dir = hs.fs.pathToAbsolute(hs.configdir .. "/bin")
+    local cmd = dir .. "/" .. bin
+    hs.execute(hs.fs.symlinkAttributes(cmd).target)
 end
 
 function Focus(direction)

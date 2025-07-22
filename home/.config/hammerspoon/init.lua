@@ -36,8 +36,8 @@ else
     App(mod.main.shift, "I", "Zen")
 end
 
-hs.hotkey.bind(mod.hyper, "o", ExtractText)
-
+hs.hotkey.bind(mod.hyper, "o", function() RunCommand("trex") end)
+hs.hotkey.bind(mod.hyper.shift, "o", function() RunCommand("ocr") end)
 hs.hotkey.bind(mod.main, "w", WindowFill)
 hs.hotkey.bind(mod.main, "a", WindowLeft)
 hs.hotkey.bind(mod.main, "s", WindowCenter)
