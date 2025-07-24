@@ -1,6 +1,6 @@
 #!/usr/bin/env fish
 function strap
-    npc "Installing homebrew..."
+    echo "Installing homebrew..."
     bash -c "$(curl -fsSL https://raw.githubusercontent.com/Homebrew/install/HEAD/install.sh)"
     set --global --export HOMEBREW_NO_ANALYTICS 1
     set --global --export HOMEBREW_NO_ENV_HINTS 1

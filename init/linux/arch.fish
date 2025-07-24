@@ -1,7 +1,7 @@
 if exist pacman
     sudo pacman -Syu
     sudo pacman -S --noconfirm gum
-    
+
     if exist gsettings
         echo GNOME
     else if exist hyprland

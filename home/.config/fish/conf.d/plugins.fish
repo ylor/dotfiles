@@ -47,7 +47,7 @@ if command -vq rg # https://github.com/BurntSushi/ripgrep - modern grep
 end
 
 if command -vq hx
-   if hx --version | grep -q evil
+    if hx --version | grep -q evil
         alias vi="hx"
         alias vim="hx"
     end

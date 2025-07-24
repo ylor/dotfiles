@@ -3,11 +3,7 @@ function exist
 end
 
 function missing
-    not command --search --quiet "$argv"
-end
-
-function arch
-    uname -m
+    not exist "$argv"
 end
 
 function kernel
