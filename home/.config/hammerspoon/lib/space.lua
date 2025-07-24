@@ -64,7 +64,7 @@ local function moveWindowToSpace(window, spaceNumber)
     if not zoomButtonRect then return end
     if hs.spaces.focusedSpace() == spaceId then return end
 
-    local windowTarget = { x = zoomButtonRect.x + zoomButtonRect.w + 5, y = zoomButtonRect.y + (zoomButtonRect.h / 2) }
+    local windowTarget = { x = zoomButtonRect.x + zoomButtonRect.w + 2, y = zoomButtonRect.y + (zoomButtonRect.h / 2) }
     hs.eventtap.event.newMouseEvent(hs.eventtap.event.types.leftMouseDown, windowTarget):post()
     hs.timer.usleep(100000)
     hs.alert.show(hs.inspect(hs.spaces.spacesForScreen()[spaceNumber]))
