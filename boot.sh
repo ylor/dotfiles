@@ -1,7 +1,6 @@
 #!/bin/sh
-# Usage: bash -c "$(curl -fsSL env.roly.sh)"
-# Usage: zsh -c "$(curl -fsSL env.roly.sh)"
 # Usage: sh -c "$(curl -fsSL env.roly.sh)"
+# Usage: wget -O- env.roly.sh | sh
 set -e
 
 art="
@@ -31,18 +30,14 @@ npc() {
 # stty -echo -icanon time 0 min 1 # prevent ludonarrative dissonence
 printf "\033[2J\033[H"
 echo "$art" | sed '1d'
-echo
 npc "enter your password to continue (or abort with ctrl+c)..."
 echo
 # dd bs=1 count=1 2>/dev/null # wait for single keypress
 # stty sane
-
-npc "bio-dgitial jazz, man"
-sudo echo
 while true; do
 	sudo -n true
 	sleep 60
-	kill -0 "$$" || exit
+    kill -0 "$$" || exit
 done 2>/dev/null &
 
 if [ "$(uname)" = "Darwin" ]; then
@@ -54,13 +49,12 @@ fi
 
 if missing fish || missing git || missing gum; then
 	npc "Installing dependencies..."
-	exist brew && brew install --quiet fish git gum wget         # macOS
-	exist pacman && sudo pacman -S --noconfirm fish git gum wget # Arch
+	exist brew && brew install --quiet fish git gum         # macOS
+	exist pacman && sudo pacman -S --noconfirm fish git gum # Arch
 fi
 
 devenv="$HOME/.local/share/devenv"
 rm -rf "$devenv"
-git clone https://github.com/ylor/env.git "$devenv" >/dev/null
+git clone --quiet https://github.com/ylor/env.git "$devenv" >/dev/null
 # npc "Initializing..."
 fish "$devenv/main.fish"
-
