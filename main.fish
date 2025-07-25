@@ -5,5 +5,5 @@ test -d init/$(kernel) || error "Supported OS not detected."
 for file in init/$(kernel)/*.fish
     echo source $file
 end
-source link.fish
-exec fish --login --interactive
+echo source link.fish
+echo exec fish --login --interactive
