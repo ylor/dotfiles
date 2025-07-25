@@ -13,7 +13,6 @@ art="
   ███    ██▄   ███    █▄    ███    ██▄ ███    ███   ███
   ███    ███   ███    ███   ███    ███ ███    ███   ███
 ▄█████████▀    ██████████ ▄█████████▀   ▀██████▀   ▄████▀
-
 "
 
 exist() { command -v "$1" >/dev/null; }
@@ -29,16 +28,17 @@ npc() {
     sleep 0.5
 }
 
-stty -echo -icanon time 0 min 1 # prevent ludonarrative dissonence
+# stty -echo -icanon time 0 min 1 # prevent ludonarrative dissonence
 printf "\033[2J\033[H"
 echo "$art" | sed '1d'
-npc "bio-dgitial jazz, man"
 echo
-npc "press any key to continue (or abort with ctrl+c)..."
-dd bs=1 count=1 2>/dev/null # wait for single keypress
-stty sane
+npc "enter your password to continue (or abort with ctrl+c)..."
+echo
+# dd bs=1 count=1 2>/dev/null # wait for single keypress
+# stty sane
 
 sudo echo
+npc "bio-dgitial jazz, man"
 while true; do
 	sudo -n true
 	sleep 60
@@ -58,8 +58,7 @@ if missing fish || missing git || missing gum; then
 	exist pacman && sudo pacman -S --noconfirm fish git gum wget # Arch
 fi
 
-dest="${HOME}/.local/share/devenv"
-rm -rf "$dest"
-git clone "https://github.com/ylor/env.git" "$dest"
-npc "Initializing..."
+rm -rf "~/.local/share/devenv"
+# git clone "https://github.com/ylor/env.git" "~/.local/share/devenv" >/dev/null
+# npc "Initializing..."
 fish "${dest}/main.fish"
