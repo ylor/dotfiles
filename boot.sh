@@ -37,8 +37,8 @@ echo
 # dd bs=1 count=1 2>/dev/null # wait for single keypress
 # stty sane
 
-sudo echo
 npc "bio-dgitial jazz, man"
+sudo echo
 while true; do
 	sudo -n true
 	sleep 60
@@ -58,7 +58,9 @@ if missing fish || missing git || missing gum; then
 	exist pacman && sudo pacman -S --noconfirm fish git gum wget # Arch
 fi
 
-rm -rf "~/.local/share/devenv"
-# git clone "https://github.com/ylor/env.git" "~/.local/share/devenv" >/dev/null
+devenv="$HOME/.local/share/devenv"
+rm -rf "$devenv"
+git clone https://github.com/ylor/env.git "$devenv" >/dev/null
 # npc "Initializing..."
-fish "${dest}/main.fish"
+fish "$devenv/main.fish"
+
