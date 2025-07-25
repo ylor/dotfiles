@@ -31,7 +31,7 @@ npc() {
 
 stty -echo -icanon time 0 min 1 # prevent ludonarrative dissonence
 printf "\033[2J\033[H"
-printf "$art" | sed '1d'
+echo "$art" | sed '1d'
 npc "bio-dgitial jazz, man"
 echo
 npc "press any key to continue (or abort with ctrl+c)..."
@@ -54,8 +54,8 @@ fi
 
 if missing fish || missing git || missing gum; then
 	npc "Installing dependencies..."
-	exist brew && brew install --quiet fish git gum         # macOS
-	exist pacman && sudo pacman -S --noconfirm fish git gum # Arch
+	exist brew && brew install --quiet fish git gum wget         # macOS
+	exist pacman && sudo pacman -S --noconfirm fish git gum wget # Arch
 fi
 
 dest="${HOME}/.local/share/devenv"
