@@ -1,15 +1,18 @@
-function devenv_set
-    set which (gum choose "dev" "env") # if var not set or flag is passed
+function dotenv
+    set which (gum choose "dev" "env" "other") # if var not set or flag is passed
     switch $which
     case 'dev'
         set --universal devenv "$HOME/Developer/env"
     case 'env'
         set --universal devenv "$HOME/.local/share/env"
+    case 'other'
+        set --universal devenv (gum file --directory $HOME --all)
     end
     echo $devenv
 end
 
-function dot
+function dotlink
+    set --query devenv || dotenv
     set --global home "$devenv/home"
 
     function rehome
@@ -18,12 +21,12 @@ function dot
 
     # stage folders
     find "$home" -type d | while read folder
-        echo mkdir -pv "$(rehome "$folder")"
+        mkdir -pv "$(rehome "$folder")"
     end
 
     # symlink dotfiles
     find "$home" -type f | while read file
-        echo ln -sfv "$file" "$(rehome "$file")"
+        ln -sfv "$file" "$(rehome "$file")"
     end
 
     # # purge broken symlinks

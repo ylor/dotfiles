@@ -9,16 +9,12 @@ touch "$HOME/.hushlogin" # shut up terminal
 ## set update period to 1s
 defaults write com.apple.ActivityMonitor UpdatePeriod -int 1
 
-# Apple Intelligence
-## disable until it's useful
-defaults write com.apple.CloudSubscriptionFeatures.optIn 545129924 -bool false
-
 # Dock
 ## autohide
 defaults write com.apple.dock autohide -bool true
 ## autohide delay
 defaults write com.apple.dock autohide-delay -float 0
-## hide recents
+## remove recent applications
 defaults write com.apple.dock show-recents -bool false
 ## set minimize animation to scale
 defaults write com.apple.dock mineffect -string scale
@@ -53,7 +49,7 @@ defaults write com.apple.desktopservices DSDontWriteUSBStores -bool true
 defaults write NSGlobalDomain ApplePressAndHoldEnabled -bool false
 ## set a fast key repeat rate
 defaults write NSGlobalDomain KeyRepeat -int 2
-defaults write NSGlobalDomain InitialKeyRepeat -int 15
+defaults write NSGlobalDomain InitialKeyRepeat -int 25
 ## enable keyboard navigation
 defaults write NSGlobalDomain AppleKeyboardUIMode -int 2
 ## disable autocorrect
@@ -89,15 +85,12 @@ defaults write com.apple.TextEdit SmartQuotes -bool false
 
 # Hot Corners
 ## bottom right → mission control
-defaults write com.apple.dock wvous-br-corner -int 2
+defaults write com.apple.dock wvous-tr-corner -int 2
 defaults write com.apple.dock wvous-br-modifier -int 0
 
 # Window Management
-# defaults write -g NSUserKeyEquivalents -dict-add "\033Window\033Center" "@~^\\U2193"
-# defaults write -g NSUserKeyEquivalents -dict-add "\033Window\033Fill" "@~^\\U2191"
-# defaults write -g NSUserKeyEquivalents -dict-add "\033Window\033Move & Resize\033Left" "@~^\\U2190"
-# defaults write -g NSUserKeyEquivalents -dict-add "\033Window\033Move & Resize\033Right" "@~^\\U2192"
-defaults write -g NSWindowShouldDragOnGesture -bool true # Drag with cmd+ctrl
+## Drag with cmd+ctrl
+defaults write -g NSWindowShouldDragOnGesture -bool true
 
 # Hammerspoon
 defaults write org.hammerspoon.Hammerspoon MJConfigFile "$HOME/.config/hammerspoon/init.lua"

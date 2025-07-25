@@ -1,9 +1,9 @@
 #!/usr/bin/env fish
 cd (status dirname)
-source lib.fish
-test -d init/$(kernel) || error "Supported OS not detected."
-for file in init/$(kernel)/*.fish
-    echo source $file
+source init/lib.fish
+for script in init/$(kernel)/*.fish
+    npc "Running: $(basename $script)"
+    source $script
 end
-echo source link.fish
-echo exec fish --login --interactive
+source init/link.fish
+exec fish --login --interactive

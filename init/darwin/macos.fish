@@ -1,7 +1,7 @@
 # Configure dock
 if defaults read com.apple.Dock | grep -q "com.apple.launchpad.launcher"
-    ensure dockutil
-    and dockutil --remove all --add /Applications --add "$HOME/Downloads" >/dev/null
+    command -vq dockutil && brew install --quiet dockutil
+    dockutil --remove all --add /Applications --add "$HOME/Downloads" >/dev/null
 end
 
 # Set hostname

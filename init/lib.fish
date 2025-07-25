@@ -3,29 +3,11 @@ function exist
 end
 
 function missing
-    not exist "$argv"
+    not command --search --quiet "$argv"
 end
 
 function kernel
     string lower (uname -s)
-end
-
-function link
-    set --global home (realpath "$(status dirname)/home")
-
-    function rehome
-        string replace "$home" "$HOME" "$argv"
-    end
-
-    # # stage folders
-    # find "$home" -type d | while read folder
-    #     mkdir -p "$(rehome "$folder")"
-    # end
-
-    # # symlink dotfiles
-    # find "$home" -type f | while read file
-    #     ln -sf "$file" "$(rehome "$file")"
-    # end
 end
 
 function npc
@@ -45,12 +27,12 @@ function npc
     end
 end
 
+
 function pls
-    exist gum || error "`gum` is missing"
-    if not sudo -n true 2>/dev/null
+    if not /usr/bin/sudo -n true 2>/dev/null
         gum input --password --placeholder="password" --no-show-help | sudo --validate --stdin
     end
-    command sudo $argv
+    command /usr/bin/sudo $argv
 end
 
 function spinner
