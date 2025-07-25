@@ -1,6 +1,7 @@
 #!/bin/env fish
 # dotfile "management"
 set env (realpath "$(status dirname)/../home")
+set --universal devenv "$env"
 
 function rehome
     string replace "$env" "$HOME" "$argv"

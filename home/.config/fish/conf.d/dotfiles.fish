@@ -2,9 +2,9 @@ function dotenv
     set which (gum choose "dev" "env" "other") # if var not set or flag is passed
     switch $which
     case 'dev'
-        set --universal devenv "$HOME/Developer/env"
+        set --universal devenv "$HOME/Developer/env/home"
     case 'env'
-        set --universal devenv "$HOME/.local/share/env"
+        set --universal devenv "$HOME/.local/share/env/home"
     case 'other'
         set --universal devenv (gum file --directory $HOME --all)
     end
@@ -13,7 +13,7 @@ end
 
 function dotlink
     set --query devenv || dotenv
-    set --global home "$devenv/home"
+    set --global home "$devenv"
 
     function rehome
         string replace "$home" "$HOME" "$argv"
