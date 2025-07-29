@@ -20,7 +20,7 @@
   "format_on_save": "on",
   "preferred_line_length": 100,
   // "relative_line_numbers": true,
-  "soft_wrap": "preferred_line_length",
+  "soft_wrap": "bounded",
   "theme": "Catppuccin Mocha",
   "ui_font_family": ".SystemUIFont",
   //  "vim_mode": true,

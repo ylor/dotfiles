@@ -7,20 +7,21 @@ This project should be considered personal software and was developed for an aud
 ## Prerequisites
 
 - macOS
-- internet
+- internet access
 - sudo
 
 ## Usage
 
 `sh -c $(curl -fsSL env.roly.sh)`
+`wget -O- env.roly.sh`
 
 ## Acknowledgements
 
-- Omakub, Crucible - spiritual kinship, inspiration
-- Homebrew - a pillar of my computing life
-- Gum - a crucial utility that drastically transformed the DX+UX of this project
+- Omakub, Omarchy, Crucible - spiritual kinship, inspiration
+- Homebrew - a pillar in macOS computing
+- Gum - a crucial utility that transformed the UX of this project
 
 ## TODO
 
 - make README nicer and add links to Acknowledgements
-- support at least one Linux distro
+- support at least one Linux distro (likely Arch)

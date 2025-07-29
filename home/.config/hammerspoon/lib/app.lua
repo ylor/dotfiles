@@ -15,7 +15,7 @@ end
 
 function App(mods, key, app)
     hs.hotkey.bind(mods, key, function()
-        LaunchOrFocusOrCycle(app)
+        test(app)
     end)
 end
 
@@ -30,3 +30,18 @@ end
 function AppRunning(app)
     return hs.application.find(app):isRunning() or false
 end
+
+function test(app)
+    local mainScreen = hs.screen.mainScreen()
+    local wf = hs.window.filter.new(app):setScreens(mainScreen:id()) -- all visible terminal windows
+    local windows = wf:getWindows("Focused")
+    if #windows > 0 then
+        windows[#windows]:focus()
+    else
+        hs.application.launchOrFocus(app)
+    end
+end
+
+hs.hotkey.bind("cmd", "i", function()
+    test("Safari")
+end)
