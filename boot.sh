@@ -30,6 +30,7 @@ npc() {
 printf "\033[2J\033[H"
 echo "$art" | sed '1d'
 npc "enter your password to continue (or abort with ctrl+c)..."
+while true; do sudo -n true; sleep 60; kill -0 "$$" || exit; done 2>/dev/null &
 
 if [ "$(uname)" = "Darwin" ]; then
 	if missing /opt/homebrew/bin/brew; then
