@@ -19,7 +19,6 @@ mod.hyper.shift = { "ctrl", "alt", "cmd", "shift" }
 mod.main.shift  = { "ctrl", "shift" }
 mod.alt.shift   = { "alt", "shift" }
 
-App(mod.cmd, "Return", "Ghostty")
 App(mod.main, "Return", "Ghostty")
 App(mod.main, "E", "Zed")
 App(mod.main, "F", "Finder")
