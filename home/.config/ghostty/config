@@ -24,6 +24,6 @@ window-padding-y = 4
 window-save-state = always
 window-subtitle = working-directory
 
-keybind = global:ctrl+`=toggle_quick_terminal
+#keybind = global:ctrl+`=toggle_quick_terminal
 keybind = global:ctrl+escape=toggle_quick_terminal
 keybind = super+shift+p=toggle_command_palette
