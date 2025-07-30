@@ -42,6 +42,6 @@ function test(app)
     end
 end
 
-hs.hotkey.bind("cmd", "i", function()
-    test("Safari")
-end)
+-- hs.hotkey.bind("cmd", "i", function()
+--     test("Safari")
+-- end)
