@@ -31,3 +31,8 @@ alias fishfmt="fish_indent --write"
 for prompt in $__fish_config_dir/prompt/**.fish
     source $prompt
 end
+
+# Added by LM Studio CLI (lms)
+set -gx PATH $PATH /Users/roly/.lmstudio/bin
+# End of LM Studio CLI section
+

@@ -10,3 +10,8 @@ fi
 if [[ $(command -v fish) && "$(ps -p $PPID -o comm=)" != "fish" && -z "${ZSH_EXECUTION_STRING}" ]]; then
     exec fish --login --interactive
 fi
+
+# Added by LM Studio CLI (lms)
+export PATH="$PATH:/Users/roly/.lmstudio/bin"
+# End of LM Studio CLI section
+
