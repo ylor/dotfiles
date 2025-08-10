@@ -10,6 +10,7 @@ art="
    ██      ██ ██      ██           ██
 ██ ██      ██ ███████ ███████ ███████
 "
+
 exist() { command -v "$1" >/dev/null; }
 missing() { ! command -v "$1" >/dev/null; }
 npc() {
@@ -19,15 +20,15 @@ npc() {
         str="${str#?}"
         sleep 0.01
     done
-    sleep 0.5
+    sleep 0.25
     printf "\n"
 }
 
-printf "\033c" # clear the screen
+clear
 echo "$art" | sed '1d'
 npc "enter your password to continue (or abort with ctrl+c)..."
-sudo printf ""
-while true; do sudo -n true; sleep 60; kill -0 "$$" || exit; done 2>/dev/null &
+sudo --validate
+while true; do sudo --non-interactive true; sleep 60; kill -0 "$$" || exit; done 2>/dev/null &
 
 if [ "$(uname)" = "Darwin" ]; then
 	if missing /opt/homebrew/bin/brew; then

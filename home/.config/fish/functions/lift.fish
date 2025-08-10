@@ -1,5 +1,5 @@
 function lift
-    argparse 'c/cycles=' 't/time=' h/help -- $argv || return
+    argparse c/cycles= t/time= h/help -- $argv || return
 
     if set --query _flag_help
         echo "Usage: lift [OPTIONS]

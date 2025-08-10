@@ -45,31 +45,30 @@ end
 
 function sync
     set --query devenv || config
-    set --global home "$devenv"
 
     function rehome
-        string replace "$home" "$HOME" "$argv"
+        string replace "$devenv" "$HOME" "$argv"
     end
 
+    art
     echo "Linking from $devenv..."
 
     # stage folders
-    find "$home" -type d | while read folder
+    find "$devenv" -type d | while read folder
         mkdir -p "$(rehome "$folder")"
     end
 
-    # symlink dotfiles
-    find "$home" -type f | while read file
-        ln -sf "$file" "$(rehome "$file")"
+    # # symlink dotfiles
+    find "$devenv" -type f | while read file
+        ln -sfv "$file" "$(rehome "$file")"
     end
 
-    # purge broken symlinks
-    find -L "$HOME" -type l -maxdepth 1 -exec rm {} \+
-    find -L "$HOME/.config" "$HOME/.local" -type l -exec rm {} \+
-
-    # purge empty folders
-    find "$HOME" -type d -maxdepth 1 -empty -delete
-    find "$HOME/.config" "$HOME/.local" -type d -empty -delete
+    if exist fd
+        # purge broken symlinks
+        fd . "$HOME" --exclude="Library/" --type symlink --follow --exec rm
+        # purge empty folders
+        fd . "$HOME" --exclude="Library/" --type directory --type empty --exec rmdir
+    end
 end
 
 function done
