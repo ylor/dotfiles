@@ -40,7 +40,9 @@ fi
 
 if [ "$(uname)" = "Linux" ] && exist pacman; then
    	sudo pacman -Sy --noconfirm --needed fish git gum # Arch
-else
+fi
+
+if missing fish || missing git || missing gum; then
     exit 69
 fi
 
