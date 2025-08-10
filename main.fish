@@ -11,5 +11,5 @@ end
 npc "linking dotfiles..."
 set --query devenv || set --universal devenv (realpath "home")
 dot --sync >/dev/null
-
-npc "open a new tab to begin computing"
+npc "done!"
+fish
