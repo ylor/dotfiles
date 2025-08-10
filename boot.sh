@@ -38,12 +38,10 @@ if [ "$(uname)" = "Darwin" ]; then
 	brew install --quiet fish git gum # macOS
 fi
 
-if [ "$(uname)" = "Linux" ]; then
-   	if exist pacman; then
-       	sudo pacman -Sy --noconfirm --needed fish git gum # Arch
-    else
-        exit 69
-	fi
+if [ "$(uname)" = "Linux" ] && exist pacman; then
+   	sudo pacman -Sy --noconfirm --needed fish git gum # Arch
+else
+    exit 69
 fi
 
 devenv="$HOME/.local/share/devenv"
@@ -53,4 +51,4 @@ rm -rf "$HOME/.local/share/devenv"
 rm -rf "$HOME/.local/share/dotfiles"
 rm -rf "$HOME/.local/share/env"
 git clone --quiet https://github.com/ylor/env.git "$devenv"
-fish $devenv/main.fish
+fish "$devenv"/main.fish
