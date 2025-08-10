@@ -51,8 +51,5 @@ rm -rf "$devenv"
 rm -rf "$HOME/.local/share/devenv"
 rm -rf "$HOME/.local/share/dotfiles"
 rm -rf "$HOME/.local/share/env"
-git clone --quiet https://github.com/ylor/env.git "$devenv" >/dev/null
-
-cd "$devenv"
-npc "installing..."
-fish main.fish
+git clone --quiet https://github.com/ylor/env.git "$devenv"
+fish $devenv/main.fish

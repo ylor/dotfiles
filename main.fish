@@ -1,5 +1,4 @@
 cd (status dirname)
-# source lib.fish
 source home/.config/fish/functions/dot.fish
 source home/.config/fish/functions/lib.fish
 
@@ -12,4 +11,5 @@ end
 npc "linking dotfiles..."
 set --query devenv || set --universal devenv (realpath "home")
 dot --sync >/dev/null
-exec fish --login --interactive
+
+npc "open a new tab to begin computing"
