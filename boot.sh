@@ -23,11 +23,10 @@ npc() {
     printf "\n"
 }
 
-printf "\033c"
+printf "\033c" # clear the screen
 echo "$art" | sed '1d'
 npc "enter your password to continue (or abort with ctrl+c)..."
-
-sudo printf
+sudo printf ""
 while true; do sudo -n true; sleep 60; kill -0 "$$" || exit; done 2>/dev/null &
 
 if [ "$(uname)" = "Darwin" ]; then
@@ -35,17 +34,23 @@ if [ "$(uname)" = "Darwin" ]; then
 		bash -c "$(curl -fsSL https://raw.githubusercontent.com/Homebrew/install/HEAD/install.sh)"
 	fi
 	eval "$(/opt/homebrew/bin/brew shellenv)"
+	brew install --quiet fish git gum # macOS
 fi
 
-if missing fish || missing git || missing gum; then
-	npc "Installing dependencies..."
-	exist brew && brew install --quiet fish git gum # macOS
-	exist pacman && sudo pacman -Sy --noconfirm --needed fish git gum # Arch
+if [ "$(uname)" = "Linux" ]; then
+   	if exist pacman; then
+       	sudo pacman -Sy --noconfirm --needed fish git gum # Arch
+    else
+        exit 69
+	fi
 fi
 
 devenv=$HOME/.local/share/devenv
 npc "initializing..."
 rm -rf "$devenv"
+rm -rf "$HOME/.local/share/devenv"
+rm -rf "$HOME/.local/share/dotfiles"
+rm -rf "$HOME/.local/share/env"
 git clone --quiet https://github.com/ylor/env.git "$devenv" >/dev/null
 
 cd "$devenv"

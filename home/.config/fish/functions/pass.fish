@@ -1,25 +1,23 @@
-function pass
+function triplet
     set consonants b c d f g h j k l m n p q r s t v w x z
     set vowels a e i o y u
-    set phrase
-
-    for x in seq 3
-        set --append phrase $(random choice $consonants)
-        set --append phrase $(random choice $vowels)
-        set --append phrase $(random choice $consonants)
+    for i in (seq 2)
+        echo (random choice $consonants)
+        echo (random choice $vowels)
+        echo (random choice $consonants)
     end
-    set --append phrase -
-    for x in seq 3
-        set --append phrase $(random choice $consonants)
-        set --append phrase $(random choice $vowels)
-        set --append phrase $(random choice $consonants)
-    end
+end
 
-    set digit (random choice (seq 1 9))
-    set hyphen_target $(random choice 7 9 14)
+function pass
+    set digit (random choice (seq 9))
+    set digit_pos (random choice 6 7 14)
+    set upper_pos (random choice 1 8)
 
-    set upper_target $(random choice 1 8)
-    set phrase[$upper_target] (string upper $phrase[$upper_target])
-    set --append phrase $digit
-    string join '' $phrase
+    set phrase (triplet) - (triplet)
+    set phrase[$upper_pos] (string upper $phrase[$upper_pos])
+
+    set pass (string join '' $phrase)
+    set pass (string sub -s 1 -l $digit_pos $pass)$digit(string sub -s (math $digit_pos + 1) $pass)
+
+    echo $pass
 end

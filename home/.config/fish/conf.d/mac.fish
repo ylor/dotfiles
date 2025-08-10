@@ -1,4 +1,5 @@
 if test (uname) = Darwin
+    abbr o open
     alias liberate="xattr -d com.apple.quarantine"
 
     function cdf
@@ -7,7 +8,6 @@ if test (uname) = Darwin
 
     function open
         test (count $argv) -eq 0 && command open . || command open $argv
-        abbr o open
     end
 
     function vnc
@@ -15,8 +15,8 @@ if test (uname) = Darwin
     end
 
     # macOS Aliases
-    # alias dscleanup="find $HOME -name '.DS_Store' -delete 2>/dev/null"
-    # alias flushdns="sudo dscacheutil -flushcache; sudo killall -HUP mDNSResponder"
+    alias dsclean="find $HOME -name '.DS_Store' -delete 2>/dev/null"
+    alias flushdns="sudo dscacheutil -flushcache; sudo killall -HUP mDNSResponder"
     # alias hide="defaults write com.apple.finder AppleShowAllFiles -bool false && killall Finder"
     # alias showhidden="defaults write com.apple.finder AppleShowAllFiles -bool true && killall Finder"
 
@@ -44,7 +44,7 @@ if test (uname) = Darwin
             case show
                 echo show
             case *
-                echo "frankly i have no idea how you got here but i'm impressed"
+                echo "i have no idea how you got here but i'm impressed"
                 return 1
         end
     end
