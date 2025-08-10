@@ -1,6 +1,6 @@
 cd (status dirname)
+source home/.config/fish/conf.d/lib.fish
 source home/.config/fish/functions/dot.fish
-source home/.config/fish/functions/lib.fish
 set kernel (string lower (uname))
 
 art
