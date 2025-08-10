@@ -11,5 +11,4 @@ end
 npc "linking dotfiles..."
 set --query devenv || set --universal devenv (realpath "home")
 dot --sync >/dev/null
-npc "done!"
-fish
+done

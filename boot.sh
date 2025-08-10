@@ -1,5 +1,5 @@
 #!/bin/sh
-# Usage: sh -c "$(curl -fsSL env.roly.sh)"
+# Usage: curl -fsSL env.roly.sh | sh
 # Usage: wget -O- env.roly.sh | sh
 set -e
 
