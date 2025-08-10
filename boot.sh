@@ -45,7 +45,7 @@ if [ "$(uname)" = "Linux" ]; then
 	fi
 fi
 
-devenv=$HOME/.local/share/devenv
+devenv="$HOME/.local/share/devenv"
 npc "initializing..."
 rm -rf "$devenv"
 rm -rf "$HOME/.local/share/devenv"

@@ -35,5 +35,5 @@ function pls
 end
 
 function spinner
-    random choice spinners line dot minidot jump pulse points meter hamburger
+    random choice line dot minidot jump pulse points meter hamburger
 end
