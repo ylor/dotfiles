@@ -10,6 +10,7 @@ font-size = 18
 font-thicken=true
 
 theme = catppuccin-mocha
+theme = gruvbox-material
 background = #000000
 background-blur-radius = 80
 background-opacity = 0.85
