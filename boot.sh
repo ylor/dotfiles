@@ -27,7 +27,7 @@ npc() {
 clear
 echo "$art" | sed '1d'
 npc "enter your password to continue (or abort with ctrl+c)..."
-sudo --validate
+sudo true
 while true; do sudo --non-interactive true; sleep 60; kill -0 "$$" || exit; done 2>/dev/null &
 
 if [ "$(uname)" = "Darwin" ]; then
@@ -43,14 +43,16 @@ if [ "$(uname)" = "Linux" ] && exist pacman; then
 fi
 
 if missing fish || missing git || missing gum; then
+    echo
+    npc "$(tput setaf 1)ERROR$(tput sgr0) unsupported operating system or missing dependencies"
+    npc "Retry by running: fish $HOME/.local/share/env/main.fish"
+    echo
+    npc "$(tput sitm)✈ YOU'RE GONNA CARRY THAT WEIGHT.$(tput ritm)"
     exit 69
 fi
 
 devenv="$HOME/.local/share/devenv"
-npc "initializing..."
 rm -rf "$devenv"
-rm -rf "$HOME/.local/share/devenv"
-rm -rf "$HOME/.local/share/dotfiles"
-rm -rf "$HOME/.local/share/env"
+npc "initializing..."
 git clone --quiet https://github.com/ylor/env.git "$devenv"
-fish "$devenv"/main.fish
+fish "$devenv/main.fish"

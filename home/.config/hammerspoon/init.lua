@@ -71,16 +71,5 @@ if not AppRunning("Maccy") then
 end
 -- end
 
-function toggleMenuBarAutoHide()
-    local script = [[
-        tell application "System Events"
-       	    tell dock preferences to set autohide menu bar to not autohide menu bar
-        end tell
-    ]]
-    hs.osascript.applescript(script)
-end
-
-hs.hotkey.bind({ "cmd", "alt", "ctrl" }, "M", toggleMenuBarAutoHide)
-
 hs.hotkey.bind(mod.hyper, "R", hs.reload)
 hs.alert.show("Config loaded")

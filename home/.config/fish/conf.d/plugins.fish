@@ -12,7 +12,12 @@ end
 # end
 
 if command -vq bat # https://github.com/sharkdp/bat - modern cat
-    alias cat="bat --pager=never"
+    alias cat="bat"
+
+    if command -vq batman
+        batman --export-env | source
+        alias man="batman"
+    end
 end
 
 if command -vq code # https://code.visualstudio.com/ - vscode shorthand
@@ -23,9 +28,9 @@ if command -vq code # https://code.visualstudio.com/ - vscode shorthand
 end
 
 if command -vq eza # https://github.com/eza-community/eza - modern ls
-    alias ls="eza --hyperlink --icons"
+    alias ls="eza --long --header --hyperlink --icons"
     alias ll="ls -l"
-    alias lla="ls -la"
+    alias la="ls -la"
     alias lt='eza --tree --level=2 --long --icons --git'
     alias lta='lt -a'
 end
@@ -39,6 +44,7 @@ end
 
 if command -vq ollama # https://github.com/BurntSushi/ripgrep - modern grep
     set -q llm_model || set llm_model deepseek-r1
+    alias ai="ollama run $llm_model"
     alias llm="ollama run $llm_model"
 end
 
@@ -46,8 +52,8 @@ if command -vq rg # https://github.com/BurntSushi/ripgrep - modern grep
     alias grep="rg"
 end
 
-if command -vq hx
-    if hx --version | grep -q evil
+if command -vq hx # https://helix-editor.com
+    if hx --version | grep -q evil # https://github.com/usagi-flow/evil-helix
         alias vi="hx"
         alias vim="hx"
     end
@@ -62,6 +68,6 @@ end
 
 if command -vq zoxide # https://github.com/ajeetdsouza/zoxide - smarter cd
     zoxide init fish --cmd j | source
-    # alias cd="j"
-    # alias cdi="ji"
+    alias cd="j"
+    alias cdi="ji"
 end

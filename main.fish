@@ -4,15 +4,30 @@ source home/.config/fish/functions/dot.fish
 set kernel (string lower (uname))
 
 art
-for script in init/$kernel/*.fish
-    set name $(basename $script .fish)
-    npc "configuring $name..."
-    source $script
-    recho "configured $name!"
+
+set signal "$HOME/.local/state/devenv/install"
+if not test -e $signal
+    mkdir -p (dirname $signal)
+    if gum confirm "Choose your install?" --affirmative="Full" --negative="Minimal"
+        echo full >$signal
+    else
+        echo minimal >$signal
+    end
+end
+
+set state (cat $signal)
+if [ $state = full ]
+    for script in init/$kernel/*.fish
+        set name $(basename $script .fish)
+        npc "configuring $name..."
+        source $script
+        recho "configured $name!"
+    end
 end
 
 npc "linking dotfiles..."
 set --query devenv || set --universal devenv (realpath "home")
 dot --sync >/dev/null
 recho "linked dotfiles!"
-npc "$(tput sitm)see you space cowboy$(tput ritm)"
+echo
+npc "✈ $(tput sitm)SEE YOU SPACE COWBOY…$(tput ritm)"
