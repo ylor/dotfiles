@@ -64,10 +64,13 @@ function sync
     end
 
     if exist fd
+        function fd_exclude
+            fd . "$HOME" --hidden --exclude "Developer" --exclude "Library" --exclude "Movies" --exclude "Music" --exclude "OrbStack" --exclude "Pictures" --exclude "Public" --exclude ".Trash" $argv
+        end
         # purge broken symlinks
-        fd . "$HOME" --exclude="Library/" --type symlink --follow --exec rm
+        fd_exclude --type symlink --follow --exec rm
         # purge empty folders
-        fd . "$HOME" --exclude="Library/" --type directory --type empty --exec rmdir
+        fd_exclude --type directory --type empty --hidden --exec rmdir
     end
 end
 
