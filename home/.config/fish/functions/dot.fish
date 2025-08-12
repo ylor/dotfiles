@@ -11,6 +11,7 @@ end
 
 function config
     art
+    #TODO show current value
     set which (gum choose --header="Choose environment:" "dev" "env" "other")
     switch $which
         case dev
@@ -24,22 +25,18 @@ function config
 end
 
 function init
-    function os_is_mac
-        test (uname) = Darwin
-    end
+    fish $devenv/../main.fish
+end
 
-    function os_is_linux
-        test (uname) = Linux
-    end
-
-    function linux_is_arch
-        command -vq pacman
-    end
-
-    if os_is_mac
-        echo mac
-    else if os_is_linux && linux_is_arch
-        echo arch
+function mode
+    #TODO show current value
+    art
+    set signal "$HOME/.local/state/devenv/install"
+    mkdir -p (dirname $signal)
+    if gum confirm "Choose your install:" --affirmative="Full" --negative="Minimal" --no-show-help
+        echo full >$signal
+    else
+        echo minimal >$signal
     end
 end
 
@@ -80,7 +77,7 @@ function done
 end
 
 function dot
-    argparse c/config s/sync i/init h/help -- $argv
+    argparse c/config m/mode s/sync i/init h/help -- $argv
 
     if set --query _flag_help
         echo "Usage: link [OPTIONS]
@@ -100,6 +97,11 @@ Options:
 
     if set --query _flag_init
         init
+        return 0
+    end
+
+    if set --query _flag_mode
+        mode
         return 0
     end
 

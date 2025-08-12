@@ -7,12 +7,7 @@ art
 
 set signal "$HOME/.local/state/devenv/install"
 if not test -e $signal
-    mkdir -p (dirname $signal)
-    if gum confirm "Choose your install?" --affirmative="Full" --negative="Minimal"
-        echo full >$signal
-    else
-        echo minimal >$signal
-    end
+    mode
 end
 
 set state (cat $signal)
