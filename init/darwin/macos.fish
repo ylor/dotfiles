@@ -1,4 +1,9 @@
 # Configure dock
+
+if [ $state = minimal ]
+    return
+end
+
 if defaults read com.apple.Dock | grep -q "com.apple.apps.launcher"
     command -vq dockutil || brew install --quiet dockutil
     dockutil --remove all --add /Applications --add "$HOME/Downloads" >/dev/null

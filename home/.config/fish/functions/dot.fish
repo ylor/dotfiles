@@ -58,14 +58,14 @@ function sync
         mkdir -p "$(rehome "$folder")"
     end
 
-    # # symlink dotfiles
+    # link files
     find "$devenv" -type f | while read file
         ln -sfv "$file" "$(rehome "$file")"
     end
 
     if exist fd
         function fd_exclude
-            fd . "$HOME" --hidden --exclude "Developer" --exclude "Library" --exclude "Movies" --exclude "Music" --exclude "OrbStack" --exclude "Pictures" --exclude "Public" --exclude ".Trash" $argv
+            fd . "$HOME" --hidden --exclude Developer --exclude Library --exclude Movies --exclude Music --exclude OrbStack --exclude Pictures --exclude Public --exclude ".Trash" $argv
         end
         # purge broken symlinks
         fd_exclude --type symlink --follow --exec rm
