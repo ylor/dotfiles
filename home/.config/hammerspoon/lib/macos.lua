@@ -44,6 +44,12 @@ function Focus(direction)
     hs.mouse.absolutePosition(center)
 end
 
+function Unlock1Password()
+    hs.execute("/opt/homebrew/bin/op account get")
+end
+
+hs.hotkey.bind("alt", ".", Unlock1Password)
+
 -- MARK: AutoQuit
 local exempt = {
     ["Finder"] = true,

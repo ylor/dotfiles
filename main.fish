@@ -6,9 +6,7 @@ set kernel (string lower (uname))
 art
 
 set signal "$HOME/.local/state/devenv/install"
-if not test -e $signal
-    mode
-end
+test -e $signal || mode
 
 set state (cat $signal)
 if [ $state = full ]
