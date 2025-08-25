@@ -67,7 +67,25 @@ if command -vq zed || command -vq zeditor # http://zed.dev - zed shorthand
 end
 
 if command -vq zoxide # https://github.com/ajeetdsouza/zoxide - smarter cd
-    zoxide init fish --cmd j | source
-    alias cd="j"
-    alias cdi="ji"
+    zoxide init fish | source
+    alias cd="zd"
+    alias cdi="zi"
+    alias j="z"
+    alias ji="zi"
+
+    function zd
+        if test (count $argv) -eq 0
+            builtin cd $HOME
+        else if test -d $argv
+            builtin cd $argv
+        else
+            if z $argv
+                set_color green
+                # printf "\U000F17A9 "
+                printf "✓ "
+                set_color normal
+                pwd
+            end
+        end
+    end
 end
