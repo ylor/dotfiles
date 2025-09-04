@@ -19,5 +19,9 @@ function pass
     set pass (string join '' $phrase)
     set pass (string sub -s 1 -l $digit_pos $pass)$digit(string sub -s (math $digit_pos + 1) $pass)
 
+    if command -vq pbcopy
+        echo $pass | pbcopy
+    end
+
     echo $pass
 end
