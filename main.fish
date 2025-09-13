@@ -1,10 +1,10 @@
 cd (status dirname)
 source home/.config/fish/functions/dot.fish
-
 dot-show-art
+
 set -Ux DOT_PATH (realpath $PWD)
 set -Ux DOT_HOME (realpath "home")
-set -q DOT_MODE || dot-config-mode
+set -q DOT_MODE || dot-config
 
 if [ $DOT_MODE = full ]
     set kernel (string lower (uname))
