@@ -1,15 +1,12 @@
 cd (status dirname)
-source home/.config/fish/conf.d/lib.fish
-source home/.config/fish/functions/dot.fish
-set kernel (string lower (uname))
+source home/.config/fish/functions/struct.fish
+set -Ux struct_path (realpath $PWD)
+set -Ux struct_home (realpath "home")
+set -q struct_mode || struct-mode
 
-art
-
-set signal "$HOME/.local/state/devenv/install"
-test -e $signal || mode
-
-set state (cat $signal)
-if [ $state = full ]
+struct-art
+if [ $struct_mode = full ]
+    set kernel (string lower (uname))
     for script in init/$kernel/*.fish
         set name $(basename $script .fish)
         npc "configuring $name..."
@@ -19,8 +16,7 @@ if [ $state = full ]
 end
 
 npc "linking dotfiles..."
-set --query devenv || set --universal devenv (realpath "home")
-dot --sync >/dev/null
+struct --sync >/dev/null
 recho "linked dotfiles!"
 echo
 npc "✈ $(tput sitm)SEE YOU SPACE COWBOY…$(tput ritm)"

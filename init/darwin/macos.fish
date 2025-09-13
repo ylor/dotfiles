@@ -1,4 +1,4 @@
-if [ $state = minimal ]
+if [ $struct_mode = minimal ]
     return
 end
 

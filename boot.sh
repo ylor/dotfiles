@@ -4,11 +4,15 @@
 set -e
 
 art="
-   ███████ ██ ██      ███████ ███████
-   ██      ██ ██      ██      ██
-   █████   ██ ██      █████   ███████
-   ██      ██ ██      ██           ██
-██ ██      ██ ███████ ███████ ███████
+  ▄████████     ███        ▄████████ ███    █▄   ▄████████     ███
+  ███    ███ ▀█████████▄   ███    ███ ███    ███ ███    ███ ▀█████████▄
+  ███    █▀     ▀███▀▀██   ███    ███ ███    ███ ███    █▀     ▀███▀▀██
+  ███            ███   ▀  ▄███▄▄▄▄██▀ ███    ███ ███            ███   ▀
+▀███████████     ███     ▀▀███▀▀▀▀▀   ███    ███ ███            ███
+         ███     ███     ▀███████████ ███    ███ ███    █▄      ███
+   ▄█    ███     ███       ███    ███ ███    ███ ███    ███     ███
+ ▄████████▀     ▄████▀     ███    ███ ████████▀  ████████▀     ▄████▀
+                           ███    ███
 "
 
 exist() { command -v "$1" >/dev/null; }
@@ -35,7 +39,7 @@ if [ "$(uname)" = "Darwin" ]; then
 		bash -c "$(curl -fsSL https://raw.githubusercontent.com/Homebrew/install/HEAD/install.sh)"
 	fi
 	eval "$(/opt/homebrew/bin/brew shellenv)"
-	brew install --quiet fish git gum # macOS
+	brew install --quiet fish git gum
 fi
 
 if [ "$(uname)" = "Linux" ] && exist pacman; then
@@ -45,14 +49,14 @@ fi
 if missing fish || missing git || missing gum; then
     echo
     npc "$(tput setaf 1)ERROR$(tput sgr0) unsupported operating system or missing dependencies"
-    npc "Retry by running: fish $HOME/.local/share/env/main.fish"
+    npc "Retry by running: fish $HOME/.local/share/struct/main.fish"
     echo
     npc "$(tput sitm)✈ YOU'RE GONNA CARRY THAT WEIGHT.$(tput ritm)"
-    exit 69
+    exit 67
 fi
 
-devenv="$HOME/.local/share/devenv"
-rm -rf "$devenv"
+struct_path="$HOME/.local/share/struct"
+rm -rf "$struct_path"
 npc "initializing..."
-git clone --quiet https://github.com/ylor/env.git "$devenv"
-fish "$devenv/main.fish"
+git clone --quiet https://github.com/ylor/env.git "$struct_path"
+fish "$struct_path/main.fish"
