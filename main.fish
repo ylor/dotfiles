@@ -1,22 +1,22 @@
 cd (status dirname)
-source home/.config/fish/functions/struct.fish
-set -Ux struct_path (realpath $PWD)
-set -Ux struct_home (realpath "home")
-set -q struct_mode || struct-mode
+source home/.config/fish/functions/dot.fish
 
-struct-art
-if [ $struct_mode = full ]
+dot-show-art
+set -Ux DOT_PATH (realpath $PWD)
+set -Ux DOT_HOME (realpath "home")
+set -q DOT_MODE || dot-config-mode
+
+if [ $DOT_MODE = full ]
     set kernel (string lower (uname))
     for script in init/$kernel/*.fish
         set name $(basename $script .fish)
-        npc "configuring $name..."
+        dot-npc "configuring $name..."
         source $script
-        recho "configured $name!"
+        dot-recho "configured $name!"
     end
 end
 
-npc "linking dotfiles..."
-struct --sync >/dev/null
-recho "linked dotfiles!"
-echo
-npc "✈ $(tput sitm)SEE YOU SPACE COWBOY…$(tput ritm)"
+dot-npc "linking dotfiles..."
+dot-sync >/dev/null
+dot-recho "linked dotfiles!"
+dot-npc "✈ $(tput sitm)SEE YOU SPACE COWBOY…$(tput ritm)"

@@ -4,15 +4,11 @@
 set -e
 
 art="
-  ▄████████     ███        ▄████████ ███    █▄   ▄████████     ███
-  ███    ███ ▀█████████▄   ███    ███ ███    ███ ███    ███ ▀█████████▄
-  ███    █▀     ▀███▀▀██   ███    ███ ███    ███ ███    █▀     ▀███▀▀██
-  ███            ███   ▀  ▄███▄▄▄▄██▀ ███    ███ ███            ███   ▀
-▀███████████     ███     ▀▀███▀▀▀▀▀   ███    ███ ███            ███
-         ███     ███     ▀███████████ ███    ███ ███    █▄      ███
-   ▄█    ███     ███       ███    ███ ███    ███ ███    ███     ███
- ▄████████▀     ▄████▀     ███    ███ ████████▀  ████████▀     ▄████▀
-                           ███    ███
+   ███████ ██ ██      ███████ ███████
+   ██      ██ ██      ██      ██
+   █████   ██ ██      █████   ███████
+   ██      ██ ██      ██           ██
+██ ██      ██ ███████ ███████ ███████
 "
 
 exist() { command -v "$1" >/dev/null; }
@@ -30,6 +26,7 @@ npc() {
 
 clear
 echo "$art" | sed '1d'
+exit
 npc "enter your password to continue (or abort with ctrl+c)..."
 sudo true
 while true; do sudo --non-interactive true; sleep 60; kill -0 "$$" || exit; done 2>/dev/null &
@@ -50,13 +47,12 @@ if missing fish || missing git || missing gum; then
     echo
     npc "$(tput setaf 1)ERROR$(tput sgr0) unsupported operating system or missing dependencies"
     npc "Retry by running: fish $HOME/.local/share/struct/main.fish"
-    echo
     npc "$(tput sitm)✈ YOU'RE GONNA CARRY THAT WEIGHT.$(tput ritm)"
     exit 67
 fi
 
-struct_path="$HOME/.local/share/struct"
-rm -rf "$struct_path"
+DOT_PATH="$HOME/.local/share/dot"
+rm -rf "$DOT_PATH"
 npc "initializing..."
-git clone --quiet https://github.com/ylor/env.git "$struct_path"
-fish "$struct_path/main.fish"
+git clone --quiet https://github.com/ylor/env.git "$DOT_PATH"
+fish "$DOT_PATH/main.fish"

@@ -85,7 +85,9 @@ defaults write com.apple.TextEdit SmartQuotes -bool false
 
 # Hot Corners
 ## bottom right → mission control
+defaults write com.apple.dock wvous-tl-modifier -int 0
 defaults write com.apple.dock wvous-tr-corner -int 2
+defaults write com.apple.dock wvous-bl-modifier -int 0
 defaults write com.apple.dock wvous-br-modifier -int 0
 
 # Window Management

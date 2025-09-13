@@ -1,6 +1,4 @@
-if [ $struct_mode = minimal ]
-    return
-end
+[ $DOT_MODE = minimal ] && return
 
 # Configure dock
 if defaults read com.apple.Dock | grep -q "com.apple.apps.launcher"
