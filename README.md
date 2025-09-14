@@ -13,12 +13,11 @@ This project should be considered personal software and was developed for an aud
 ## Usage
 
 `sh -c $(curl -fsSL env.roly.sh)`
-`wget -O- env.roly.sh`
 
 ## Acknowledgements
 
-- Omakub, Omarchy, Crucible - spiritual kinship, inspiration
-- Homebrew - a pillar in macOS computing
+- Omarchy - spiritual kinship, inspiration
+- Homebrew - a pillar for macOS computing
 - Gum - a crucial utility that transformed the UX of this project
 
 ## TODO
