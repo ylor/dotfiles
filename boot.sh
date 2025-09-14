@@ -1,5 +1,6 @@
 #!/bin/sh
-# Usage: curl -fsSL boot.roly.sh
+
+# Usage: sh -c "$(curl -fsSL boot.roly.sh)"
 set -e
 
 exist() { command -v "$1" >/dev/null; }
@@ -23,16 +24,16 @@ while true; do sudo --non-interactive true; sleep 60; kill -0 "$$" || exit; done
 
 if [ "$(uname)" = "Darwin" ]; then
 	if missing /opt/homebrew/bin/brew; then
-		bash -c "$(curl -fsSL https://raw.githubusercontent.com/Homebrew/install/HEAD/install.sh)"
+		NONINTERACTIVE=1 bash -c "$(curl -fsSL https://raw.githubusercontent.com/Homebrew/install/HEAD/install.sh)"
 	fi
 	/opt/homebrew/bin/brew install --quiet fish git gum
+	eval "$(/opt/homebrew/bin/brew shellenv)"
 fi
 
 if [ "$(uname)" = "Linux" ] && exist pacman; then
    	sudo pacman -Sy --noconfirm --needed fish git gum # Arch
 fi
 
-eval "$(/opt/homebrew/bin/brew shellenv)"
 if missing fish || missing git || missing gum; then
     echo
     npc "$(tput setaf 1)ERROR$(tput sgr0) unsupported operating system or missing dependencies"
