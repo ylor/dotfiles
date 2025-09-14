@@ -1,6 +1,5 @@
 #!/bin/sh
-# Usage: curl -fsSL boot.roly.sh | sh
-# Usage: wget -O- boot.roly.sh | sh
+# Usage: curl -sL boot.roly.sh
 set -e
 
 # art="
@@ -52,5 +51,5 @@ fi
 DOT_PATH="$HOME/.local/share/dot"
 rm -rf "$DOT_PATH"
 npc "initializing..."
-git clone --quiet https://github.com/ylor/env.git "$DOT_PATH"
+git clone https://github.com/ylor/env.git "$DOT_PATH"
 fish "$DOT_PATH/main.fish"
