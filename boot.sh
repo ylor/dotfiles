@@ -32,6 +32,7 @@ if [ "$(uname)" = "Darwin" ]; then
 	if missing /opt/homebrew/bin/brew; then
 		bash -c "$(curl -fsSL https://raw.githubusercontent.com/Homebrew/install/HEAD/install.sh)"
 	fi
+	eval "$(/opt/homebrew/bin/brew shellenv)"
 	brew install --quiet fish git gum
 fi
 eval "$(/opt/homebrew/bin/brew shellenv)"
