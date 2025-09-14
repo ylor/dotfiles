@@ -28,14 +28,14 @@ if [ $DOT_MODE = full ]
         end
     end
 
-    # App Store
-    set apps 1Password-1569813296 Noir-1592917505 Wipr-1662217862
-    set installed_apps (mas list)
-    for app in $apps
-        set id (string split "-" -- $app)[2]
-        set title (string split "-" -- $app)[1]
-        if not echo "$installed_apps" | grep -iq "$id"
-            gum spin --spinner=(dot-spinner-random) --title="installing $title..." -- mas install "$id" &>/dev/null
-        end
-    end
+    # # App Store
+    # set apps 1Password-1569813296 Noir-1592917505 Wipr-1662217862
+    # set installed_apps (mas list)
+    # for app in $apps
+    #     set id (string split "-" -- $app)[2]
+    #     set title (string split "-" -- $app)[1]
+    #     if not echo "$installed_apps" | grep -iq "$id"
+    #         gum spin --spinner=(dot-spinner-random) --title="installing $title..." -- mas install "$id" &>/dev/null
+    #     end
+    # end
 end

@@ -6,6 +6,7 @@ set -Ux DOT_HOME (realpath "home")
 set -q DOT_MODE || dot-config
 
 dot-show-art
+
 if [ $DOT_MODE = full ]
     set kernel (string lower (uname))
     for script in init/$kernel/*.fish
