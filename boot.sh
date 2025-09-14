@@ -1,14 +1,7 @@
 #!/bin/sh
-# Usage: curl -sL boot.roly.sh
+# Usage: curl -fsSL boot.roly.sh
 set -e
 
-# art="
-#    ███████ ██ ██      ███████ ███████
-#    ██      ██ ██      ██      ██
-#    █████   ██ ██      █████   ███████
-#    ██      ██ ██      ██           ██
-# ██ ██      ██ ███████ ███████ ███████
-# "
 exist() { command -v "$1" >/dev/null; }
 missing() { ! command -v "$1" >/dev/null; }
 npc() {
