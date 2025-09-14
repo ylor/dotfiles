@@ -1,14 +1,12 @@
-# env
+# dotfiles
 
-An idempotent, (mostly) unattended tool to configure macOS with everything I need to be productive. Essential packages are installed and configured to create my development environment.
-
-This project should be considered personal software and was developed for an audience of one.
+An (mostly) unattended tool to idempotently configure macOS to my liking.
 
 ## Prerequisites
 
 - macOS
 - internet access
-- sudo
+- sudo access
 
 ## Usage
 
