@@ -60,7 +60,7 @@ local exempt = {
 }
 
 -- Set up the window filter
-WindowFilter = hs.window.filter.new()
+WindowFilter = hs.window.filter.default
 WindowFilter:subscribe(hs.window.filter.windowDestroyed, function(window, application)
     local app = hs.application.get(application)
     if not app then return end

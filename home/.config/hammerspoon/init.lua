@@ -1,6 +1,15 @@
 ---@diagnostic disable-next-line: undefined-global
-local hs = hs
+local hs        = hs
 
+mod             = {}
+mod.main        = { "alt" }
+mod.cmd         = { "cmd" }
+mod.hyper       = { "ctrl", "alt", "cmd" }
+mod.combined    = { "ctrl", "alt" }
+mod.hyper.shift = { "ctrl", "alt", "cmd", "shift" }
+mod.main.shift  = { "alt", "shift" }
+
+require('lib.watchers')
 require("lib.macos")
 require("lib.app")
 require("lib.finder")
@@ -8,14 +17,6 @@ require("lib.mouse")
 require("lib.space")
 require("lib.window")
 -- require("lib.reload")
-
-local mod       = {}
-mod.main        = { "alt" }
-mod.cmd         = { "cmd" }
-mod.hyper       = { "ctrl", "alt", "cmd" }
-mod.combined    = { "ctrl", "alt" }
-mod.hyper.shift = { "ctrl", "alt", "cmd", "shift" }
-mod.main.shift  = { "alt", "shift" }
 
 App(mod.main, "Return", "Ghostty")
 App(mod.main, "E", "Zed")
@@ -56,20 +57,6 @@ hs.hotkey.bind(mod.hyper, "right", function()
     if not eastScreen then return end
     SelectMenuItem({ "Window", "Move to " .. eastScreen:name() })
 end)
-
-if not AppRunning("Maccy") then
-    hs.hotkey.bind(mod.hyper, "v", function()
-        -- local spot = IsActiveWindowSpotlight()
-        -- if spot then
-        --     hs.eventtap.keyStroke({ "cmd" }, "4", 0)
-        -- else
-        hs.eventtap.keyStroke({ "cmd" }, "space", 0)
-        hs.timer.doAfter(0.1, function()
-            hs.eventtap.keyStroke({ "cmd" }, "4", 0)
-        end)
-    end)
-end
--- end
 
 hs.hotkey.bind(mod.hyper, "R", hs.reload)
 hs.alert.show("Config loaded")
