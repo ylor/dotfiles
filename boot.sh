@@ -3,14 +3,13 @@
 # Usage: wget -O- env.roly.sh | sh
 set -e
 
-art="
-   ███████ ██ ██      ███████ ███████
-   ██      ██ ██      ██      ██
-   █████   ██ ██      █████   ███████
-   ██      ██ ██      ██           ██
-██ ██      ██ ███████ ███████ ███████
-"
-
+# art="
+#    ███████ ██ ██      ███████ ███████
+#    ██      ██ ██      ██      ██
+#    █████   ██ ██      █████   ███████
+#    ██      ██ ██      ██           ██
+# ██ ██      ██ ███████ ███████ ███████
+# "
 exist() { command -v "$1" >/dev/null; }
 missing() { ! command -v "$1" >/dev/null; }
 npc() {
@@ -25,7 +24,7 @@ npc() {
 }
 
 clear
-echo "$art" | sed '1d'
+echo "$(curl -fsSL https://raw.githubusercontent.com/ylor/env/refs/heads/main/art.txt)"
 npc "enter your password to continue (or abort with ctrl+c)..."
 sudo true
 while true; do sudo --non-interactive true; sleep 60; kill -0 "$$" || exit; done 2>/dev/null &

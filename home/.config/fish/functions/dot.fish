@@ -1,12 +1,6 @@
 function dot-show-art
     clear
-    echo "
-   ███████ ██ ██      ███████ ███████
-   ██      ██ ██      ██      ██
-   █████   ██ ██      █████   ███████
-   ██      ██ ██      ██           ██
-██ ██      ██ ███████ ███████ ███████
-"
+    cat $DOT_PATH/art.txt
 end
 
 function dot-cmd-exist
