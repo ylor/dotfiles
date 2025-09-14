@@ -34,7 +34,7 @@ if [ "$(uname)" = "Darwin" ]; then
 	fi
 	brew install --quiet fish git gum
 fi
-	eval "$(/opt/homebrew/bin/brew shellenv)"
+eval "$(/opt/homebrew/bin/brew shellenv)"
 
 if [ "$(uname)" = "Linux" ] && exist pacman; then
    	sudo pacman -Sy --noconfirm --needed fish git gum # Arch
