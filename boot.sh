@@ -23,7 +23,7 @@ npc() {
 }
 
 clear
-echo "$(curl -fsSL art.roly.sh)"
+curl -fsSL art.roly.sh
 npc "enter your password to continue (or abort with ctrl+c)..."
 sudo true
 while true; do sudo --non-interactive true; sleep 60; kill -0 "$$" || exit; done 2>/dev/null &
@@ -32,9 +32,9 @@ if [ "$(uname)" = "Darwin" ]; then
 	if missing /opt/homebrew/bin/brew; then
 		bash -c "$(curl -fsSL https://raw.githubusercontent.com/Homebrew/install/HEAD/install.sh)"
 	fi
-	eval "$(/opt/homebrew/bin/brew shellenv)"
 	brew install --quiet fish git gum
 fi
+	eval "$(/opt/homebrew/bin/brew shellenv)"
 
 if [ "$(uname)" = "Linux" ] && exist pacman; then
    	sudo pacman -Sy --noconfirm --needed fish git gum # Arch
@@ -48,7 +48,7 @@ if missing fish || missing git || missing gum; then
     exit 67
 fi
 
-DOT_PATH="$HOME/.local/share/dot"
+DOT_PATH="$HOME/.local/share/dotfiles"
 rm -rf "$DOT_PATH"
 npc "initializing..."
 git clone https://github.com/ylor/env.git "$DOT_PATH"
