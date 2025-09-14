@@ -12,7 +12,7 @@ end
 # end
 
 if command -vq bat # https://github.com/sharkdp/bat - modern cat
-    alias cat="bat"
+    # alias cat="bat"
 
     if command -vq batman
         batman --export-env | source
