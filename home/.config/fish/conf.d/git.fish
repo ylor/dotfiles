@@ -9,10 +9,13 @@ if command -vq git # https://git-scm.com
     alias gco="git checkout"
 
     function git
-        if [ $argv[1] = lol ]
-            git add -A && git commit -m $(curl --silent --fail https://whatthecommit.com/index.txt) && git push
-        else
-            command git $argv
+        switch $argv[1]
+            case convert
+                git-convert
+            case lol
+                git add -A && git commit -m $(curl --silent --fail https://whatthecommit.com/index.txt) && git push
+            case '*'
+                command git $argv
         end
     end
 end
@@ -41,7 +44,7 @@ function git-papa
     git config --global user.name papa-rreyes
 end
 
-function convert_git_https_to_ssh
+function git-convert
     # Get the current remote URL of the origin
     set current_url (git remote get-url origin)
 
