@@ -1,6 +1,4 @@
 # https://ghostty.org/docs/config
-auto-update-channel = tip
-
 shell-integration-features = true
 
 font-family = "Berkeley Mono"
@@ -9,7 +7,7 @@ font-family = "Adwaita Mono"
 font-size = 18
 font-thicken=true
 
-theme = catppuccin-mocha
+theme = Catppuccin Mocha
 background = #000000
 background-blur-radius = 80
 background-opacity = 0.85
