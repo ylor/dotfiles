@@ -13,7 +13,7 @@ function LaunchOrFocusOrCycle(app)
     end
 end
 
-function test(app)
+function LaunchFocusCycle(app)
     local mainScreen = hs.screen.mainScreen()
     local wf = hs.window.filter.new(app):setScreens(mainScreen:id())
     local windows = wf:getWindows("Focused")
@@ -26,7 +26,19 @@ end
 
 function App(mods, key, app)
     hs.hotkey.bind(mods, key, function()
-        test(app)
+        LaunchFocusCycle(app)
+    end)
+end
+
+function Tui(mods, key, cmd)
+    hs.hotkey.bind(mods, key, function()
+        local terminal =
+            "/usr/bin/open -na /Applications/Ghostty.app --args --confirm-close-surface=false --quit-after-last-window-closed=true --window-decoration=none --command=" ..
+            cmd
+        hs.execute(terminal)
+        hs.timer.doAfter(0.333, function()
+            WindowFloat()
+        end)
     end)
 end
 
@@ -42,38 +54,27 @@ function AppRunning(app)
     return hs.application.get(app)
 end
 
--- hs.hotkey.bind("cmd", "i", function()
---     test("Safari")
--- end)
+function Unlock1Password()
+    hs.execute("/opt/homebrew/bin/op account get")
+end
 
 -- APP WATCHERS
+AppWatchers = {}
 
--- Create a table to hold our app-specific functions.
--- It's a good practice to put this inside a module or a global scope to prevent
--- it from being garbage collected.
-appWatchers = {}
-
--- The single, global application watcher.
--- Assign it to a global variable to ensure it's not garbage collected.
-appWatcher = hs.application.watcher.new(function(appName, eventType, appObject)
-    -- Check if we have a handler for this app and event type.
-    if appWatchers[appName] and appWatchers[appName][eventType] then
-        -- Call the specific handler function with the application object.
-        appWatchers[appName][eventType](appObject)
+AppWatcher = hs.application.watcher.new(function(appName, eventType, appObject)
+    if AppWatchers[appName] and AppWatchers[appName][eventType] then
+        AppWatchers[appName][eventType](appObject)
     end
 end):start()
 
--- Reusable function to register a new app watcher.
-function registerAppWatcher(appName, eventType, fn)
-    -- Initialize the table for the app if it doesn't exist.
-    appWatchers[appName] = appWatchers[appName] or {}
-    -- Store the function for the specific event type.
-    appWatchers[appName][eventType] = fn
+local function useAppHook(appName, eventType, fn)
+    AppWatchers[appName] = AppWatchers[appName] or {}
+    AppWatchers[appName][eventType] = fn
 end
 
 local finderKeybind = nil
 
-registerAppWatcher("Finder", hs.application.watcher.activated, function(app)
+useAppHook("Finder", hs.application.watcher.activated, function(app)
     if finderKeybind == nil then
         finderKeybind = hs.hotkey.bind({ "cmd" }, "l", function()
             SelectMenuItem({ "Go", "Go to Folder…" })
@@ -81,19 +82,9 @@ registerAppWatcher("Finder", hs.application.watcher.activated, function(app)
     end
 end)
 
-
-registerAppWatcher("Finder", hs.application.watcher.deactivated, function(app)
+useAppHook("Finder", hs.application.watcher.deactivated, function(app)
     if finderKeybind ~= nil then
         finderKeybind:delete()
         finderKeybind = nil
     end
 end)
-
-if not AppExists("Maccy") then
-    hs.hotkey.bind(mod.hyper, "v", function()
-        hs.eventtap.keyStroke({ "cmd" }, "space", 0)
-        hs.timer.doAfter(0.1, function()
-            hs.eventtap.keyStroke({ "cmd" }, "4", 0)
-        end)
-    end)
-end

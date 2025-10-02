@@ -10,6 +10,4 @@ if command -vq brew # https://github.com/Homebrew/brew
             command brew $argv
         end
     end
-
-    abbr --add b brew
 end

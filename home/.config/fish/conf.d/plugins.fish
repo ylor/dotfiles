@@ -3,17 +3,7 @@ if test -d "$HOME/.local/bin"
     fish_add_path "$HOME/.local/bin"
 end
 
-if test -d '/Applications/1Password.app' #1Password SSH Agent
-    set SSH_AUTH_SOCK "$HOME/Library/Group Containers/2BUA8C4S2C.com.1password/t/agent.sock"
-end
-
-# if command -vq atuin
-#     atuin init fish | source
-# end
-
 if command -vq bat # https://github.com/sharkdp/bat - modern cat
-    # alias cat="bat"
-
     if command -vq batman
         batman --export-env | source
         alias man="batman"
@@ -70,7 +60,7 @@ if command -vq zoxide # https://github.com/ajeetdsouza/zoxide - smarter cd
     zoxide init fish | source
     alias cd="zd"
     alias cdi="zi"
-    alias j="z"
+    alias j="zd"
     alias ji="zi"
 
     function zd
@@ -79,12 +69,13 @@ if command -vq zoxide # https://github.com/ajeetdsouza/zoxide - smarter cd
         else if test -d $argv
             builtin cd $argv
         else
-            if z $argv
-                set_color green
-                # printf "\U000F17A9 "
-                printf "✓ "
-                set_color normal
-                pwd
+            set dir (zoxide query $argv 2>/dev/null)
+            if test $status -eq 0
+                builtin cd $dir
+                set_color green && printf "✓ "
+                set_color normal && pwd
+            else
+                false
             end
         end
     end

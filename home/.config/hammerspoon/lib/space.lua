@@ -49,42 +49,6 @@ updateSpace()
 local spaceWatcher = hs.spaces.watcher.new(updateSpace)
 spaceWatcher:start()
 
----------------------------------------------------
-
--- function moveWindowToSpace(window, spaceNumber)
---     local app = window:application()
---     local spaceId = hs.spaces.spacesForScreen()[spaceNumber]
---     local mousePosition = hs.mouse.absolutePosition()
---     local zoomButtonRect = window:zoomButtonRect()
---     if not zoomButtonRect then return end
---     if hs.spaces.focusedSpace() == spaceId then return end
---     hs.alert.show(window)
---     local windowTarget = { x = zoomButtonRect.x + zoomButtonRect.w + 5, y = zoomButtonRect.y + (zoomButtonRect.h / 2) }
---     hs.eventtap.event.newMouseEvent(hs.eventtap.event.types.leftMouseDown, windowTarget):post()
---     hs.timer.usleep(100000)
---     hs.eventtap.keyStroke({ "ctrl" }, tostring(spaceNumber), 0)
---     hs.timer.usleep(100000)
---     hs.eventtap.event.newMouseEvent(hs.eventtap.event.types.leftMouseUp, windowTarget):post()
---     LaunchOrFocusOrCycle(app)
---     CenterMouse(app)
--- end
-
--- hs.hotkey.bind({ "ctrl", "shift" }, "1", function()
---     moveWindowToSpace(hs.window.focusedWindow(), 1)
--- end)
--- hs.hotkey.bind({ "ctrl", "shift" }, "2", function()
---     moveWindowToSpace(hs.window.focusedWindow(), 2)
--- end)
--- hs.hotkey.bind({ "ctrl", "shift" }, "3", function()
---     moveWindowToSpace(hs.window.focusedWindow(), 3)
--- end)
--- hs.hotkey.bind({ "ctrl", "shift" }, "4", function()
---     moveWindowToSpace(hs.window.focusedWindow(), 4)
--- end)
--- hs.hotkey.bind({ "ctrl", "shift" }, "5", function()
---     moveWindowToSpace(hs.window.focusedWindow(), 5)
--- end)
-
 -- Function to move window to space using mouse drag simulation
 local function moveWindowToSpaceByDrag(spaceNumber)
     local win = hs.window.focusedWindow()
@@ -123,8 +87,8 @@ end
 
 -- Bind keys cmd + shift + 1-6
 for i = 1, 5 do
-    hs.hotkey.bind({ "ctrl", "alt", "cmd" }, tostring(i), function()
-        print("Hotkey pressed: cmd + shift + " .. i)
+    hs.hotkey.bind(Mod.hyper, tostring(i), function()
+        -- print("Hotkey pressed: cmd + shift + " .. i)
         moveWindowToSpaceByDrag(i)
     end)
 end

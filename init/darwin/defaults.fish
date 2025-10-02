@@ -94,7 +94,18 @@ defaults write com.apple.dock wvous-br-modifier -int 0
 ## Drag with cmd+ctrl
 defaults write -g NSWindowShouldDragOnGesture -bool true
 
+killall Finder Dock
+
 # Hammerspoon
 defaults write org.hammerspoon.Hammerspoon MJConfigFile "$HOME/.config/hammerspoon/init.lua"
 
-killall Finder Dock
+# Maccy
+defaults write org.p0deje.Maccy pasteByDefault 1
+defaults write org.p0deje.Maccy showFooter 0
+defaults write org.p0deje.Maccy showSearch 1
+defaults write org.p0deje.Maccy showTitle 0
+defaults write org.p0deje.Maccy SUEnableAutomaticChecks 1
+defaults write org.p0deje.Maccy menuIcon "clipboard"
+defaults write org.p0deje.Maccy popupPosition "statusItem"
+defaults write org.p0deje.Maccy searchMode "Fuzzy"
+defaults write org.p0deje.Maccy searchVisibility "duringSearch"

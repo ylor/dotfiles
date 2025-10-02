@@ -1,41 +1,30 @@
 ---@diagnostic disable-next-line: undefined-global
 local hs = hs
 
-function WindowFloat()
-    local win = hs.window.focusedWindow()
-    local frame = win:screen():frame()
-
-    -- size
-    local w = frame.w / 1.5
-    local h = frame.h / 1.25
-
-    -- position
-    local x = frame.x + (frame.w - w) / 2
-    local y = frame.y + (frame.h - h) / 2
-
-    win:setFrame(hs.geometry.rect(x, y, w, h), 0)
-end
-
-WindowManager = hs.eventtap.new({ hs.eventtap.event.types.keyDown }, function(event)
-    local app = hs.application.frontmostApplication()
+local function handleKeyDown(event)
     local flags = event:getFlags()
-    local ctrl = flags:containExactly({ "ctrl" }) or flags:containExactly({ "ctrl", "fn" })
     local kc = event:getKeyCode()
 
+    local ctrl = flags:containExactly({ "ctrl" }) or flags:containExactly({ "ctrl", "fn" })
+    local hyper = flags:containExactly({ "ctrl", "alt", "cmd" }) or flags:containExactly({ "ctrl", "alt", "cmd", "fn" })
+
     if ctrl and kc == hs.keycodes.map["left"] then
-        app:selectMenuItem({ "Window", "Move & Resize", "Left" })
-        return true
+        WindowLeft()
     elseif ctrl and kc == hs.keycodes.map["down"] then
-        app:selectMenuItem({ "Window", "Center" })
-        return true
+        WindowCenter()
     elseif ctrl and kc == hs.keycodes.map["up"] then
-        app:selectMenuItem({ "Window", "Fill" })
-        return true
+        WindowFill()
     elseif ctrl and kc == hs.keycodes.map["right"] then
-        app:selectMenuItem({ "Window", "Move & Resize", "Right" })
-        return true
+        WindowRight()
+    elseif hyper and kc == hs.keycodes.map["down"] then
+        WindowFloat()
     else
         return false
     end
-end)
+
+    return true
+end
+
+-- Global function to prevent garbage collection
+WindowManager = hs.eventtap.new({ hs.eventtap.event.types.keyDown }, handleKeyDown)
 WindowManager:start()
