@@ -17,11 +17,11 @@ if status is-interactive
 end
 
 # Abbreviations
+abbr --add b brew
 abbr --add !! --position anywhere --function bangbang
 abbr --add dotdot --regex '^\.\.+$' --function dotdot
 
 # Aliases
-alias b="brew"
 alias h="cd $HOME"
 alias md="mkdir -p"
 alias rd="rmdir"
