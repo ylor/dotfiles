@@ -1,6 +1,10 @@
 [alias]
     root = rev-parse --show-toplevel
 
+[user]
+	email = 2200609+ylor@users.noreply.github.com
+	name = ylor
+
 # clearly makes git better - https://blog.gitbutler.com/how-git-core-devs-configure-git/
 
 [column]
@@ -44,13 +48,9 @@
 # a matter of taste (uncomment if you dare)
 
 [core]
-        # fsmonitor = true
-        # untrackedCache = true
+        fsmonitor = true
+        untrackedCache = true
 [merge]
-        # (just 'diff3' if git version < 2.3)
-        # conflictstyle = zdiff3
+        conflictstyle = zdiff3
 [pull]
-        # rebase = true
-[user]
-	email = 2200609+ylor@users.noreply.github.com
-	name = ylor
+        rebase = true

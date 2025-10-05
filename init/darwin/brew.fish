@@ -3,7 +3,7 @@ set --universal --export HOMEBREW_NO_AUTO_UPDATE 1
 set --universal --export HOMEBREW_NO_ENV_HINTS 1
 
 # packages
-set pkgs bat bat-extras cloudflared evil-helix eza fd fzf mas mise ripgrep zoxide
+set pkgs bat bat-extras cloudflared evil-helix eza fd fzf mise ripgrep zoxide
 set installed_pkgs (brew list --formula)
 for pkg in $pkgs
     if not echo "$installed_pkgs" | grep -iq "$pkg"
@@ -11,26 +11,25 @@ for pkg in $pkgs
     end
 end
 
-if [ $DOT_MODE = full ]
-    # set xtra_pkgs mas
-    # set installed_pkgs (brew list --formula)
-    # for pkg in $xtra_pkgs
-    #     if not echo "$installed_pkgs" | grep -iq "$pkg"
-    #         gum spin --spinner=pulse --title="brewing $pkg..." -- brew install --quiet $pkg
-    #     end
-    # end
+set fonts font-sf-mono font-symbols-only-nerd-font
+for font in $fonts
+    if not echo "$installed_pkgs" | grep -iq "$font"
+        gum spin --spinner=pulse --title="brewing $font..." -- brew install --quiet $font
+    end
+end
 
+if [ $DOT_MODE = full ]
     # casks
     set casks 1password appcleaner betterdisplay ghostty hammerspoon hyperkey maccy zed
     set installed_casks (brew list --cask)
     for cask in $casks
         if not echo "$installed_casks" | grep -iq "$cask"
-            gum spin --spinner=(dot-spinner-random) --title="brewing $cask..." -- brew install --quiet $cask
+            gum spin --spinner=pulse --title="brewing $cask..." -- brew install --quiet $cask
         end
     end
 
     # # App Store
-    # brew install --quiet mas
+    # command -vq mas || brew install --quiet mas
     # set apps 1Password-1569813296 Noir-1592917505 Wipr-1662217862
     # set installed_apps (mas list)
     # for app in $apps

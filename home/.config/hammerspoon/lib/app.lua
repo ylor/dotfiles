@@ -36,9 +36,15 @@ function Tui(mods, key, cmd)
             "/usr/bin/open -na /Applications/Ghostty.app --args --confirm-close-surface=false --quit-after-last-window-closed=true --window-decoration=none --command=" ..
             cmd
         hs.execute(terminal)
-        hs.timer.doAfter(0.333, function()
+        hs.timer.doAfter(0.250, function()
             WindowFloat()
         end)
+    end)
+end
+
+function Web(mods, key, url)
+    hs.hotkey.bind(mods, key, function()
+        hs.execute("open " .. url)
     end)
 end
 

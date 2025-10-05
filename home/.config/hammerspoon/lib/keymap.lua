@@ -1,9 +1,11 @@
 ---@diagnostic disable-next-line: undefined-global
-local hs        = hs
+local hs         = hs
 
-Mod             = {}
-Mod.main        = { "alt" }
-Mod.main.shift  = { "alt", "shift" }
-Mod.combined    = { "ctrl", "alt" }
-Mod.hyper       = { "ctrl", "alt", "cmd" }
-Mod.hyper.shift = { "ctrl", "alt", "cmd", "shift" }
+Mod              = {}
+Mod.main         = { "control" }
+Mod.main.shift   = { "control", "shift" }
+Mod.option       = { "option" }
+Mod.option.shift = { "option", "shift" }
+Mod.combined     = { "control", "option" }
+Mod.hyper        = { "control", "option", "command" }
+Mod.hyper.shift  = { "control", "option", "command", "shift" }

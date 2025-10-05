@@ -9,12 +9,19 @@ require("lib.window")
 require("lib.space")
 require("lib.quitter")
 
-App(Mod.main, "Return", "Ghostty")
 App(Mod.main, "E", "Zed")
 App(Mod.main, "F", "Finder")
+App(Mod.main, "I", "Safari")
 App(Mod.main, "P", "1Password")
+App(Mod.main, "Return", "Ghostty")
 App(Mod.main, "T", "Ghostty")
+App(Mod.main.shift, "I", "Helium")
 App(Mod.main.shift, "T", "Terminal")
+
+Tui(Mod.hyper, "P", "/opt/homebrew/bin/btop")
+
+Web(Mod.main, "A", "https://chatgpt.com")
+Web(Mod.main.shift, "A", "https://gemini.google.com")
 
 local work = string.find(hs.host.localizedName(), "^PAPA")
 if work then
@@ -22,23 +29,21 @@ if work then
     App(Mod.main.shift, "I", "Safari")
     App(Mod.main, "S", "Slack")
 else
-    App(Mod.main, "I", "Safari")
-    App(Mod.main.shift, "I", "Helium")
 end
 
-hs.hotkey.bind(Mod.combined, "left", function() Focus("left") end)
-hs.hotkey.bind(Mod.combined, "down", function() Focus("down") end)
-hs.hotkey.bind(Mod.combined, "up", function() Focus("up") end)
-hs.hotkey.bind(Mod.combined, "right", function() Focus("right") end)
+hs.hotkey.bind(Mod.hyper, "left", function() Focus("left") end)
+hs.hotkey.bind(Mod.hyper, "down", function() Focus("down") end)
+hs.hotkey.bind(Mod.hyper, "up", function() Focus("up") end)
+hs.hotkey.bind(Mod.hyper, "right", function() Focus("right") end)
 
-hs.hotkey.bind(Mod.hyper, "left", function()
+hs.hotkey.bind(Mod.hyper.shift, "left", function()
     local win = hs.window.focusedWindow()
     local westScreen = win:screen():toWest()
     if not westScreen then return end
     SelectMenuItem({ "Window", "Move to " .. westScreen:name() })
 end)
 
-hs.hotkey.bind(Mod.hyper, "right", function()
+hs.hotkey.bind(Mod.hyper.shift, "right", function()
     local win = hs.window.focusedWindow()
     local eastScreen = win:screen():toEast()
     if not eastScreen then return end

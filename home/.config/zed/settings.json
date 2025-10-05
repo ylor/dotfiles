@@ -7,22 +7,22 @@
 // custom settings, run the `open default settings` command
 // from the command palette or from `Zed` application menu.
 {
-  "buffer_font_family": "SF Mono",
-  "buffer_font_fallbacks": [
-    "Adwaita Mono",
-    "Zed Plex Mono",
-    "Symbols Nerd Font Mono",
-    "Apple Color Emoji",
-    "Apple Symbols",
-    "Noto Emoji"
-  ],
+  "buffer_font_family": "Liga SFMono Nerd Font",
+  "buffer_font_fallbacks": ["Symbols Nerd Font Mono"],
+  "buffer_font_features": {
+    "calt": true,
+    "liga": true,
+    "zero": true
+  },
   "buffer_font_size": 16,
+  "disable_ai": true,
   "format_on_save": "on",
   "preferred_line_length": 100,
   // "relative_line_numbers": true,
   "soft_wrap": "bounded",
   "theme": "Catppuccin Mocha",
   "ui_font_family": ".SystemUIFont",
+  "ui_font_fallbacks": ["Symbols Nerd Font Mono"],
   //  "vim_mode": true,
   "autosave": {
     "after_delay": {
@@ -48,6 +48,7 @@
     "metrics": false
   },
   "terminal": {
+    "font_family": "SF Mono",
     "shell": {
       "program": "fish"
     }
