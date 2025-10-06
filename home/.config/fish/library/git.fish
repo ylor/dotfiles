@@ -1,6 +1,7 @@
 if command -vq git # https://git-scm.com
     alias gb="git branch"
     alias gco="git checkout"
+    alias gp="git pull"
     alias gr="git-root"
 
     function git
@@ -13,6 +14,8 @@ if command -vq git # https://git-scm.com
                 git add -A && git commit -m $(curl --silent --fail https://whatthecommit.com/index.txt) && git push
             case papa
                 git-papa
+            case p
+                command git pull
             case '*'
                 command git $argv
         end
