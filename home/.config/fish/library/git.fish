@@ -1,7 +1,7 @@
 if command -vq git # https://git-scm.com
-    alias cdr="cd $(git rev-parse --show-toplevel)"
     alias gb="git branch"
     alias gco="git checkout"
+    alias gr="git-root"
 
     function git
         switch $argv[1]
@@ -59,4 +59,8 @@ function git-convert
     else
         echo "The current remote URL is not using HTTPS."
     end
+end
+
+function git-root
+    command cd $(git rev-parse --show-toplevel)
 end
