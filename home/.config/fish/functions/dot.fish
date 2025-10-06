@@ -32,10 +32,6 @@ function dot-recho
     echo $argv
 end
 
-function dot-spinner-random
-    random choice line dot minidot jump pulse points meter hamburger
-end
-
 function dot-config
     dot-show-art
     if gum confirm "Choose your style:" --affirmative="Full" --negative="Minimal" --no-show-help
@@ -43,6 +39,19 @@ function dot-config
     else
         set -Ux DOT_MODE minimal
     end
+end
+
+function dot-help
+    echo "Usage: dot [OPTIONS]
+
+Options:
+-h, --help          Show this message
+-c, --config        Configure environment
+-i, --init          Initialize system
+-s, --sync          Synchronize dotfiles
+-t, --tui           Terminal UI
+"
+    return
 end
 
 function dot-init
@@ -81,26 +90,7 @@ function dot-sync
     end
 end
 
-function dot
-    dot-show-art
-    argparse h/help c/config m/mode s/sync i/init -- $argv
-
-    if set --query _flag_help
-        echo "Usage: dot [OPTIONS]
-
-Options:
--h, --help          Show this message
--c, --config        Configure environment
--i, --init          Initialize system
--s, --sync          Synchronize dotfiles
-"
-        return
-    end
-
-    set --query _flag_config && dot-config && return 0
-    set --query _flag_init && dot-init && return 0
-    set --query _flag_sync && dot-sync && return 0
-
+function dot-tui
     set command (gum choose "Configure" "Initialize" "Synchronize")
     switch $command
         case Configure
@@ -112,4 +102,16 @@ Options:
         case '*'
             return 67
     end
+end
+
+function dot
+    dot-show-art
+    argparse h/help c/config i/init s/sync t/tui -- $argv
+
+    set --query _flag_help && dot-help && return 0
+    set --query _flag_config && dot-config && return 0
+    set --query _flag_init && dot-init && return 0
+    set --query _flag_sync && dot-sync && return 0
+    set --query _flag_tui && dot-tui && return 0
+    dot-sync
 end

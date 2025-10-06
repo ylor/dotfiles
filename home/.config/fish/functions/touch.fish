@@ -1,4 +1,4 @@
 function touch
-    mkdir -p (dirname "$argv")
+    command mkdir -p (dirname "$argv")
     command touch $argv
 end

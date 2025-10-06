@@ -1,26 +1,24 @@
 if command -vq git # https://git-scm.com
-    abbr --add g git
-
-    abbr --command git b branch
-    abbr --command git co checkout
-
+    alias cdr="cd $(git rev-parse --show-toplevel)"
     alias gb="git branch"
-    alias gbd="git branch --delete"
     alias gco="git checkout"
 
     function git
         switch $argv[1]
             case convert
                 git-convert
+            case me
+                git-me
             case lol
                 git add -A && git commit -m $(curl --silent --fail https://whatthecommit.com/index.txt) && git push
+            case papa
+                git-papa
             case '*'
                 command git $argv
         end
     end
 end
 
-# Functions
 function gc # git clone && cd to it
     set -f slashes (echo $argv | grep -o '/' | wc -l | tr -d ' ')
     set -f repo (switch $slashes

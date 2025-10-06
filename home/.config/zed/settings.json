@@ -48,7 +48,7 @@
     "metrics": false
   },
   "terminal": {
-    "font_family": "SF Mono",
+    "font_family": "Liga SFMono Nerd Font",
     "shell": {
       "program": "fish"
     }
