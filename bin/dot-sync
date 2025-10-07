@@ -1,0 +1,30 @@
+#!/usr/bin/env fish
+dot-show-art
+set --query DOT_HOME || return 67
+
+function rehome
+    string replace "$DOT_HOME" "$HOME" "$argv"
+end
+
+echo "Linking from $DOT_HOME..."
+
+# stage folders
+find "$DOT_HOME" -type d | while read folder
+    mkdir -p "$(rehome "$folder")"
+end
+
+# link files
+find "$DOT_HOME" -type f | while read file
+    ln -sfv "$file" "$(rehome "$file")"
+end
+
+if dot-cmd-exist fd
+    function fd_exclude
+        fd . "$HOME" --hidden --exclude Developer --exclude Library --exclude Movies --exclude Music --exclude OrbStack --exclude Pictures --exclude Public --exclude ".Trash" $argv
+    end
+
+    # purge broken symlinks
+    fd_exclude --type symlink --follow --exec rm
+    # purge empty folders
+    fd_exclude --type directory --type empty --hidden --exec rmdir
+end

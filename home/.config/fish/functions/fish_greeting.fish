@@ -17,13 +17,21 @@ function cowboy-bebop
 end
 
 function half-life
-    set symbol λ
+    set symbol "λ"
     set greetings \
         "Gordon Freeman! You’re alive!" \
         "Great Scott! Gordon Freeman! I had a feeling you’d show up." \
         "It's me, Gordon — Barney, from Black Mesa!" \
         "The right man in the wrong place can make all the difference in the world." \
         "Wake up, Mr. Freeman. Wake up and…smell the ashes."
+    echo $symbol (set_color --italics)(random choice $greetings)
+end
+
+function zelda
+    set symbol "▲"
+    set greetings \
+        "Hey! Listen!" \
+        "It's dangerous to go alone! Take this."
     echo $symbol (set_color --italics)(random choice $greetings)
 end
 

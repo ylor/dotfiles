@@ -1,4 +1,4 @@
-for cmd in $DOT_PATH/bin/*.fish
+for cmd in $DOT_PATH/lib/*.fish
     source $cmd
 end
 

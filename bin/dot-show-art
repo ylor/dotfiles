@@ -1,0 +1,4 @@
+#!/usr/bin/env fish
+clear
+cat $DOT_PATH/art.txt
+echo

@@ -1,10 +1,11 @@
-for path in /opt/homebrew "/home/linuxbrew/.linuxbrew"
-    [ -d $path ] && "$path/bin/brew" shellenv | source
+if set -q $HOMEBREW_PREFIX
+    $HOMEBREW_PREFIX/bin/brew shellenv | source
 end
 
 if command -vq brew # https://github.com/Homebrew/brew
     alias bi="brew install"
-    alias bu="brew update && brew upgrade"
+    alias bu="brew uninstall"
+    alias bs="brew search"
 
     function brew
         set cmd $argv[1]
@@ -17,6 +18,8 @@ if command -vq brew # https://github.com/Homebrew/brew
                 command brew uninstall $args
             case re
                 command brew reinstall $args
+            case s
+                command brew search $args
             case up
                 command brew update && command brew upgrade
             case '*'

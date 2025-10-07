@@ -1,0 +1,2 @@
+#!/usr/bin/env fish
+not command --search --quiet "$argv"
