@@ -9,6 +9,6 @@ export PATH="$HOME/.local/bin:$PATH"
 
 # drop into fish for interactive shells
 # adapted from https://wiki.archlinux.org/title/Fish
-if [[ $(command -v fish) && $(ps -p "$PPID" -o comm=) != "fish" && -z ${BASH_EXECUTION_STRING} && ${SHLVL} == 1 && shopt -q login_shell ]]; then
+if [[ $(command -v fish) && $(ps -p "$PPID" -o comm=) != "fish" && -z ${BASH_EXECUTION_STRING} && ${SHLVL} == 1 && $(shopt -q login_shell) ]]; then
 	exec fish --login
 fi

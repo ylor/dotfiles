@@ -27,7 +27,7 @@ function dot-npc
     end
 end
 
-function dot-recho
+function dot-reverb
     printf "\033[A\033[K"
     echo $argv
 end

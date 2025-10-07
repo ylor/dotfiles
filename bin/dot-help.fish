@@ -1,0 +1,12 @@
+function dot-help
+    echo "Usage: dot [OPTIONS]
+
+Options:
+-h, --help          Show this message
+-c, --config        Configure environment
+-i, --init          Initialize system
+-s, --sync          Synchronize dotfiles
+-t, --tui           Terminal UI
+"
+    return
+end

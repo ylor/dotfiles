@@ -11,14 +11,14 @@ for pkg in $pkgs
     end
 end
 
-set fonts font-symbols-only-nerd-font
-for font in $fonts
-    if not echo "$installed_pkgs" | grep -iq "$font"
-        gum spin --spinner=pulse --title="brewing $font..." -- brew install --quiet $font
-    end
-end
-
 if [ $DOT_MODE = full ]
+    set fonts font-symbols-only-nerd-font
+    for font in $fonts
+        if not echo "$installed_pkgs" | grep -iq "$font"
+            gum spin --spinner=pulse --title="brewing $font..." -- brew install --quiet $font
+        end
+    end
+
     # casks
     set casks 1password appcleaner betterdisplay ghostty hammerspoon hyperkey maccy zed
     set installed_casks (brew list --cask)

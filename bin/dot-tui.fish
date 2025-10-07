@@ -1,0 +1,15 @@
+function dot-tui
+    dot-show-art
+    set command (gum choose "Configure" "Initialize" "Synchronize")
+    switch $command
+        case Configure
+            dot-config
+        case Initialize
+            dot-init
+        case Synchronize
+            dot-sync
+        case '*'
+            return 67
+    end
+
+end
