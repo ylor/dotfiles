@@ -11,7 +11,7 @@ for pkg in $pkgs
     end
 end
 
-set fonts font-sf-mono font-symbols-only-nerd-font
+set fonts font-symbols-only-nerd-font
 for font in $fonts
     if not echo "$installed_pkgs" | grep -iq "$font"
         gum spin --spinner=pulse --title="brewing $font..." -- brew install --quiet $font
