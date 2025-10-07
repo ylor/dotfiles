@@ -34,7 +34,8 @@ if status --is-interactive
     alias v="vim"
 
     source $DOT_PATH/bin/dot.fish
-    for module in $__fish_config_dir/{library,prompt}/*.fish
-        source $module
+    # for module in $__fish_config_dir/{library,prompt}/*.fish
+    for module in $__fish_config_dir/*/**.fish
+        source $module 2>/dev/null
     end
 end
