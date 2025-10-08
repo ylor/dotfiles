@@ -37,7 +37,7 @@ fi
 if missing fish || missing git || missing gum; then
     echo
     npc "$(tput setaf 1)ERROR$(tput sgr0) unsupported operating system or missing dependencies"
-    npc "Retry by running: fish $HOME/.local/share/struct/main.fish"
+    npc "Retry by running: fish $HOME/.local/share/dotfiles/main.fish"
     npc "$(tput sitm)✈ YOU'RE GONNA CARRY THAT WEIGHT.$(tput ritm)"
     exit 67
 fi

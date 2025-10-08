@@ -1,4 +1,4 @@
-theme = "catppuccin"
+theme = "transparent"
 
 [editor]
 line-number = "relative"

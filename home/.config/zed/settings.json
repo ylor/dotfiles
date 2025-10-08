@@ -18,12 +18,12 @@
   "disable_ai": true,
   "format_on_save": "on",
   "preferred_line_length": 100,
-  // "relative_line_numbers": true,
+  "relative_line_numbers": true,
   "soft_wrap": "bounded",
   "theme": "Catppuccin Mocha",
   "ui_font_family": ".SystemUIFont",
   "ui_font_fallbacks": ["Symbols Nerd Font Mono"],
-  //  "vim_mode": true,
+  "vim_mode": true,
   "autosave": {
     "after_delay": {
       "milliseconds": 1000

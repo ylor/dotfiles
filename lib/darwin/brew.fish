@@ -22,7 +22,7 @@ if [ $DOT_MODE = full ]
     end
 
     # casks
-    set casks 1password appcleaner betterdisplay ghostty hammerspoon hyperkey maccy zed
+    set casks 1password appcleaner betterdisplay ghostty hammerspoon hyperkey maccy trex zed
     for cask in $casks
         if not echo "$installed_casks" | grep -iq "$cask"
             gum spin --spinner=pulse --title="brewing $cask..." -- brew install --quiet $cask

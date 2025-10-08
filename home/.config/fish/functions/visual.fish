@@ -1,5 +1,5 @@
-function e
-    set $cmd (which zed-preview || which zed || which zeditor)
+function visual
+    set cmd "vim"
     switch (count $argv)
         case 0
             $cmd "$PWD"

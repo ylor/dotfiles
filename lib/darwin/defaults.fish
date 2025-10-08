@@ -105,6 +105,7 @@ defaults write org.hammerspoon.Hammerspoon MJConfigFile "$HOME/.config/hammerspo
 
 # Maccy
 # defaults write org.p0deje.Maccy pasteByDefault 1
+defaults write org.p0deje.Maccy previewDelay 1000
 defaults write org.p0deje.Maccy showFooter 0
 defaults write org.p0deje.Maccy showSearch 1
 defaults write org.p0deje.Maccy showTitle 0

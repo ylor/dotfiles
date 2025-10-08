@@ -50,8 +50,7 @@ hs.hotkey.bind(Mod.hyper.shift, "right", function()
     SelectMenuItem({ "Window", "Move to " .. eastScreen:name() })
 end)
 
-hs.hotkey.bind(Mod.hyper, "o", function() RunCommand("trex") end)
-hs.hotkey.bind(Mod.hyper.shift, "o", function() RunCommand("ocr") end)
+hs.hotkey.bind(Mod.hyper, "o", function() RunCommand("ocr") end)
 hs.hotkey.bind(Mod.main, ".", Unlock1Password)
 
 -- Clipboard Manager

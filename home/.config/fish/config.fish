@@ -2,8 +2,8 @@ if status --is-interactive
     fish_add_path -m "$HOME/.local/bin"
     fish_add_path "$DOT_PATH/bin"
 
-    set -x EDITOR "e"
-    set -x VISUAL "v"
+    set -x EDITOR "editor"
+    set -x VISUAL "visual"
 
     # Syntax highlighting
     # fish_config theme choose Lava
@@ -25,7 +25,7 @@ if status --is-interactive
     # Aliases
     # alias b="brew"
     # alias d="docker"
-    # alias e="zed"
+    alias e="editor"
     alias fishfmt="fish_indent --write"
     # alias g="git"
     alias h="cd $HOME"
@@ -33,7 +33,7 @@ if status --is-interactive
     alias md="mkdir -p"
     alias rd="rmdir"
     alias re="source $__fish_config_dir/config.fish"
-    # alias v="vim"
+    alias v="visual"
 
     # source $DOT_PATH/lib/dot.fish
     for module in $__fish_config_dir/{library,prompt}/*.fish
