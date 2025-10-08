@@ -1,5 +1,5 @@
 function visual
-    set cmd "vim"
+    set cmd vim
     switch (count $argv)
         case 0
             $cmd "$PWD"

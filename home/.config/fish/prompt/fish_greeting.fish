@@ -17,7 +17,7 @@ function cowboy-bebop
 end
 
 function half-life
-    set symbol "λ"
+    set symbol λ
     set greetings \
         "Gordon Freeman! You’re alive!" \
         "Great Scott! Gordon Freeman! I had a feeling you’d show up." \
@@ -27,16 +27,33 @@ function half-life
     echo $symbol (set_color --italics)(random choice $greetings)
 end
 
-function zelda
-    set symbol "▲"
+function metal-gear-solid
+    set symbol "!"
     set greetings \
+        "From here on out, you're Big Boss." \
+        "It's like one of my Japanese animes..." \
+        "Kept you waiting, huh?" \
+        "Metal Gear?!" \
+        "Snake? Snake?! SNAAAAAKE!!!!" \
+        "The la-li-lu-le-lo?" \
+        "They played us like a damn fiddle!" \
+        "Why are we still here? Just to suffer?"
+    echo $symbol (set_color --italics)(random choice $greetings)
+end
+
+function zelda
+    set symbol "△"
+    set greetings \
+        "Courage need not be remembered, for it is never forgotten." \
         "Hey! Listen!" \
-        "It's dangerous to go alone! Take this."
+        "HYAAAH!" \
+        "It's dangerous to go alone! Take this." \
+        "Wake up, Link." \
     echo $symbol (set_color --italics)(random choice $greetings)
 end
 
 function fish_greeting
-    set greeting (random choice cowboy-bebop half-life)
+    set greeting (random choice cowboy-bebop half-life metal-gear-solid zelda)
     $greeting
     echo
 end
