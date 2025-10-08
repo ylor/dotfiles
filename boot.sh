@@ -45,5 +45,5 @@ fi
 DOT_PATH="$HOME/.local/share/dotfiles"
 rm -rf "$DOT_PATH"
 npc "initializing..."
-git clone https://github.com/ylor/env.git "$DOT_PATH"
+git clone https://github.com/ylor/dotfiles "$DOT_PATH"
 fish "$DOT_PATH/main.fish"
