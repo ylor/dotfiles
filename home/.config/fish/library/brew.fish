@@ -1,5 +1,5 @@
-if set -q $HOMEBREW_PREFIX
-    $HOMEBREW_PREFIX/bin/brew shellenv | source
+for path in "/opt/homebrew" "/home/linuxbrew/.linuxbrew"
+    [ -d $path ] && "$path/bin/brew" shellenv | source
 end
 
 if command -vq brew # https://github.com/Homebrew/brew
