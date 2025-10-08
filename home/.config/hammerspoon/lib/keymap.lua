@@ -2,10 +2,10 @@
 local hs         = hs
 
 Mod              = {}
-Mod.main         = { "control" }
-Mod.main.shift   = { "control", "shift" }
-Mod.option       = { "option" }
-Mod.option.shift = { "option", "shift" }
+Mod.main         = { "option" }
+Mod.main.shift   = { "option", "shift" }
+Mod.option       = { "control" }
+Mod.option.shift = { "control", "shift" }
 Mod.combined     = { "control", "option" }
 Mod.hyper        = { "control", "option", "command" }
 Mod.hyper.shift  = { "control", "option", "command", "shift" }

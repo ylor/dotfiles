@@ -59,6 +59,10 @@ defaults write NSGlobalDomain NSAutomaticCapitalizationEnabled -bool false
 ## disable automatic period on double space
 defaults write NSGlobalDomain NSAutomaticPeriodSubstitutionEnabled -bool false
 
+# General
+## Hide scrollbars when scrolling
+defaults write -g AppleShowScrollBars -string WhenScrolling
+
 # Mouse
 ## disable mouse acceleration
 defaults write NSGlobalDomain com.apple.mouse.linear -bool true
