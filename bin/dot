@@ -1,5 +1,5 @@
 #!/usr/bin/env fish
-fish_add_path (status dirname)
+# fish_add_path (status dirname)
 dot-show-art
 argparse h/help c/config i/init s/sync t/tui -- $argv
 

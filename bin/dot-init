@@ -1,2 +1,2 @@
 #!/usr/bin/env fish
-fish $DOT_PATH/main.fish
+fish $DOTFILES_PATH/main.fish

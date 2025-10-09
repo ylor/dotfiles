@@ -36,14 +36,13 @@ fi
 
 if missing fish || missing git || missing gum; then
     echo
-    npc "$(tput setaf 1)ERROR$(tput sgr0) unsupported operating system or missing dependencies"
-    npc "Retry by running: fish $HOME/.local/share/dotfiles/main.fish"
-    npc "$(tput sitm)✈ YOU'RE GONNA CARRY THAT WEIGHT.$(tput ritm)"
+    echo "$(tput setaf 1)ERROR$(tput sgr0) unsupported operating system or missing dependencies"
+    echo "Retry by running: fish $HOME/.local/share/dotfiles/main.fish"
+    echo "$(tput sitm)✈ YOU'RE GONNA CARRY THAT WEIGHT.$(tput ritm)"
     exit 67
 fi
 
-DOT_PATH="$HOME/.local/share/dotfiles"
-rm -rf "$DOT_PATH"
-npc "initializing..."
-git clone https://github.com/ylor/dotfiles "$DOT_PATH"
-fish "$DOT_PATH/main.fish"
+DOTFILES_PATH="$HOME/.local/share/dotfiles"
+rm -rf "$DOTFILES_PATH"
+git clone https://github.com/ylor/dotfiles "$DOTFILES_PATH"
+fish "$DOTFILES_PATH/main.fish"

@@ -1,4 +1,4 @@
-[ $DOT_MODE = minimal ] && return
+[ $DOTFILES_MODE = minimal ] && return
 
 # Configure dock
 if defaults read com.apple.Dock | grep -q "com.apple.apps.launcher"

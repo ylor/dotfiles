@@ -1,20 +1,21 @@
 #!/usr/bin/env fish
 dot-show-art
-set --query DOT_HOME || return 67
+set --query DOTFILES_PATH || return 67
+set DOTFILES_HOME "$DOTFILES_PATH/home"
 
 function rehome
-    string replace "$DOT_HOME" "$HOME" "$argv"
+    string replace "$DOTFILES_HOME" "$HOME" "$argv"
 end
 
-echo "Linking from $DOT_HOME..."
+echo "Linking from $DOTFILES_HOME..."
 
 # stage folders
-find "$DOT_HOME" -type d | while read folder
+find "$DOTFILES_HOME" -type d | while read folder
     mkdir -p "$(rehome "$folder")"
 end
 
 # link files
-find "$DOT_HOME" -type f | while read file
+find "$DOTFILES_HOME" -type f | while read file
     ln -sfv "$file" "$(rehome "$file")"
 end
 

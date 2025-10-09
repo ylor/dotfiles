@@ -13,7 +13,7 @@ for pkg in $pkgs
     end
 end
 
-if [ $DOT_MODE = full ]
+if [ $DOTFILES_MODE = full ]
     set fonts font-sf-mono-nerd-font-ligaturized font-symbols-only-nerd-font
     for font in $fonts
         if not echo "$installed_casks" | grep -iq "$font"

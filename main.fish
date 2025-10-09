@@ -1,14 +1,15 @@
-set -Ux DOT_PATH (realpath $PWD)
-set -Ux DOT_HOME (realpath "home")
-set -q DOT_MODE || dot-config
+set -Ux DOTFILES_PATH (realpath (status dirname))
+# set -Ux DOT_PATH (realpath $PWD)
+# set -Ux DOT_HOME (realpath "home")
+fish_add_path $DOTFILES/bin
+set -q DOTFILES_MODE || dot-config
 
-fish_add_path bin
 # for cmd in $DOT_PATH/lib/*.fish
 #     source $cmd
 # end
 
 dot-show-art
-if [ $DOT_MODE = full ]
+if [ $DOTFILES_MODE = full ]
     set kernel (uname | string lower)
     for script in lib/$kernel/*.fish
         set name $(basename $script .fish)
