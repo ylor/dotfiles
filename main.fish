@@ -1,12 +1,6 @@
 set -Ux DOTFILES_PATH (realpath (status dirname))
-# set -Ux DOT_PATH (realpath $PWD)
-# set -Ux DOT_HOME (realpath "home")
-fish_add_path $DOTFILES/bin
+fish_add_path $DOTFILES_PATH/bin
 set -q DOTFILES_MODE || dot-config
-
-# for cmd in $DOT_PATH/lib/*.fish
-#     source $cmd
-# end
 
 dot-show-art
 if [ $DOTFILES_MODE = full ]
