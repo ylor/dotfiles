@@ -48,7 +48,7 @@ function zelda
         "Hey! Listen!" \
         "HYAAAH!" \
         "It's dangerous to go alone! Take this." \
-        "Wake up, Link." \
+        "Wake up, Link."
     echo $symbol (set_color --italics)(random choice $greetings)
 end
 

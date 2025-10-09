@@ -34,7 +34,6 @@ end
 function RunCommand(bin)
     local home = os.getenv("HOME")
     local cmd = home .. "/.local/bin/" .. bin
-    hs.alert.show(cmd)
     hs.execute(hs.fs.symlinkAttributes(cmd).target)
 end
 

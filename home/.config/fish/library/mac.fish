@@ -14,6 +14,17 @@ if test (uname) = Darwin
         open "vnc://$argv"
     end
 
+    function fix
+        switch $argv
+            case spotlight
+                sudo mdutil -a -i off
+                sudo mdutil -a -i on
+                sudo mdutil -E
+            case '*'
+                return 67
+        end
+    end
+
     # macOS Aliases
     alias dsclean="find $HOME -name '.DS_Store' -delete 2>/dev/null"
     alias flushdns="sudo dscacheutil -flushcache; sudo killall -HUP mDNSResponder"
