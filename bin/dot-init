@@ -1,2 +1,2 @@
 #!/usr/bin/env fish
-fish $DOTFILES_PATH/main.fish
+fish (status dirname)/../main.fish

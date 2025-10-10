@@ -65,32 +65,55 @@ function Unlock1Password()
 end
 
 -- APP WATCHERS
-AppWatchers = {}
+-- AppWatchers = {}
 
-AppWatcher = hs.application.watcher.new(function(appName, eventType, appObject)
-    if AppWatchers[appName] and AppWatchers[appName][eventType] then
-        AppWatchers[appName][eventType](appObject)
+-- AppWatcher = hs.application.watcher.new(function(appName, eventType, appObject)
+--     if AppWatchers[appName] and AppWatchers[appName][eventType] then
+--         AppWatchers[appName][eventType](appObject)
+--     end
+-- end):start()
+
+-- local function useAppHook(appName, eventType, fn)
+--     AppWatchers[appName] = AppWatchers[appName] or {}
+--     AppWatchers[appName][eventType] = fn
+-- end
+
+-- local finderKeybind = nil
+
+-- useAppHook("Finder", hs.application.watcher.activated, function(app)
+--     if finderKeybind == nil then
+--         finderKeybind = hs.hotkey.bind({ "cmd" }, "l", function()
+--             SelectMenuItem({ "Go", "Go to Folder…" })
+--         end)
+--     end
+-- end)
+
+-- useAppHook("Finder", hs.application.watcher.deactivated, function(app)
+--     if finderKeybind ~= nil then
+--         finderKeybind:delete()
+--         finderKeybind = nil
+--     end
+-- end)
+
+finderKeybind = nil
+finderwatcher = hs.application.watcher.new(function(app, event)
+    if event == hs.application.watcher.activated then
+        if app == "Finder" then
+            if finderKeybind == nil then
+                finderKeybind = hs.hotkey.bind({ "cmd" }, "l", function()
+                    SelectMenuItem({ "Go", "Go to Folder…" })
+                end)
+            end
+        end
     end
-end):start()
 
-local function useAppHook(appName, eventType, fn)
-    AppWatchers[appName] = AppWatchers[appName] or {}
-    AppWatchers[appName][eventType] = fn
-end
-
-local finderKeybind = nil
-
-useAppHook("Finder", hs.application.watcher.activated, function(app)
-    if finderKeybind == nil then
-        finderKeybind = hs.hotkey.bind({ "cmd" }, "l", function()
-            SelectMenuItem({ "Go", "Go to Folder…" })
-        end)
+    if event == hs.application.watcher.deactivated then
+        if app == "Finder" then
+            if finderKeybind ~= nil then
+                finderKeybind:delete()
+                finderKeybind = nil
+            end
+        end
     end
 end)
-
-useAppHook("Finder", hs.application.watcher.deactivated, function(app)
-    if finderKeybind ~= nil then
-        finderKeybind:delete()
-        finderKeybind = nil
-    end
-end)
+finderwatcher:start()

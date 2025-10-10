@@ -2,6 +2,7 @@
 local hs = hs
 
 require("lib.keymap")
+require("lib.snippets")
 require("lib.mouse")
 require("lib.macos")
 require("lib.app")
@@ -23,18 +24,19 @@ Tui(Mod.hyper, "P", "/opt/homebrew/bin/btop")
 Web(Mod.main, "A", "https://chatgpt.com")
 Web(Mod.main.shift, "A", "https://gemini.google.com")
 
-local work = string.find(hs.host.localizedName(), "^PAPA")
-if work then
+Work = string.find(hs.host.localizedName(), "^PAPA")
+
+if Work then
     App(Mod.main, "I", "Arc")
     App(Mod.main.shift, "I", "Safari")
     App(Mod.main, "S", "Slack")
 else
 end
 
-hs.hotkey.bind(Mod.hyper, "left", function() Focus("left") end)
-hs.hotkey.bind(Mod.hyper, "down", function() Focus("down") end)
-hs.hotkey.bind(Mod.hyper, "up", function() Focus("up") end)
-hs.hotkey.bind(Mod.hyper, "right", function() Focus("right") end)
+-- hs.hotkey.bind(Mod.hyper, "left", function() Focus("left") end)
+-- hs.hotkey.bind(Mod.hyper, "down", function() Focus("down") end)
+-- hs.hotkey.bind(Mod.hyper, "up", function() Focus("up") end)
+-- hs.hotkey.bind(Mod.hyper, "right", function() Focus("right") end)
 
 hs.hotkey.bind(Mod.hyper.shift, "left", function()
     local win = hs.window.focusedWindow()

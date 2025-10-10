@@ -85,10 +85,46 @@ local function moveWindowToSpaceByDrag(spaceNumber)
     end)
 end
 
--- Bind keys cmd + shift + 1-6
 for i = 1, 5 do
     hs.hotkey.bind(Mod.hyper, tostring(i), function()
-        -- print("Hotkey pressed: cmd + shift + " .. i)
         moveWindowToSpaceByDrag(i)
     end)
 end
+
+local function handleAppLaunch(appName)
+    local apps = {}
+    if Work then
+        apps = {
+            ["Arc"] = 1,
+            ["Safari"] = 1,
+            ["Slack"] = 2,
+            ["Ghostty"] = 3,
+            ["Zed"] = 3,
+            ["Screen Sharing"] = 4,
+        }
+    else
+        apps = {
+            ["Safari"] = 1,
+            ["Ghostty"] = 2,
+            ["Zed"] = 2,
+            ["Messages"] = 3,
+            ["Screen Sharing"] = 3
+        }
+    end
+
+    if apps[appName] == getSpaceIndex() then return end
+    if apps[appName] then
+        hs.timer.doAfter(1, function()
+            moveWindowToSpaceByDrag(apps[appName])
+        end)
+    end
+end
+
+---needs to be a global var otherwise it gets garbage collected apparently
+---@diagnostic disable-next-line: lowercase-global
+appwatcher = hs.application.watcher.new(function(appName, event)
+        if event == hs.application.watcher.launched then
+            handleAppLaunch(appName)
+        end
+    end)
+    :start()

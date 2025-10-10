@@ -1,11 +1,11 @@
 set -Ux DOTFILES_PATH (realpath (status dirname))
 fish_add_path $DOTFILES_PATH/bin
-set -q DOTFILES_MODE || dot-config
 
 dot-show-art
+set -q DOTFILES_MODE || dot-config
 if [ $DOTFILES_MODE = full ]
     set kernel (uname | string lower)
-    for script in lib/$kernel/*.fish
+    for script in $DOTFILES_PATH/lib/$kernel/*.fish
         set name $(basename $script .fish)
         dot-npc "configuring $name..."
         source $script

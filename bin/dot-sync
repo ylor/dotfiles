@@ -1,6 +1,6 @@
 #!/usr/bin/env fish
 dot-show-art
-set --query DOTFILES_PATH || return 67
+set --query DOTFILES_PATH || dot-init
 set DOTFILES_HOME "$DOTFILES_PATH/home"
 
 function rehome
