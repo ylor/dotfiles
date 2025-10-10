@@ -10,7 +10,7 @@ local function cycleWindow()
     if #windows <= 1 then return end
 
     local focusedWindow = hs.window.focusedWindow()
-    local newCycle = not windowList or #windowList ~= #windows
+    local newCycle = windowList == {} or #windows ~= #windowList
     local newFocus = focusedWindow ~= windowList[windowIndex]
 
     if newCycle or newFocus then

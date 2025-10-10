@@ -1,5 +1,6 @@
 ---@diagnostic disable-next-line: undefined-global
 local hs = hs
+Work = string.find(hs.host.localizedName(), "^PAPA")
 
 require("lib.keymap")
 require("lib.snippets")
@@ -24,14 +25,13 @@ Tui(Mod.hyper, "P", "/opt/homebrew/bin/btop")
 Web(Mod.main, "A", "https://chatgpt.com")
 Web(Mod.main.shift, "A", "https://gemini.google.com")
 
-Work = string.find(hs.host.localizedName(), "^PAPA")
-
 if Work then
     App(Mod.main, "I", "Arc")
     App(Mod.main.shift, "I", "Safari")
     App(Mod.main, "S", "Slack")
-else
 end
+
+hs.hotkey.bind(Mod.hyper, "F", WindowFullscreen)
 
 hs.hotkey.bind(Mod.hyper, "left", function()
     local win = hs.window.focusedWindow()

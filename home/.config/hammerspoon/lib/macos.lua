@@ -31,6 +31,13 @@ function WindowFloat()
     win:setFrame(frame):centerOnScreen()
 end
 
+function WindowFullscreen()
+    local win = hs.window.focusedWindow()
+    if win then
+        win:toggleFullScreen()
+    end
+end
+
 function RunCommand(bin)
     local home = os.getenv("HOME")
     local cmd = home .. "/.local/bin/" .. bin
