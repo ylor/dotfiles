@@ -16,4 +16,4 @@ end
 dot-npc "linking dotfiles..."
 dot-sync >/dev/null
 dot-reverb "linked dotfiles!"
-dot-npc "✈ $(tput sitm)SEE YOU SPACE COWBOY…$(tput ritm)"
+dot-npc "✈ $(set_color --italic)SEE YOU SPACE COWBOY…"
