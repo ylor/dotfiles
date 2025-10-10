@@ -51,11 +51,12 @@ spaceWatcher:start()
 
 -- Function to move window to space using mouse drag simulation
 local function moveWindowToSpaceByDrag(spaceNumber)
+    if spaceNumber == getSpaceIndex() then return end
     local win = hs.window.focusedWindow()
     if not win then return end
 
     local zoomButtonRect = win:zoomButtonRect()
-    local headerX = zoomButtonRect.x + zoomButtonRect.w + 5
+    local headerX = zoomButtonRect.x + zoomButtonRect.w + 2
     local headerY = zoomButtonRect.y + (zoomButtonRect.h / 2)
 
     -- Store current mouse position
@@ -80,7 +81,7 @@ local function moveWindowToSpaceByDrag(spaceNumber)
     hs.mouse.absolutePosition(currentMouse)
 
     -- Focus window
-    hs.timer.doAfter(0.333, function()
+    hs.timer.doAfter(0.3, function()
         win:focus()
     end)
 end
@@ -114,17 +115,16 @@ local function handleAppLaunch(appName)
 
     if apps[appName] == getSpaceIndex() then return end
     if apps[appName] then
-        hs.timer.doAfter(1, function()
-            moveWindowToSpaceByDrag(apps[appName])
-        end)
+        moveWindowToSpaceByDrag(apps[appName])
     end
 end
 
 ---needs to be a global var otherwise it gets garbage collected apparently
----@diagnostic disable-next-line: lowercase-global
 appwatcher = hs.application.watcher.new(function(appName, event)
         if event == hs.application.watcher.launched then
-            handleAppLaunch(appName)
+            hs.timer.doAfter(0.1, function()
+                handleAppLaunch(appName)
+            end)
         end
     end)
     :start()
