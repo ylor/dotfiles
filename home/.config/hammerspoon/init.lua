@@ -33,19 +33,14 @@ if Work then
 else
 end
 
--- hs.hotkey.bind(Mod.hyper, "left", function() Focus("left") end)
--- hs.hotkey.bind(Mod.hyper, "down", function() Focus("down") end)
--- hs.hotkey.bind(Mod.hyper, "up", function() Focus("up") end)
--- hs.hotkey.bind(Mod.hyper, "right", function() Focus("right") end)
-
-hs.hotkey.bind(Mod.hyper.shift, "left", function()
+hs.hotkey.bind(Mod.hyper, "left", function()
     local win = hs.window.focusedWindow()
     local westScreen = win:screen():toWest()
     if not westScreen then return end
     SelectMenuItem({ "Window", "Move to " .. westScreen:name() })
 end)
 
-hs.hotkey.bind(Mod.hyper.shift, "right", function()
+hs.hotkey.bind(Mod.hyper, "right", function()
     local win = hs.window.focusedWindow()
     local eastScreen = win:screen():toEast()
     if not eastScreen then return end

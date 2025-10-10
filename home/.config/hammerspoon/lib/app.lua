@@ -2,20 +2,8 @@
 local hs = hs
 
 -- Launch, focus or cycle through instances of an application
-function LaunchOrFocusOrCycle(app)
-    if hs.window.focusedWindow():application():name() == app then
-        local appWindows = hs.application.get(app):allWindows()
-        if #appWindows > 0 then
-            appWindows[#appWindows]:focus()
-        end
-    else
-        hs.application.launchOrFocus(app)
-    end
-end
-
 function LaunchFocusCycle(app)
-    local mainScreen = hs.screen.mainScreen()
-    local wf = hs.window.filter.new(app):setScreens(mainScreen:id())
+    local wf = hs.window.filter.new(app):setScreens(hs.screen.mainScreen():getUUID())
     local windows = wf:getWindows("Focused")
     if #windows > 0 then
         windows[#windows]:focus()

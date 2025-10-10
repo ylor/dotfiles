@@ -1,9 +1,11 @@
 ---@diagnostic disable-next-line: undefined-global
 local hs = hs
 
+
 local windowList = {}
 local windowIndex = 0
 local function cycleWindow()
+    local windowFilter = hs.window.filter.new():setCurrentSpace(true):setScreens(hs.screen.mainScreen():getUUID())
     local windows = windowFilter:getWindows(hs.window.filter.sortByFocusedLast)
     if #windows <= 1 then return end
 
@@ -68,12 +70,12 @@ EventTapper:start()
 
 -- Responsive window switcher
 -- Create a window filter for current screen and space
-windowFilter = hs.window.filter.new():setCurrentSpace(true):setScreens(hs.screen.mainScreen():getUUID())
+-- windowFilter = hs.window.filter.new():setCurrentSpace(true):setScreens(hs.screen.mainScreen():getUUID())
 
--- Update the screen filter to the main screen
-screenWatcher = hs.screen.watcher.new(function()
-    windowFilter:setScreens(hs.screen.mainScreen():getUUID())
-end)
-screenWatcher:start()
+-- -- Update the screen filter to the main screen
+-- screenWatcher = hs.screen.watcher.new(function()
+--     windowFilter:setScreens(hs.screen.mainScreen():getUUID())
+-- end)
+-- screenWatcher:start()
 
 -- hs.hotkey.bind({ "alt" }, "tab", cycleWindow)

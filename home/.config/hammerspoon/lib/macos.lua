@@ -36,20 +36,3 @@ function RunCommand(bin)
     local cmd = home .. "/.local/bin/" .. bin
     hs.execute(hs.fs.symlinkAttributes(cmd).target)
 end
-
-function Focus(direction)
-    if direction == "left" then
-        hs.window.focusedWindow():focusWindowWest()
-    elseif direction == "down" then
-        hs.window.focusedWindow():focusWindowSouth()
-    elseif direction == "up" then
-        hs.window.focusedWindow():focusWindowNorth()
-    elseif direction == "right" then
-        hs.window.focusedWindow():focusWindowEast()
-    end
-
-    local win = hs.window.focusedWindow()
-    local frame = win:frame()
-    local center = hs.geometry.rectMidPoint(frame)
-    hs.mouse.absolutePosition(center)
-end

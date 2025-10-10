@@ -33,9 +33,7 @@ if test (uname) = Darwin
 
     # macOS Functions
     function mac
-        if not command -vq gum
-            echo "Unknown command: gum" && return 127
-        end
+        command -vq gum || return 127
 
         # set ACTION $(gum choose $OPTIONS)
         # echo $ACTION
