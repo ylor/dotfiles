@@ -1,7 +1,7 @@
 #!/usr/bin/env fish
 dot-show-art
-set command (gum choose "Configure" "Initialize" "Synchronize")
-switch $command
+set choice (gum choose  "Configure" "Initialize" "Synchronize" "Abort")
+switch $choice
     case Configure
         dot-config
     case Initialize
@@ -9,5 +9,5 @@ switch $command
     case Synchronize
         dot-sync
     case '*'
-        return 67
+        exit 67
 end

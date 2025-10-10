@@ -3,9 +3,13 @@
 dot-show-art
 argparse h/help c/config i/init s/sync t/tui -- $argv
 
-set --query _flag_help && dot-help && return 0
-set --query _flag_config && dot-config && return 0
-set --query _flag_init && dot-init && return 0
-set --query _flag_sync && dot-sync && return 0
-set --query _flag_tui && dot-tui && return 0
+[ (count $argv) -ge 1 ] && dot-help && exit 1
+
+set --query _flag_help && dot-help && exit 0
+set --query _flag_config && dot-config && exit 0
+set --query _flag_init && dot-init && exit 0
+set --query _flag_sync && dot-sync && exit 0
+set --query _flag_tui && dot-tui && exit 0
+
+[ $status -ne 0 ] && clear && exit 67
 dot-sync
