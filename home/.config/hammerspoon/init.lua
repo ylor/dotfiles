@@ -2,6 +2,7 @@
 local hs = hs
 Work = string.find(hs.host.localizedName(), "^PAPA")
 
+-- Use global declarations in Hammerspoon to prevent garbage collection
 require("lib.keymap")
 require("lib.snippets")
 require("lib.mouse")
@@ -32,6 +33,7 @@ if Work then
 end
 
 hs.hotkey.bind(Mod.hyper, "F", WindowFullscreen)
+hs.hotkey.bind(Mod.hyper, "D", ShowDesktop)
 
 hs.hotkey.bind(Mod.hyper, "left", function()
     local win = hs.window.focusedWindow()
@@ -49,16 +51,6 @@ end)
 
 hs.hotkey.bind(Mod.hyper, "o", function() RunCommand("ocr") end)
 hs.hotkey.bind(Mod.main, ".", Unlock1Password)
-
--- Clipboard Manager
-if not AppExists("Maccy") then
-    hs.hotkey.bind({ "cmd", "shift" }, "v", function()
-        hs.eventtap.keyStroke({ "cmd" }, "space", 0)
-        hs.timer.doAfter(0.1, function()
-            hs.eventtap.keyStroke({ "cmd" }, "4", 0)
-        end)
-    end)
-end
 
 hs.hotkey.bind(Mod.hyper, "\\", hs.reload)
 hs.hotkey.bind(Mod.hyper, "R", hs.reload)

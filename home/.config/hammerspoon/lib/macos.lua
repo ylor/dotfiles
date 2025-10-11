@@ -5,6 +5,10 @@ function SelectMenuItem(table)
     hs.application.frontmostApplication():selectMenuItem(table)
 end
 
+function ShowDesktop()
+    hs.spaces.toggleShowDesktop()
+end
+
 function WindowCenter()
     SelectMenuItem({ "Window", "Center" })
 end

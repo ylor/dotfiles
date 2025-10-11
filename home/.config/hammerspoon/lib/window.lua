@@ -1,17 +1,16 @@
 ---@diagnostic disable-next-line: undefined-global
 local hs = hs
 
-
 local windowList = {}
 local windowIndex = 0
-local function cycleWindow()
-    local windowFilter = hs.window.filter.new():setCurrentSpace(true):setScreens(hs.screen.mainScreen():getUUID())
-    local windows = windowFilter:getWindows(hs.window.filter.sortByFocusedLast)
+local function WindowHandler()
+    local filter = hs.window.filter.new():setCurrentSpace(true):setScreens(hs.screen.mainScreen():getUUID())
+    local windows = filter:getWindows(hs.window.filter.sortByFocusedLast)
     if #windows <= 1 then return end
 
-    local focusedWindow = hs.window.focusedWindow()
+    local focused = hs.window.focusedWindow()
     local newCycle = windowList == {} or #windows ~= #windowList
-    local newFocus = focusedWindow ~= windowList[windowIndex]
+    local newFocus = focused ~= windowList[windowIndex]
 
     if newCycle or newFocus then
         windowList = windows
@@ -23,39 +22,34 @@ local function cycleWindow()
 end
 
 local function handleKeyDown(event)
-    local flags = event:getFlags()
     local kc = event:getKeyCode()
     local key = hs.keycodes.map
+    local mods = event:getFlags()
 
-    local cmd = flags:containExactly({ "cmd" }) or flags:containExactly({ "cmd", "fn" })
-    local ctrl = flags:containExactly({ "ctrl" }) or flags:containExactly({ "ctrl", "fn" })
-    local alt = flags:containExactly({ "alt" }) or flags:containExactly({ "alt", "fn" })
-    local hyper = flags:containExactly({ "ctrl", "alt", "cmd" }) or flags:containExactly({ "ctrl", "alt", "cmd", "fn" })
+    local cmd = mods:containExactly({ "cmd" }) or mods:containExactly({ "cmd", "fn" })
+    local ctrl = mods:containExactly({ "ctrl" }) or mods:containExactly({ "ctrl", "fn" })
+    local alt = mods:containExactly({ "alt" }) or mods:containExactly({ "alt", "fn" })
+    local hyper = mods:containExactly({ "ctrl", "alt", "cmd" }) or mods:containExactly({ "ctrl", "alt", "cmd", "fn" })
 
     if cmd and kc == key["tab"] then
-        cycleWindow()
+        WindowHandler()
         return true
     end
 
     if cmd and kc == key["`"] then
-        cycleWindow()
+        WindowHandler()
         return true
     end
 
-    if alt and kc == key["tab"] then
-        cycleWindow()
-        return true
-    end
-
-    if ctrl and kc == hs.keycodes.map["left"] then
+    if ctrl and kc == key["left"] then
         WindowLeft()
-    elseif ctrl and kc == hs.keycodes.map["down"] then
+    elseif ctrl and kc == key["down"] then
         WindowCenter()
-    elseif ctrl and kc == hs.keycodes.map["up"] then
+    elseif ctrl and kc == key["up"] then
         WindowFill()
-    elseif ctrl and kc == hs.keycodes.map["right"] then
+    elseif ctrl and kc == key["right"] then
         WindowRight()
-    elseif hyper and kc == hs.keycodes.map["down"] then
+    elseif hyper and kc == key["down"] then
         WindowFloat()
     else
         return false
@@ -64,18 +58,5 @@ local function handleKeyDown(event)
     return true
 end
 
--- Global function to prevent garbage collection
 EventTapper = hs.eventtap.new({ hs.eventtap.event.types.keyDown }, handleKeyDown)
 EventTapper:start()
-
--- Responsive window switcher
--- Create a window filter for current screen and space
--- windowFilter = hs.window.filter.new():setCurrentSpace(true):setScreens(hs.screen.mainScreen():getUUID())
-
--- -- Update the screen filter to the main screen
--- screenWatcher = hs.screen.watcher.new(function()
---     windowFilter:setScreens(hs.screen.mainScreen():getUUID())
--- end)
--- screenWatcher:start()
-
--- hs.hotkey.bind({ "alt" }, "tab", cycleWindow)

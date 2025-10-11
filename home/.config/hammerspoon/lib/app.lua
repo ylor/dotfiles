@@ -2,12 +2,27 @@
 local hs = hs
 
 -- Launch, focus or cycle through instances of an application
-function LaunchFocusCycle(app)
-    local wf = hs.window.filter.new(app):setScreens(hs.screen.mainScreen():getUUID())
-    local windows = wf:getWindows(hs.window.filter.sortByFocusedLast)
-    hs.alert.show(#windows)
-    if #windows > 0 then
-        windows[#windows]:focus()
+local windowApp = ""
+local windowList = {}
+local windowIndex = 0
+local function AppHandler(app)
+    local filter = hs.window.filter.new(app):setScreens(hs.screen.mainScreen():getUUID())
+    local windows = filter:getWindows(hs.window.filter.sortByFocusedLast)
+    local focused = hs.window.focusedWindow()
+
+    local newApp = windowApp ~= app
+    local newCycle = windowList == {} or #windows ~= #windowList
+    local newFocus = focused ~= windowList[windowIndex]
+
+    if newApp or newCycle or newFocus then
+        windowApp = app
+        windowList = windows
+        windowIndex = 1
+    end
+
+    if #windows >= 1 then
+        windowIndex = (windowIndex % #windowList) + 1
+        windowList[windowIndex]:focus()
     else
         hs.application.launchOrFocus(app)
     end
@@ -15,7 +30,7 @@ end
 
 function App(mods, key, app)
     hs.hotkey.bind(mods, key, function()
-        LaunchFocusCycle(app)
+        AppHandler(app)
     end)
 end
 
@@ -53,6 +68,15 @@ end
 
 function Unlock1Password()
     hs.execute("/opt/homebrew/bin/op account get")
+end
+
+if not AppExists("Maccy") then
+    hs.hotkey.bind({ "cmd", "shift" }, "v", function()
+        hs.eventtap.keyStroke({ "cmd" }, "space", 0)
+        hs.timer.doAfter(0.1, function()
+            hs.eventtap.keyStroke({ "cmd" }, "4", 0)
+        end)
+    end)
 end
 
 finderKeybind = nil
