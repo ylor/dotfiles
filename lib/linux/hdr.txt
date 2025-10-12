@@ -1,0 +1,2 @@
+vk-hdr-layer-kwin6-git
+ENABLE_HDR_WSI=1
