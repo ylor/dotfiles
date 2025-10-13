@@ -1,2 +1,1 @@
 - explore tangled.sh
-- revamp homelab webhosting

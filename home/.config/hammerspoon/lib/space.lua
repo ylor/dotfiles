@@ -87,7 +87,7 @@ local function moveWindowToSpaceByDrag(spaceNumber)
 end
 
 for i = 1, 5 do
-    hs.hotkey.bind(Mod.hyper, tostring(i), function()
+    hs.hotkey.bind({"ctrl", "shift"}, tostring(i), function()
         moveWindowToSpaceByDrag(i)
     end)
 end
