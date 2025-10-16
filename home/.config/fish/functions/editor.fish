@@ -1,5 +1,5 @@
 function editor
-    set cmd (command -v zed-preview zed zeditor | head -n 1) 
+    set cmd (command -v zed-preview zed zeditor | head -n 1)
     switch (count $argv)
         case 0
             $cmd "$PWD"

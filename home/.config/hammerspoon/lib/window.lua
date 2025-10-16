@@ -3,7 +3,8 @@ local hs = hs
 
 local windowList = {}
 local windowIndex = 0
-local function WindowHandler()
+local spaceIndex = GetSpaceIndex()
+function WindowHandler()
     local filter = hs.window.filter.new():setCurrentSpace(true):setScreens(hs.screen.mainScreen():getUUID())
     local windows = filter:getWindows(hs.window.filter.sortByFocusedLast)
     if #windows <= 1 then return end
@@ -11,17 +12,19 @@ local function WindowHandler()
     local focused = hs.window.focusedWindow()
     local newCycle = windowList == {} or #windows ~= #windowList
     local newFocus = focused ~= windowList[windowIndex]
+    local newSpace = spaceIndex ~= GetSpaceIndex()
 
-    if newCycle or newFocus then
+    if newCycle or newFocus or newSpace then
         windowList = windows
         windowIndex = 1
+        spaceIndex = GetSpaceIndex()
     end
 
     windowIndex = (windowIndex % #windowList) + 1
     windowList[windowIndex]:focus()
 end
 
-local function handleKeyDown(event)
+function handleKeyDown(event)
     local kc = event:getKeyCode()
     local key = hs.keycodes.map
     local mods = event:getFlags()
@@ -58,5 +61,4 @@ local function handleKeyDown(event)
     return true
 end
 
-EventTapper = hs.eventtap.new({ hs.eventtap.event.types.keyDown }, handleKeyDown)
-EventTapper:start()
+EventTapper = hs.eventtap.new({ hs.eventtap.event.types.keyDown }, handleKeyDown):start()

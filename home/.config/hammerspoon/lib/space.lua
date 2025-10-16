@@ -1,18 +1,15 @@
 ---@diagnostic disable-next-line: undefined-global
 local hs = hs
 
-local numberOfSpaces = 5
-local spacesCount = #hs.spaces.spacesForScreen("Primary")
-if numberOfSpaces > spacesCount then
-    for _ = spacesCount + 1, numberOfSpaces do
-        hs.spaces.addSpaceToScreen("Primary")
-    end
+local spacesToAdd = 5 - #hs.spaces.spacesForScreen("Primary")
+for _ = 1, math.max(0, spacesToAdd) do
+    hs.spaces.addSpaceToScreen("Primary")
 end
 
 -- MARK: Menubar item
 local spaceMenu = hs.menubar.new()
 
-local function getSpaceIndex()
+function GetSpaceIndex()
     -- local screen = hs.screen.primaryScreen()
     local screenSpaces = hs.spaces.spacesForScreen("Primary")
     local currentSpace = hs.spaces.activeSpaceOnScreen("Primary")
@@ -36,7 +33,7 @@ end
 
 -- Function to update the menubar title
 local function updateSpace()
-    local index = getSpaceIndex()
+    local index = GetSpaceIndex()
     local dots = string.rep("○", #hs.spaces.spacesForScreen("Primary"))
     local filled = replace_unicode_char(dots, index, "●")
     spaceMenu:setTitle(filled)
@@ -51,7 +48,7 @@ spaceWatcher:start()
 
 -- Function to move window to space using mouse drag simulation
 local function moveWindowToSpaceByDrag(spaceNumber)
-    if spaceNumber == getSpaceIndex() then return end
+    if spaceNumber == GetSpaceIndex() then return end
     local win = hs.window.focusedWindow()
     if not win then return end
 
@@ -87,7 +84,7 @@ local function moveWindowToSpaceByDrag(spaceNumber)
 end
 
 for i = 1, 5 do
-    hs.hotkey.bind({"ctrl", "shift"}, tostring(i), function()
+    hs.hotkey.bind({ "ctrl", "shift" }, tostring(i), function()
         moveWindowToSpaceByDrag(i)
     end)
 end
@@ -113,7 +110,7 @@ local function handleAppLaunch(appName)
         }
     end
 
-    if apps[appName] == getSpaceIndex() then return end
+    if apps[appName] == GetSpaceIndex() then return end
     if apps[appName] then
         moveWindowToSpaceByDrag(apps[appName])
     end

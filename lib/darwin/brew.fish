@@ -6,7 +6,7 @@ set installed_pkgs (brew list --formula)
 set installed_casks (brew list --cask)
 
 # packages
-set pkgs bat bat-extras cloudflared evil-helix eza fd fzf mise ripgrep zoxide
+set pkgs ag bat bat-extras cloudflared evil-helix eza fd fzf mise ripgrep rv uv zoxide
 for pkg in $pkgs
     if not echo "$installed_pkgs" | grep -iq "$pkg"
         gum spin --spinner=pulse --title="brewing $pkg..." -- brew install --quiet $pkg

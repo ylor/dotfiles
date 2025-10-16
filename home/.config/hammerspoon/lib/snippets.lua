@@ -10,6 +10,7 @@ keywords = {
     ["@@"] = hs.base64.decode(em),
     ["shrugg"] = "¯\\_(ツ)_/¯",
     ["tmm"] = "™",
+    ["xx"] = "×"
 }
 
 local word = ""
