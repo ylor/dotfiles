@@ -27,7 +27,7 @@ Web(Mod.main, "A", "https://chatgpt.com")
 Web(Mod.main.shift, "A", "https://gemini.google.com")
 
 if Work then
-    App(Mod.main, "I", "Arc")
+    App(Mod.main, "I", "Firefox")
     App(Mod.main.shift, "I", "Safari")
     App(Mod.main, "S", "Slack")
 end
