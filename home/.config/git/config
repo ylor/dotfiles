@@ -2,8 +2,8 @@
     root = rev-parse --show-toplevel
 
 [user]
-	email = rreyes@papa.com
-	name = papa-rreyes
+	email = 2200609+ylor@users.noreply.github.com
+	name = ylor
 
 # clearly makes git better - https://blog.gitbutler.com/how-git-core-devs-configure-git/
 
