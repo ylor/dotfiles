@@ -23,8 +23,8 @@ App(Mod.main.shift, "T", "Terminal")
 
 Tui(Mod.hyper, "P", "/opt/homebrew/bin/btop")
 
-Web(Mod.main, "A", "https://chatgpt.com")
-Web(Mod.main.shift, "A", "https://gemini.google.com")
+-- Web(Mod.main, "A", "https://chatgpt.com")
+-- Web(Mod.main.shift, "A", "https://gemini.google.com")
 
 if Work then
     App(Mod.main, "I", "Firefox")
@@ -49,7 +49,7 @@ hs.hotkey.bind(Mod.hyper, "right", function()
     SelectMenuItem({ "Window", "Move to " .. eastScreen:name() })
 end)
 
-hs.hotkey.bind(Mod.hyper, "o", function() RunCommand("ocr") end)
+-- hs.hotkey.bind(Mod.hyper, "o", function() RunCommand("trex") end)
 hs.hotkey.bind(Mod.main, ".", Unlock1Password)
 
 hs.hotkey.bind(Mod.hyper, "\\", hs.reload)
