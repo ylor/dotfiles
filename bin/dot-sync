@@ -1,8 +1,0 @@
-#!/usr/bin/env fish
-# dot-show-art
-set --query DOTFILES_PATH || dot-init
-set DOTFILES_HOME "$DOTFILES_PATH/home"
-
-fd . "$DOTFILES_PATH/home" --hidden --absolute-path --type file --exec dot-link {}
-fd . $HOME/{.config,.local,.ssh} --hidden --type symlink --follow --exec-batch rm
-fd . $HOME/{.config,.local,.ssh} --type directory --type empty --hidden --exec-batch rmdir

@@ -1,5 +1,5 @@
 #!/usr/bin/env fish
-dot-show-art
+dfs-show-art
 # if gum confirm "Choose your style:" --affirmative="Full" --negative="Minimal" --no-show-help
 #     set -Ux DOTFILES_MODE full
 # else

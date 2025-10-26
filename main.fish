@@ -1,19 +1,19 @@
-set -Ux DOTFILES_PATH (realpath (status dirname))
-fish_add_path $DOTFILES_PATH/bin
+set -Ux DOTFILES (realpath (status dirname))
+fish_add_path $DOTFILES/bin
 
-dot-show-art
-set -q DOTFILES_MODE || dot-config
+dfs-show-art
+set -q DOTFILES_MODE || dfs-config
 if [ $DOTFILES_MODE = full ]
     set kernel (uname | string lower)
-    for script in $DOTFILES_PATH/lib/$kernel/*.fish
+    for script in $DOTFILES/lib/$kernel/*.fish
         set name $(basename $script .fish)
-        dot-npc "configuring $name..."
+        dfs-npc "configuring $name..."
         source $script
-        dot-reverb "configured $name!"
+        dfs-reverb "configured $name!"
     end
 end
 
-dot-npc "linking dotfiles..."
-dot-sync >/dev/null
-dot-reverb "linked dotfiles!"
-dot-npc "✈ $(set_color --italic)SEE YOU SPACE COWBOY…"
+dfs-npc "linking dotfiles..."
+dfs-sync >/dev/null
+dfs-reverb "linked dotfiles!"
+dfs-npc "✈ $(set_color --italic)SEE YOU SPACE COWBOY…"

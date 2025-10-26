@@ -1,7 +1,9 @@
+set distro (cat /etc/os-release | grep '^ID=' | cut -d= -f2)
+
 if command -vq pacman
     sudo pacman -Syu --noconfirm
-    
-    set pkgs base-devel ghostty mise wl-clipboard usage zed zoxide 
+
+    set pkgs base-devel ghostty mise wl-clipboard usage zed zoxide
     sudo pacman -S --noconfirm --needed $pkgs
 end
 

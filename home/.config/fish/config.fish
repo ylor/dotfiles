@@ -36,6 +36,6 @@ if status --is-interactive
         source $module
     end
 
-    fish_add_path "$DOTFILES_PATH/bin"
+    fish_add_path "$DOTFILES/bin"
     fish_add_path -mp "$HOME/.local/bin"
 end

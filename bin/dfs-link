@@ -1,0 +1,11 @@
+#!/usr/bin/env fish
+if test (count $argv) -ne 1
+    echo "Usage: dfs-link [/path/to/source]"
+    return 1
+end
+
+set orig (realpath $argv[1])
+set link (string replace "$DOTFILES/home" "$HOME" "$orig")
+
+mkdir -p (dirname $link) # stage folder
+ln -sfv $orig $link # link file

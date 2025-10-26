@@ -19,6 +19,7 @@ npc() {
 clear
 curl -fsSL art.roly.sh
 npc "enter your password to continue (or abort with ctrl+c)..."
+
 sudo true
 while true; do sudo --non-interactive true; sleep 60; kill -0 "$$" || exit; done 2>/dev/null &
 
@@ -36,13 +37,13 @@ fi
 
 if missing fish || missing git || missing gum; then
     echo
-    echo "$(tput setaf 1)ERROR$(tput sgr0) unsupported operating system or missing dependencies"
-    echo "Retry by running: fish $HOME/.local/share/dotfiles/main.fish"
+    echo "$(tput setaf 1)ERROR$(tput sgr0) Missing dependencies"
+    echo "Retry by running: 'fish $HOME/.local/share/dotfiles/main.fish'"
     echo "$(tput sitm)✈ YOU'RE GONNA CARRY THAT WEIGHT.$(tput ritm)"
     exit 67
 fi
 
-DOTFILES_PATH="$HOME/.local/share/dotfiles"
-rm -rf "$DOTFILES_PATH"
-git clone https://github.com/ylor/dotfiles "$DOTFILES_PATH"
-fish "$DOTFILES_PATH/main.fish"
+DOTFILES="$HOME/.local/share/dotfiles"
+rm -rf "$DOTFILES"
+git clone https://github.com/ylor/dotfiles "$DOTFILES"
+fish "$DOTFILES/main.fish"

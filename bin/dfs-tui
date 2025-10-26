@@ -1,13 +1,13 @@
 #!/usr/bin/env fish
-dot-show-art
+dfs-show-art
 set choice (gum choose  "Configure" "Initialize" "Synchronize" "Abort")
 switch $choice
     case Configure
-        dot-config
+        dfs-config
     case Initialize
-        dot-init
+        dfs-init
     case Synchronize
-        dot-sync
+        dfs-sync
     case '*'
         exit 67
 end
