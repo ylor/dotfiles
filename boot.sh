@@ -17,7 +17,7 @@ npc() {
 }
 
 clear
-curl -fsSL art.roly.sh
+curl -fsSL banner.roly.sh
 npc "enter your password to continue (or abort with ctrl+c)..."
 
 sudo true
