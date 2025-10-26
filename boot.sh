@@ -28,11 +28,11 @@ if [ "$(uname)" = "Darwin" ]; then
 		NONINTERACTIVE=1 bash -c "$(curl -fsSL https://raw.githubusercontent.com/Homebrew/install/HEAD/install.sh)"
 	fi
 	eval "$(/opt/homebrew/bin/brew shellenv)"
-	brew install --quiet fish git gum
+	brew install --quiet fd fish git gum
 fi
 
 if [ "$(uname)" = "Linux" ] && exist pacman; then
-   	sudo pacman -Sy --noconfirm --needed fish git gum # Arch
+   	sudo pacman -Sy --noconfirm --needed fd fish git gum # Arch
 fi
 
 if missing fish || missing git || missing gum; then
