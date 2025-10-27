@@ -1,5 +1,13 @@
-# bebop end cards
-# eva title cards
+function icat
+    argparse 'i/image=' 't/text=' 'h/help' -- $argv ; or return 67
+
+    set img $DOTFILES/home/.config/fish/prompt/img/$_flag_image
+    set txt $_flag_text
+
+    viu $img -h2 && printf "\033[A\033[K     $txt\n"
+end
+
+ icat -i "silksong.png" -t "Poshanka!"
 
 function cowboy-bebop
     set symbol "✈"
@@ -24,6 +32,14 @@ function half-life
         "It's me, Gordon — Barney, from Black Mesa!" \
         "The right man in the wrong place can make all the difference in the world." \
         "Wake up, Mr. Freeman. Wake up and…smell the ashes."
+    echo $symbol (set_color --italics)(random choice $greetings)
+end
+
+function hollow-knight
+    set symbol ◯
+    set greetings \
+        "Bapanada..." \
+        "Poshanka!"
     echo $symbol (set_color --italics)(random choice $greetings)
 end
 
@@ -53,7 +69,7 @@ function zelda
 end
 
 function fish_greeting
-    set greeting (random choice cowboy-bebop half-life metal-gear-solid zelda)
+    set greeting (random choice cowboy-bebop half-life hollow-knight metal-gear-solid zelda)
     $greeting
     echo
 end
