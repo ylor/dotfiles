@@ -7,6 +7,7 @@ local exempt = {
     ["Safari"] = true,
     ["Terminal"] = true,
     ["Arc"] = true,
+    ["Orion"] = true,
     ["Ghostty"] = true,
 }
 

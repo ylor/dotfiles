@@ -7,8 +7,6 @@ function icat
     viu $img -h2 && printf "\033[A\033[K     $txt\n"
 end
 
- icat -i "silksong.png" -t "Poshanka!"
-
 function cowboy-bebop
     set symbol "✈"
     set greetings \
@@ -69,7 +67,8 @@ function zelda
 end
 
 function fish_greeting
-    set greeting (random choice cowboy-bebop half-life hollow-knight metal-gear-solid zelda)
-    $greeting
+    # set greeting (random choice cowboy-bebop half-life hollow-knight metal-gear-solid zelda)
+    # $greeting
+     icat -i "silksong.png" -t "Poshanka!"
     echo
 end
