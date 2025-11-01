@@ -26,6 +26,8 @@ defaults write NSGlobalDomain com.apple.springing.delay -float 0
 defaults write com.apple.dock enable-spring-load-actions-on-all-items -bool true
 
 # Finder
+## set default location of new Finder windows
+defaults write com.apple.finder NewWindowTargetPath -string "file://$HOME/Downloads"
 ## show extensions
 defaults write NSGlobalDomain AppleShowAllExtensions -bool true
 ## enable path bar
