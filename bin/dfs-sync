@@ -3,9 +3,15 @@ set --query DOTFILES || dfs-init
 set DOTFILES_HOME "$DOTFILES/home"
 
 # link
-fd . "$DOTFILES/home" --hidden --absolute-path --type file --exec dfs-link
+#fd . "$DOTFILES/home" --hidden --absolute-path --type file --exec dfs-link
+find "$DOTFILES/home" -type f -exec dfs-link {} \;
 
 # cleanup
-fd . $HOME --hidden --type symlink --follow --max-depth 1 --exec-batch rm
-fd . $HOME/{.config,.local,.ssh} --hidden --type symlink --follow --exec-batch rm
-fd . $HOME/{.config,.local,.ssh} --hidden --type directory --type empty --exec-batch rmdir
+# fd . $HOME --hidden --type symlink --follow --max-depth 1 --exec-batch rm
+find -L "$HOME" -maxdepth 1 -type l -exec rm {} +
+
+# fd . $HOME/{.config,.local,.ssh} --hidden --type symlink --follow --exec-batch rm
+find -L $HOME/{.config,.local,.ssh} -type l -exec rm {} +
+
+# fd . $HOME/{.config,.local,.ssh} --hidden --type directory --type empty --exec-batch rmdir
+find $HOME/{.config,.local,.ssh} -type d -empty -exec rmdir {} +
