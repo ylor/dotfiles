@@ -7,12 +7,13 @@ postinstall
 - curl vim
 - nvidia-open
 - limine
-- ly (learn how to hook snapshots into pacman)
-- adwaita-fonts
-- xdg-utils xorg-wayland
+- ly
+- adwaita-fonts adw-gtk-theme
+- xdg-utils xorg-wayland xwayland-satellite
 - hyprland xdg-desktop-portal-hyprland hyprpolkitagent hyprpaper hyprlock hypridle dolphin dunst grim qt5-wayland qt6-wayland kitty
 - niri mako alacritty fuzzel xdg-desktop-portal-gtk xdg-desktop-portal-gnome waybar swaybg swaylock swayidle
 - nautilus ghostty wl-clipboard
+- elephant*-bin walker-bin
 - firefox gnu-free-fonts
 aur
 - paru
@@ -24,4 +25,4 @@ desktop
 gaming
 - steam proton faugus
 
-services: ly
+services: ly, xwayland-satellite
