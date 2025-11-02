@@ -11,7 +11,7 @@ postinstall
 - adwaita-fonts
 - xdg-utils xorg-wayland
 - hyprland xdg-desktop-portal-hyprland hyprpolkitagent hyprpaper hyprlock hypridle dolphin dunst grim qt5-wayland qt6-wayland kitty
-- niri mako alacritty fuzzel xdg-desktop-portal-gnome waybar swaybg swaylock swayidle
+- niri mako alacritty fuzzel xdg-desktop-portal-gtk xdg-desktop-portal-gnome waybar swaybg swaylock swayidle
 - nautilus ghostty wl-clipboard
 - firefox gnu-free-fonts
 aur
