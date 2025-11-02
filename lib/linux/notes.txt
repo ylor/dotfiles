@@ -1,0 +1,27 @@
+internet
+archinstall (save config)
+- multilib
+postinstall
+- base-devel linux-headers dkms
+- ufw openssh iwd/network-manager
+- curl vim
+- nvidia-open
+- limine
+- ly (learn how to hook snapshots into pacman)
+- adwaita-fonts
+- xdg-utils xorg-wayland
+- hyprland xdg-desktop-portal-hyprland hyprpolkitagent hyprpaper hyprlock hypridle dolphin dunst grim qt5-wayland qt6-wayland kitty
+- niri mako alacritty fuzzel xdg-desktop-portal-gnome waybar swaybg swaylock swayidle
+- nautilus ghostty wl-clipboard
+- firefox gnu-free-fonts
+aur
+- paru
+    - evil-helix limine-entry-tool limine-snapper-sync
+desktop
+- hyprland: https://github.com/basecamp/omarchy/blob/e58569b947012eed458488e8c7777c5da27f7a9c/default/hypr/envs.conf
+- libadwaita dark mode
+- xwayland-satellite
+gaming
+- steam proton faugus
+
+services: ly
