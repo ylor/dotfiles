@@ -7,9 +7,8 @@ argparse h/help c/config i/init s/sync t/tui -- $argv
 
 set --query _flag_help && dfs-help && exit 0
 set --query _flag_config && dfs-config && exit 0
-sfd
+set --query _flag_init && dfs-init && exit 0
 set --query _flag_sync && dfs-sync && exit 0
 set --query _flag_tui && dfs-tui && exit 0
 
-# [ $status -ne 0 ] && clear && exit 67
-dfs-sync
+dfs-spin --title="Linking..." dfs-sync
