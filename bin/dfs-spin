@@ -1,0 +1,4 @@
+#!/usr/bin/env fish
+argparse 't/title=' -- $argv ; or return
+set title $_flag_titles
+gum spin --title=$title -- $argv

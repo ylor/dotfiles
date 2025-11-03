@@ -15,5 +15,6 @@ end
 
 dfs-npc "linking dotfiles..."
 dfs-sync >/dev/null
+
 dfs-reverb "linked dotfiles!"
 dfs-npc "✈ $(set_color --italic)SEE YOU SPACE COWBOY…"

@@ -8,13 +8,14 @@ postinstall
 - nvidia-open
 - limine
 - ly
-- adwaita-fonts adw-gtk-theme
+- adwaita-fonts gnome-themes-extra adw-gtk-theme
 - xdg-utils xorg-wayland xwayland-satellite
 - hyprland xdg-desktop-portal-hyprland hyprpolkitagent hyprpaper hyprlock hypridle dolphin dunst grim qt5-wayland qt6-wayland kitty
 - niri mako alacritty fuzzel xdg-desktop-portal-gtk xdg-desktop-portal-gnome waybar swaybg swaylock swayidle
 - nautilus ghostty wl-clipboard
 - elephant*-bin walker-bin
-- firefox gnu-free-fonts
+- firefox gnu-free-fonts 
+- waybar ttf-nerd-fonts-symbols-mono
 aur
 - paru
     - evil-helix limine-entry-tool limine-snapper-sync
@@ -23,6 +24,6 @@ desktop
 - libadwaita dark mode
 - xwayland-satellite
 gaming
-- steam proton faugus
+- steam proton faugus lact
 
-services: ly, xwayland-satellite
+services: ly, xwayland-satellite, lact
