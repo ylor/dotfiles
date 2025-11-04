@@ -129,8 +129,6 @@ layout {
     //   together with the previously focused column.
     center-focused-column "never"
     
-    single-window-fullscreen true
-
     preset-column-widths {
         // Proportion sets the width as a fraction of the output width, taking gaps into account.
         // For example, you can perfectly fit four windows sized "proportion 0.25" on an output.
