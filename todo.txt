@@ -2,3 +2,4 @@
 - explore niri
 - prepare the way for linux de (cosmic/kde/gnome)
 - prepare the way for linux wm (niri/hyprland)
+- fix `git convert`
