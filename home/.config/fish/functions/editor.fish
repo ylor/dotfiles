@@ -1,3 +1,4 @@
+# TODO: improve
 function editor
     set cmd (command -v zed-preview zed zeditor | head -n 1)
     switch (count $argv)

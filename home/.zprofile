@@ -1,5 +1,5 @@
-# drop into fish for interactive shells on macOS
+# drop into fish for interactive shells
 # adapted from https://wiki.archlinux.org/title/Fish
-if [[ $(uname) = "Darwin" && $(command -v fish) && $(ps -p "$PPID" -o comm=) != "fish" && -z ${ZSH_EXECUTION_STRING} && ${SHLVL} -eq 1 && -o login ]]; then
-   	exec fish --login
+if [[ $(command -v fish) && ${SHLVL} -eq 1 && -z ${ZSH_EXECUTION_STRING} ]]; then
+   	exec fish
 fi

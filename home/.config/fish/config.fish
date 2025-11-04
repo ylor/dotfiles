@@ -20,13 +20,9 @@ if status --is-interactive
     abbr --add k kubectl
 
     # Aliases
-    # alias b="brew"
-    # alias d="docker"
     alias e="editor"
     alias fishfmt="fish_indent --write"
-    # alias g="git"
     alias h="cd $HOME"
-    # alias k="kubectl"
     alias md="mkdir -p"
     alias rd="rmdir"
     alias re="source $__fish_config_dir/config.fish"
