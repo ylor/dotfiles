@@ -1,0 +1,7 @@
+#!/usr/bin/env fish
+# fd . $HOME --hidden --type symlink --follow --max-depth 1 #--exec-batch rm
+
+set remote (string replace $DOTFILES_HOME $HOME $argv)
+fd . $HOME --hidden --absolute-path --type directory --exec-batch echo {}
+# fd . $argv --hidden --type symlink --follow #--exec-batch rm
+# fd . $argv --hidden --type directory --type empty #--exec-batch rmdir

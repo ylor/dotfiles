@@ -22,6 +22,8 @@ if command -vq brew # https://github.com/Homebrew/brew
                 command brew search $args
             case up
                 command brew update && command brew upgrade
+                command -vq rv && 
+                fish_update_completions
             case '*'
                 command brew $argv
         end

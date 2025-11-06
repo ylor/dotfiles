@@ -1,4 +1,5 @@
 set -Ux DOTFILES (realpath (status dirname))
+set -Ux DOTFILES_HOME $DOTFILES/home
 fish_add_path $DOTFILES/bin
 
 dfs-show-art

@@ -4,21 +4,13 @@ set DOTFILES_HOME "$DOTFILES/home"
 
 argparse c/cleanup -- $argv
 
-if command -vq fd
-    fd . "$DOTFILES/home" --hidden --absolute-path --type file --exec dfs-link
-else
-    find "$DOTFILES/home" -type f -exec dfs-link {} \;
-end
+fd . "$DOTFILES/home" --hidden --absolute-path --type file --exec dfs-link
 
 if set -q _flag_cleanup
     if command -vq fd
         fd . $HOME --hidden --type symlink --follow --max-depth 1 --exec-batch rm
         fd . $HOME/{.config,.local,.ssh} --hidden --type symlink --follow --exec-batch rm
         fd . $HOME/{.config,.local,.ssh} --hidden --type directory --type empty --exec-batch rmdir
-    else
-        find -L "$HOME" -maxdepth 1 -type l -exec rm {} +
-        find -L $HOME/{.config,.local,.ssh} -type l -exec rm {} +
-        find $HOME/{.config,.local,.ssh} -type d -empty -exec rmdir {} +
     end
-    echo cleaning!!!!
 end
+
