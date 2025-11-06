@@ -11,7 +11,9 @@ if command -vq git # https://git-scm.com
             case me
                 git-me
             case lol
-                git add -A && git commit -m $(curl --silent --fail https://whatthecommit.com/index.txt) && git push
+                git add -A
+                git commit -m $(curl --silent --fail https://whatthecommit.com/index.txt)
+                git push
             case papa
                 git-papa
             case p
