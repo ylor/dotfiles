@@ -33,5 +33,5 @@ if status --is-interactive
     end
 
     fish_add_path "$DOTFILES/bin"
-    fish_add_path -mp "$HOME/.local/bin"
+    fish_add_path --prepend --move "$HOME/.local/bin"
 end
