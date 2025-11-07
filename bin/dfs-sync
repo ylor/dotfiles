@@ -11,4 +11,3 @@ if set -q _flag_cleanup
     fd . $HOME/{.config,.local,.ssh} --hidden --type symlink --follow --exec-batch rm
     fd . $HOME/{.config,.local,.ssh} --hidden --type directory --type empty --exec-batch rmdir
 end
-

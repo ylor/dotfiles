@@ -1,7 +1,7 @@
 function icat
     argparse 'i/image=' 't/text=' 'h/help' -- $argv ; or return 67
 
-    set img $DOTFILES/home/.config/fish/prompt/img/$_flag_image
+    set img $DOTFILES/home/.config/fish/img/$_flag_image
     set txt $_flag_text
 
     viu $img -h2 && printf "\033[A\033[K     $txt\n"
@@ -69,6 +69,6 @@ end
 function fish_greeting
     # set greeting (random choice cowboy-bebop half-life hollow-knight metal-gear-solid zelda)
     # $greeting
-     icat -i "silksong.png" -t "Poshanka!"
+    icat -i "silksong.png" -t "Poshanka!"
     echo
 end

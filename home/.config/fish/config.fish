@@ -28,9 +28,9 @@ if status --is-interactive
     alias re="source $__fish_config_dir/config.fish"
     alias v="visual"
 
-    for module in $__fish_config_dir/{library,prompt}/*.fish
-        source $module
-    end
+    # for module in $__fish_config_dir/{library,prompt}/*.fish
+    #     source $module
+    # end
 
     fish_add_path "$DOTFILES/bin"
     fish_add_path --prepend --move "$HOME/.local/bin"
