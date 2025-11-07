@@ -70,14 +70,14 @@ function Unlock1Password()
     hs.execute("/opt/homebrew/bin/op account get")
 end
 
-if not AppExists("Maccy") then
-    hs.hotkey.bind({ "cmd", "shift" }, "v", function()
-        hs.eventtap.keyStroke({ "cmd" }, "space", 0)
-        hs.timer.doAfter(0.1, function()
-            hs.eventtap.keyStroke({ "cmd" }, "4", 0)
-        end)
+-- if not AppExists("Maccy") then
+hs.hotkey.bind({ "cmd", "shift" }, "v", function()
+    hs.eventtap.keyStroke({ "cmd" }, "space", 0)
+    hs.timer.doAfter(0.01, function()
+        hs.eventtap.keyStroke({ "cmd" }, "4", 0)
     end)
-end
+end)
+-- end
 
 finderKeybind = nil
 finderwatcher = hs.application.watcher.new(function(app, event)

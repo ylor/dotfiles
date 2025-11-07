@@ -17,16 +17,13 @@ if status --is-interactive
     abbr --add b brew
     abbr --add d docker
     abbr --add g git
-    abbr --add k kubectl
 
     # Aliases
-    alias e="editor"
     alias fishfmt="fish_indent --write"
     alias h="cd $HOME"
     alias md="mkdir -p"
     alias rd="rmdir"
     alias re="source $__fish_config_dir/config.fish"
-    alias v="visual"
 
     # for module in $__fish_config_dir/{library,prompt}/*.fish
     #     source $module
