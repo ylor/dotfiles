@@ -1,6 +1,6 @@
 if status --is-interactive
-    set -x EDITOR editor
-    set -x VISUAL visual
+    set -x EDITOR vim
+    set -x VISUAL vim
 
     # Syntax highlighting
     # fish_config theme choose Lava
