@@ -24,6 +24,10 @@
   "ui_font_family": ".SystemUIFont",
   "ui_font_fallbacks": ["Symbols Nerd Font Mono"],
   "vim_mode": true,
+  "auto_install_extensions": {
+    "fish": true,
+    "hyprlang": true
+  },
   "autosave": {
     "after_delay": {
       "milliseconds": 1000
