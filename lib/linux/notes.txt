@@ -2,8 +2,16 @@ internet
 archinstall (save config)
 - multilib
 postinstall
-- base-devel linux-headers dkms
+- linux linux-headers linux-firmware
+- base base-devel
+- zram-generator
+- networkmanager
+- bluez bluez-utils
+- pipewire pipewire-{alsa,jack,pulse} wireplumber
+- nvidia-open-dkms
 - ufw openssh iwd/network-manager
+- sbctl
+- snapper
 - curl vim
 - nvidia-open
 - limine

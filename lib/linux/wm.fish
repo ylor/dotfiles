@@ -1,1 +1,1 @@
-fish "$DESKTOP_SESSION.fish"
+# fish "$DESKTOP_SESSION.fish"
