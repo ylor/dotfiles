@@ -1,9 +1,5 @@
 if command -vq zoxide # https://github.com/ajeetdsouza/zoxide - smarter cd
     zoxide init fish | source
-    alias cd="zd"
-    alias cdi="zi"
-    alias j="zd"
-    alias ji="zi"
 
     function zd
         if test (count $argv) -eq 0
@@ -21,4 +17,9 @@ if command -vq zoxide # https://github.com/ajeetdsouza/zoxide - smarter cd
             end
         end
     end
+
+    alias cd="zd"
+    alias cdi="zi"
+    alias j="zd"
+    alias ji="zi"
 end
