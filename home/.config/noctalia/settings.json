@@ -193,12 +193,12 @@
         "size": 1
     },
     "general": {
-        "animationDisabled": false,
-        "animationSpeed": 1.5000000000000002,
+        "animationDisabled": true,
+        "animationSpeed": 2,
         "avatarImage": "/home/roly/.face",
         "compactLockScreen": false,
-        "dimDesktop": true,
-        "enableShadows": true,
+        "dimDesktop": false,
+        "enableShadows": false,
         "forceBlackScreenCorners": true,
         "language": "",
         "lockOnSuspend": true,
@@ -302,7 +302,7 @@
         "fontFixedScale": 1,
         "panelsAttachedToBar": true,
         "settingsPanelAttachToBar": false,
-        "tooltipsEnabled": true
+        "tooltipsEnabled": false
     },
     "wallpaper": {
         "defaultWallpaper": "/etc/xdg/quickshell/noctalia-shell/Assets/Wallpaper/noctalia.png",
