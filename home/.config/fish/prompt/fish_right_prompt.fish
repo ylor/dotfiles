@@ -5,5 +5,5 @@
 
 function fish_right_prompt
     set_color black
-    set --query SSH_TTY && echo " $(hostname -s)"
+    set -q SSH_CONNECTION SSH_TTY && echo "$(whoami) @ $(hostname -s) "
 end
