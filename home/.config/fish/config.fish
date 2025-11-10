@@ -25,7 +25,7 @@ if status --is-interactive
     alias rd="rmdir"
     alias re="source $__fish_config_dir/config.fish"
 
-    for module in $__fish_config_dir/prompt/*.fish
+    for module in $__fish_config_dir/{library,prompt}/**.fish
         source $module
     end
 
