@@ -25,9 +25,9 @@ if status --is-interactive
     alias rd="rmdir"
     alias re="source $__fish_config_dir/config.fish"
 
-    # for module in $__fish_config_dir/{library,prompt}/*.fish
-    #     source $module
-    # end
+    for module in $__fish_config_dir/prompt/*.fish
+        source $module
+    end
 
     fish_add_path "$DOTFILES/bin"
     fish_add_path --prepend --move "$HOME/.local/bin"

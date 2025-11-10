@@ -1,3 +1,6 @@
+g
+exit 0
+
 set distro (cat /etc/os-release | grep '^ID=' | cut -d= -f2)
 
 if command -vq pacman

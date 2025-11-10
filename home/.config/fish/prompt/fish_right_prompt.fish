@@ -5,5 +5,5 @@
 
 function fish_right_prompt
     set_color black
-    set --query SSH_TTY && echo " " && hostname -s
+    set --query SSH_TTY && echo " $(hostname -s)"
 end

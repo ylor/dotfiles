@@ -19,9 +19,11 @@ postinstall
 - ly
 - adwaita-fonts gnome-themes-extra adw-gtk-theme
 - xdg-utils xorg-wayland xwayland-satellite
-- hyprland xdg-desktop-portal-hyprland hyprpolkitagent hyprpaper hyprlock hypridle dunst grim slurp qt5-wayland qt6-wayland kitty uwsm
+- hyprland uwsm xdg-desktop-portal-hyprland polkit-gnome hyprpolkitagent hyprpaper hyprlock hypridle grim slurp qt5-wayland qt6-wayland
+- optional: swaync
 - niri mako alacritty fuzzel xdg-desktop-portal-gtk xdg-desktop-portal-gnome waybar swaybg swaylock swayidle niri-switcher
 - nautilus ghostty wl-clipboard
+- noctalia ttf-roboto inter-font gpu-screen-recorder brightnessctl ddcutil cliphist mutagen-git cava wlsunset xdg-desktop-portal python3 evolution-data-server
 - elephant*-bin walker-bin
 - firefox gnu-free-fonts 
 - waybar ttf-nerd-fonts-symbols-mono
@@ -33,6 +35,13 @@ desktop
 - libadwaita dark mode
 - xwayland-satellite
 gaming
-- steam proton faugus lact
+- lact
+- steam mango gamemode
+- umu-launcher faugus-launcher proton-custom-ge-bin
+containers
+- podman podman-compose
 
 services: ly, xwayland-satellite, lact
+shell components
+- waybar: menu, workspaces, time/date, systray, bluetooth, wifi, brightness, notifications, power
+- lockscreen
