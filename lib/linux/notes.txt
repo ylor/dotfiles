@@ -18,8 +18,9 @@ postinstall
 - snapper
 - ly
 - adwaita-fonts gnome-themes-extra adw-gtk-theme
+- ttf-iosevka ttf-iosevka-aile ttf-nerd-fonts-symbols ttf-nerd-fonts-symbols-mono
 - xdg-utils xorg-wayland xwayland-satellite
-- hyprland uwsm xdg-desktop-portal-hyprland polkit-gnome hyprpolkitagent hyprpaper hyprlock hypridle grim slurp qt5-wayland qt6-wayland
+- hyprland uwsm xdg-desktop-portal-hyprland polkit-gnome hyprpolkitagent hyprshot hyprpaper hyprlock hypridle qt5-wayland qt6-wayland
 - optional: swaync
 - niri mako alacritty fuzzel xdg-desktop-portal-gtk xdg-desktop-portal-gnome waybar swaybg swaylock swayidle niri-switcher
 - nautilus ghostty wl-clipboard

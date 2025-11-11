@@ -1,18 +1,18 @@
 {
     "appLauncher": {
         "backgroundOpacity": 1,
-        "customLaunchPrefix": "uwsm-app",
+        "customLaunchPrefix": "",
         "customLaunchPrefixEnabled": false,
-        "enableClipboardHistory": true,
+        "enableClipboardHistory": false,
         "pinnedExecs": [
         ],
         "position": "center",
-        "sortByMostUsed": true,
+        "sortByMostUsed": false,
         "terminalCommand": "xterm -e",
         "useApp2Unit": false
     },
     "audio": {
-        "cavaFrameRate": 60,
+        "cavaFrameRate": 240,
         "mprisBlacklist": [
         ],
         "preferredPlayer": "",
@@ -23,7 +23,7 @@
     },
     "bar": {
         "backgroundOpacity": 0,
-        "density": "compact",
+        "density": "default",
         "exclusive": true,
         "floating": false,
         "marginHorizontal": 0.25,
@@ -32,7 +32,7 @@
         ],
         "outerCorners": true,
         "position": "top",
-        "showCapsule": false,
+        "showCapsule": true,
         "widgets": {
             "center": [
                 {
@@ -46,6 +46,7 @@
             ],
             "left": [
                 {
+                    "colorizeDistroLogo": false,
                     "customIconPath": "",
                     "icon": "noctalia",
                     "id": "ControlCenter",
@@ -55,18 +56,18 @@
                     "characterCount": 2,
                     "hideUnoccupied": false,
                     "id": "Workspace",
-                    "labelMode": "none"
+                    "labelMode": "index"
                 },
                 {
                     "hideMode": "hidden",
                     "hideWhenIdle": false,
                     "id": "MediaMini",
-                    "maxWidth": 200,
+                    "maxWidth": 145,
                     "scrollingMode": "hover",
                     "showAlbumArt": false,
-                    "showVisualizer": true,
+                    "showVisualizer": false,
                     "useFixedWidth": false,
-                    "visualizerType": "wave"
+                    "visualizerType": "linear"
                 }
             ],
             "right": [
@@ -75,9 +76,14 @@
                     ],
                     "colorizeIcons": false,
                     "drawerEnabled": true,
-                    "favorites": [
-                    ],
-                    "id": "Tray"
+                    "id": "Tray",
+                    "pinned": [
+                    ]
+                },
+                {
+                    "hideWhenZero": true,
+                    "id": "NotificationHistory",
+                    "showUnreadBadge": true
                 },
                 {
                     "displayMode": "onhover",
@@ -94,11 +100,6 @@
                 {
                     "displayMode": "onhover",
                     "id": "Brightness"
-                },
-                {
-                    "hideWhenZero": true,
-                    "id": "NotificationHistory",
-                    "showUnreadBadge": true
                 },
                 {
                     "id": "SessionMenu"
@@ -193,22 +194,22 @@
         "size": 1
     },
     "general": {
-        "animationDisabled": true,
+        "animationDisabled": false,
         "animationSpeed": 2,
         "avatarImage": "/home/roly/.face",
         "compactLockScreen": false,
-        "dimDesktop": false,
-        "enableShadows": false,
-        "forceBlackScreenCorners": true,
+        "dimDesktop": true,
+        "enableShadows": true,
+        "forceBlackScreenCorners": false,
         "language": "",
-        "lockOnSuspend": true,
+        "lockOnSuspend": false,
         "radiusRatio": 1,
         "scaleRatio": 1,
-        "screenRadiusRatio": 0.25,
-        "shadowDirection": "bottom_right",
-        "shadowOffsetX": 2,
+        "screenRadiusRatio": 1,
+        "shadowDirection": "bottom",
+        "shadowOffsetX": 0,
         "shadowOffsetY": 3,
-        "showScreenCorners": true
+        "showScreenCorners": false
     },
     "hooks": {
         "darkModeChange": "",
@@ -223,7 +224,7 @@
         "showCalendarWeather": true,
         "showWeekNumberInCalendar": false,
         "use12hourFormat": true,
-        "useFahrenheit": false,
+        "useFahrenheit": true,
         "weatherEnabled": true
     },
     "network": {
@@ -232,16 +233,15 @@
     "nightLight": {
         "autoSchedule": true,
         "dayTemp": "6500",
-        "enabled": true,
+        "enabled": false,
         "forced": false,
         "manualSunrise": "06:30",
         "manualSunset": "18:30",
-        "nightTemp": "5000"
+        "nightTemp": "4000"
     },
     "notifications": {
         "backgroundOpacity": 1,
         "criticalUrgencyDuration": 15,
-        "doNotDisturb": false,
         "enabled": true,
         "location": "top_right",
         "lowUrgencyDuration": 3,
@@ -291,18 +291,19 @@
         "kitty": false,
         "pywalfox": false,
         "qt": false,
+        "spicetify": false,
         "vicinae": false,
         "walker": false,
         "wezterm": false
     },
     "ui": {
-        "fontDefault": "Inter Display",
-        "fontDefaultScale": 1,
+        "fontDefault": "Iosevka Aile",
+        "fontDefaultScale": 0.9,
         "fontFixed": "Adwaita Mono",
         "fontFixedScale": 1,
         "panelsAttachedToBar": true,
         "settingsPanelAttachToBar": false,
-        "tooltipsEnabled": false
+        "tooltipsEnabled": true
     },
     "wallpaper": {
         "defaultWallpaper": "/etc/xdg/quickshell/noctalia-shell/Assets/Wallpaper/noctalia.png",
