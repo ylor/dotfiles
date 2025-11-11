@@ -1,6 +1,6 @@
 #!/usr/bin/env fish
 set --query DOTFILES || dfs-init
-set DOTFILES_HOME "$DOTFILES/home"
+set -Ux DOTFILES_HOME "$DOTFILES/home"
 
 argparse c/cleanup -- $argv
 

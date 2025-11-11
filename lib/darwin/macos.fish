@@ -1,5 +1,3 @@
-[ $DOTFILES_MODE = minimal ] && return
-
 # Configure dock
 if defaults read com.apple.Dock | grep -q "com.apple.apps.launcher"
     command -vq dockutil || brew install --quiet dockutil

@@ -1,2 +1,4 @@
 #!/usr/bin/env fish
-not command --search --quiet "$argv"
+for cmd in $argv
+    command -vq $cmd || exit 0
+end
