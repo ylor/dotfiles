@@ -36,21 +36,21 @@
         "widgets": {
             "center": [
                 {
-                    "customFont": "",
+                    "customFont": "Inter",
                     "formatHorizontal": "ddd MMM d  h:mm AP",
                     "formatVertical": "HH mm - dd MM",
                     "id": "Clock",
                     "useCustomFont": false,
-                    "usePrimaryColor": true
+                    "usePrimaryColor": false
                 }
             ],
             "left": [
                 {
-                    "colorizeDistroLogo": false,
+                    "colorizeDistroLogo": true,
                     "customIconPath": "",
-                    "icon": "noctalia",
+                    "icon": "",
                     "id": "ControlCenter",
-                    "useDistroLogo": false
+                    "useDistroLogo": true
                 },
                 {
                     "characterCount": 2,
@@ -59,18 +59,36 @@
                     "labelMode": "index"
                 },
                 {
+                    "colorizeIcons": false,
                     "hideMode": "hidden",
+                    "id": "Taskbar",
+                    "onlyActiveWorkspaces": true,
+                    "onlySameOutput": true
+                },
+                {
+                    "hideMode": "idle",
                     "hideWhenIdle": false,
                     "id": "MediaMini",
                     "maxWidth": 145,
                     "scrollingMode": "hover",
                     "showAlbumArt": false,
-                    "showVisualizer": false,
+                    "showVisualizer": true,
                     "useFixedWidth": false,
                     "visualizerType": "linear"
                 }
             ],
             "right": [
+                {
+                    "hideMode": "idle",
+                    "hideWhenIdle": false,
+                    "id": "MediaMini",
+                    "maxWidth": 145,
+                    "scrollingMode": "hover",
+                    "showAlbumArt": false,
+                    "showVisualizer": true,
+                    "useFixedWidth": false,
+                    "visualizerType": "linear"
+                },
                 {
                     "blacklist": [
                     ],
@@ -100,9 +118,6 @@
                 {
                     "displayMode": "onhover",
                     "id": "Brightness"
-                },
-                {
-                    "id": "SessionMenu"
                 }
             ]
         }
@@ -132,11 +147,11 @@
                 "id": "profile-card"
             },
             {
-                "enabled": true,
+                "enabled": false,
                 "id": "shortcuts-card"
             },
             {
-                "enabled": true,
+                "enabled": false,
                 "id": "audio-card"
             },
             {
@@ -144,7 +159,7 @@
                 "id": "weather-card"
             },
             {
-                "enabled": true,
+                "enabled": false,
                 "id": "media-sysmon-card"
             }
         ],
@@ -233,11 +248,11 @@
     "nightLight": {
         "autoSchedule": true,
         "dayTemp": "6500",
-        "enabled": false,
+        "enabled": true,
         "forced": false,
         "manualSunrise": "06:30",
         "manualSunset": "18:30",
-        "nightTemp": "4000"
+        "nightTemp": "5000"
     },
     "notifications": {
         "backgroundOpacity": 1,

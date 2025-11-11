@@ -21,9 +21,7 @@ postinstall
 - ttf-iosevka ttf-iosevka-aile ttf-nerd-fonts-symbols ttf-nerd-fonts-symbols-mono
 - xdg-utils xorg-wayland xwayland-satellite
 - hyprland uwsm xdg-desktop-portal-hyprland polkit-gnome hyprpolkitagent hyprshot hyprpaper hyprlock hypridle qt5-wayland qt6-wayland
-- optional: swaync
-- niri mako alacritty fuzzel xdg-desktop-portal-gtk xdg-desktop-portal-gnome waybar swaybg swaylock swayidle niri-switcher
-- nautilus ghostty wl-clipboard
+- nautilus cosmic-files ghostty wl-clipboard
 - noctalia ttf-roboto inter-font gpu-screen-recorder brightnessctl ddcutil cliphist mutagen-git cava wlsunset xdg-desktop-portal python3 evolution-data-server
 - elephant*-bin walker-bin
 - firefox gnu-free-fonts 
