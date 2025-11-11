@@ -99,9 +99,7 @@
                     ]
                 },
                 {
-                    "hideWhenZero": true,
-                    "id": "NotificationHistory",
-                    "showUnreadBadge": true
+                    "id": "KeepAwake"
                 },
                 {
                     "displayMode": "onhover",
@@ -118,6 +116,11 @@
                 {
                     "displayMode": "onhover",
                     "id": "Brightness"
+                },
+                {
+                    "hideWhenZero": true,
+                    "id": "NotificationHistory",
+                    "showUnreadBadge": true
                 }
             ]
         }
@@ -147,7 +150,7 @@
                 "id": "profile-card"
             },
             {
-                "enabled": false,
+                "enabled": true,
                 "id": "shortcuts-card"
             },
             {
@@ -167,31 +170,10 @@
         "shortcuts": {
             "left": [
                 {
-                    "id": "WiFi"
-                },
-                {
-                    "id": "Bluetooth"
-                },
-                {
-                    "id": "ScreenRecorder"
-                },
-                {
-                    "id": "WallpaperSelector"
+                    "id": "KeepAwake"
                 }
             ],
             "right": [
-                {
-                    "id": "Notifications"
-                },
-                {
-                    "id": "PowerProfile"
-                },
-                {
-                    "id": "KeepAwake"
-                },
-                {
-                    "id": "NightLight"
-                }
             ]
         }
     },
