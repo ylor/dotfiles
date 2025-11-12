@@ -35,7 +35,7 @@ if [ "$(uname)" = "Linux" ] && exist pacman; then
    	sudo pacman -Sy --noconfirm --needed fd fish git gum # Arch
 fi
 
-if missing fd || fish || missing git || missing gum; then
+if missing fd || missing fish || missing git || missing gum; then
     echo
     echo "$(tput setaf 1)ERROR$(tput sgr0) Missing dependencies"
     echo "Retry by running: 'fish $HOME/.local/share/dotfiles/main.fish'"
