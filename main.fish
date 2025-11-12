@@ -1,9 +1,7 @@
 set -Ux DOTFILES (realpath (status dirname))
 fish_add_path "$DOTFILES/bin"
 dfs-show-art
-
 set -q DOTFILES_MODE || dfs-mode
-
 if [ $DOTFILES_MODE = full ]
     set kernel (uname | string lower)
     for script in $DOTFILES/lib/$kernel/*.fish
@@ -13,7 +11,6 @@ if [ $DOTFILES_MODE = full ]
         dfs-reverb "configured $name!"
     end
 end
-
 # dfs-config
 dfs-npc "linking dotfiles..."
 dfs-sync >/dev/null
