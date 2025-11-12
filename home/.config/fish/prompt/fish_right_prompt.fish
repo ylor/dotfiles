@@ -12,5 +12,5 @@ function fish_right_prompt
     # set -q SSH_CONNECTION SSH_TTY &&
     # █ ▓ ▒ ░ ⣿
     set_color black
-    echo "$user@$machine ▒"
+    echo "$user@$machine ⣿"
 end

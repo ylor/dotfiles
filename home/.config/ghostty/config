@@ -20,6 +20,7 @@ window-padding-balance = true
 window-padding-x = 4
 window-padding-y = 2
 window-subtitle = working-directory
+gtk-custom-css = style.css
 
 # keybinds
 #keybind = global:ctrl+`=toggle_quick_terminal

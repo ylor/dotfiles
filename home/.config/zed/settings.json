@@ -78,7 +78,7 @@
     "tab_bar.background": "#00000000",
     "terminal.background": "#00000000",
     "title_bar.background": "#000000d7",
-    // "title_bar.inactive_background": "#181926d9",
+    "title_bar.inactive_background": "#000000d7",
     "toolbar.background": "#00000000",
     // "editor.document_highlight.read_background": "#f324d3ff",
     "editor.document_highlight.bracket_background": "#333333d7"

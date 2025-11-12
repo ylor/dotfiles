@@ -46,7 +46,7 @@
             ],
             "left": [
                 {
-                    "colorizeDistroLogo": true,
+                    "colorizeDistroLogo": false,
                     "customIconPath": "",
                     "icon": "",
                     "id": "ControlCenter",
@@ -56,7 +56,7 @@
                     "characterCount": 2,
                     "hideUnoccupied": false,
                     "id": "Workspace",
-                    "labelMode": "index"
+                    "labelMode": "none"
                 },
                 {
                     "colorizeIcons": false,
@@ -150,7 +150,7 @@
                 "id": "profile-card"
             },
             {
-                "enabled": true,
+                "enabled": false,
                 "id": "shortcuts-card"
             },
             {
@@ -170,7 +170,13 @@
         "shortcuts": {
             "left": [
                 {
+                    "id": "PowerProfile"
+                },
+                {
                     "id": "KeepAwake"
+                },
+                {
+                    "id": "ScreenRecorder"
                 }
             ],
             "right": [
@@ -283,14 +289,14 @@
         "foot": false,
         "fuzzel": false,
         "ghostty": false,
-        "gtk": false,
-        "kcolorscheme": false,
+        "gtk": true,
+        "kcolorscheme": true,
         "kitty": false,
         "pywalfox": false,
-        "qt": false,
+        "qt": true,
         "spicetify": false,
         "vicinae": false,
-        "walker": false,
+        "walker": true,
         "wezterm": false
     },
     "ui": {
