@@ -5,6 +5,9 @@ set hydro_color_duration yellow
 set hydro_color_prompt green
 
 # set hydro_multiline true
+# set hydro_symbol_git_ahead "⇡"
+set hydro_symbol_git_dirty "≡"
+# set hydro_symbol_git_behind "⇣"
 # set hydro_symbol_prompt "✦"
 set hydro_symbol_prompt "→"
 set fish_prompt_pwd_dir_length 0

@@ -1,0 +1,8 @@
+- security
+- waybar
+- clipboard history
+- runner
+- fix copy/paste shorecuts
+- fingerprint
+- lid close
+- ocr w slurp

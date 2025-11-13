@@ -7,10 +7,9 @@
 // custom settings, run the `open default settings` command
 // from the command palette or from `Zed` application menu.
 {
-  "buffer_font_size": 15.0,
-  "buffer_line_height": "comfortable",
+  "buffer_font_size": 14.0,
   "buffer_font_family": "AdwaitaMono Nerd Font",
-  "buffer_font_fallbacks": ["Myna", "Symbols Nerd Font Mono"],
+  "buffer_font_fallbacks": ["Symbols Nerd Font Mono"],
   "buffer_font_features": {
     "calt": true,
     "liga": true,
@@ -19,7 +18,7 @@
   "disable_ai": true,
   "format_on_save": "on",
   "preferred_line_length": 100,
-  "relative_line_numbers": true,
+  "relative_line_numbers": "enabled",
   "soft_wrap": "bounded",
   "theme": "One Dark",
   "ui_font_family": ".SystemUIFont",
