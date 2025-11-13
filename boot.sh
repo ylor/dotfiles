@@ -1,10 +1,19 @@
 #!/bin/sh
-
 # Usage: sh -c "$(curl -fsSL boot.roly.sh)"
 set -e
 
-exist() { command -v "$1" >/dev/null; }
-missing() { ! command -v "$1" >/dev/null; }
+exist() {
+    for cmd in "$@"; do
+      command -v "$cmd" &>/dev/null || exit 1
+    done
+}
+
+missing() {
+    for cmd in "$@"; do
+      ! command -v "$cmd" &>/dev/null || exit 1
+    done
+}
+
 npc() {
     str="$*"
     while [ -n "$str" ]; do
@@ -19,7 +28,6 @@ npc() {
 clear
 curl -fsSL banner.roly.sh
 npc "enter your password to continue (or abort with ctrl+c)..."
-
 sudo true
 while true; do sudo --non-interactive true; sleep 60; kill -0 "$$" || exit; done 2>/dev/null &
 
@@ -28,14 +36,14 @@ if [ "$(uname)" = "Darwin" ]; then
 		NONINTERACTIVE=1 bash -c "$(curl -fsSL https://raw.githubusercontent.com/Homebrew/install/HEAD/install.sh)"
 	fi
 	eval "$(/opt/homebrew/bin/brew shellenv)"
-	brew install --quiet fd fish git gum
+	brew install fd fish git gum
 fi
 
 if [ "$(uname)" = "Linux" ] && exist pacman; then
-   	sudo pacman -Sy --noconfirm --needed fd fish git gum # Arch
+   	sudo pacman -Syu --noconfirm --needed fd fish git gum # Arch
 fi
 
-if missing fd || missing fish || missing git || missing gum; then
+if missing fd fish git gum; then
     echo
     echo "$(tput setaf 1)ERROR$(tput sgr0) Missing dependencies"
     echo "Retry by running: 'fish $HOME/.local/share/dotfiles/main.fish'"

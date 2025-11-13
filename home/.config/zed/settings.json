@@ -7,8 +7,9 @@
 // custom settings, run the `open default settings` command
 // from the command palette or from `Zed` application menu.
 {
+  "buffer_font_size": 15.0,
   "buffer_line_height": "comfortable",
-  "buffer_font_family": "Liga SFMono Nerd Font",
+  "buffer_font_family": "AdwaitaMono Nerd Font",
   "buffer_font_fallbacks": ["Myna", "Symbols Nerd Font Mono"],
   "buffer_font_features": {
     "calt": true,

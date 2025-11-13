@@ -6,4 +6,3 @@ dfs-show-art
 #     set -Ux DOTFILES_MODE minimal
 # end
 set -Ux DOTFILES_MODE (gum choose "Full" "Minimal" | string lower)
-clear
