@@ -46,6 +46,10 @@ defaults write NSGlobalDomain NSToolbarTitleViewRolloverDelay -float 0
 defaults write com.apple.desktopservices DSDontWriteNetworkStores -bool true
 defaults write com.apple.desktopservices DSDontWriteUSBStores -bool true
 
+# Spotlight
+defaults write com.apple.spotlight PasteboardHistoryEnabled -int 1
+defaults write com.apple.spotlight PasteboardHistoryTimeout -int 604800
+
 # Keyboard
 ## disable accent menu & enable key repeat
 defaults write NSGlobalDomain ApplePressAndHoldEnabled -bool false
