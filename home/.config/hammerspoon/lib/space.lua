@@ -8,6 +8,9 @@ end
 
 -- MARK: Menubar item
 local spaceMenu = hs.menubar.new()
+spaceMenu:setClickCallback(function(_, mods)
+    hs.openConsole(true)
+end)
 
 function GetSpaceIndex()
     -- local screen = hs.screen.primaryScreen()
