@@ -1,12 +1,11 @@
 {
     "appLauncher": {
-        "backgroundOpacity": 1,
         "customLaunchPrefix": "",
         "customLaunchPrefixEnabled": false,
         "enableClipboardHistory": false,
         "pinnedExecs": [
         ],
-        "position": "center",
+        "position": "follow_bar",
         "sortByMostUsed": false,
         "terminalCommand": "xterm -e",
         "useApp2Unit": false
@@ -23,14 +22,14 @@
     },
     "bar": {
         "backgroundOpacity": 0,
-        "density": "default",
+        "density": "compact",
         "exclusive": true,
-        "floating": false,
-        "marginHorizontal": 0.25,
-        "marginVertical": 0.25,
+        "floating": true,
+        "marginHorizontal": 0.24,
+        "marginVertical": 0,
         "monitors": [
         ],
-        "outerCorners": true,
+        "outerCorners": false,
         "position": "top",
         "showCapsule": true,
         "widgets": {
@@ -121,6 +120,9 @@
                     "hideWhenZero": true,
                     "id": "NotificationHistory",
                     "showUnreadBadge": true
+                },
+                {
+                    "id": "SessionMenu"
                 }
             ]
         }
@@ -274,7 +276,35 @@
         "videoCodec": "h264",
         "videoSource": "portal"
     },
-    "settingsVersion": 21,
+    "sessionMenu": {
+        "countdownDuration": 10000,
+        "enableCountdown": true,
+        "position": "center",
+        "powerOptions": [
+            {
+                "action": "lock",
+                "enabled": true
+            },
+            {
+                "action": "suspend",
+                "enabled": true
+            },
+            {
+                "action": "reboot",
+                "enabled": true
+            },
+            {
+                "action": "logout",
+                "enabled": true
+            },
+            {
+                "action": "shutdown",
+                "enabled": true
+            }
+        ],
+        "showHeader": true
+    },
+    "settingsVersion": 22,
     "setupCompleted": true,
     "templates": {
         "alacritty": false,
@@ -305,6 +335,7 @@
         "fontDefaultScale": 0.9,
         "fontFixed": "Adwaita Mono",
         "fontFixedScale": 1,
+        "panelBackgroundOpacity": 0.75,
         "panelsAttachedToBar": true,
         "settingsPanelAttachToBar": false,
         "tooltipsEnabled": true
@@ -316,6 +347,7 @@
         "enabled": false,
         "fillColor": "#000000",
         "fillMode": "crop",
+        "hideWallpaperFilenames": false,
         "monitors": [
         ],
         "overviewEnabled": false,

@@ -1,5 +1,7 @@
 # https://ghostty.org/docs/config
 
+config-file = ?local
+
 # function
 shell-integration = detect
 shell-integration-features = true
@@ -7,12 +9,13 @@ clipboard-read = "allow"
 clipboard-paste-protection = false
 window-save-state = always
 
+
 # form
 background = #000000
 background-blur-radius = 80
 background-opacity = 0.85
 font-family = "JetBrainsMono Nerd Font"
-font-size = 16
+font-size = 13
 font-feature = -calt
 font-feature = -liga
 font-feature = zero
