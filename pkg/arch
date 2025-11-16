@@ -1,16 +1,25 @@
-1password-beta
-amd-ucode #bar
-base
-base-devel
+amd-ucode
+linux
+linux-firmware
+linux-headers
+efibootmgr
+
+btrfs-progs
+snapper
+
 bluez
 bluez-utils
+
+base
+base-devel
+
+
+1password-beta
 btop
-btrfs-progs
 cava
 cliphist
 ddcci-driver-linux-dkms
 ddcutil
-efibootmgr
 elephant-bin
 elephant-desktopapplications-bin
 elephant-symbols-bin
@@ -39,9 +48,6 @@ hyprshot
 icu76
 lact
 libpulse
-linux
-linux-firmware
-linux-headers
 mango
 mangohud
 matugen-git
@@ -63,7 +69,6 @@ proton-ge-custom-bin
 sbctl
 slurp
 snap-pac
-snapper
 steam
 sunshine-beta-bin
 ttf-ia-writer
@@ -83,7 +88,6 @@ walker-bin
 waybar
 wget
 wireplumber
-wclipboard
 wlsunset
 xdg-desktop-portal-gnome
 xdg-desktop-portal-gtk

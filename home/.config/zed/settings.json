@@ -21,11 +21,11 @@
   "soft_wrap": "bounded",
   "theme": "One Dark",
   "ui_font_family": ".SystemUIFont",
-  "ui_font_fallbacks": ["Symbols Nerd Font Mono"],
   "vim_mode": true,
   "auto_install_extensions": {
     "fish": true,
-    "hyprlang": true
+    "hyprlang": true,
+    "ssh-config": true
   },
   "autosave": {
     "after_delay": {
@@ -51,7 +51,7 @@
     "metrics": false
   },
   "terminal": {
-    "font_family": "Liga SFMono Nerd Font",
+    "font_family": "JetBrainsMono Nerd Font",
     "shell": {
       "program": "fish"
     }
@@ -64,22 +64,22 @@
     "background.appearance": "blurred",
     "background": "#000000d7",
     // "border": "#00000000",
-    "border.variant": "#00000000",
+    // "border.variant": "#00000000",
     "editor.active_line.background": "#00000000",
     "editor.background": "#00000000",
     "editor.gutter.background": "#00000000",
     // "elevated_surface.background": "#0a0a0a",
     "panel.background": "#00000000",
-    "panel.focused_border": "00000000",
+    // "panel.focused_border": "00000000",
     "status_bar.background": "#000000d7",
-    "surface.background": "#000000d0",
+    // "surface.background": "#000000d0",
     "tab.inactive_background": "#00000000",
     "tab_bar.background": "#00000000",
-    "terminal.background": "#00000000",
+    "terminal.background": "#000000",
     "title_bar.background": "#000000d7",
     "title_bar.inactive_background": "#000000d7",
-    "toolbar.background": "#00000000",
+    "toolbar.background": "#00000000"
     // "editor.document_highlight.read_background": "#f324d3ff",
-    "editor.document_highlight.bracket_background": "#333333d7"
+    // "editor.document_highlight.bracket_background": "#333333d7"
   }
 }

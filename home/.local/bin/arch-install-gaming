@@ -1,0 +1,2 @@
+#!/usr/bin/env sh
+sudo paru -Sy --noconfirm --needed steam proton-custom-ge lact mangohud gamemode umu-launcher faugus-launcher sunshine-beta-bin cuda

@@ -1,0 +1,28 @@
+#!/usr/bin/env sh
+# sudo pacman -S pciutils
+
+# Exit early if no nvidia devices found
+lspci | grep -qvi 'nvidia' || exit 1
+
+# Add headers to all supported kernels
+KERNEL_HEADERS="$(pacman -Qq | grep -E '^linux(-zen|-lts|-hardened)?$' | awk '{ print $1 "-headers"}')"
+
+# Install packages
+PACKAGES=(
+  "${KERNEL_HEADERS}"
+  "egl-wayland"
+  "lib32-nvidia-utils"
+  "libva-nvidia-driver" # For VA-API hardware acceleration
+  "nvidia-open-dkms"
+  "nvidia-utils"
+  "qt5-wayland"
+  "qt6-wayland"
+)
+sudo pacman -Sy --needed --noconfirm "${PACKAGES[@]}"
+
+# Configure mkinitcpio for early loading
+echo 'MODULES+=(nvidia nvidia_modeset nvidia_uvm nvidia_drm)' | sudo tee /etc/mkinitcpio.conf.d/nvidia.conf >/dev/null
+
+# Regenerate initramfs with applied changes
+# sudo mkinitcpio -P
+# sudo limine-mkinitcpio
