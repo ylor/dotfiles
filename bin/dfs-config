@@ -1,3 +1,3 @@
 #!/usr/bin/env fish
 set kernel (uname | string lower)
-source $DOTFILES/lib/$kernel.fish
+set asdf (realpath (status dirname))

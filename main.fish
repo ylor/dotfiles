@@ -7,7 +7,7 @@ dfs-show-art
 set -q DOTFILES_MODE || dfs-mode
 if [ $DOTFILES_MODE = full ]
     set kernel (uname | string lower)
-    for script in $DOTFILES/lib/$kernel/*.fish
+    for script in $DOTFILES/scripts/$kernel/*.fish
         set name $(basename $script .fish)
         dfs-npc "configuring $name..."
         source $script
