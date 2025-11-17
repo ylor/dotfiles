@@ -285,12 +285,12 @@
         "powerOptions": [
             {
                 "action": "lock",
-                "countdownEnabled": true,
+                "countdownEnabled": false,
                 "enabled": true
             },
             {
                 "action": "suspend",
-                "countdownEnabled": true,
+                "countdownEnabled": false,
                 "enabled": true
             },
             {
@@ -311,7 +311,7 @@
             {
                 "action": "hibernate",
                 "countdownEnabled": true,
-                "enabled": true
+                "enabled": false
             }
         ],
         "showHeader": true
