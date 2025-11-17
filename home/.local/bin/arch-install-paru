@@ -1,7 +1,7 @@
 #!/usr/bin/env sh
-cd /tmp
 sudo pacman -S --needed base-devel
-git clone https://aur.archlinux.org/paru-bin.git
-cd paru-bin
-makepkg -si
+git clone https://aur.archlinux.org/paru-bin.git /tmp/paru-bin
+pushd /tmp/paru-bin
+makepkg -si --noconfirm
+popd
 rm -rf /tmp/paru-bin
