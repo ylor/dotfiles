@@ -1,3 +1,6 @@
+brew update --quiet
+brew upgrade --quiet
+
 set --export HOMEBREW_BUNDLE_FILE "$DOTFILES_HOME/.config/homebrew/Brewfile"
 brew bundle --quiet
 
