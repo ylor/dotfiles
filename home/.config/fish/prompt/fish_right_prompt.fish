@@ -1,10 +1,5 @@
-#set --query SSH_CLIENT ||
-# set --query SSH_TTY && set --global hydro_ssh "$(prompt_hostname)"
-# set --global hydro_ssh
-# set --query SSH_TTY && set --global hydro_ssh " $hostname"
-
 function fish_right_prompt
-    set machine $(string split . $hostname | string split -)[1]
+    set machine $(string split - $(prompt_hostname))[1]
 
     # set symbol ""
     # set symbol "⌘"

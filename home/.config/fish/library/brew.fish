@@ -3,7 +3,7 @@ set --global --export HOMEBREW_NO_AUTO_UPDATE 1
 set --global --export HOMEBREW_NO_ENV_HINTS 1
 # set --global --export HOMEBREW_USE_INTERNAL_API 1
 
-for path in /opt/homebrew "/home/linuxbrew/.linuxbrew"
+for path in "/opt/homebrew" "/home/linuxbrew/.linuxbrew"
     [ -d $path ] && "$path/bin/brew" shellenv | source
 end
 
