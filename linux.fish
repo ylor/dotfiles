@@ -1,3 +1,6 @@
+alias install='sudo pacman -S --needed --noconfirm'
+alias update='sudo pacman -Syu'
+
 sudo pacman -Syu
 sudo pacman -S --needed --noconfirm linux linux-headers linux-firmware base base-devel
 
