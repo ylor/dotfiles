@@ -31,6 +31,7 @@ gtk-custom-css = style.css
 keybind = super+r=reload_config
 keybind = global:ctrl+escape=toggle_quick_terminal
 keybind = super+shift+p=toggle_command_palette
-keybind = control+c=copy_to_clipboard
+# keybind = control+c=copy_to_clipboard
+keybind = performable:ctrl+c=copy_to_clipboard
 keybind = control+t=new_tab
 keybind = control+w=close_tab:this
