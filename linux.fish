@@ -1,18 +1,19 @@
 alias install='sudo pacman -S --needed --noconfirm'
 alias update='sudo pacman -Syu'
 
-sudo pacman -Syu
+update
 sudo pacman -S --needed --noconfirm linux linux-headers linux-firmware base base-devel
 
 # AUR
 if not command -vq paru
-    paru -S --needed base-devel
+    sudo pacman -S --needed --noconfirm base-devel
     git clone https://aur.archlinux.org/paru-bin.git /tmp/paru-bin
     pushd /tmp/paru-bin
     makepkg -si --noconfirm
     popd
     rm -rf /tmp/paru-bin
 end
+
 
 # POWER MANAGEMENT
 paru -S --noconfirm --needed power-profiles-daemon zram-generator
