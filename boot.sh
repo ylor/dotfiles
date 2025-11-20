@@ -3,15 +3,12 @@
 set -e
 
 exist() {
-    for cmd in "$@"; do
-      command -v "$cmd" &>/dev/null || exit 1
-    done
+    for cmd; do command -v "$cmd" >/dev/null || return 1; done
 }
 
 missing() {
-    for cmd in "$@"; do
-      ! command -v "$cmd" &>/dev/null || exit 1
-    done
+    for cmd; do command -v "$cmd" >/dev/null || return 0; done
+    return 1
 }
 
 npc() {
