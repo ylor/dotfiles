@@ -1,0 +1,1 @@
+source scripts/mac/{brew,defaults,macos}.fish

@@ -1,4 +1,4 @@
 #!/usr/bin/env fish
-clear
+echo
 cat (status dirname)/../art.txt
 echo
