@@ -1,3 +1,0 @@
-#!/usr/bin/env fish
-set kernel (uname | string lower)
-set asdf (realpath (status dirname))

@@ -1,4 +1,0 @@
-#!/usr/bin/env fish
-for cmd in $argv
-    command -vq $cmd || exit 0
-end

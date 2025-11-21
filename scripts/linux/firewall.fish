@@ -13,4 +13,8 @@ if command -vq ufw
     sudo ufw allow 48000/udp # sunshine
     sudo ufw allow 48002/udp # sunshine
     sudo ufw allow 48010/udp # sunshine
+
+    sudo ufw enable
+    sudo ufw reload
+    sudo systemctl enable ufw
 end

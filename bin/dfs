@@ -12,4 +12,5 @@ set --query _flag_sync && dfs-sync && exit 0
 set --query _flag_clean && dfs-sync --clean && exit 0
 set --query _flag_tui && dfs-tui && exit 0
 
-dfs-spin --title="Linking..." dfs-sync
+dfs-spin --title="syncing..." dfs-sync
+dfs-success "synced!"

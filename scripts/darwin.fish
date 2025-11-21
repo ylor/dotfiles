@@ -1,1 +1,3 @@
-source scripts/mac/{brew,defaults,macos}.fish
+pushd scripts/mac
+source {brew,defaults,macos}.fish
+popd
