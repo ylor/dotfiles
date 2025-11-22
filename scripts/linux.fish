@@ -14,6 +14,9 @@ end
 # fprintd fwupd
 
 # NETWORK
+for eth in (nmcli --terse connection show --active | grep ethernet | cut -d ":" -f2)
+    nmcli connection modify "$eth" 802-3-ethernet.wake-on-lan magic
+end
 sudo systemctl enable bluetooth.service
 
 # FIREWALL
