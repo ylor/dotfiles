@@ -23,8 +23,10 @@ sudo systemctl enable bluetooth.service
 
 # SECURE BOOT
 # sbctl
-gsettings set org.gnome.desktop.wm.preferences button-layout : # remove title bar buttons
+# gsettings set org.gnome.desktop.wm.preferences button-layout : # remove title bar buttons
 gsettings set org.gnome.desktop.interface font-name 'Iosevka Aile 11'
+gsettings set org.gnome.desktop.interface icon-theme 'Fluent'
+gsettings set org.gnome.desktop.interface monospace-font-name 'Adwaita Mono 11'
 
 # DESKTOP
 
@@ -33,3 +35,4 @@ sudo systemctl enable --now lactd
 systemctl --user start elephant.service
 systemctl --user enable xwayland-satellite
 # TODO: set firefox fonts, userjs, extensions
+

@@ -7,7 +7,6 @@ https://docs.gtk.org/gtk4/css-properties.html
 tabbar,
 tabbox {
     background-color: #000;
-    font-family: monospace;
     min-height: 1px;
 }
 
@@ -23,5 +22,6 @@ tab:hover {
 
 tab:selected {
     background-color: #161616;
+    font-weight: bold;
     color: #ffffff;
 }

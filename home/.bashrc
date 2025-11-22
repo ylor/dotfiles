@@ -1,5 +1,5 @@
-# environment variable for nvidia use
 if [[ $(uname) = Linux ]]; then
+    # environment variable for nvidia use
     export COLOR_PRIMARY=$(cat "$HOME/.config/noctalia/colors.json" | jq -r '.mPrimary' | cut -c2- | sed 's/$/ee/')
     export COLOR_SECONDARY=$(cat "$HOME/.config/noctalia/colors.json" | jq -r '.mOnPrimary' | cut -c2- )
     
@@ -8,7 +8,7 @@ if [[ $(uname) = Linux ]]; then
         export __GLX_VENDOR_LIBRARY_NAME=nvidia
         export LIBVA_DRIVER_NAME=nvidia
         export NVD_BACKEND=direct
-    fi
+    fi    
 
     if uwsm check may-start && uwsm select; then
     	exec uwsm start default

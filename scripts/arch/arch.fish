@@ -14,3 +14,14 @@ sudo paru -S --needed --noconfirm $pkgs
 
 # DESKTOP
 systemctl --user enable xwayland-satellite
+cp /usr/share/icons/zed.png /usr/share/icons/hicolor/512x512/apps/zed.png
+
+# AUTOLOGIN
+if lsblk -f | grep -i crypto # only if the disk is encrypted
+    sudo mkdir -p "/etc/systemd/system/getty@tty1.service.d"
+    echo "[Service]
+    ExecStart=
+    ExecStart=-/usr/bin/agetty --autologin $(whoami) --noclear %I \$TERM" | sudo tee "/etc/systemd/system/getty@tty1.service.d/autologin.conf" > /dev/null
+    systemctl daemon-reload
+    systemctl restart "getty@tty1.service"
+end
