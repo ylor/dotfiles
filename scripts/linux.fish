@@ -23,7 +23,10 @@ sudo systemctl enable bluetooth.service
 
 # SECURE BOOT
 # sbctl
-
+gsettings set org.gnome.desktop.interface font-name 'Iosevka Aile 11'
 
 # DESKTOP
+elephant service enable
+systemctl --user start elephant.service
 systemctl --user enable xwayland-satellite
+# TODO: set firefox fonts, userjs, extensions

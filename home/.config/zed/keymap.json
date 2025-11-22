@@ -1,0 +1,20 @@
+[
+  {
+    "context": "os == linux",
+    "bindings": {
+      "ctrl-a": "editor::SelectAll",
+      "ctrl-x": "editor::Cut",
+      "ctrl-c": "editor::Copy",
+      "ctrl-v": "editor::Paste"
+    }
+  },
+  {
+    "context": "os == macos",
+    "bindings": {
+      "super-a": "editor::SelectAll",
+      "super-x": "editor::Cut",
+      "super-c": "editor::Copy",
+      "super-v": "editor::Paste"
+    }
+  }
+]

@@ -1,0 +1,7 @@
+force_keyboard_focus = true
+hide_action_hints = true
+selection_wrap = true
+theme = "noctalia"
+
+[keybinds]
+quick_activate = []

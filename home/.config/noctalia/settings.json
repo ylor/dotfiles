@@ -2,6 +2,7 @@
     "appLauncher": {
         "customLaunchPrefix": "",
         "customLaunchPrefixEnabled": false,
+        "enableClipPreview": true,
         "enableClipboardHistory": false,
         "pinnedExecs": [
         ],
@@ -12,6 +13,7 @@
     },
     "audio": {
         "cavaFrameRate": 240,
+        "externalMixer": "pwvucontrol || pavucontrol",
         "mprisBlacklist": [
         ],
         "preferredPlayer": "",
@@ -22,6 +24,7 @@
     },
     "bar": {
         "backgroundOpacity": 0,
+        "capsuleOpacity": 1,
         "density": "compact",
         "exclusive": true,
         "floating": true,
@@ -71,6 +74,7 @@
                     "maxWidth": 145,
                     "scrollingMode": "hover",
                     "showAlbumArt": false,
+                    "showArtistFirst": true,
                     "showVisualizer": true,
                     "useFixedWidth": false,
                     "visualizerType": "linear"
@@ -84,6 +88,7 @@
                     "maxWidth": 145,
                     "scrollingMode": "hover",
                     "showAlbumArt": false,
+                    "showArtistFirst": true,
                     "showVisualizer": true,
                     "useFixedWidth": false,
                     "visualizerType": "linear"
@@ -128,23 +133,23 @@
             ]
         }
     },
-    "battery": {
-        "chargingMode": 0
-    },
     "brightness": {
         "brightnessStep": 5,
         "enableDdcSupport": true,
         "enforceMinimum": true
+    },
+    "changelog": {
+        "lastSeenVersion": ""
     },
     "colorSchemes": {
         "darkMode": true,
         "generateTemplatesForPredefined": true,
         "manualSunrise": "06:30",
         "manualSunset": "18:30",
-        "matugenSchemeType": "scheme-fruit-salad",
-        "predefinedScheme": "Monochrome",
+        "matugenSchemeType": "scheme-content",
+        "predefinedScheme": "Catppuccin",
         "schedulingMode": "off",
-        "useWallpaperColors": false
+        "useWallpaperColors": true
     },
     "controlCenter": {
         "cards": [
@@ -197,11 +202,13 @@
         "onlySameOutput": true,
         "pinnedApps": [
         ],
+        "radiusRatio": 0.1,
         "size": 1
     },
     "general": {
-        "animationDisabled": false,
-        "animationSpeed": 2,
+        "allowPanelsOnScreenWithoutBar": true,
+        "animationDisabled": true,
+        "animationSpeed": 1,
         "avatarImage": "/home/roly/.face",
         "compactLockScreen": false,
         "dimmerOpacity": 0.8,
@@ -231,10 +238,11 @@
         "showWeekNumberInCalendar": false,
         "use12hourFormat": true,
         "useFahrenheit": true,
-        "weatherEnabled": true
+        "weatherEnabled": true,
+        "weatherShowEffects": true
     },
     "network": {
-        "wifiEnabled": false
+        "wifiEnabled": true
     },
     "nightLight": {
         "autoSchedule": true,
@@ -337,8 +345,8 @@
         "discord": false,
         "enableUserTemplates": false,
         "foot": false,
-        "fuzzel": false,
-        "ghostty": false,
+        "fuzzel": true,
+        "ghostty": true,
         "gtk": true,
         "kcolorscheme": true,
         "kitty": false,
