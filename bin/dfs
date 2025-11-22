@@ -1,16 +1,8 @@
 #!/usr/bin/env fish
-# fish_add_path (status dirname)
-# dfs-show-art
-argparse h/help c/clean i/init m/mode s/sync t/tui -- $argv
+argparse r/reset -- $argv
 
-[ (count $argv) -gt 1 ] && dfs-help && exit 1
+if set -q _flag_reset
+    set -e DOTFILES DOTFILES_HOME DOTFILES_MODE
+end
 
-set --query _flag_help && dfs-help && exit 0
-set --query _flag_mode && dfs-mode && exit 0
-set --query _flag_init && dfs-init && exit 0
-set --query _flag_sync && dfs-sync && exit 0
-set --query _flag_clean && dfs-sync --clean && exit 0
-set --query _flag_tui && dfs-tui && exit 0
-
-dfs-spin --title="syncing..." dfs-sync
-dfs-success "synced!"
+fish (status dirname)/../main.fish

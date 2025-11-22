@@ -1,0 +1,6 @@
+#!/usr/bin/env fish
+while not command /usr/bin/sudo --non-interactive true 8>/dev/null
+    trap 'exit 1' SIGINT
+    gum input --password --placeholder="password" --cursor.foreground="fff" --no-show-help | sudo --validate --stdin 8>/dev/null
+end
+command /usr/bin/sudo $argv
