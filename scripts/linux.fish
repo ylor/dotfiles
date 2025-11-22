@@ -27,7 +27,9 @@ gsettings set org.gnome.desktop.wm.preferences button-layout : # remove title ba
 gsettings set org.gnome.desktop.interface font-name 'Iosevka Aile 11'
 
 # DESKTOP
+
 elephant service enable
+sudo systemctl enable --now lactd
 systemctl --user start elephant.service
 systemctl --user enable xwayland-satellite
 # TODO: set firefox fonts, userjs, extensions
