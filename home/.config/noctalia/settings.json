@@ -2,7 +2,6 @@
     "appLauncher": {
         "customLaunchPrefix": "",
         "customLaunchPrefixEnabled": false,
-        "enableClipPreview": true,
         "enableClipboardHistory": false,
         "pinnedExecs": [
         ],
@@ -25,7 +24,7 @@
     "bar": {
         "backgroundOpacity": 0,
         "capsuleOpacity": 1,
-        "density": "compact",
+        "density": "default",
         "exclusive": true,
         "floating": false,
         "marginHorizontal": 0.25,
@@ -82,18 +81,6 @@
             ],
             "right": [
                 {
-                    "hideMode": "idle",
-                    "hideWhenIdle": false,
-                    "id": "MediaMini",
-                    "maxWidth": 145,
-                    "scrollingMode": "hover",
-                    "showAlbumArt": false,
-                    "showArtistFirst": true,
-                    "showVisualizer": true,
-                    "useFixedWidth": false,
-                    "visualizerType": "linear"
-                },
-                {
                     "blacklist": [
                     ],
                     "colorizeIcons": false,
@@ -101,9 +88,6 @@
                     "id": "Tray",
                     "pinned": [
                     ]
-                },
-                {
-                    "id": "KeepAwake"
                 },
                 {
                     "displayMode": "onhover",
@@ -127,7 +111,7 @@
                     "showUnreadBadge": true
                 },
                 {
-                    "colorName": "primary",
+                    "colorName": "error",
                     "id": "SessionMenu"
                 }
             ]
@@ -192,9 +176,9 @@
         }
     },
     "dock": {
-        "backgroundOpacity": 1,
+        "backgroundOpacity": 0.9,
         "colorizeIcons": false,
-        "displayMode": "auto_hide",
+        "displayMode": "always_visible",
         "enabled": true,
         "floatingRatio": 1,
         "monitors": [
@@ -202,8 +186,7 @@
         "onlySameOutput": true,
         "pinnedApps": [
         ],
-        "radiusRatio": 0.1,
-        "size": 1
+        "size": 1.25
     },
     "general": {
         "allowPanelsOnScreenWithoutBar": true,
@@ -211,18 +194,17 @@
         "animationSpeed": 2,
         "avatarImage": "/home/roly/.face",
         "compactLockScreen": false,
-        "dimmerOpacity": 0.8,
-        "enableShadows": true,
+        "dimmerOpacity": 0.5,
+        "enableShadows": false,
         "forceBlackScreenCorners": false,
         "language": "",
         "lockOnSuspend": false,
-        "radiusRatio": 1,
+        "radiusRatio": 1.49,
         "scaleRatio": 1,
         "screenRadiusRatio": 1,
         "shadowDirection": "bottom",
         "shadowOffsetX": 0,
         "shadowOffsetY": 3,
-        "showHibernateOnLockScreen": true,
         "showScreenCorners": false
     },
     "hooks": {
@@ -243,7 +225,7 @@
         "weatherShowEffects": true
     },
     "network": {
-        "wifiEnabled": true
+        "wifiEnabled": false
     },
     "nightLight": {
         "autoSchedule": true,
@@ -255,7 +237,7 @@
         "nightTemp": "5000"
     },
     "notifications": {
-        "backgroundOpacity": 1,
+        "backgroundOpacity": 0.9,
         "criticalUrgencyDuration": 15,
         "enableKeyboardLayoutToast": true,
         "enabled": true,
@@ -269,7 +251,7 @@
     },
     "osd": {
         "autoHideMs": 2000,
-        "backgroundOpacity": 1,
+        "backgroundOpacity": 0.9,
         "enabled": true,
         "location": "top_right",
         "monitors": [
@@ -299,7 +281,7 @@
             },
             {
                 "action": "suspend",
-                "countdownEnabled": false,
+                "countdownEnabled": true,
                 "enabled": true
             },
             {
@@ -323,7 +305,7 @@
                 "enabled": false
             }
         ],
-        "showHeader": true
+        "showHeader": false
     },
     "settingsVersion": 23,
     "setupCompleted": true,
@@ -354,17 +336,16 @@
         "pywalfox": false,
         "qt": true,
         "spicetify": false,
-        "telegram": false,
         "vicinae": false,
         "walker": true,
         "wezterm": false
     },
     "ui": {
         "fontDefault": "Iosevka Aile",
-        "fontDefaultScale": 0.9,
-        "fontFixed": "Adwaita Mono",
+        "fontDefaultScale": 1,
+        "fontFixed": "JetBrainsMono Nerd Font",
         "fontFixedScale": 1,
-        "panelBackgroundOpacity": 0.75,
+        "panelBackgroundOpacity": 1,
         "panelsAttachedToBar": true,
         "settingsPanelAttachToBar": false,
         "tooltipsEnabled": true
