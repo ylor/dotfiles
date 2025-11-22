@@ -23,6 +23,7 @@ sudo systemctl enable bluetooth.service
 
 # SECURE BOOT
 # sbctl
+gsettings set org.gnome.desktop.wm.preferences button-layout : # remove title bar buttons
 gsettings set org.gnome.desktop.interface font-name 'Iosevka Aile 11'
 
 # DESKTOP

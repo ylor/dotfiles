@@ -23,6 +23,7 @@
   "ui_font_family": ".SystemUIFont",
   "vim_mode": true,
   "auto_install_extensions": {
+    "color-highlight": true,
     "fish": true,
     "hyprlang": true,
     "ssh-config": true

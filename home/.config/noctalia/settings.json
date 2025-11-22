@@ -27,8 +27,8 @@
         "capsuleOpacity": 1,
         "density": "compact",
         "exclusive": true,
-        "floating": true,
-        "marginHorizontal": 0.24,
+        "floating": false,
+        "marginHorizontal": 0.25,
         "marginVertical": 0,
         "monitors": [
         ],
@@ -207,8 +207,8 @@
     },
     "general": {
         "allowPanelsOnScreenWithoutBar": true,
-        "animationDisabled": true,
-        "animationSpeed": 1,
+        "animationDisabled": false,
+        "animationSpeed": 2,
         "avatarImage": "/home/roly/.face",
         "compactLockScreen": false,
         "dimmerOpacity": 0.8,
@@ -222,6 +222,7 @@
         "shadowDirection": "bottom",
         "shadowOffsetX": 0,
         "shadowOffsetY": 3,
+        "showHibernateOnLockScreen": true,
         "showScreenCorners": false
     },
     "hooks": {
@@ -353,6 +354,7 @@
         "pywalfox": false,
         "qt": true,
         "spicetify": false,
+        "telegram": false,
         "vicinae": false,
         "walker": true,
         "wezterm": false
