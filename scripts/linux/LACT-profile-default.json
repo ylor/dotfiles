@@ -1,0 +1,1 @@
+{"gpus":{"10DE:2C05-1043:89F7-0000:01:00.0":{"fan_control_enabled":false,"min_core_clock":180,"max_core_clock":3090,"gpu_clock_offsets":{"0":500},"mem_clock_offsets":{"0":3000}}}}
