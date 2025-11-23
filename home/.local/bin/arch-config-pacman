@@ -3,12 +3,13 @@
 echo "# See the pacman.conf(5) manpage for option and repository directives
 
 [options]
-Architecture=auto
+Architecture      = auto
+DownloadUser      = alpm
+HoldPkg           = pacman glibc
+ParallelDownloads = 5
 Color
 CheckSpace
 VerbosePkgLists
-ParallelDownloads = 5
-DownloadUser = alpm
 
 # By default, pacman accepts packages signed by keys that its local keyring
 # trusts (see pacman-key and its man page), as well as unsigned packages.

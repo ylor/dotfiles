@@ -4,3 +4,7 @@ minimum gpu clock: 180
 maximum gpu clock: 3090
 gpu p-state 0 offset: 500
 vram p-state 0 offset: 3000
+
+power -30
+vram 2800
+voltage -120
