@@ -2,13 +2,15 @@
     "appLauncher": {
         "customLaunchPrefix": "",
         "customLaunchPrefixEnabled": false,
+        "enableClipPreview": true,
         "enableClipboardHistory": false,
         "pinnedExecs": [
         ],
         "position": "follow_bar",
         "sortByMostUsed": false,
         "terminalCommand": "xterm -e",
-        "useApp2Unit": false
+        "useApp2Unit": false,
+        "viewMode": "list"
     },
     "audio": {
         "cavaFrameRate": 240,
@@ -55,6 +57,7 @@
                 },
                 {
                     "characterCount": 2,
+                    "followFocusedScreen": false,
                     "hideUnoccupied": false,
                     "id": "Workspace",
                     "labelMode": "none"
@@ -74,6 +77,7 @@
                     "scrollingMode": "hover",
                     "showAlbumArt": false,
                     "showArtistFirst": true,
+                    "showProgressRing": true,
                     "showVisualizer": true,
                     "useFixedWidth": false,
                     "visualizerType": "linear"
@@ -186,6 +190,7 @@
         "onlySameOutput": true,
         "pinnedApps": [
         ],
+        "radiusRatio": 0.1,
         "size": 1.25
     },
     "general": {
@@ -205,6 +210,7 @@
         "shadowDirection": "bottom",
         "shadowOffsetX": 0,
         "shadowOffsetY": 3,
+        "showHibernateOnLockScreen": false,
         "showScreenCorners": false
     },
     "hooks": {
@@ -225,7 +231,7 @@
         "weatherShowEffects": true
     },
     "network": {
-        "wifiEnabled": false
+        "wifiEnabled": true
     },
     "nightLight": {
         "autoSchedule": true,
@@ -324,6 +330,7 @@
     },
     "templates": {
         "alacritty": false,
+        "cava": false,
         "code": false,
         "discord": false,
         "enableUserTemplates": false,
@@ -336,6 +343,7 @@
         "pywalfox": false,
         "qt": true,
         "spicetify": false,
+        "telegram": false,
         "vicinae": false,
         "walker": true,
         "wezterm": false
