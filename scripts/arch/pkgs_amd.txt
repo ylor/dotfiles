@@ -1,0 +1,6 @@
+lib32-mesa
+lib32-vulkan-radeon 
+libva-mesa-driver 
+libva-utils
+mesa
+vulkan-radeon

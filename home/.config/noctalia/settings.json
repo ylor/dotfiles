@@ -70,7 +70,7 @@
                     "onlySameOutput": true
                 },
                 {
-                    "hideMode": "idle",
+                    "hideMode": "hidden",
                     "hideWhenIdle": false,
                     "id": "MediaMini",
                     "maxWidth": 145,
@@ -134,7 +134,7 @@
         "generateTemplatesForPredefined": true,
         "manualSunrise": "06:30",
         "manualSunset": "18:30",
-        "matugenSchemeType": "scheme-content",
+        "matugenSchemeType": "scheme-expressive",
         "predefinedScheme": "Catppuccin",
         "schedulingMode": "off",
         "useWallpaperColors": true
@@ -190,7 +190,7 @@
         "onlySameOutput": true,
         "pinnedApps": [
         ],
-        "radiusRatio": 0.1,
+        "radiusRatio": 1,
         "size": 1.25
     },
     "general": {

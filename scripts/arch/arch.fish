@@ -9,12 +9,14 @@ if not command -vq paru
 end
 
 # THIS DOESN'T WORK FIND OUT WHY AND FIX IT
-set pkgs (cat "$DOTFILES/scripts/arch/pkgs.txt" | string join ' ')
-sudo paru -S --needed --noconfirm $pkgs
+set pkgs (awk '{print $1}' pkgs.txt)
+paru -S --needed --skipreview $pkgs
 
 # DESKTOP
 systemctl --user enable xwayland-satellite
-cp /usr/share/icons/zed.png /usr/share/icons/hicolor/512x512/apps/zed.png
+if command -vq zeditor
+    cp /usr/share/icons/zed.png /usr/share/icons/hicolor/512x512/apps/zed.png
+end
 
 # AUTOLOGIN
 if lsblk -f | grep -i crypto # only if the disk is encrypted
@@ -22,6 +24,4 @@ if lsblk -f | grep -i crypto # only if the disk is encrypted
     echo "[Service]
     ExecStart=
     ExecStart=-/usr/bin/agetty --autologin $(whoami) --noclear %I \$TERM" | sudo tee "/etc/systemd/system/getty@tty1.service.d/autologin.conf" >/dev/null
-    #systemctl daemon-reload
-    #systemctl restart "getty@tty1.service"
 end

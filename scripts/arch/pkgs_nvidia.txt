@@ -1,0 +1,3 @@
+linux-headers
+nvidia-open-dkms
+vk-hdr-layer-kwin6-git
