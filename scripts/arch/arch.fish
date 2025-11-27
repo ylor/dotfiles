@@ -15,11 +15,11 @@ paru -S --needed --skipreview $pkgs
 # DESKTOP
 systemctl --user enable xwayland-satellite
 if command -vq zeditor
-    cp /usr/share/icons/zed.png /usr/share/icons/hicolor/512x512/apps/zed.png
+    sudo cp /usr/share/icons/zed.png /usr/share/icons/hicolor/512x512/apps/zed.png
 end
 
 # AUTOLOGIN
-if lsblk -f | grep -i crypto # only if the disk is encrypted
+if lsblk -f | grep -iq crypto # only if the disk is encrypted
     sudo mkdir -p "/etc/systemd/system/getty@tty1.service.d"
     echo "[Service]
     ExecStart=

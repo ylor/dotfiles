@@ -126,6 +126,26 @@
         "enableDdcSupport": true,
         "enforceMinimum": true
     },
+    "calendar": {
+        "cards": [
+            {
+                "enabled": true,
+                "id": "banner-card"
+            },
+            {
+                "enabled": true,
+                "id": "calendar-card"
+            },
+            {
+                "enabled": true,
+                "id": "timer-card"
+            },
+            {
+                "enabled": true,
+                "id": "weather-card"
+            }
+        ]
+    },
     "changelog": {
         "lastSeenVersion": ""
     },
@@ -134,8 +154,8 @@
         "generateTemplatesForPredefined": true,
         "manualSunrise": "06:30",
         "manualSunset": "18:30",
-        "matugenSchemeType": "scheme-expressive",
-        "predefinedScheme": "Catppuccin",
+        "matugenSchemeType": "scheme-rainbow",
+        "predefinedScheme": "Noctalia (default)",
         "schedulingMode": "off",
         "useWallpaperColors": true
     },
@@ -204,7 +224,7 @@
         "forceBlackScreenCorners": false,
         "language": "",
         "lockOnSuspend": false,
-        "radiusRatio": 1.49,
+        "radiusRatio": 1.5,
         "scaleRatio": 1,
         "screenRadiusRatio": 1,
         "shadowDirection": "bottom",
@@ -259,6 +279,8 @@
         "autoHideMs": 2000,
         "backgroundOpacity": 0.9,
         "enabled": true,
+        "enabledTypes": [
+        ],
         "location": "top_right",
         "monitors": [
         ],
@@ -313,8 +335,7 @@
         ],
         "showHeader": false
     },
-    "settingsVersion": 23,
-    "setupCompleted": true,
+    "settingsVersion": 25,
     "systemMonitor": {
         "cpuCriticalThreshold": 90,
         "cpuWarningThreshold": 80,
@@ -330,7 +351,7 @@
     },
     "templates": {
         "alacritty": false,
-        "cava": false,
+        "cava": true,
         "code": false,
         "discord": false,
         "enableUserTemplates": false,
@@ -345,7 +366,7 @@
         "spicetify": false,
         "telegram": false,
         "vicinae": false,
-        "walker": true,
+        "walker": false,
         "wezterm": false
     },
     "ui": {
