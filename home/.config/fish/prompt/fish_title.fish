@@ -7,7 +7,7 @@ function fish_title
         if set -q argv[1]
             echo $argv
         else
-            echo (string replace -r '.*/' '' $PWD)
+            string match -r '[^/]*$' $PWD
         end
     end
 end
