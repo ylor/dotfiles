@@ -10,6 +10,7 @@ KERNEL_HEADERS="$(pacman -Qq | grep -E '^linux(-zen|-lts|-hardened)?$' | awk '{ 
 # Install packages
 PACKAGES=(
   "${KERNEL_HEADERS}"
+  "cuda"
   "egl-wayland"
   "lib32-nvidia-utils"
   "libva-nvidia-driver" # For VA-API hardware acceleration
@@ -17,6 +18,7 @@ PACKAGES=(
   "nvidia-utils"
   "qt5-wayland"
   "qt6-wayland"
+  "vk-hdr-layer-kwin6-git"
 )
 sudo pacman -Sy --needed --noconfirm "${PACKAGES[@]}"
 

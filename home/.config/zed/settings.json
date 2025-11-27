@@ -25,7 +25,7 @@
   "auto_install_extensions": {
     "color-highlight": true,
     "fish": true,
-    // "hyprlang": true,
+    "hyprlang": true,
     "ssh-config": true
   },
   "autosave": {

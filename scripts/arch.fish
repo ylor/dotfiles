@@ -8,7 +8,6 @@ if not command -vq paru
     rm -rf /tmp/paru-bin
 end
 
-# THIS DOESN'T WORK FIND OUT WHY AND FIX IT
 set pkgs (awk '{print $1}' pkgs.txt)
 paru -S --needed --skipreview $pkgs
 

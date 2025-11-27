@@ -1,7 +1,7 @@
 # SETUP
 set distro (cat /etc/os-release | grep '^ID=' | cut -d= -f2)
 
-source scripts/$distro/$distro.fish
+source scripts/$distro.fish
 
 # POWER MANAGEMENT
 if upower --enumerate | grep BAT
@@ -26,16 +26,14 @@ sudo systemctl enable bluetooth.service
 
 # SECURE BOOT
 # sbctl
-# gsettings set org.gnome.desktop.wm.preferences button-layout : # remove title bar buttons
+
+# GNOME
+gsettings set org.gnome.desktop.wm.preferences button-layout :
 gsettings set org.gnome.desktop.interface font-name 'Iosevka Aile 11'
 gsettings set org.gnome.desktop.interface icon-theme 'Fluent'
 gsettings set org.gnome.desktop.interface monospace-font-name 'Adwaita Mono 11'
 
 # DESKTOP
-
-elephant service enable
-sudo systemctl enable --now lactd
-systemctl --user start elephant.service
-systemctl --user enable xwayland-satellite
+# systemctl --user start elephant.service
 # TODO: set firefox fonts, userjs, extensions
 

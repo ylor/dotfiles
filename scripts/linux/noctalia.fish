@@ -1,0 +1,1 @@
+paru -S --needed --skipreview aur/noctalia-shell

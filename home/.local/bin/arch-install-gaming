@@ -1,2 +1,2 @@
 #!/usr/bin/env sh
-sudo paru -Sy --noconfirm --needed steam proton-custom-ge-bin lact mangohud gamemode umu-launcher faugus-launcher sunshine-beta-bin cuda vk-hdr-layer-kwin6-git
+paru -S --needed --skipreview steam lact mangohud gamemode umu-launcher faugus-launcher sunshine-beta-bin
