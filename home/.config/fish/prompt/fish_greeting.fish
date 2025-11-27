@@ -4,7 +4,7 @@ function icat
     set img $HOME/.local/share/img/$_flag_image
     set txt $_flag_text
 
-    viu $img -h2 && printf "\033[A\033[K     $txt\n"
+    viu $img -h2 && printf "\033[A\033[K     $txt\n\n"
 end
 
 function cowboy-bebop
@@ -69,6 +69,6 @@ end
 function fish_greeting
     # set greeting (random choice cowboy-bebop half-life hollow-knight metal-gear-solid zelda)
     # $greeting
+    command -vq viu || return 67
     icat -i "silksong.png" -t "Poshanka!"
-    echo
 end

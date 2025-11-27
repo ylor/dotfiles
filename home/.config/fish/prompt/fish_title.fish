@@ -2,12 +2,12 @@ function fish_title
     if [ $PWD = $HOME ]
         echo 👻
     else
-        set -q SSH_CLIENT SSH_TTY && set ssh "[$(prompt_hostname )]"
-        set dir (string split '/' (prompt_pwd))[-1]
-        echo "$ssh $dir"
+        set -q SSH_CLIENT SSH_TTY && echo "[$(prompt_hostname)]"
 
-        if string length --quiet "$argv"
-            echo " – $argv"
+        if set -q argv[1]
+            echo $argv
+        else
+            echo (string replace -r '.*/' '' $PWD)
         end
     end
 end
