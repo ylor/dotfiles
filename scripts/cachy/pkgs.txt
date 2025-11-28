@@ -1,6 +1,7 @@
 1password
 adw-gtk-theme
 bat
+breeze-icons
 btop
 cava
 cliphist

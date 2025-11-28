@@ -21,19 +21,18 @@ sudo systemctl enable bluetooth.service
 
 # FIREWALL
 
-# AUDIO
-# install pipewire pipewire-{alsa,jack,pulse} libpulse wireplumber
 
 # SECURE BOOT
 # sbctl
 
 # GNOME
-gsettings set org.gnome.desktop.wm.preferences button-layout :
-gsettings set org.gnome.desktop.interface font-name 'Iosevka Aile 11'
-gsettings set org.gnome.desktop.interface icon-theme 'Fluent'
-gsettings set org.gnome.desktop.interface monospace-font-name 'Adwaita Mono 11'
+if command -vq gsettings
+    gsettings set org.gnome.desktop.wm.preferences button-layout :
+    gsettings set org.gnome.desktop.interface font-name 'Iosevka Aile 11'
+    gsettings set org.gnome.desktop.interface icon-theme 'breeze'
+    gsettings set org.gnome.desktop.interface monospace-font-name 'JetBrainsMono Nerd Font 11'
+end
 
 # DESKTOP
-# systemctl --user start elephant.service
 # TODO: set firefox fonts, userjs, extensions
 
