@@ -1,7 +1,7 @@
 paru -Syu
 
 set pkgs (awk '{print $1}' "cachy/pkgs.txt")
-paru -Rs alacritty cachyos-micro-settings kitty micro nano nano-syntax-highlighting pavucontrol polkit-kde-agent sddm
+#paru -Rs alacritty cachyos-micro-settings kitty micro nano nano-syntax-highlighting pavucontrol polkit-kde-agent sddm
 paru -S --needed --skipreview $pkgs
 paru --clean
 
@@ -17,5 +17,3 @@ paru --clean
 #     ExecStart=
 #     ExecStart=-/usr/bin/agetty --autologin $(whoami) --noclear %I \$TERM" | sudo tee "/etc/systemd/system/getty@tty1.service.d/autologin.conf" >/dev/null
 # end
-
-# REMOVE UNWANTED INSTALLED BY DEFAULT

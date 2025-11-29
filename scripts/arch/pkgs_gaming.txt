@@ -1,2 +1,1 @@
-sunshine-beta-bin
-icu76
+steam faugus-launcher umu-launcher sunshine-beta-bin icu76
