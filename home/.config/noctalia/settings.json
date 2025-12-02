@@ -204,7 +204,7 @@
     "dock": {
         "backgroundOpacity": 0.9,
         "colorizeIcons": false,
-        "displayMode": "always_visible",
+        "displayMode": "auto_hide",
         "enabled": true,
         "floatingRatio": 1,
         "monitors": [
