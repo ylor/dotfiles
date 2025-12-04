@@ -224,7 +224,7 @@
         "enableShadows": true,
         "forceBlackScreenCorners": false,
         "language": "",
-        "lockOnSuspend": false,
+        "lockOnSuspend": true,
         "radiusRatio": 1.75,
         "scaleRatio": 1,
         "screenRadiusRatio": 1,
@@ -392,7 +392,7 @@
         "enableMultiMonitorDirectories": false,
         "enabled": true,
         "fillColor": "#000000",
-        "fillMode": "crop",
+        "fillMode": "fit",
         "hideWallpaperFilenames": true,
         "monitorDirectories": [
         ],
