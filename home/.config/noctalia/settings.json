@@ -3,7 +3,7 @@
         "customLaunchPrefix": "",
         "customLaunchPrefixEnabled": false,
         "enableClipPreview": true,
-        "enableClipboardHistory": false,
+        "enableClipboardHistory": true,
         "pinnedExecs": [
         ],
         "position": "follow_bar",
@@ -24,13 +24,13 @@
         "volumeStep": 5
     },
     "bar": {
-        "backgroundOpacity": 0,
-        "capsuleOpacity": 1,
+        "backgroundOpacity": 0.5,
+        "capsuleOpacity": 0,
         "density": "default",
         "exclusive": true,
-        "floating": false,
+        "floating": true,
         "marginHorizontal": 0.25,
-        "marginVertical": 0,
+        "marginVertical": 0.1,
         "monitors": [
         ],
         "outerCorners": false,
@@ -39,7 +39,7 @@
         "widgets": {
             "center": [
                 {
-                    "customFont": "Iosevka Aile Light",
+                    "customFont": "Inter",
                     "formatHorizontal": "ddd MMM d  h:mm AP",
                     "formatVertical": "HH mm - dd MM",
                     "id": "Clock",
@@ -156,7 +156,7 @@
         "generateTemplatesForPredefined": true,
         "manualSunrise": "06:30",
         "manualSunset": "18:30",
-        "matugenSchemeType": "scheme-tonal-spot",
+        "matugenSchemeType": "scheme-content",
         "predefinedScheme": "Noctalia (default)",
         "schedulingMode": "off",
         "useWallpaperColors": true
@@ -220,12 +220,12 @@
         "animationSpeed": 2,
         "avatarImage": "/home/roly/.face",
         "compactLockScreen": false,
-        "dimmerOpacity": 0.5,
+        "dimmerOpacity": 0,
         "enableShadows": true,
         "forceBlackScreenCorners": false,
         "language": "",
         "lockOnSuspend": false,
-        "radiusRatio": 1.25,
+        "radiusRatio": 1.75,
         "scaleRatio": 1,
         "screenRadiusRatio": 1,
         "shadowDirection": "bottom",
@@ -236,8 +236,8 @@
     },
     "hooks": {
         "darkModeChange": "",
-        "enabled": false,
-        "wallpaperChange": ""
+        "enabled": true,
+        "wallpaperChange": "sh -c \"/home/roly/.local/share/dotfiles/home/.config/hypr/border.sh\""
     },
     "location": {
         "analogClockInCalendar": false,
@@ -390,21 +390,21 @@
     "wallpaper": {
         "directory": "/home/roly/Pictures/Wallpapers",
         "enableMultiMonitorDirectories": false,
-        "enabled": false,
+        "enabled": true,
         "fillColor": "#000000",
         "fillMode": "crop",
-        "hideWallpaperFilenames": false,
+        "hideWallpaperFilenames": true,
         "monitorDirectories": [
         ],
         "overviewEnabled": false,
         "panelPosition": "follow_bar",
-        "randomEnabled": false,
+        "randomEnabled": true,
         "randomIntervalSec": 300,
-        "recursiveSearch": false,
+        "recursiveSearch": true,
         "setWallpaperOnAllMonitors": true,
-        "transitionDuration": 1500,
+        "transitionDuration": 500,
         "transitionEdgeSmoothness": 0.05,
-        "transitionType": "random",
+        "transitionType": "fade",
         "useWallhaven": false,
         "wallhavenCategories": "111",
         "wallhavenOrder": "desc",
