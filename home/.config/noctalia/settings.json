@@ -287,8 +287,8 @@
     },
     "hooks": {
         "darkModeChange": "",
-        "enabled": false,
-        "wallpaperChange": ""
+        "enabled": true,
+        "wallpaperChange": "sh \"$HOME/.config/hypr/border.sh\""
     },
     "location": {
         "analogClockInCalendar": false,
@@ -426,9 +426,9 @@
         "wezterm": false
     },
     "ui": {
-        "fontDefault": "Adwaita Sans",
+        "fontDefault": "Inter",
         "fontDefaultScale": 1,
-        "fontFixed": "monospace",
+        "fontFixed": "JetBrainsMono Nerd Font",
         "fontFixedScale": 1,
         "panelBackgroundOpacity": 1,
         "panelsAttachedToBar": true,
@@ -446,13 +446,13 @@
         ],
         "overviewEnabled": false,
         "panelPosition": "follow_bar",
-        "randomEnabled": false,
+        "randomEnabled": true,
         "randomIntervalSec": 300,
-        "recursiveSearch": false,
+        "recursiveSearch": true,
         "setWallpaperOnAllMonitors": true,
-        "transitionDuration": 1500,
+        "transitionDuration": 500,
         "transitionEdgeSmoothness": 0.05,
-        "transitionType": "random",
+        "transitionType": "fade",
         "useWallhaven": false,
         "wallhavenCategories": "111",
         "wallhavenOrder": "desc",
