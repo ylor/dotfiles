@@ -110,10 +110,10 @@
                 },
                 {
                     "colorizeDistroLogo": false,
-                    "colorizeSystemIcon": "none",
+                    "colorizeSystemIcon": "primary",
                     "customIconPath": "",
-                    "enableColorization": true,
-                    "icon": "toggle-left-filled",
+                    "enableColorization": false,
+                    "icon": "user",
                     "id": "ControlCenter",
                     "useDistroLogo": false
                 }
@@ -315,7 +315,7 @@
         "videoSource": "portal"
     },
     "sessionMenu": {
-        "countdownDuration": 9000,
+        "countdownDuration": 5000,
         "enableCountdown": true,
         "position": "center",
         "powerOptions": [
@@ -350,7 +350,7 @@
                 "enabled": true
             }
         ],
-        "showHeader": true
+        "showHeader": false
     },
     "settingsVersion": 26,
     "systemMonitor": {
