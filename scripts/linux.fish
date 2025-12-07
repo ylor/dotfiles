@@ -21,7 +21,6 @@ end
 
 # FIREWALL
 
-
 # SECURE BOOT
 # sbctl
 
@@ -36,3 +35,7 @@ end
 # DESKTOP
 # TODO: set firefox fonts, userjs, extensions
 
+# FIX GIGABYTE SLEEP
+if cat /sys/devices/virtual/dmi/id/board_name | grep -iq "B650 AORUS ELITE AX" && not grep -q acpi_osi /etc/default/limine
+    echo 'KERNEL_CMDLINE[default]+="acpi_osi=\"!Windows 2015\""' | sudo tee -a /etc/default/limine &>/dev/null
+end

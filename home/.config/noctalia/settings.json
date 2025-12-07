@@ -3,11 +3,11 @@
         "customLaunchPrefix": "",
         "customLaunchPrefixEnabled": false,
         "enableClipPreview": true,
-        "enableClipboardHistory": false,
+        "enableClipboardHistory": true,
         "pinnedExecs": [
         ],
-        "position": "center",
-        "sortByMostUsed": true,
+        "position": "follow_bar",
+        "sortByMostUsed": false,
         "terminalCommand": "xterm -e",
         "useApp2Unit": false,
         "viewMode": "list"
@@ -24,82 +24,52 @@
         "volumeStep": 5
     },
     "bar": {
-        "backgroundOpacity": 1,
+        "backgroundOpacity": 0.9,
         "capsuleOpacity": 1,
         "density": "default",
         "exclusive": true,
-        "floating": false,
-        "marginHorizontal": 0.25,
-        "marginVertical": 0.25,
+        "floating": true,
+        "marginHorizontal": 0.2,
+        "marginVertical": 0.1,
         "monitors": [
         ],
-        "outerCorners": true,
+        "outerCorners": false,
         "position": "top",
-        "showCapsule": true,
+        "showCapsule": false,
         "widgets": {
             "center": [
+                {
+                    "customFont": "",
+                    "formatHorizontal": "dddd h:mm AP",
+                    "formatVertical": "HH mm - dd MM",
+                    "id": "Clock",
+                    "useCustomFont": false,
+                    "usePrimaryColor": true
+                }
+            ],
+            "left": [
+                {
+                    "colorizeDistroLogo": false,
+                    "colorizeSystemIcon": "primary",
+                    "customIconPath": "",
+                    "enableColorization": true,
+                    "icon": "hyprland",
+                    "id": "ControlCenter",
+                    "useDistroLogo": false
+                },
                 {
                     "characterCount": 2,
                     "followFocusedScreen": false,
                     "hideUnoccupied": false,
                     "id": "Workspace",
-                    "labelMode": "index"
-                }
-            ],
-            "left": [
-                {
-                    "icon": "rocket",
-                    "id": "CustomButton",
-                    "leftClickExec": "qs -c noctalia-shell ipc call launcher toggle",
-                    "leftClickUpdateText": false,
-                    "maxTextLength": {
-                        "horizontal": 10,
-                        "vertical": 10
-                    },
-                    "middleClickExec": "",
-                    "middleClickUpdateText": false,
-                    "parseJson": false,
-                    "rightClickExec": "",
-                    "rightClickUpdateText": false,
-                    "textCollapse": "",
-                    "textCommand": "",
-                    "textIntervalMs": 3000,
-                    "textStream": false,
-                    "wheelDownExec": "",
-                    "wheelDownUpdateText": false,
-                    "wheelExec": "",
-                    "wheelMode": "unified",
-                    "wheelUpExec": "",
-                    "wheelUpUpdateText": false,
-                    "wheelUpdateText": false
-                },
-                {
-                    "customFont": "",
-                    "formatHorizontal": "HH:mm ddd, MMM dd",
-                    "formatVertical": "HH mm - dd MM",
-                    "id": "Clock",
-                    "useCustomFont": false,
-                    "usePrimaryColor": false
-                },
-                {
-                    "diskPath": "/",
-                    "id": "SystemMonitor",
-                    "showCpuTemp": true,
-                    "showCpuUsage": true,
-                    "showDiskUsage": false,
-                    "showMemoryAsPercent": false,
-                    "showMemoryUsage": true,
-                    "showNetworkStats": false,
-                    "usePrimaryColor": false
+                    "labelMode": "none"
                 },
                 {
                     "colorizeIcons": false,
                     "hideMode": "hidden",
-                    "id": "ActiveWindow",
-                    "maxWidth": 145,
-                    "scrollingMode": "hover",
-                    "showIcon": true,
-                    "useFixedWidth": false
+                    "id": "Taskbar",
+                    "onlyActiveWorkspaces": true,
+                    "onlySameOutput": true
                 },
                 {
                     "hideMode": "hidden",
@@ -110,15 +80,12 @@
                     "showAlbumArt": false,
                     "showArtistFirst": true,
                     "showProgressRing": true,
-                    "showVisualizer": false,
+                    "showVisualizer": true,
                     "useFixedWidth": false,
                     "visualizerType": "linear"
                 }
             ],
             "right": [
-                {
-                    "id": "ScreenRecorder"
-                },
                 {
                     "blacklist": [
                     ],
@@ -129,17 +96,6 @@
                     ]
                 },
                 {
-                    "hideWhenZero": true,
-                    "id": "NotificationHistory",
-                    "showUnreadBadge": true
-                },
-                {
-                    "deviceNativePath": "",
-                    "displayMode": "onhover",
-                    "id": "Battery",
-                    "warningThreshold": 30
-                },
-                {
                     "displayMode": "onhover",
                     "id": "Volume"
                 },
@@ -148,11 +104,16 @@
                     "id": "Brightness"
                 },
                 {
+                    "hideWhenZero": true,
+                    "id": "NotificationHistory",
+                    "showUnreadBadge": true
+                },
+                {
                     "colorizeDistroLogo": false,
                     "colorizeSystemIcon": "none",
                     "customIconPath": "",
-                    "enableColorization": false,
-                    "icon": "noctalia",
+                    "enableColorization": true,
+                    "icon": "toggle-left-filled",
                     "id": "ControlCenter",
                     "useDistroLogo": false
                 }
@@ -176,11 +137,11 @@
             },
             {
                 "enabled": true,
-                "id": "timer-card"
+                "id": "weather-card"
             },
             {
                 "enabled": true,
-                "id": "weather-card"
+                "id": "timer-card"
             }
         ]
     },
@@ -192,7 +153,7 @@
         "generateTemplatesForPredefined": true,
         "manualSunrise": "06:30",
         "manualSunset": "18:30",
-        "matugenSchemeType": "scheme-fruit-salad",
+        "matugenSchemeType": "scheme-content",
         "predefinedScheme": "Noctalia (default)",
         "schedulingMode": "off",
         "useWallpaperColors": true
@@ -224,10 +185,10 @@
         "shortcuts": {
             "left": [
                 {
-                    "id": "WiFi"
+                    "id": "Bluetooth"
                 },
                 {
-                    "id": "Bluetooth"
+                    "id": "WiFi"
                 },
                 {
                     "id": "ScreenRecorder"
@@ -238,9 +199,6 @@
             ],
             "right": [
                 {
-                    "id": "Notifications"
-                },
-                {
                     "id": "PowerProfile"
                 },
                 {
@@ -248,12 +206,15 @@
                 },
                 {
                     "id": "NightLight"
+                },
+                {
+                    "id": "Notifications"
                 }
             ]
         }
     },
     "dock": {
-        "backgroundOpacity": 1,
+        "backgroundOpacity": 0.9,
         "colorizeIcons": false,
         "displayMode": "auto_hide",
         "enabled": true,
@@ -268,15 +229,15 @@
     "general": {
         "allowPanelsOnScreenWithoutBar": true,
         "animationDisabled": false,
-        "animationSpeed": 1,
-        "avatarImage": "/home/roly/.face",
+        "animationSpeed": 2,
+        "avatarImage": "/home/roly/.config/noctalia/avatar",
         "compactLockScreen": false,
         "dimmerOpacity": 0.6,
         "enableShadows": true,
         "forceBlackScreenCorners": false,
         "language": "",
-        "lockOnSuspend": true,
-        "radiusRatio": 1,
+        "lockOnSuspend": false,
+        "radiusRatio": 1.75,
         "scaleRatio": 1,
         "screenRadiusRatio": 1,
         "shadowDirection": "bottom_right",
@@ -288,17 +249,17 @@
     "hooks": {
         "darkModeChange": "",
         "enabled": true,
-        "wallpaperChange": "sh \"$HOME/.config/hypr/border.sh\""
+        "wallpaperChange": "sh \"$HOME/.config/noctalia/colors.sh\""
     },
     "location": {
         "analogClockInCalendar": false,
         "firstDayOfWeek": -1,
-        "name": "Tokyo",
+        "name": "Miami, FL",
         "showCalendarEvents": true,
         "showCalendarWeather": true,
         "showWeekNumberInCalendar": false,
-        "use12hourFormat": false,
-        "useFahrenheit": false,
+        "use12hourFormat": true,
+        "useFahrenheit": true,
         "weatherEnabled": true,
         "weatherShowEffects": true
     },
@@ -308,14 +269,14 @@
     "nightLight": {
         "autoSchedule": true,
         "dayTemp": "6500",
-        "enabled": false,
+        "enabled": true,
         "forced": false,
         "manualSunrise": "06:30",
         "manualSunset": "18:30",
-        "nightTemp": "4000"
+        "nightTemp": "5000"
     },
     "notifications": {
-        "backgroundOpacity": 1,
+        "backgroundOpacity": 0.89,
         "criticalUrgencyDuration": 15,
         "enableKeyboardLayoutToast": true,
         "enabled": true,
@@ -329,12 +290,13 @@
     },
     "osd": {
         "autoHideMs": 2000,
-        "backgroundOpacity": 1,
+        "backgroundOpacity": 0.9,
         "enabled": true,
         "enabledTypes": [
             0,
             1,
-            2
+            2,
+            3
         ],
         "location": "top_right",
         "monitors": [
@@ -344,7 +306,7 @@
     "screenRecorder": {
         "audioCodec": "opus",
         "audioSource": "default_output",
-        "colorRange": "limited",
+        "colorRange": "full",
         "directory": "/home/roly/Videos",
         "frameRate": 60,
         "quality": "very_high",
@@ -353,32 +315,38 @@
         "videoSource": "portal"
     },
     "sessionMenu": {
-        "countdownDuration": 10000,
+        "countdownDuration": 9000,
         "enableCountdown": true,
         "position": "center",
         "powerOptions": [
             {
                 "action": "lock",
+                "countdownEnabled": true,
                 "enabled": true
             },
             {
                 "action": "suspend",
+                "countdownEnabled": true,
                 "enabled": true
             },
             {
                 "action": "hibernate",
+                "countdownEnabled": true,
                 "enabled": true
             },
             {
                 "action": "reboot",
+                "countdownEnabled": true,
                 "enabled": true
             },
             {
                 "action": "logout",
+                "countdownEnabled": true,
                 "enabled": true
             },
             {
                 "action": "shutdown",
+                "countdownEnabled": true,
                 "enabled": true
             }
         ],
@@ -405,14 +373,14 @@
     },
     "templates": {
         "alacritty": false,
-        "cava": false,
+        "cava": true,
         "code": false,
         "discord": false,
         "emacs": false,
         "enableUserTemplates": false,
         "foot": false,
         "fuzzel": true,
-        "ghostty": true,
+        "ghostty": false,
         "gtk": true,
         "kcolorscheme": true,
         "kitty": false,
@@ -426,12 +394,12 @@
         "wezterm": false
     },
     "ui": {
-        "fontDefault": "Inter",
-        "fontDefaultScale": 1,
+        "fontDefault": "Iosevka Aile",
+        "fontDefaultScale": 0.9,
         "fontFixed": "JetBrainsMono Nerd Font",
-        "fontFixedScale": 1,
-        "panelBackgroundOpacity": 1,
-        "panelsAttachedToBar": true,
+        "fontFixedScale": 0.9,
+        "panelBackgroundOpacity": 0.8,
+        "panelsAttachedToBar": false,
         "settingsPanelAttachToBar": false,
         "tooltipsEnabled": true
     },
@@ -447,10 +415,10 @@
         "overviewEnabled": false,
         "panelPosition": "follow_bar",
         "randomEnabled": true,
-        "randomIntervalSec": 300,
+        "randomIntervalSec": 3600,
         "recursiveSearch": true,
         "setWallpaperOnAllMonitors": true,
-        "transitionDuration": 500,
+        "transitionDuration": 1000,
         "transitionEdgeSmoothness": 0.05,
         "transitionType": "fade",
         "useWallhaven": false,

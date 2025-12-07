@@ -1,6 +1,0 @@
-force_keyboard_focus = true
-hide_quick_activation = true
-hide_action_hints = true
-hide_action_hints_dmenu = true
-selection_wrap = true
-theme = "noctalia"
