@@ -1,9 +1,12 @@
 paru -Syu
 
 set pkgs (awk '{print $1}' "cachy/pkgs.txt")
-#paru -Rs alacritty cachyos-micro-settings kitty micro nano nano-syntax-highlighting pavucontrol polkit-kde-agent sddm
+#paru -Rs alacritty cachyos-micro-settings kitty micro nano nano-syntax-highlighting pavucontrol hyprpolkitagent uwsm ttf-opensans 
 paru -S --needed --skipreview $pkgs
 paru --clean
+
+
+paru -Rs --noconfirm cachyos-zsh-config cachyos-fish-config ttf-bitstream-vera ttf-dejavu ttf-liberation ttf-meslo-nerd vlc-plugins-all noto-color-emoji-fontconfig noto-fonts noto-fonts-cjk noto-fonts-emoji nano nano-syntax-highlighting pv glances awesome-terminal-fonts
 
 # DESKTOP
 # if command -vq zeditor

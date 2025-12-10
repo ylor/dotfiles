@@ -7,6 +7,7 @@
         "pinnedExecs": [
         ],
         "position": "follow_bar",
+        "showCategories": true,
         "sortByMostUsed": false,
         "terminalCommand": "xterm -e",
         "useApp2Unit": false,
@@ -14,7 +15,7 @@
     },
     "audio": {
         "cavaFrameRate": 30,
-        "externalMixer": "pwvucontrol || pavucontrol",
+        "externalMixer": "hyprctl dispatch exec \"[float; size 40% 60%; center] ghostty -e wiremix\"",
         "mprisBlacklist": [
         ],
         "preferredPlayer": "",
@@ -40,7 +41,7 @@
             "center": [
                 {
                     "customFont": "",
-                    "formatHorizontal": "dddd h:mm AP",
+                    "formatHorizontal": "dddd dd  h:mm AP",
                     "formatVertical": "HH mm - dd MM",
                     "id": "Clock",
                     "useCustomFont": false,
@@ -68,8 +69,13 @@
                     "colorizeIcons": false,
                     "hideMode": "hidden",
                     "id": "Taskbar",
+                    "maxTaskbarWidth": 40,
                     "onlyActiveWorkspaces": true,
-                    "onlySameOutput": true
+                    "onlySameOutput": true,
+                    "showPinnedApps": true,
+                    "showTitle": false,
+                    "smartWidth": true,
+                    "titleWidth": 120
                 },
                 {
                     "hideMode": "hidden",
@@ -145,9 +151,6 @@
             }
         ]
     },
-    "changelog": {
-        "lastSeenVersion": ""
-    },
     "colorSchemes": {
         "darkMode": true,
         "generateTemplatesForPredefined": true,
@@ -216,14 +219,17 @@
     "dock": {
         "backgroundOpacity": 0.9,
         "colorizeIcons": false,
+        "deadOpacity": 0.6,
         "displayMode": "auto_hide",
         "enabled": true,
         "floatingRatio": 1,
+        "inactiveIndicators": true,
         "monitors": [
         ],
         "onlySameOutput": true,
         "pinnedApps": [
         ],
+        "pinnedStatic": false,
         "size": 1
     },
     "general": {
@@ -231,25 +237,28 @@
         "animationDisabled": false,
         "animationSpeed": 2,
         "avatarImage": "/home/roly/.config/noctalia/avatar",
+        "boxRadiusRatio": 1,
         "compactLockScreen": false,
         "dimmerOpacity": 0.6,
         "enableShadows": true,
-        "forceBlackScreenCorners": false,
+        "forceBlackScreenCorners": true,
+        "iRadiusRatio": 1,
         "language": "",
         "lockOnSuspend": false,
         "radiusRatio": 1.75,
         "scaleRatio": 1,
-        "screenRadiusRatio": 1,
+        "screenRadiusRatio": 0.25,
         "shadowDirection": "bottom_right",
         "shadowOffsetX": 2,
         "shadowOffsetY": 3,
         "showHibernateOnLockScreen": false,
-        "showScreenCorners": false
+        "showScreenCorners": true,
+        "showSessionButtonsOnLockScreen": true
     },
     "hooks": {
         "darkModeChange": "",
         "enabled": true,
-        "wallpaperChange": "sh \"$HOME/.config/noctalia/colors.sh\""
+        "wallpaperChange": "sh \"$HOME/.config/noctalia/bin/colors.sh\""
     },
     "location": {
         "analogClockInCalendar": false,
@@ -286,7 +295,16 @@
         ],
         "normalUrgencyDuration": 8,
         "overlayLayer": true,
-        "respectExpireTimeout": false
+        "respectExpireTimeout": false,
+        "sounds": {
+            "criticalSoundFile": "",
+            "enabled": false,
+            "excludedApps": "discord,firefox,chrome,chromium,edge",
+            "lowSoundFile": "",
+            "normalSoundFile": "",
+            "separateSounds": false,
+            "volume": 0.5
+        }
     },
     "osd": {
         "autoHideMs": 2000,
@@ -321,31 +339,37 @@
         "powerOptions": [
             {
                 "action": "lock",
+                "command": "",
                 "countdownEnabled": true,
                 "enabled": true
             },
             {
                 "action": "suspend",
+                "command": "",
                 "countdownEnabled": true,
                 "enabled": true
             },
             {
                 "action": "hibernate",
+                "command": "",
                 "countdownEnabled": true,
                 "enabled": true
             },
             {
                 "action": "reboot",
+                "command": "",
                 "countdownEnabled": true,
                 "enabled": true
             },
             {
                 "action": "logout",
+                "command": "",
                 "countdownEnabled": true,
                 "enabled": true
             },
             {
                 "action": "shutdown",
+                "command": "",
                 "countdownEnabled": true,
                 "enabled": true
             }
