@@ -5,6 +5,7 @@ local exempt = {
     ["Finder"] = true,
     ["Keychain Access"] = true,
     ["Safari"] = true,
+    ["Google Chrome"] = true,
     ["Terminal"] = true,
     ["Arc"] = true,
     ["Orion"] = true,

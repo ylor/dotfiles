@@ -41,6 +41,7 @@ keywatcher = hs.eventtap.new({ hs.eventtap.event.types.keyDown }, function(event
 
     -- if one of these "navigational" keys is pressed
     if kc == key["return"]
+        or kc == key["backspace"]
         or kc == key["space"]
         or kc == key["up"]
         or kc == key["down"]
@@ -48,7 +49,6 @@ keywatcher = hs.eventtap.new({ hs.eventtap.event.types.keyDown }, function(event
         or kc == key["right"] then
         word = "" -- clear the buffer
     end
-
     if DEBUG then print("Word to check if hotstring:", word) end
 
     -- finally, if "word" is a hotstring
