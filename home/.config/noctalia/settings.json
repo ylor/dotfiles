@@ -129,7 +129,7 @@
     "brightness": {
         "brightnessStep": 5,
         "enableDdcSupport": true,
-        "enforceMinimum": true
+        "enforceMinimum": false
     },
     "calendar": {
         "cards": [

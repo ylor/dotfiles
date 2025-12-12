@@ -52,6 +52,7 @@ usage
 vi
 vim
 viu
+wiremix
 wl-clipboard
 wlsunset
 xdg-desktop-portal-gnome
@@ -59,6 +60,5 @@ xdg-desktop-portal-gtk
 xdg-desktop-portal-hyprland
 xdg-terminal-exec
 xdg-user-dirs
-xwayland-satellite
 zed
 zoxide
