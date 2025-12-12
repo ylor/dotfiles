@@ -15,7 +15,7 @@
     },
     "audio": {
         "cavaFrameRate": 30,
-        "externalMixer": "hyprctl dispatch exec \"[float; size 40% 60%; center] ghostty -e wiremix\"",
+        "externalMixer": "hyprctl dispatch exec \"[float; size 40% 60%; center] ghostty --confirm-close-surface=false -e wiremix\"",
         "mprisBlacklist": [
         ],
         "preferredPlayer": "",
@@ -156,7 +156,7 @@
         "generateTemplatesForPredefined": true,
         "manualSunrise": "06:30",
         "manualSunset": "18:30",
-        "matugenSchemeType": "scheme-fruit-salad",
+        "matugenSchemeType": "scheme-fidelity",
         "predefinedScheme": "Noctalia (default)",
         "schedulingMode": "off",
         "useWallpaperColors": true
@@ -236,7 +236,7 @@
         "allowPanelsOnScreenWithoutBar": true,
         "animationDisabled": false,
         "animationSpeed": 2,
-        "avatarImage": "/home/roly/.config/noctalia/avatar",
+        "avatarImage": "~/.config/noctalia/avatar",
         "boxRadiusRatio": 1,
         "compactLockScreen": false,
         "dimmerOpacity": 0.6,
@@ -258,7 +258,7 @@
     "hooks": {
         "darkModeChange": "",
         "enabled": true,
-        "wallpaperChange": "sh \"$HOME/.config/noctalia/bin/colors.sh\""
+        "wallpaperChange": "sh  ~/.config/noctalia/bin/colors.sh"
     },
     "location": {
         "analogClockInCalendar": false,
@@ -405,7 +405,7 @@
         "foot": false,
         "fuzzel": true,
         "ghostty": false,
-        "gtk": true,
+        "gtk": false,
         "kcolorscheme": true,
         "kitty": false,
         "niri": false,
@@ -428,7 +428,7 @@
         "tooltipsEnabled": true
     },
     "wallpaper": {
-        "directory": "/home/roly/Pictures/Wallpapers",
+        "directory": "~/.local/share/backgrounds",
         "enableMultiMonitorDirectories": false,
         "enabled": true,
         "fillColor": "#000000",
@@ -442,7 +442,7 @@
         "randomIntervalSec": 3600,
         "recursiveSearch": true,
         "setWallpaperOnAllMonitors": true,
-        "transitionDuration": 1000,
+        "transitionDuration": 500,
         "transitionEdgeSmoothness": 0.05,
         "transitionType": "fade",
         "useWallhaven": false,

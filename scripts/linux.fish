@@ -34,22 +34,24 @@ if command -vq gsettings
 end
 
 # DESKTOP
-# TODO: set firefox fonts, userjs, extensions
-
 # FIX GIGABYTE SLEEP
-if cat /sys/devices/virtual/dmi/id/board_name | grep -iq "B650 AORUS ELITE AX" #&& not grep -q acpi_osi /etc/default/limine
-#     echo 'KERNEL_CMDLINE[default]+="acpi_osi=\"!Windows 2015\""' | sudo tee -a /etc/default/limine &>/dev/null
-echo '[Unit]
-Description=Disable XH00 as ACPI wakeup source to workaround Gigabyte sleep issue
-After=multi-user.target
-
-[Service]
-Type=oneshot
-ExecStart=sh -c "echo XH00 > /proc/acpi/wakeup"
-
-[Install]
-WantedBy=multi-user.target' | sudo tee /etc/systemd/system/gigabyte-suspend-workaround.service
-sudo systemctl daemon-reload
-sudo systemctl enable gigabyte-suspend-workaround.service
-sudo systemctl start gigabyte-suspend-workaround.service
+if cat /sys/devices/virtual/dmi/id/board_name | grep -iq "B650 AORUS ELITE AX" 
+    echo '[Unit]
+    Description=Disable XH00 as ACPI wakeup source to workaround Gigabyte sleep issue
+    After=multi-user.target
+    
+    [Service]
+    Type=oneshot
+    ExecStart=sh -c "echo XH00 > /proc/acpi/wakeup"
+    
+    [Install]
+    WantedBy=multi-user.target' | sudo tee /etc/systemd/system/gigabyte-suspend-workaround.service >/dev/null
+    
+    sudo systemctl daemon-reload
+    sudo systemctl enable gigabyte-suspend-workaround.service
+    sudo systemctl start gigabyte-suspend-workaround.service
 end
+
+# TODO
+## TODO: set firefox fonts, userjs, extensions
+## VNC server/client
