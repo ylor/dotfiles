@@ -156,7 +156,7 @@
         "generateTemplatesForPredefined": true,
         "manualSunrise": "06:30",
         "manualSunset": "18:30",
-        "matugenSchemeType": "scheme-fidelity",
+        "matugenSchemeType": "scheme-rainbow",
         "predefinedScheme": "Noctalia (default)",
         "schedulingMode": "off",
         "useWallpaperColors": true
@@ -273,7 +273,7 @@
         "weatherShowEffects": true
     },
     "network": {
-        "wifiEnabled": false
+        "wifiEnabled": true
     },
     "nightLight": {
         "autoSchedule": true,
