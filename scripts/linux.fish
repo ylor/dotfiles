@@ -1,7 +1,9 @@
 # SETUP
 set distro (cat /etc/os-release | grep '^ID=' | cut -d= -f2)
 
-source scripts/$distro.fish
+pushd scripts/linux
+source $distro.fish
+popd
 
 # POWER MANAGEMENT
 if upower --enumerate | grep BAT
