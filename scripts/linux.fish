@@ -58,7 +58,7 @@ end
 # FIX GIGABYTE SLEEP
 if cat /sys/devices/virtual/dmi/id/board_name | grep -iq "B650 AORUS ELITE AX" 
     echo '[Unit]
-    Description=Disable XH00 as ACPI wakeup source to workaround Gigabyte sleep issue
+    Description=Disable XH00 as ACPI wakeup source to workaround Gigabyte isntant wake issue
     After=multi-user.target
     
     [Service]
