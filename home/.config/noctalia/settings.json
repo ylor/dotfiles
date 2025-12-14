@@ -25,7 +25,7 @@
         "volumeStep": 5
     },
     "bar": {
-        "backgroundOpacity": 0.9,
+        "backgroundOpacity": 0.8,
         "capsuleOpacity": 1,
         "density": "default",
         "exclusive": true,
@@ -217,7 +217,7 @@
         }
     },
     "dock": {
-        "backgroundOpacity": 0.9,
+        "backgroundOpacity": 0.8,
         "colorizeIcons": false,
         "deadOpacity": 0.6,
         "displayMode": "auto_hide",
@@ -285,9 +285,9 @@
         "nightTemp": "5000"
     },
     "notifications": {
-        "backgroundOpacity": 0.89,
+        "backgroundOpacity": 0.95,
         "criticalUrgencyDuration": 15,
-        "enableKeyboardLayoutToast": true,
+        "enableKeyboardLayoutToast": false,
         "enabled": true,
         "location": "top_right",
         "lowUrgencyDuration": 3,
@@ -308,7 +308,7 @@
     },
     "osd": {
         "autoHideMs": 2000,
-        "backgroundOpacity": 0.9,
+        "backgroundOpacity": 0.75,
         "enabled": true,
         "enabledTypes": [
             0,
@@ -422,7 +422,7 @@
         "fontDefaultScale": 0.9,
         "fontFixed": "JetBrainsMono Nerd Font",
         "fontFixedScale": 0.9,
-        "panelBackgroundOpacity": 0.8,
+        "panelBackgroundOpacity": 0.7000000000000001,
         "panelsAttachedToBar": false,
         "settingsPanelAttachToBar": false,
         "tooltipsEnabled": true

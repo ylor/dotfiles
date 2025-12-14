@@ -69,6 +69,6 @@ end
 function fish_greeting
     # set greeting (random choice cowboy-bebop half-life hollow-knight metal-gear-solid zelda)
     # $greeting
-    command -vq viu || return 67
-    icat -i "silksong.png" -t "Poshanka!"
+    # command -vq viu || return 67
+    # icat -i "silksong.png" -t "Poshanka!"
 end

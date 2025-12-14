@@ -1,12 +1,7 @@
 #!/usr/bin/env fish
 set --query DOTFILES || dfs-init
 
-argparse c/cleanup -- $argv
-
 fd . "$DOTFILES/home" --hidden --absolute-path --type file --exec dfs-link
-
-if set -q _flag_cleanup
-    fd . $HOME --hidden --type symlink --follow --max-depth 1 --exec-batch rm
-    fd . $HOME/{.config,.local,.ssh} --hidden --type symlink --follow --exec-batch rm
-    fd . $HOME/{.config,.local,.ssh} --hidden --type directory --type empty --exec-batch rmdir
-end
+fd . $HOME --hidden --type symlink --follow --max-depth 1 --exec-batch rm
+fd . $HOME/{.config,.local/bin,.local/share/applications} --hidden --type symlink --follow --exec-batch rm
+# fd . $HOME/{.config,.local/bin,.local/share/applications} --hidden --type directory --type empty --exec-batch rmdir
