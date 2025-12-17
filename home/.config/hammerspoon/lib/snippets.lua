@@ -41,7 +41,7 @@ keywatcher = hs.eventtap.new({ hs.eventtap.event.types.keyDown }, function(event
 
     -- if one of these "navigational" keys is pressed
     if kc == key["return"]
-        or kc == key["backspace"]
+        or kc == key["delete"]
         or kc == key["space"]
         or kc == key["up"]
         or kc == key["down"]
