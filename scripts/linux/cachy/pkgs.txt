@@ -55,5 +55,6 @@ xdg-desktop-portal-hyprland
 xdg-terminal-exec
 xdg-user-dirs
 xorg-xwayland
+xwayland-satellite
 zed
 zoxide
