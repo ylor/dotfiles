@@ -28,7 +28,7 @@ end
 if pidof -q hyprland && command -vq qs
     qs -c noctalia-shell ipc call darkMode setLight
     qs -c noctalia-shell ipc call darkMode setDark
-end
+end    
 
 if command -vq lact
     paru -S --needed --skipreview lact
