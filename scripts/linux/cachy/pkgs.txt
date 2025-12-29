@@ -19,6 +19,7 @@ gum
 helium-browser-bin
 hypridle
 hyprland
+hyprlauncher
 hyprlock
 hyprpicker
 hyprshot
@@ -34,6 +35,8 @@ qt6-wayland
 steam
 sunshine-beta-bin
 syncthing
+tesseract
+tesseract-data-eng
 trash-cli
 ttf-iosevka-aile
 ttf-iosevka-etoile
