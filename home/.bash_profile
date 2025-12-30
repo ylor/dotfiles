@@ -6,7 +6,6 @@ if [[ $(uname) == "Linux" ]]; then
     fi
 
     if [[ -z "$WAYLAND_DISPLAY" ]] && [[ "$(tty)" == "/dev/tty1" ]]; then
-        type hyprland && pidof hyprland || hyprland #>/dev/null
-        # type hyprland && pidof hyprland || start-hyprland #>/dev/null
+        type hyprland && pidof hyprland || start-hyprland
     fi
 fi
