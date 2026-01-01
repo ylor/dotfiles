@@ -1,3 +1,2 @@
 #!/usr/bin/env sh
-# hyprctl dispatch exec "[float; center] $*"
-hyprctl dispatch exec "[float; size 40% 60%; center] ghostty --confirm-close-surface=false -e $*"
+hyprctl dispatch exec "[float; center; size (monitor_h*0.5) (monitor_h*0.5)] ghostty --confirm-close-surface=false -e $*"

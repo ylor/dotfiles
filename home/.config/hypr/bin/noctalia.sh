@@ -1,5 +1,4 @@
 #!/usr/bin/env sh
-notify-send foo
 inotifywait --event close_write --timeout 1 "$HOME/.config/noctalia/colors.json"
 
 NOCTALIA_WALLPAPER=$(qs -c noctalia-shell ipc call state all | jq -r '.state.wallpapers | first(.[])')
