@@ -1,6 +1,5 @@
 1password
 adw-gtk-theme
-awesome-terminal-fonts
 bat
 breeze-icons
 btop
@@ -8,11 +7,11 @@ evil-helix-bin
 eza
 fastfetch
 faugus-launcher
-firefox
 fish
 fuzzel
 fwupd
 ghostty
+git
 gnome-calculator
 gnome-disk-utility
 gum
@@ -22,14 +21,12 @@ hyprland
 hyprlauncher
 hyprlock
 hyprpicker
+hyprpolkitagent
+hyprpwcenter
 hyprshot
 lact
 mpv
 nautilus
-noto-fonts
-noto-fonts-cjk
-noto-fonts-emoji
-polkit-kde-agent
 qt5-wayland
 qt6-wayland
 steam
@@ -41,6 +38,7 @@ trash-cli
 ttf-iosevka-aile
 ttf-iosevka-etoile
 ttf-jetbrains-mono-nerd
+ttf-liberation
 ttf-nerd-fonts-symbols
 ttf-nerd-fonts-symbols-mono
 ufw
@@ -50,7 +48,9 @@ unzip
 vi
 vim
 viu
+vk-hdr-layer-kwin6-git
 wiremix
+wl-clipboard
 wlsunset
 xdg-desktop-portal-gnome
 xdg-desktop-portal-gtk

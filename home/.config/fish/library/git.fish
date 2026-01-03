@@ -11,7 +11,7 @@ if command -vq git # https://git-scm.com
             case me
                 git-me
             case lol
-                test -d .git || return 67
+                git status &>/dev/null || return 67
                 git add -A
                 git commit -m $(curl --silent --fail https://whatthecommit.com/index.txt)
                 git push
