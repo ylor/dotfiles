@@ -1,5 +1,6 @@
 #!/usr/bin/env sh
 inotifywait --event close_write --timeout 1 "$HOME/.config/noctalia/colors.json"
+sleep 0.5
 
 NOCTALIA_WALLPAPER=$(qs -c noctalia-shell ipc call state all | jq -r '.state.wallpapers | first(.[])')
 ln -sf "$NOCTALIA_WALLPAPER" "$HOME/.config/noctalia/wallpaper"
@@ -12,4 +13,4 @@ accent_secondary = $NOCTALIA_SECONDARY
 
 font_family = Iosevka Aile
 font_family_monospace = JetBrainsMono Nerd Font
-" > $HOME/.config/hypr/hyprtoolkit.conf
+" >$HOME/.config/hypr/hyprtoolkit.conf
