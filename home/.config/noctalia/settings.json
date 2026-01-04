@@ -5,18 +5,21 @@
         "enableClipPreview": true,
         "enableClipboardHistory": true,
         "iconMode": "native",
+        "ignoreMouseInput": false,
         "pinnedExecs": [
         ],
         "position": "center",
+        "screenshotAnnotationTool": "",
         "showCategories": false,
-        "sortByMostUsed": true,
+        "showIconBackground": false,
+        "sortByMostUsed": false,
         "terminalCommand": "ghostty -e",
         "useApp2Unit": false,
-        "viewMode": "grid"
+        "viewMode": "list"
     },
     "audio": {
         "cavaFrameRate": 30,
-        "externalMixer": "sh ~/.config/hypr/hypr-center.sh hyprpwcenter",
+        "externalMixer": "sh ~/.config/hypr/bin/hypr-center.sh hyprpwcenter",
         "mprisBlacklist": [
         ],
         "preferredPlayer": "",
@@ -49,6 +52,15 @@
                     "tooltipFormat": "dddd, MMM d",
                     "useCustomFont": false,
                     "usePrimaryColor": false
+                },
+                {
+                    "defaultSettings": {
+                        "currentIconName": "world-download",
+                        "hideOnZero": false,
+                        "updateIntervalMinutes": 30,
+                        "updateTerminalCommand": "foot -e"
+                    },
+                    "id": "plugin:update-count"
                 }
             ],
             "left": [
@@ -62,6 +74,8 @@
                     "useDistroLogo": false
                 },
                 {
+                    "colorizeSystemIcon": "none",
+                    "enableColorization": false,
                     "hideMode": "alwaysExpanded",
                     "icon": "rocket",
                     "id": "CustomButton",
@@ -96,6 +110,7 @@
                     "followFocusedScreen": false,
                     "groupedBorderOpacity": 1,
                     "hideUnoccupied": false,
+                    "iconScale": 0.8,
                     "id": "Workspace",
                     "labelMode": "none",
                     "showApplications": false,
@@ -111,7 +126,7 @@
                     "showAlbumArt": false,
                     "showArtistFirst": true,
                     "showProgressRing": true,
-                    "showVisualizer": false,
+                    "showVisualizer": true,
                     "useFixedWidth": false,
                     "visualizerType": "linear"
                 }
@@ -126,32 +141,6 @@
                     "id": "Tray",
                     "pinned": [
                     ]
-                },
-                {
-                    "compactMode": true,
-                    "diskPath": "/",
-                    "id": "SystemMonitor",
-                    "showCpuTemp": true,
-                    "showCpuUsage": true,
-                    "showDiskUsage": false,
-                    "showGpuTemp": false,
-                    "showMemoryAsPercent": false,
-                    "showMemoryUsage": true,
-                    "showNetworkStats": false,
-                    "useMonospaceFont": true,
-                    "usePrimaryColor": false
-                },
-                {
-                    "defaultSettings": {
-                        "currentIconName": "world-download",
-                        "hideOnZero": false,
-                        "updateIntervalMinutes": 30,
-                        "updateTerminalCommand": "foot -e"
-                    },
-                    "id": "plugin:update-count"
-                },
-                {
-                    "id": "ScreenRecorder"
                 },
                 {
                     "deviceNativePath": "",
@@ -249,6 +238,7 @@
                 "id": "media-sysmon-card"
             }
         ],
+        "diskPath": "/",
         "position": "close_to_bar_button",
         "shortcuts": {
             "left": [
@@ -308,7 +298,7 @@
         "allowPanelsOnScreenWithoutBar": true,
         "animationDisabled": false,
         "animationSpeed": 2,
-        "avatarImage": "/home/roly/.face",
+        "avatarImage": "~/.config/noctalia/avatar",
         "boxRadiusRatio": 1,
         "compactLockScreen": true,
         "dimmerOpacity": 0.2,
@@ -317,7 +307,7 @@
         "iRadiusRatio": 1,
         "language": "",
         "lockOnSuspend": true,
-        "radiusRatio": 1,
+        "radiusRatio": 1.5,
         "scaleRatio": 1,
         "screenRadiusRatio": 1,
         "shadowDirection": "bottom_right",
@@ -349,6 +339,11 @@
         "weatherShowEffects": true
     },
     "network": {
+        "bluetoothDetailsViewMode": "grid",
+        "bluetoothHideUnnamedDevices": false,
+        "bluetoothRssiPollIntervalMs": 10000,
+        "bluetoothRssiPollingEnabled": false,
+        "wifiDetailsViewMode": "grid",
         "wifiEnabled": false
     },
     "nightLight": {
@@ -417,6 +412,7 @@
     "sessionMenu": {
         "countdownDuration": 5000,
         "enableCountdown": true,
+        "largeButtonsLayout": "grid",
         "largeButtonsStyle": false,
         "position": "center",
         "powerOptions": [
@@ -460,20 +456,21 @@
         "showHeader": false,
         "showNumberLabels": false
     },
-    "settingsVersion": 35,
+    "settingsVersion": 37,
     "systemMonitor": {
         "cpuCriticalThreshold": 90,
         "cpuPollingInterval": 3000,
         "cpuWarningThreshold": 80,
         "criticalColor": "#ffb4ab",
         "diskCriticalThreshold": 90,
-        "diskPath": "/",
         "diskPollingInterval": 3000,
         "diskWarningThreshold": 80,
         "enableDgpuMonitoring": true,
+        "externalMonitor": "resources || missioncenter || jdsystemmonitor || corestats || system-monitoring-center || gnome-system-monitor || plasma-systemmonitor || mate-system-monitor || ukui-system-monitor || deepin-system-monitor || pantheon-system-monitor",
         "gpuCriticalThreshold": 90,
         "gpuPollingInterval": 3000,
         "gpuWarningThreshold": 80,
+        "loadAvgPollingInterval": 3000,
         "memCriticalThreshold": 90,
         "memPollingInterval": 3000,
         "memWarningThreshold": 80,
@@ -512,8 +509,7 @@
         "zed": false
     },
     "ui": {
-        "bluetoothDetailsViewMode": "grid",
-        "bluetoothHideUnnamedDevices": false,
+        "boxBorderEnabled": false,
         "fontDefault": "Iosevka Aile",
         "fontDefaultScale": 1,
         "fontFixed": "JetBrainsMono Nerd Font",
@@ -521,8 +517,7 @@
         "panelBackgroundOpacity": 0.93,
         "panelsAttachedToBar": true,
         "settingsPanelMode": "attached",
-        "tooltipsEnabled": true,
-        "wifiDetailsViewMode": "grid"
+        "tooltipsEnabled": true
     },
     "wallpaper": {
         "directory": "/home/roly/Pictures/Wallpapers",
@@ -539,9 +534,11 @@
         "randomIntervalSec": 3600,
         "recursiveSearch": true,
         "setWallpaperOnAllMonitors": true,
+        "solidColor": "#1a1a2e",
         "transitionDuration": 500,
         "transitionEdgeSmoothness": 0.05,
         "transitionType": "fade",
+        "useSolidColor": false,
         "useWallhaven": false,
         "wallhavenApiKey": "",
         "wallhavenCategories": "111",
