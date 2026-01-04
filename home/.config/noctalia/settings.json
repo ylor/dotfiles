@@ -15,7 +15,7 @@
         "sortByMostUsed": false,
         "terminalCommand": "ghostty -e",
         "useApp2Unit": false,
-        "viewMode": "list"
+        "viewMode": "grid"
     },
     "audio": {
         "cavaFrameRate": 30,
@@ -306,7 +306,7 @@
         "forceBlackScreenCorners": false,
         "iRadiusRatio": 1,
         "language": "",
-        "lockOnSuspend": true,
+        "lockOnSuspend": false,
         "radiusRatio": 1.5,
         "scaleRatio": 1,
         "screenRadiusRatio": 1,

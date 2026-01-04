@@ -1,10 +1,8 @@
 #!/usr/bin/env bash
-initial=$(wl-paste)
+qs -c noctalia-shell ipc call launcher clipboard
 
-qs -c noctalia-shell ipc call launcher clipboard 
-while [ "$initial" = "$(wl-paste)" ]; do
-    sleep 0.25
-done
+wl-copy --clear
+timeout 60s bash -c 'until wl-paste; do sleep 0.1; done'
 
-# sleep 0.1
+sleep 0.2
 hyprctl dispatch sendshortcut "CTRL SHIFT,V,"
