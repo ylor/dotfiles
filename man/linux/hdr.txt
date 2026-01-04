@@ -1,2 +1,2 @@
-paru -S proton-ge-custom-bin svk-hdr-layer-kwin6-git
-PROTON_ENABLE_WAYLAND=1 PROTON_ENABLE_HDR=1 -- %command%
+paru -S proton-ge-custom-bin proton-cachyos svk-hdr-layer-kwin6-git
+PROTON_ENABLE_WAYLAND=1 PROTON_ENABLE_HDR=1 %command%
