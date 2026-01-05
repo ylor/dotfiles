@@ -52,15 +52,6 @@
                     "tooltipFormat": "dddd, MMM d",
                     "useCustomFont": false,
                     "usePrimaryColor": false
-                },
-                {
-                    "defaultSettings": {
-                        "currentIconName": "world-download",
-                        "hideOnZero": false,
-                        "updateIntervalMinutes": 30,
-                        "updateTerminalCommand": "foot -e"
-                    },
-                    "id": "plugin:update-count"
                 }
             ],
             "left": [
@@ -72,6 +63,15 @@
                     "icon": "hyprland",
                     "id": "ControlCenter",
                     "useDistroLogo": false
+                },
+                {
+                    "defaultSettings": {
+                        "currentIconName": "world-download",
+                        "hideOnZero": false,
+                        "updateIntervalMinutes": 30,
+                        "updateTerminalCommand": "foot -e"
+                    },
+                    "id": "plugin:update-count"
                 },
                 {
                     "colorizeSystemIcon": "none",
