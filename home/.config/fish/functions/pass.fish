@@ -23,5 +23,9 @@ function pass
         echo $pass | pbcopy
     end
 
+    if command -vq wl-copy
+        echo $pass | wl-copy
+    end
+
     echo $pass
 end

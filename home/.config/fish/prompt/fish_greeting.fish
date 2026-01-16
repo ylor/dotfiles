@@ -1,12 +1,3 @@
-function icat
-    argparse 'i/image=' 't/text=' 'h/help' -- $argv ; or return 67
-
-    set img $HOME/.local/share/img/$_flag_image
-    set txt $_flag_text
-
-    viu $img -h2 && printf "\033[A\033[K     $txt\n\n"
-end
-
 function cowboy-bebop
     set symbol "✈"
     set greetings \

@@ -14,7 +14,7 @@
     "liga": true,
     "zero": true
   },
-  "disable_ai": true,
+  "disable_ai": false,
   "format_on_save": "on",
   "preferred_line_length": 100,
   "relative_line_numbers": "enabled",
