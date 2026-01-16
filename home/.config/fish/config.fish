@@ -35,14 +35,9 @@ if status --is-interactive
     alias rd="rmdir"
     alias re="source $__fish_config_dir/config.fish"
 
-    # source $__fish_config_dir/$KERNEL.fish
-    for module in $__fish_config_dir/prompt/*.fish
+    for module in $__fish_config_dir/conf.d/{$KERNEL,prompt}/*.fish
         source $module
     end
-
-    # for module in $__fish_config_dir/library/$KERNEL/*.fish
-    #        source $module
-    # end
 
     fish_add_path "$DOTFILES/bin" \
         "$HOME/.local/bin" \

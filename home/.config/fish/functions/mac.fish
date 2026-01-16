@@ -1,3 +1,3 @@
-function is_mac
+function mac
     test (uname) = "Darwin"
 end

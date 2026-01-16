@@ -1,3 +1,3 @@
-function is_linux
+function linux
     test (uname) = "Linux"
 end
