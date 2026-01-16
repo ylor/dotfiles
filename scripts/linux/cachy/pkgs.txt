@@ -61,3 +61,4 @@ xorg-xwayland
 xwayland-satellite
 zed
 zoxide
+wtype
