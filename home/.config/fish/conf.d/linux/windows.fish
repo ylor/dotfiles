@@ -4,6 +4,8 @@ function windows
     # end
 
     set entry (efibootmgr | grep -i windows | head -n1 | string sub --start 5 --end 8)
-    sudo efibootmgr -n $entry || exit 1
+    sudo efibootmgr -n $entry &>/dev/null || exit 1
     systemctl reboot
 end
+
+alias hell="windows"
