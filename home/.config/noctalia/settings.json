@@ -47,26 +47,6 @@
         "widgets": {
             "center": [
                 {
-                    "customFont": "",
-                    "formatHorizontal": "ddd MMM d  h:mm AP",
-                    "formatVertical": "",
-                    "id": "Clock",
-                    "tooltipFormat": "",
-                    "useCustomFont": false,
-                    "usePrimaryColor": false
-                }
-            ],
-            "left": [
-                {
-                    "colorizeDistroLogo": false,
-                    "colorizeSystemIcon": "none",
-                    "customIconPath": "",
-                    "enableColorization": false,
-                    "icon": "hyprland",
-                    "id": "ControlCenter",
-                    "useDistroLogo": false
-                },
-                {
                     "defaultSettings": {
                         "currentIconName": "world-download",
                         "hideOnZero": false,
@@ -74,37 +54,6 @@
                         "updateTerminalCommand": "foot -e"
                     },
                     "id": "plugin:update-count"
-                },
-                {
-                    "colorizeSystemIcon": "none",
-                    "enableColorization": false,
-                    "hideMode": "alwaysExpanded",
-                    "icon": "rocket",
-                    "id": "CustomButton",
-                    "ipcIdentifier": "",
-                    "leftClickExec": "qs -c noctalia-shell ipc call launcher toggle",
-                    "leftClickUpdateText": false,
-                    "maxTextLength": {
-                        "horizontal": 10,
-                        "vertical": 10
-                    },
-                    "middleClickExec": "",
-                    "middleClickUpdateText": false,
-                    "parseJson": false,
-                    "rightClickExec": "",
-                    "rightClickUpdateText": false,
-                    "showIcon": true,
-                    "textCollapse": "",
-                    "textCommand": "",
-                    "textIntervalMs": 3000,
-                    "textStream": false,
-                    "wheelDownExec": "",
-                    "wheelDownUpdateText": false,
-                    "wheelExec": "",
-                    "wheelMode": "unified",
-                    "wheelUpExec": "",
-                    "wheelUpUpdateText": false,
-                    "wheelUpdateText": false
                 },
                 {
                     "characterCount": 2,
@@ -119,24 +68,17 @@
                     "showApplications": false,
                     "showLabelsOnlyWhenOccupied": true,
                     "unfocusedIconsOpacity": 1
-                },
+                }
+            ],
+            "left": [
                 {
-                    "compactMode": false,
-                    "compactShowAlbumArt": true,
-                    "compactShowVisualizer": false,
-                    "hideMode": "idle",
-                    "hideWhenIdle": false,
-                    "id": "MediaMini",
-                    "maxWidth": 145,
-                    "panelShowAlbumArt": true,
-                    "panelShowVisualizer": true,
-                    "scrollingMode": "hover",
-                    "showAlbumArt": false,
-                    "showArtistFirst": true,
-                    "showProgressRing": true,
-                    "showVisualizer": true,
-                    "useFixedWidth": false,
-                    "visualizerType": "linear"
+                    "colorizeDistroLogo": false,
+                    "colorizeSystemIcon": "none",
+                    "customIconPath": "",
+                    "enableColorization": false,
+                    "icon": "hyprland",
+                    "id": "ControlCenter",
+                    "useDistroLogo": false
                 },
                 {
                     "compactMode": true,
@@ -152,6 +94,24 @@
                     "showNetworkStats": false,
                     "useMonospaceFont": true,
                     "usePrimaryColor": false
+                },
+                {
+                    "compactMode": true,
+                    "compactShowAlbumArt": true,
+                    "compactShowVisualizer": false,
+                    "hideMode": "idle",
+                    "hideWhenIdle": false,
+                    "id": "MediaMini",
+                    "maxWidth": 150,
+                    "panelShowAlbumArt": true,
+                    "panelShowVisualizer": true,
+                    "scrollingMode": "hover",
+                    "showAlbumArt": false,
+                    "showArtistFirst": false,
+                    "showProgressRing": false,
+                    "showVisualizer": true,
+                    "useFixedWidth": false,
+                    "visualizerType": "linear"
                 }
             ],
             "right": [
@@ -176,30 +136,23 @@
                 },
                 {
                     "displayMode": "onhover",
-                    "id": "Network"
-                },
-                {
-                    "displayMode": "onhover",
                     "id": "Volume",
-                    "middleClickCommand": "pwvucontrol || pavucontrol"
-                },
-                {
-                    "displayMode": "onhover",
-                    "id": "Brightness"
+                    "middleClickCommand": "sh ~/.config/hypr/bin/float.sh hyprpwcenter"
                 },
                 {
                     "hideWhenZero": false,
+                    "hideWhenZeroUnread": false,
                     "id": "NotificationHistory",
                     "showUnreadBadge": true
                 },
                 {
-                    "colorizeDistroLogo": false,
-                    "colorizeSystemIcon": "none",
-                    "customIconPath": "",
-                    "enableColorization": false,
-                    "icon": "toggle-right-filled",
-                    "id": "ControlCenter",
-                    "useDistroLogo": false
+                    "customFont": "",
+                    "formatHorizontal": "ddd MMM d  h:mm AP",
+                    "formatVertical": "",
+                    "id": "Clock",
+                    "tooltipFormat": "",
+                    "useCustomFont": false,
+                    "usePrimaryColor": false
                 }
             ]
         }
@@ -218,10 +171,6 @@
             {
                 "enabled": true,
                 "id": "calendar-month-card"
-            },
-            {
-                "enabled": true,
-                "id": "timer-card"
             },
             {
                 "enabled": true,
@@ -270,27 +219,38 @@
         "shortcuts": {
             "left": [
                 {
-                    "id": "WiFi"
-                },
-                {
                     "id": "Bluetooth"
                 },
                 {
-                    "id": "WallpaperSelector"
+                    "id": "Network"
+                },
+                {
+                    "id": "NightLight"
                 }
             ],
             "right": [
                 {
-                    "id": "Notifications"
+                    "defaultSettings": {
+                        "audioCodec": "opus",
+                        "audioSource": "default_output",
+                        "colorRange": "limited",
+                        "copyToClipboard": false,
+                        "directory": "",
+                        "filenamePattern": "recording_yyyyMMdd_HHmmss",
+                        "frameRate": "60",
+                        "quality": "very_high",
+                        "resolution": "original",
+                        "showCursor": true,
+                        "videoCodec": "h264",
+                        "videoSource": "portal"
+                    },
+                    "id": "plugin:screen-recorder"
                 },
                 {
                     "id": "PowerProfile"
                 },
                 {
                     "id": "KeepAwake"
-                },
-                {
-                    "id": "NightLight"
                 }
             ]
         }
@@ -389,6 +349,7 @@
         "backgroundOpacity": 0.93,
         "criticalUrgencyDuration": 15,
         "enableKeyboardLayoutToast": false,
+        "enableMediaToast": false,
         "enabled": true,
         "location": "top_right",
         "lowUrgencyDuration": 3,
@@ -472,9 +433,9 @@
             }
         ],
         "showHeader": false,
-        "showNumberLabels": false
+        "showNumberLabels": true
     },
-    "settingsVersion": 40,
+    "settingsVersion": 41,
     "systemMonitor": {
         "cpuCriticalThreshold": 90,
         "cpuPollingInterval": 3000,
@@ -518,12 +479,12 @@
         "boxBorderEnabled": false,
         "fontDefault": "Iosevka Aile",
         "fontDefaultScale": 1,
-        "fontFixed": "JetBrainsMono Nerd Font",
+        "fontFixed": "Adwaita Mono",
         "fontFixedScale": 1,
         "networkPanelView": "ethernet",
         "panelBackgroundOpacity": 0.93,
         "panelsAttachedToBar": true,
-        "settingsPanelMode": "attached",
+        "settingsPanelMode": "window",
         "tooltipsEnabled": true,
         "wifiDetailsViewMode": "grid"
     },
