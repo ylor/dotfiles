@@ -62,3 +62,5 @@ xwayland-satellite
 zed
 zoxide
 wtype
+loupe
+cloudflared

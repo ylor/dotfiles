@@ -47,15 +47,6 @@
         "widgets": {
             "center": [
                 {
-                    "defaultSettings": {
-                        "currentIconName": "world-download",
-                        "hideOnZero": false,
-                        "updateIntervalMinutes": 30,
-                        "updateTerminalCommand": "foot -e"
-                    },
-                    "id": "plugin:update-count"
-                },
-                {
                     "characterCount": 2,
                     "colorizeIcons": false,
                     "enableScrollWheel": true,
@@ -124,6 +115,15 @@
                     "id": "Tray",
                     "pinned": [
                     ]
+                },
+                {
+                    "defaultSettings": {
+                        "currentIconName": "world-download",
+                        "hideOnZero": false,
+                        "updateIntervalMinutes": 30,
+                        "updateTerminalCommand": "foot -e"
+                    },
+                    "id": "plugin:update-count"
                 },
                 {
                     "deviceNativePath": "",
@@ -489,7 +489,7 @@
         "wifiDetailsViewMode": "grid"
     },
     "wallpaper": {
-        "directory": "/home/roly/Pictures/Wallpapers",
+        "directory": "/home/roly/Pictures/wallz",
         "enableMultiMonitorDirectories": false,
         "enabled": true,
         "fillColor": "#000000",
