@@ -147,10 +147,10 @@
                 },
                 {
                     "customFont": "",
-                    "formatHorizontal": "ddd MMM d  h:mm AP",
+                    "formatHorizontal": "h:mm AP",
                     "formatVertical": "",
                     "id": "Clock",
-                    "tooltipFormat": "",
+                    "tooltipFormat": "ddd, MMM dd",
                     "useCustomFont": false,
                     "usePrimaryColor": false
                 }
@@ -489,7 +489,7 @@
         "wifiDetailsViewMode": "grid"
     },
     "wallpaper": {
-        "directory": "/home/roly/Pictures/wallz",
+        "directory": "/home/roly/Pictures/Wallpapers",
         "enableMultiMonitorDirectories": false,
         "enabled": true,
         "fillColor": "#000000",
