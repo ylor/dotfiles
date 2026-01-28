@@ -9,3 +9,4 @@ if [[ $(uname) == "Linux" ]]; then
         type hyprland && pidof hyprland || start-hyprland
     fi
 fi
+. "$HOME/.cargo/env"

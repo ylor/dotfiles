@@ -2,7 +2,7 @@
 local hs = hs
 Work = string.find(hs.host.localizedName(), "^PAPA")
 
--- Use global declarations in Hammerspoon to prevent garbage collection
+-- Use global declarations to prevent garbage collection
 require("lib.keymap")
 require("lib.snippets")
 require("lib.mouse")
@@ -17,9 +17,9 @@ App(Mod.main, "I", "Safari")
 App(Mod.main, "P", "1Password")
 App(Mod.main, "Return", "Ghostty")
 App(Mod.main, "T", "Ghostty")
+
 App(Mod.main.shift, "I", "Helium")
 App(Mod.main.shift, "T", "Terminal")
-
 Tui(Mod.hyper, "P", "/opt/homebrew/bin/btop")
 
 -- Binds Control + Option + Command + L to lock the screen immediately
@@ -29,8 +29,8 @@ hs.hotkey.bind(Mod.main, "L", hs.caffeinate.lockScreen)
 -- Web(Mod.main.shift, "A", "https://gemini.google.com")
 
 if Work then
-    App(Mod.main, "I", "Google Chrome")
-    App(Mod.main.shift, "I", "Safari")
+    App(Mod.main, "I", "Google Chrome Dev")
+    App(Mod.main.shift, "I", "Helium")
     App(Mod.main, "S", "Slack")
 end
 

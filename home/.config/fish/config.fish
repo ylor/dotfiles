@@ -14,6 +14,7 @@ if status --is-interactive
 
     # Syntax highlighting
     set fish_color_command green
+    set fish_color_normal brblack
     set fish_color_param white
 
     fish_vi_key_bindings # I'm trying to grow a neckbeard

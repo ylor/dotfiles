@@ -7,6 +7,6 @@ function fish_right_prompt
     # set symbol ""
     # set symbol "⌘"
     # █ ▓ ▒ ░ ⣿
-    set_color black
+    set_color brblack
     string lower "$USER@$machine ✦"
 end

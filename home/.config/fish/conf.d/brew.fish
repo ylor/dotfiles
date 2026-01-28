@@ -27,7 +27,7 @@ if command -vq brew # https://github.com/Homebrew/brew
                 command brew search $args
             case up
                 command brew update && command brew upgrade
-                detach fish_update_completions
+                # detach fish_update_completions
             case formula
                 command brew formulae | fzf --multi --layout reverse-list --preview 'brew info {1}' | xargs -ro brew install
             case casks
