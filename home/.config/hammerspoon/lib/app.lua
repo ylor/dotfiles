@@ -73,7 +73,7 @@ end
 -- if not AppExists("Maccy") then
 hs.hotkey.bind({ "cmd", "shift" }, "v", function()
     hs.eventtap.keyStroke({ "cmd" }, "space", 0)
-    hs.timer.doAfter(0.01, function()
+    hs.timer.doAfter(0.1, function()
         hs.eventtap.keyStroke({ "cmd" }, "4", 0)
     end)
 end)
