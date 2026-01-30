@@ -5,9 +5,9 @@ paru -S --needed --skipreview $pkgs
 paru --clean
 
 # DESKTOP
-if command -vq zeditor
-    sudo cp /usr/share/icons/zed.png /usr/share/icons/hicolor/512x512/apps/zed.png
-end
+#if command -vq zeditor
+#    sudo cp /usr/share/icons/zed.png /usr/share/icons/hicolor/512x512/apps/zed.png
+#end
 
 if command -vq nvidia-smi
     paru -S --needed --skipreview vk-hdr-layer-kwin6-git

@@ -33,7 +33,7 @@
         "volumeStep": 5
     },
     "bar": {
-        "backgroundOpacity": 0.93,
+        "backgroundOpacity": 0,
         "barType": "simple",
         "capsuleOpacity": 1,
         "density": "default",
@@ -132,15 +132,6 @@
                     ]
                 },
                 {
-                    "defaultSettings": {
-                        "currentIconName": "world-download",
-                        "hideOnZero": false,
-                        "updateIntervalMinutes": 30,
-                        "updateTerminalCommand": "foot -e"
-                    },
-                    "id": "plugin:update-count"
-                },
-                {
                     "deviceNativePath": "",
                     "displayMode": "onhover",
                     "hideIfIdle": true,
@@ -170,6 +161,15 @@
                     "tooltipFormat": "ddd, MMM dd",
                     "useCustomFont": false,
                     "usePrimaryColor": false
+                },
+                {
+                    "defaultSettings": {
+                        "currentIconName": "world-download",
+                        "hideOnZero": false,
+                        "updateIntervalMinutes": 30,
+                        "updateTerminalCommand": "foot -e"
+                    },
+                    "id": "plugin:update-count"
                 }
             ]
         }
@@ -201,9 +201,9 @@
         "manualSunrise": "06:30",
         "manualSunset": "18:30",
         "monitorForColors": "DP-1",
-        "predefinedScheme": "Eldritch",
+        "predefinedScheme": "1337",
         "schedulingMode": "off",
-        "useWallpaperColors": true
+        "useWallpaperColors": false
     },
     "controlCenter": {
         "cards": [
@@ -248,23 +248,6 @@
             ],
             "right": [
                 {
-                    "defaultSettings": {
-                        "audioCodec": "opus",
-                        "audioSource": "default_output",
-                        "colorRange": "limited",
-                        "copyToClipboard": false,
-                        "directory": "",
-                        "filenamePattern": "recording_yyyyMMdd_HHmmss",
-                        "frameRate": "60",
-                        "quality": "very_high",
-                        "resolution": "original",
-                        "showCursor": true,
-                        "videoCodec": "h264",
-                        "videoSource": "portal"
-                    },
-                    "id": "plugin:screen-recorder"
-                },
-                {
                     "id": "PowerProfile"
                 },
                 {
@@ -299,10 +282,10 @@
     },
     "general": {
         "allowPanelsOnScreenWithoutBar": true,
-        "allowPasswordWithFprintd": false,
+        "allowPasswordWithFprintd": true,
         "animationDisabled": false,
         "animationSpeed": 2,
-        "autoStartAuth": false,
+        "autoStartAuth": true,
         "avatarImage": "~/.config/noctalia/avatar",
         "boxRadiusRatio": 1,
         "compactLockScreen": true,
@@ -334,7 +317,7 @@
         "screenLock": "",
         "screenUnlock": "",
         "session": "",
-        "startup": "",
+        "startup": "sh ~/.config/hypr/bin/noctalia.sh",
         "wallpaperChange": "sh ~/.config/hypr/bin/noctalia.sh"
     },
     "location": {
@@ -357,7 +340,7 @@
         "bluetoothRssiPollIntervalMs": 10000,
         "bluetoothRssiPollingEnabled": false,
         "wifiDetailsViewMode": "grid",
-        "wifiEnabled": false
+        "wifiEnabled": true
     },
     "nightLight": {
         "autoSchedule": true,
@@ -517,7 +500,7 @@
         "automationEnabled": true,
         "directory": "/home/roly/Pictures/Wallpapers",
         "enableMultiMonitorDirectories": false,
-        "enabled": true,
+        "enabled": false,
         "fillColor": "#000000",
         "fillMode": "crop",
         "hideWallpaperFilenames": false,

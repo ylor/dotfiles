@@ -1,0 +1,8 @@
+{
+  "updateIntervalMinutes": 30,
+  "updateTerminalCommand": "sh ~/.config/hypr/bin/float-tui.sh paru -Syu",
+  "currentIconName": "world-download",
+  "hideOnZero": true,
+  "customCmdGetNumUpdates": "",
+  "customCmdDoSystemUpdate": ""
+}
