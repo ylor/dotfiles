@@ -58,31 +58,31 @@ end
 
 # DESKTOP
 # FIX GIGABYTE SLEEP
-if cat /sys/devices/virtual/dmi/id/board_name | grep -iq "B650 AORUS ELITE AX"
-    echo '[Unit]
-    Description=Disable XH00 as ACPI wakeup source to workaround Gigabyte isntant wake issue
-    After=multi-user.target
+# if cat /sys/devices/virtual/dmi/id/board_name | grep -iq "B650 AORUS ELITE AX"
+#     echo '[Unit]
+#     Description=Disable XH00 as ACPI wakeup source to workaround Gigabyte isntant wake issue
+#     After=multi-user.target
     
-    [Service]
-    Type=oneshot
-    ExecStart=sh -c "echo XH00 > /proc/acpi/wakeup"
+#     [Service]
+#     Type=oneshot
+#     ExecStart=sh -c "echo XH00 > /proc/acpi/wakeup"
     
-    [Install]
-    WantedBy=multi-user.target' | sudo tee /etc/systemd/system/gigabyte-suspend-workaround.service >/dev/null
+#     [Install]
+#     WantedBy=multi-user.target' | sudo tee /etc/systemd/system/gigabyte-suspend-workaround.service >/dev/null
 
-    sudo systemctl daemon-reload
-    sudo systemctl enable gigabyte-suspend-workaround.service
-    sudo systemctl start gigabyte-suspend-workaround.service
-end
+#     sudo systemctl daemon-reload
+#     sudo systemctl enable gigabyte-suspend-workaround.service
+#     sudo systemctl start gigabyte-suspend-workaround.service
+# end
 
-if command -vq efibootmgr
-    echo "$(whoami) ALL=(root) NOPASSWD: /usr/bin/efibootmgr -n *" | sudo tee "/etc/sudoers.d/efibootmgr"
-end
+# if command -vq efibootmgr
+#     echo "$(whoami) ALL=(root) NOPASSWD: /usr/bin/efibootmgr -n *" | sudo tee "/etc/sudoers.d/efibootmgr"
+# end
 
-if command -vq 1password
-    sudo mkdir -p /etc/1password
-    echo helium | sudo tee /etc/1password/custom_allowed_browsers
-end
+# if command -vq 1password
+#     sudo mkdir -p /etc/1password
+#     echo helium | sudo tee /etc/1password/custom_allowed_browsers
+# end
 
 # TODO
 ## TODO: set firefox fonts, userjs, extensions
