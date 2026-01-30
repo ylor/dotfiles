@@ -1,6 +1,6 @@
 {
   "dark": {
-    "mPrimary": "#c0c0c1",
+    "mPrimary": "#aaaaaa",
     "mOnPrimary": "#000000",
     "mSecondary": "#a7a7a7",
     "mOnSecondary": "#000000",
@@ -15,7 +15,7 @@
     "mOutline": "#3c3c3c",
     "mShadow": "#000000",
     "mHover": "#212126",
-    "mOnHover": "#c9d1d9",
+    "mOnHover": "#ffffff",
     "terminal": {
       "foreground": "#828282",
       "background": "#111111",
