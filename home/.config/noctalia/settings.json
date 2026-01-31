@@ -470,14 +470,6 @@
     },
     "templates": {
         "activeTemplates": [
-            {
-                "enabled": true,
-                "id": "fuzzel"
-            },
-            {
-                "enabled": true,
-                "id": "hyprland"
-            }
         ],
         "enableUserTheming": false
     },
