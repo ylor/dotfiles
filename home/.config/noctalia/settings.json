@@ -6,12 +6,15 @@
         "clipboardWrapText": true,
         "customLaunchPrefix": "",
         "customLaunchPrefixEnabled": false,
+        "density": "default",
         "enableClipPreview": true,
         "enableClipboardHistory": true,
+        "enableSessionSearch": true,
         "enableSettingsSearch": true,
         "enableWindowsSearch": true,
         "iconMode": "tabler",
         "ignoreMouseInput": false,
+        "overviewLayer": false,
         "pinnedApps": [
         ],
         "position": "center",
@@ -300,9 +303,34 @@
         "enableShadows": true,
         "forceBlackScreenCorners": false,
         "iRadiusRatio": 1,
+        "keybinds": {
+            "keyDown": [
+                "Down"
+            ],
+            "keyEnter": [
+                "Return"
+            ],
+            "keyEscape": [
+                "Esc"
+            ],
+            "keyLeft": [
+                "Left"
+            ],
+            "keyRight": [
+                "Right"
+            ],
+            "keyUp": [
+                "Up"
+            ]
+        },
         "language": "",
         "lockOnSuspend": false,
+        "lockScreenAnimations": true,
+        "lockScreenBlur": 0,
         "lockScreenCountdownDuration": 5000,
+        "lockScreenMonitors": [
+        ],
+        "lockScreenTint": 0,
         "radiusRatio": 1.25,
         "scaleRatio": 1,
         "screenRadiusRatio": 1,
@@ -454,10 +482,9 @@
                 "keybind": "U"
             }
         ],
-        "showHeader": false,
-        "showNumberLabels": true
+        "showHeader": false
     },
-    "settingsVersion": 49,
+    "settingsVersion": 53,
     "systemMonitor": {
         "batteryCriticalThreshold": 5,
         "batteryWarningThreshold": 20,
@@ -512,16 +539,21 @@
         "directory": "/home/roly/Pictures/Wallpapers",
         "enableMultiMonitorDirectories": false,
         "enabled": false,
+        "favorites": [
+        ],
         "fillColor": "#000000",
         "fillMode": "crop",
         "hideWallpaperFilenames": false,
         "monitorDirectories": [
         ],
+        "overviewBlur": 0.4,
         "overviewEnabled": false,
+        "overviewTint": 0.6,
         "panelPosition": "follow_bar",
         "randomIntervalSec": 3600,
         "setWallpaperOnAllMonitors": true,
         "showHiddenFiles": false,
+        "skipStartupTransition": false,
         "solidColor": "#1a1a2e",
         "sortOrder": "name",
         "transitionDuration": 500,
