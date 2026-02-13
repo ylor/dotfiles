@@ -15,6 +15,11 @@ end
 # ONBOARD
 # fprintd fwupd
 
+if command -vq ssh
+    sudo systemctl enable sshd
+    sudo systemctl start sshd
+end
+
 # FIREWALL
 if command -vq ufw
     # Allow nothing in, everything out

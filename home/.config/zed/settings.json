@@ -7,6 +7,9 @@
 // custom settings, run the `open default settings` command
 // from the command palette or from `Zed` application menu.
 {
+  "edit_predictions": {
+    "provider": "none"
+  },
   "buffer_font_size": 15.0,
   "buffer_font_family": "JetBrainsMono Nerd Font",
   "buffer_font_features": {
@@ -32,9 +35,6 @@
     "after_delay": {
       "milliseconds": 1000
     }
-  },
-  "features": {
-    "edit_prediction_provider": "none"
   },
   "ssh_connections": [
     {

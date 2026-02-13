@@ -1,6 +1,11 @@
-#!/usr/bin/envh sh
+#!/usr/bin/env sh
 
-hyprctl output create sunshine
-hyprctl keyword monitor sunshine,2560x1440@60,auto,1
-sh -c "hyprctl keyword monitor sunshine,${SUNSHINE_CLIENT_WIDTH}x${SUNSHINE_CLIENT_HEIGHT}@${SUNSHINE_CLIENT_FPS},auto,1"
-hyprctl output remove sunshine
+# hyprctl output create headless sunshine
+hyprctl keyword monitor sunshine,"${SUNSHINE_CLIENT_WIDTH-3840}"x"${SUNSHINE_CLIENT_HEIGHT-2160}"@"${SUNSHINE_CLIENT_FPS-60}",4000x0,2
+# for m in $(hyprctl monitors -j | jq -r '.[] | .name' | grep -v sunshine); do
+#        hyprctl keyword monitor "$m,disabled"
+# done
+hyprctl dispatch workspace 9
+hyprctl dispatch focusmonitor sunshine
+# hyprctl keyword monitor DP-1,disabled
+# hyprctl output remove sunshine
