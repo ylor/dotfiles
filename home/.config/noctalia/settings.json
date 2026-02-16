@@ -146,6 +146,15 @@
                     ]
                 },
                 {
+                    "defaultSettings": {
+                        "currentIconName": "world-download",
+                        "hideOnZero": false,
+                        "updateIntervalMinutes": 30,
+                        "updateTerminalCommand": "foot -e"
+                    },
+                    "id": "plugin:update-count"
+                },
+                {
                     "deviceNativePath": "__default__",
                     "displayMode": "onhover",
                     "hideIfIdle": true,
@@ -430,7 +439,7 @@
         "overlayLayer": true
     },
     "plugins": {
-        "autoUpdate": false
+        "autoUpdate": true
     },
     "sessionMenu": {
         "countdownDuration": 5000,

@@ -4,5 +4,5 @@
   "currentIconName": "world-download",
   "hideOnZero": true,
   "customCmdGetNumUpdates": "",
-  "customCmdDoSystemUpdate": ""
+  "customCmdDoSystemUpdate": "arch-update"
 }
