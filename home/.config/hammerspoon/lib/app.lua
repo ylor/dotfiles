@@ -79,25 +79,26 @@ hs.hotkey.bind({ "cmd", "shift" }, "v", function()
 end)
 -- end
 
-finderKeybind = nil
-finderwatcher = hs.application.watcher.new(function(app, event)
-    if event == hs.application.watcher.activated then
-        if app == "Finder" then
-            if finderKeybind == nil then
-                finderKeybind = hs.hotkey.bind({ "cmd" }, "l", function()
-                    SelectMenuItem({ "Go", "Go to Folder…" })
-                end)
-            end
-        end
-    end
+-- finderKeybind = nil
+-- finderwatcher = hs.application.watcher.new(function(app, event)
+--     if event == hs.application.watcher.activated then
+--         if app == "Finder" then
+--             if finderKeybind == nil then
+--                 finderKeybind = hs.hotkey.bind({ "cmd" }, "l", function()
+--                     SelectMenuItem({ "Go", "Go to Folder…" })
+--                 end)
+--             end
+--         end
+--     end
 
-    if event == hs.application.watcher.deactivated then
-        if app == "Finder" then
-            if finderKeybind ~= nil then
-                finderKeybind:delete()
-                finderKeybind = nil
-            end
-        end
-    end
-end)
-finderwatcher:start()
+--     if event == hs.application.watcher.deactivated then
+--         if app == "Finder" then
+--             if finderKeybind ~= nil then
+--                 finderKeybind:delete()
+--                 finderKeybind = nil
+--             end
+--         end
+--     end
+-- end)
+-- finderwatcher:start()
+

@@ -92,39 +92,39 @@ for i = 1, 5 do
     end)
 end
 
-local function handleAppLaunch(appName)
-    local apps = {}
-    if Work then
-        apps = {
-            ["Arc"] = 1,
-            ["Safari"] = 1,
-            ["Slack"] = 2,
-            ["Ghostty"] = 3,
-            ["Zed"] = 3,
-            ["Screen Sharing"] = 4,
-        }
-    else
-        apps = {
-            ["Safari"] = 1,
-            ["Ghostty"] = 2,
-            ["Zed"] = 2,
-            ["Messages"] = 3,
-            ["Screen Sharing"] = 3
-        }
-    end
+-- local function handleAppLaunch(appName)
+--     local apps = {}
+--     if Work then
+--         apps = {
+--             ["Arc"] = 1,
+--             ["Safari"] = 1,
+--             ["Slack"] = 2,
+--             ["Ghostty"] = 3,
+--             ["Zed"] = 3,
+--             ["Screen Sharing"] = 4,
+--         }
+--     else
+--         apps = {
+--             ["Safari"] = 1,
+--             ["Ghostty"] = 2,
+--             ["Zed"] = 2,
+--             ["Messages"] = 3,
+--             ["Screen Sharing"] = 3
+--         }
+--     end
 
-    if apps[appName] == GetSpaceIndex() then return end
-    if apps[appName] then
-        moveWindowToSpaceByDrag(apps[appName])
-    end
-end
+--     if apps[appName] == GetSpaceIndex() then return end
+--     if apps[appName] then
+--         moveWindowToSpaceByDrag(apps[appName])
+--     end
+-- end
 
----needs to be a global var otherwise it gets garbage collected apparently
-appwatcher = hs.application.watcher.new(function(appName, event)
-        if event == hs.application.watcher.launched then
-            hs.timer.doAfter(0.1, function()
-                handleAppLaunch(appName)
-            end)
-        end
-    end)
-    :start()
+-- ---needs to be a global var otherwise it gets garbage collected apparently
+-- appwatcher = hs.application.watcher.new(function(appName, event)
+--         if event == hs.application.watcher.launched then
+--             hs.timer.doAfter(0.1, function()
+--                 handleAppLaunch(appName)
+--             end)
+--         end
+--     end)
+--     :start()

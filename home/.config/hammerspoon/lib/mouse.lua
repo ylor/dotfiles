@@ -25,28 +25,49 @@ local function ScrollWheelHandler(event)
         -event:getProperty(hs.eventtap.event.properties.scrollWheelEventDeltaAxis1))
 end
 
-local function MouseButtonHandler(event)
-    local buttonNumber = event:getProperty(hs.eventtap.event.properties.mouseEventButtonNumber)
-    local eventType = event:getType()
+-- local function MouseButtonHandler(event)
+--     local buttonNumber = event:getProperty(hs.eventtap.event.properties.mouseEventButtonNumber)
+--     local eventType = event:getType()
 
-    if eventType == hs.eventtap.event.types.otherMouseUp then
-        if buttonNumber == 3 then                 -- Mouse Button 4 (usually "back")
-            hs.eventtap.keyStroke({ "cmd" }, "[") -- Simulate Cmd + [ for "back"
-        elseif buttonNumber == 4 then             -- Mouse Button 5 (usually "forward")
-            hs.eventtap.keyStroke({ "cmd" }, "]") -- Simulate Cmd + ] for "forward"
-        else
-            return false
-        end
+--     if eventType == hs.eventtap.event.types.otherMouseUp then
+--         if buttonNumber == 3 then                 -- Mouse Button 4 (usually "back")
+--             hs.eventtap.keyStroke({ "cmd" }, "[") -- Simulate Cmd + [ for "back"
+--         elseif buttonNumber == 4 then             -- Mouse Button 5 (usually "forward")
+--             hs.eventtap.keyStroke({ "cmd" }, "]") -- Simulate Cmd + ] for "forward"
+--         else
+--             return false
+--         end
 
-        return true
-    end
-end
+--         return true
+--     end
+-- end
 
 
-MouseWatcher = hs.eventtap.new({ hs.eventtap.event.types.otherMouseDown, hs.eventtap.event.types.otherMouseUp },
-    MouseButtonHandler)
+-- MouseWatcher = hs.eventtap.new({ hs.eventtap.event.types.otherMouseDown, hs.eventtap.event.types.otherMouseUp },
+--     MouseButtonHandler)
 
 ScrollWheel = hs.eventtap.new({ hs.eventtap.event.types.scrollWheel }, ScrollWheelHandler)
 
 ScrollWheel:start()
-MouseWatcher:start()
+-- MouseWatcher:start()
+
+-- -- Use a single watcher for both Down and Up to ensure we "catch" the click
+mouseWatcher = hs.eventtap.new({ hs.eventtap.event.types.otherMouseDown }, function(event)
+    local buttonNumber = event:getProperty(hs.eventtap.event.properties.mouseEventButtonNumber)
+    local app = hs.application.frontmostApplication()
+
+    -- Check if Finder is the active app
+    if app and app:title() == "Finder" then
+        if buttonNumber == 3 then
+            -- Cmd + [ (Back)
+            hs.eventtap.keyStroke({ "cmd" }, "[")
+            return true
+        elseif buttonNumber == 4 then
+            -- Cmd + ] (Forward)
+            hs.eventtap.keyStroke({ "cmd" }, "]")
+            return true
+        end
+    end
+
+    return false
+end):start()
