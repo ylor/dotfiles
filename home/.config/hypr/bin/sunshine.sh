@@ -7,7 +7,7 @@ hyprctl keyword monitor sunshine,"${SUNSHINE_CLIENT_WIDTH-3840}"x"${SUNSHINE_CLI
 # done
 # hyprctl dispatch workspace 9
 # hyprctl dispatch focusmonitor sunshine
-hyprctl keyword monitor DP-1,disabled
 # hyprctl output remove sunshine
 # #systemd-inhibit --what=idle
+
 # systemd-inhibit --no-ask-password --what=idle --who="me" --why="streaming" sh & disown; export STREAMING_PID=$!

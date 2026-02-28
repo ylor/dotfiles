@@ -526,7 +526,7 @@
             },
             {
                 "action": "logout",
-                "command": "",
+                "command": "hyprshutdown || hyprctl dispatch exit",
                 "countdownEnabled": true,
                 "enabled": true,
                 "keybind": "O"

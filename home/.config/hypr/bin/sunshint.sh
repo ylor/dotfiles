@@ -4,6 +4,6 @@
 # # hyprctl reload
 # # hyprctl keyword monitor sunshine,disabled
 
+# hyprctl output remove sunshine
+# move all open windows to 
 # kill -SIGKILL $STREAMING_PID; STREAMING_PID=
-hyprctl reload
-hyprctl output remove sunshine
