@@ -526,7 +526,7 @@
             },
             {
                 "action": "logout",
-                "command": "hyprshutdown --post-cmd loginctl terminate-user $(whoami)",
+                "command": "",
                 "countdownEnabled": true,
                 "enabled": true,
                 "keybind": "O"
