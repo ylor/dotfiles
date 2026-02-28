@@ -24,6 +24,7 @@ hyprpicker
 hyprpolkitagent
 hyprpwcenter
 hyprshot
+hyprshutdown
 lact
 mpv
 nautilus
