@@ -2,30 +2,42 @@
 local hs = hs
 
 -- Launch, focus or cycle through instances of an application
-local windowApp = ""
+local lastApp = ""
 local windowList = {}
 local windowIndex = 0
-local function AppHandler(app)
-    local filter = hs.window.filter.new(app):setScreens(hs.screen.mainScreen():getUUID())
-    local windows = filter:getWindows(hs.window.filter.sortByFocusedLast)
-    local focused = hs.window.focusedWindow()
 
-    local newApp = windowApp ~= app
-    local newCycle = windowList == {} or #windows ~= #windowList
-    local newFocus = focused ~= windowList[windowIndex]
+local function AppHandler(appTitle)
+    local app = hs.application.get(appTitle)
 
-    if newApp or newCycle or newFocus then
-        windowApp = app
+    if not app then
+        hs.application.launchOrFocus(appTitle)
+        return
+    end
+
+    local windows = {}
+    for _, win in ipairs(app:allWindows()) do
+        if win:isStandard() and win:screen() == hs.screen.primaryScreen() then
+            table.insert(windows, win)
+        end
+    end
+
+    -- 4. If no windows found, just activate the app
+    if #windows == 0 then
+        hs.application.launchOrFocus(appTitle)
+        return
+    end
+
+
+    if lastApp ~= appTitle or #windows ~= #windowList then
         windowList = windows
+        lastApp = appTitle
         windowIndex = 1
+    else
+        windowIndex = (windowIndex % #windows) + 1
     end
 
-    if #windows >= 1 then
-        windowIndex = (windowIndex % #windowList) + 1
-        windowList[windowIndex]:focus()
-    else
-        hs.application.launchOrFocus(app)
-    end
+    -- 6. Direct focus (the fastest focus method)
+    windowList[windowIndex]:focus()
 end
 
 function App(mods, key, app)
@@ -70,35 +82,26 @@ function Unlock1Password()
     hs.execute("/opt/homebrew/bin/op account get")
 end
 
--- if not AppExists("Maccy") then
-hs.hotkey.bind({ "cmd", "shift" }, "v", function()
+function Clipboard()
     hs.eventtap.keyStroke({ "cmd" }, "space", 0)
     hs.timer.doAfter(0.1, function()
         hs.eventtap.keyStroke({ "cmd" }, "4", 0)
     end)
+end
+
+-- if not AppExists("Maccy") then
+hs.hotkey.bind({ "cmd", "shift" }, "v", function()
+    -- hs.eventtap.keyStroke({ "cmd" }, "space", 0)
+    -- hs.timer.doAfter(0.1, function()
+    --     hs.eventtap.keyStroke({ "cmd" }, "4", 0)
+    -- end)
+    Clipboard()
 end)
--- end
 
--- finderKeybind = nil
--- finderwatcher = hs.application.watcher.new(function(app, event)
---     if event == hs.application.watcher.activated then
---         if app == "Finder" then
---             if finderKeybind == nil then
---                 finderKeybind = hs.hotkey.bind({ "cmd" }, "l", function()
---                     SelectMenuItem({ "Go", "Go to Folder…" })
---                 end)
---             end
---         end
---     end
-
---     if event == hs.application.watcher.deactivated then
---         if app == "Finder" then
---             if finderKeybind ~= nil then
---                 finderKeybind:delete()
---                 finderKeybind = nil
---             end
---         end
---     end
--- end)
--- finderwatcher:start()
-
+hs.hotkey.bind({ "alt" }, "v", function()
+    -- hs.eventtap.keyStroke({ "cmd" }, "space", 0)
+    -- hs.timer.doAfter(0.1, function()
+    --     hs.eventtap.keyStroke({ "cmd" }, "4", 0)
+    -- end)
+    Clipboard()
+end)

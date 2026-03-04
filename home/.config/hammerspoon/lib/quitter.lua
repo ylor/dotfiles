@@ -13,14 +13,12 @@ local exempt = {
     ["Arc"] = true,
     ["Orion"] = true,
     ["Ghostty"] = true,
+    ["Moonlight"] = true,
 }
 
-WindowFilter = hs.window.filter.default
-WindowFilter:subscribe(hs.window.filter.windowDestroyed, function(window, application)
-    local app = hs.application.get(application)
-    if not app then return end
-    if app:kind() == 0 then return end
-    if exempt[app:name()] then return end
-    if #app:allWindows() > 0 then return end
-    app:kill()
+hs.window.filter.default:subscribe(hs.window.filter.windowDestroyed, function(_, appName)
+    local app = hs.application.get(appName)
+    if app and app:kind() > 0 and not exempt[appName] and #app:allWindows() == 0 then
+        app:kill()
+    end
 end)

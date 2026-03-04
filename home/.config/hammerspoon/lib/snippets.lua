@@ -1,69 +1,84 @@
 ---@diagnostic disable-next-line: undefined-global
 local hs = hs
 
-local em = "cm9seXJleWVzQG1lLmNvbQ=="
-if Work then
-    em = "cnJleWVzQHBhcGEuY29t"
-end
-
-keywords = {
-    ["@@"] = hs.base64.decode(em),
+local email = Work and "cnJleWVzQHBhcGEuY29t" or "cm9seXJleWVzQ@1lLmNvbQ=="
+local snippets = {
+    ["@@"]     = hs.base64.decode(email),
     ["shrugg"] = "¯\\_(ツ)_/¯",
-    ["tmm"] = "™",
-    ["xx"] = "×"
+    ["tmm"]    = "™",
+    ["xx"]     = "×",
+    ["foo"]    = "bar",
+    ["@date"]  = function() return os.date("%Y-%m-%d") end,
 }
 
-local word = ""
-local key = hs.keycodes.map
-local DEBUG = false
+local buffer = ""
 
--- create an "event listener" function that will run whenever the event happens
-keywatcher = hs.eventtap.new({ hs.eventtap.event.types.keyDown }, function(event)
-    local kc = event:getKeyCode()
+expanderKeyWatcher = hs.eventtap.new({ hs.eventtap.event.types.keyDown }, function(event)
+    local flags = event:getFlags()
+    local keyCode = event:getKeyCode()
     local char = event:getCharacters()
+    local k = hs.keycodes.map
 
-    -- if "delete" key is pressed
-    if kc == key["delete"] then
-        if #word > 0 then
-            -- remove the last char from a string with support to utf8 characters
-            local t = {}
-            for _, chars in utf8.codes(word) do table.insert(t, chars) end
-            table.remove(t, #t)
-            word = utf8.char(table.unpack(t))
-            if DEBUG then print("Word after deleting:", word) end
+    -- Ignore modifier combos (Cmd+C, etc.)
+    if flags.cmd or flags.ctrl or flags.alt then
+        buffer = ""
+        return false
+    end
+
+    -- Handle Backspace
+    if keyCode == k["delete"] then
+        if #buffer > 0 then
+            local offset = utf8.offset(buffer, -1)
+            if offset then buffer = string.sub(buffer, 1, offset - 1) end
         end
-        return false -- pass the "delete" keystroke on to the application
+        return false
     end
 
-    -- append char to "word" buffer
-    word = word .. char
-    if DEBUG then print("Word after appending:", word) end
+    -- 3. EXPAND ON WORD BOUNDARIES: Define what triggers an expansion
+    local isBoundary = false
+    local boundaryChar = ""
 
-    -- if one of these "navigational" keys is pressed
-    if kc == key["return"]
-        or kc == key["delete"]
-        or kc == key["space"]
-        or kc == key["up"]
-        or kc == key["down"]
-        or kc == key["left"]
-        or kc == key["right"] then
-        word = "" -- clear the buffer
+    if keyCode == k["space"] then
+        isBoundary = true; boundaryChar = " "
+    elseif keyCode == k["return"] then
+        isBoundary = true; boundaryChar = "\n"
+    elseif char and string.match(char, "[%.,;!%?]") then
+        isBoundary = true; boundaryChar = char
     end
-    if DEBUG then print("Word to check if hotstring:", word) end
 
-    -- finally, if "word" is a hotstring
-    if keywords[word] then
-        for i = 1, utf8.len(word), 1 do hs.eventtap.keyStroke({}, "delete", 0) end -- delete the abbreviation
+    if isBoundary then
+        local expansion = snippets[buffer]
 
-        if type(keywords[word]) == "function" then
-            hs.eventtap.keyStrokes(keywords[word]())
+        if expansion then
+            local bksps = utf8.len(buffer)
+            buffer = ""
+            for i = 1, bksps do hs.eventtap.keyStroke({}, "delete", 0) end
+            local out = type(expansion) == "function" and expansion() or expansion
+            hs.eventtap.keyStrokes(out .. boundaryChar)
+
+            return true
         else
-            hs.eventtap.keyStrokes(keywords[word]) -- expand the word
+            buffer = ""
+            return false
         end
-        word = ""                                  -- clear the buffer
     end
 
-    return false -- pass the event on to the application
-end):start()     -- start the eventtap
+    -- Reset on arrow keys/navigation
+    if keyCode == k["up"] or keyCode == k["down"] or keyCode == k["left"] or keyCode == k["right"] or keyCode == k["escape"] then
+        buffer = ""
+        return false
+    end
 
--- source: https://github.com/Hammerspoon/hammerspoon/issues/1042#issuecomment-1090748005
+    -- Append character to buffer (filter non-printables)
+    if char and #char > 0 and not char:match("%c") then
+        buffer = buffer .. char
+    end
+
+    return false
+end):start()
+
+-- Mouse Watcher
+expanderMouseWatcher = hs.eventtap.new({ hs.eventtap.event.types.leftMouseDown }, function()
+    buffer = ""
+    return false
+end):start()

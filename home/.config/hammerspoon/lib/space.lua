@@ -8,46 +8,50 @@ end
 
 -- MARK: Menubar item
 local spaceMenu = hs.menubar.new()
-spaceMenu:setClickCallback(function(_, mods)
-    hs.openConsole(true)
-end)
 
-function GetSpaceIndex()
-    -- local screen = hs.screen.primaryScreen()
+-- Function to get current space index and total count
+local function getSpaceInfo()
     local screenSpaces = hs.spaces.spacesForScreen("Primary")
     local currentSpace = hs.spaces.activeSpaceOnScreen("Primary")
+
     for i, id in ipairs(screenSpaces) do
         if id == currentSpace then
-            return i
+            return i, #screenSpaces
         end
     end
-    return "?"
+    -- return nil, #screenSpaces
 end
 
-local function replace_unicode_char(str, index, replacement)
-    local utf8 = require("utf8")
-    local chars = {}
-    for p, c in utf8.codes(str) do
-        table.insert(chars, utf8.char(c))
-    end
-    chars[index] = replacement
-    return table.concat(chars)
-end
-
--- Function to update the menubar title
 local function updateSpace()
-    local index = GetSpaceIndex()
-    local dots = string.rep("○", #hs.spaces.spacesForScreen("Primary"))
-    local filled = replace_unicode_char(dots, index, "●")
-    spaceMenu:setTitle(filled)
+    local currentIndex, totalSpaces = getSpaceInfo()
+
+    if not currentIndex then
+        spaceMenu:setTitle("?"); return
+    end
+
+    -- build indicator (e.g., ●○○○○)
+    local indicator = ""
+    for i = 1, totalSpaces do
+        if i == currentIndex then
+            indicator = indicator .. "●"
+        else
+            indicator = indicator .. "○"
+        end
+    end
+
+    spaceMenu:setTitle(indicator)
 end
 
--- Call once initially
+-- WATCHER: Update when the active space changes
+-- This is the "missing link" in the original script
+hs.spaces.watcher.new(updateSpace):start()
+hs.screen.watcher.new(updateSpace):start()
+
 updateSpace()
 
--- Set up watcher to respond to space changes
-local spaceWatcher = hs.spaces.watcher.new(updateSpace)
-spaceWatcher:start()
+spaceMenu:setClickCallback(function()
+    hs.openConsole(true)
+end)
 
 -- Function to move window to space using mouse drag simulation
 local function moveWindowToSpaceByDrag(spaceNumber)

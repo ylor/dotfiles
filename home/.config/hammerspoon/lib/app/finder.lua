@@ -3,10 +3,9 @@ local hs = hs
 
 -- Define a modal group for Finder-specific shortcuts
 local finderKeys = hs.hotkey.modal.new()
-
--- Bind your key to the modal instead of the global scope
 finderKeys:bind({ "cmd" }, "l", function()
     local finder = hs.application.get("Finder")
+    -- hs.eventtap.keyStroke({ "cmd", "shift" }, "g")
     finder:selectMenuItem({ "Go", "Go to Folder…" })
 end)
 

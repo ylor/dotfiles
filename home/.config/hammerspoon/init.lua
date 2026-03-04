@@ -1,9 +1,19 @@
 ---@diagnostic disable-next-line: undefined-global
-local hs = hs
-Work = string.find(hs.host.localizedName(), "^PAPA")
+local hs        = hs
+
+Mod             = {}
+Mod.main        = { "option" }
+Mod.main.shift  = { "option", "shift" }
+Mod.alt         = { "control" }
+Mod.alt.shift   = { "control", "shift" }
+Mod.combined    = { "control", "option" }
+Mod.hyper       = { "control", "option", "command" }
+Mod.hyper.shift = { "control", "option", "command", "shift" }
+
+Work            = string.find(hs.host.localizedName(), "^PAPA")
 
 -- Use global declarations to prevent garbage collection
-require("lib.keymap")
+-- require("lib.keymap")
 require("lib.snippets")
 require("lib.mouse")
 require("lib.macos")
@@ -16,15 +26,15 @@ require("lib.quitter")
 App(Mod.main, "E", "Finder")
 App(Mod.main, "I", "Safari")
 App(Mod.main, "P", "1Password")
+App(Mod.main, ".", "1Password")
 App(Mod.main, "Return", "Ghostty")
+App(Mod.main.shift, "Return", "Zed")
+App(Mod.main, "C", "Zed")
 App(Mod.main, "T", "Ghostty")
 
 App(Mod.main.shift, "I", "Helium")
 App(Mod.main.shift, "T", "Terminal")
 Tui(Mod.hyper, "P", "/opt/homebrew/bin/btop")
-
--- Binds Control + Option + Command + L to lock the screen immediately
-hs.hotkey.bind(Mod.main, "L", hs.caffeinate.lockScreen)
 
 -- Web(Mod.main, "A", "https://chatgpt.com")
 -- Web(Mod.main.shift, "A", "https://gemini.google.com")
@@ -35,8 +45,10 @@ if Work then
     App(Mod.main, "S", "Slack")
 end
 
+hs.hotkey.bind(Mod.main, "L", hs.caffeinate.lockScreen)
 hs.hotkey.bind(Mod.hyper, "F", WindowFullscreen)
 hs.hotkey.bind(Mod.hyper, "D", ShowDesktop)
+
 
 hs.hotkey.bind(Mod.hyper, "left", function()
     local win = hs.window.focusedWindow()
@@ -53,7 +65,7 @@ hs.hotkey.bind(Mod.hyper, "right", function()
 end)
 
 -- hs.hotkey.bind(Mod.hyper, "o", function() RunCommand("trex") end)
-hs.hotkey.bind(Mod.main, ".", Unlock1Password)
+-- hs.hotkey.bind(Mod.main, ".", Unlock1Password)
 
 hs.hotkey.bind(Mod.hyper, "\\", hs.reload)
 hs.hotkey.bind(Mod.hyper, "R", hs.reload)
