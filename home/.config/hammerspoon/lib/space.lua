@@ -43,9 +43,7 @@ local function updateSpace()
 end
 
 -- WATCHER: Update when the active space changes
--- This is the "missing link" in the original script
 hs.spaces.watcher.new(updateSpace):start()
-hs.screen.watcher.new(updateSpace):start()
 
 updateSpace()
 
