@@ -36,7 +36,8 @@ local function handleKeyDown(event)
     -- window cycling
     if isCmd or isAlt then
         if (kc == keys["tab"]) then
-            WindowHandler(); return true
+            WindowHandler(); CenterMouse();
+            return true
         end
     end
 
@@ -64,3 +65,85 @@ local function handleKeyDown(event)
 end
 
 EventTapper = hs.eventtap.new({ hs.eventtap.event.types.keyDown }, handleKeyDown):start()
+
+local windowMenu = hs.menubar.new()
+local iconCache = {} -- Prevents re-processing icons on every refresh
+local excludedApps = { ["Notification Center"] = true }
+local wf2 = hs.window.filter.new(true)
+
+local function updateWindowMenu()
+    local menuData = {}
+    -- local allWindows = hs.window.allWindows()
+    local allWindows = wf2:getWindows()
+
+    for _, win in ipairs(allWindows) do
+        local app = win:application()
+        local winTitle = win:title()
+
+        -- Filter out invalid windows, empty titles, and excluded apps
+        if app and winTitle and winTitle ~= "" then
+            local appName = app:name() or "Unknown App"
+
+            if not excludedApps[appName] then
+                -- Icon Caching: only resize the icon once per app bundle
+                local bundleID = app:bundleID()
+                if iconCache[bundleID] == nil then
+                    local img = hs.image.imageFromAppBundle(bundleID)
+                    iconCache[bundleID] = img and img:setSize({ w = 32, h = 32 }) or false
+                end
+
+                -- Styled Text for Menu Item
+                local styledTitle = hs.styledtext.new(winTitle .. "\n", {
+                    font = { size = 12, name = ".AppleSystemUIFontBold" }
+                }) .. hs.styledtext.new(appName, {
+                    font = { size = 10 },
+                    color = { white = 0.5 }
+                })
+
+                table.insert(menuData, {
+                    title = styledTitle,
+                    key = (appName .. winTitle):lower(),
+                    image = iconCache[bundleID] or nil,
+                    fn = function(mods)
+                        if mods.alt then
+                            win:close()
+                        else
+                            if win:isMinimized() then win:unminimize() end
+                            app:unhide()
+                            win:focus()
+                            if CenterMouse then CenterMouse(win) end
+                        end
+                    end
+                })
+            end
+        end
+    end
+
+    table.sort(menuData, function(a, b) return a.key < b.key end)
+
+    if #menuData == 0 then
+        table.insert(menuData, { title = "No windows found", disabled = true })
+    end
+
+    windowMenu:setMenu(menuData)
+    windowMenu:setTitle(#menuData > 0 and tostring(#menuData) or "")
+end
+
+-- Refresh logic
+hs.hotkey.bind({ "alt" }, "W", function()
+    updateWindowMenu()
+    windowMenu:popupMenu(hs.mouse.absolutePosition())
+end)
+
+-- Watchers
+hs.spaces.watcher.new(updateWindowMenu):start()
+
+wf2:subscribe({
+    hs.window.filter.windowCreated,
+    hs.window.filter.windowDestroyed,
+    hs.window.filter.windowMinimized,
+    hs.window.filter.windowUnminimized
+}, updateWindowMenu)
+
+-- Initial run
+updateWindowMenu()

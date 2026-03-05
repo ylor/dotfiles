@@ -19,7 +19,7 @@ local function getSpaceInfo()
             return i, #screenSpaces
         end
     end
-    -- return nil, #screenSpaces
+    return nil, #screenSpaces
 end
 
 local function updateSpace()
@@ -55,7 +55,7 @@ end)
 
 -- Function to move window to space using mouse drag simulation
 local function moveWindowToSpaceByDrag(spaceNumber)
-    if spaceNumber == GetSpaceIndex() then return end
+    if spaceNumber == getSpaceInfo() then return end
     local win = hs.window.focusedWindow()
     if not win then return end
 
