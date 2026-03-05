@@ -33,7 +33,7 @@ local function updateSpace()
     local indicator = ""
     for i = 1, totalSpaces do
         if i == currentIndex then
-            indicator = indicator .. "●"
+            indicator = indicator .. "◉"
         else
             indicator = indicator .. "○"
         end
@@ -49,6 +49,7 @@ updateSpace()
 
 spaceMenu:setClickCallback(function()
     hs.openConsole(true)
+    CenterMouse()
 end)
 
 -- Function to move window to space using mouse drag simulation

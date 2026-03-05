@@ -2,42 +2,41 @@
 local hs = hs
 
 -- Launch, focus or cycle through instances of an application
-local lastApp = ""
-local windowList = {}
-local windowIndex = 0
+local lastApp, windowList, windowIndex = "", {}, 0
 
-local function AppHandler(appTitle)
-    local app = hs.application.get(appTitle)
+hs.spaces.watcher.new(function()
+    lastApp, windowList, windowIndex = "", {}, 0
+end):start()
 
+local primaryScreen = hs.screen.primaryScreen()
+
+local function AppHandler(application)
+    local app = hs.application.get(application)
     if not app then
-        hs.application.launchOrFocus(appTitle)
+        hs.application.launchOrFocus(application)
         return
     end
 
     local windows = {}
-    for _, win in ipairs(app:allWindows()) do
-        if win:isStandard() and win:screen() == hs.screen.primaryScreen() then
-            table.insert(windows, win)
+    for _, win in ipairs(hs.window.filter.new(false):setAppFilter(application):getWindows()) do
+        if win:isStandard() and win:screen() == primaryScreen then
+            windows[#windows + 1] = win
         end
     end
 
-    -- 4. If no windows found, just activate the app
     if #windows == 0 then
-        hs.application.launchOrFocus(appTitle)
+        hs.application.launchOrFocus(application)
         return
     end
 
-
-    if lastApp ~= appTitle or #windows ~= #windowList then
-        windowList = windows
-        lastApp = appTitle
-        windowIndex = 1
+    if lastApp ~= application or #windows ~= #windowList then
+        lastApp, windowList, windowIndex = application, windows, 1
     else
-        windowIndex = (windowIndex % #windows) + 1
+        windowIndex = windowIndex % #windows + 1
     end
 
-    -- 6. Direct focus (the fastest focus method)
     windowList[windowIndex]:focus()
+    CenterMouse(windowList[windowIndex])
 end
 
 function App(mods, key, app)
@@ -45,6 +44,8 @@ function App(mods, key, app)
         AppHandler(app)
     end)
 end
+
+App("alt", "I", "Google Chrome Dev")
 
 function Tui(mods, key, bin)
     hs.hotkey.bind(mods, key, function()
@@ -60,9 +61,6 @@ end
 function Web(mods, key, url)
     hs.hotkey.bind(mods, key, function()
         hs.execute("open " .. url)
-        hs.timer.doAfter(0.5, function()
-            WindowCenter()
-        end)
     end)
 end
 
@@ -89,19 +87,6 @@ function Clipboard()
     end)
 end
 
--- if not AppExists("Maccy") then
-hs.hotkey.bind({ "cmd", "shift" }, "v", function()
-    -- hs.eventtap.keyStroke({ "cmd" }, "space", 0)
-    -- hs.timer.doAfter(0.1, function()
-    --     hs.eventtap.keyStroke({ "cmd" }, "4", 0)
-    -- end)
-    Clipboard()
-end)
-
 hs.hotkey.bind({ "alt" }, "v", function()
-    -- hs.eventtap.keyStroke({ "cmd" }, "space", 0)
-    -- hs.timer.doAfter(0.1, function()
-    --     hs.eventtap.keyStroke({ "cmd" }, "4", 0)
-    -- end)
     Clipboard()
 end)
