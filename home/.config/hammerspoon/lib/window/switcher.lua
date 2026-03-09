@@ -9,13 +9,18 @@ local wf = hs.window.filter.new()
 -- Window Cycling
 local windowList, windowIndex = {}, 0
 
-local function WindowHandler()
+local function WindowHandler(reverse)
     local windows = wf:getWindows(hs.window.filter.sortByFocusedLast)
     if #windows <= 1 then return end
     if #windows ~= #windowList then
-        windowList, windowIndex = windows, 2 -- start at 2 to skip current
+        windowList = windows
+        windowIndex = reverse and #windowList or 2
     else
-        windowIndex = (windowIndex % #windowList) + 1
+        if reverse then
+            windowIndex = (windowIndex - 2) % #windowList + 1
+        else
+            windowIndex = (windowIndex % #windowList) + 1
+        end
     end
     local win = windowList[windowIndex]
     if win then
@@ -25,41 +30,48 @@ local function WindowHandler()
 end
 
 -- Key Codes (cached)
-local kc = hs.keycodes.map
-local TAB, LEFT, RIGHT, UP, DOWN = kc.tab, kc.left, kc.right, kc.up, kc.down
+local km = hs.keycodes.map
+local TAB, LEFT, RIGHT, UP, DOWN = km.tab, km.left, km.right, km.up, km.down
 
 -- Event Handler
 local function handleKeyDown(event)
-    local kc             = event:getKeyCode()
-    local mods           = event:getFlags()
-    local cmd, ctrl, alt = mods.cmd, mods.ctrl, mods.alt
+    local kc                    = event:getKeyCode()
+    local mods                  = event:getFlags()
+    local cmd, ctrl, alt, shift = mods.cmd, mods.ctrl, mods.alt, mods.shift
 
     -- Cmd+Tab or Alt+Tab: cycle windows
-    if (cmd or alt) and not (cmd and alt) and kc == TAB then
-        WindowHandler()
+    if (cmd or alt) and kc == TAB then
+        if shift then
+            WindowHandler(true)
+        else
+            WindowHandler()
+        end
         CenterMouse()
         return true
     end
 
     -- Ctrl+Arrow: window management
-    if ctrl then
+    if ctrl and not (alt or cmd or shift) then
         if kc == LEFT then
             WindowLeft(); return true
-        end
-        if kc == RIGHT then
+        elseif kc == RIGHT then
             WindowRight(); return true
-        end
-        if kc == UP then
+        elseif kc == UP then
             WindowFill(); return true
-        end
-        if kc == DOWN then
+        elseif kc == DOWN then
             WindowCenter(); return true
         end
     end
 
-    -- Hyper+Down: float
-    if cmd and ctrl and alt and kc == DOWN then
-        WindowFloat(); return true
+    -- Hyper+Arrow: float
+    if cmd and ctrl and alt and not shift then
+        -- if kc == LEFT then
+        --     hs.eventtap.keyStroke({ "ctrl" }, tostring((getSpaceInfo() - 1)))
+        -- elseif kc == RIGHT then
+        --     hs.eventtap.keyStroke({ "ctrl" }, tostring((getSpaceInfo() + 1)))
+        if kc == DOWN then
+            WindowFloat(); return true
+        end
     end
 
     return false

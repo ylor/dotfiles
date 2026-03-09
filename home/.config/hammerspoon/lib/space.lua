@@ -10,7 +10,7 @@ end
 local spaceMenu = hs.menubar.new()
 
 -- Function to get current space index and total count
-local function getSpaceInfo()
+function getSpaceInfo()
     local screenSpaces = hs.spaces.spacesForScreen("Primary")
     local currentSpace = hs.spaces.activeSpaceOnScreen("Primary")
 
@@ -52,41 +52,27 @@ spaceMenu:setClickCallback(function()
     CenterMouse()
 end)
 
--- Function to move window to space using mouse drag simulation
 local function moveWindowToSpaceByDrag(spaceNumber)
     if spaceNumber == getSpaceInfo() then return end
+
     local win = hs.window.focusedWindow()
     if not win then return end
 
-    local zoomButtonRect = win:zoomButtonRect()
-    local headerX = zoomButtonRect.x + zoomButtonRect.w + 2
-    local headerY = zoomButtonRect.y + (zoomButtonRect.h / 2)
+    local zoom = win:zoomButtonRect()
+    local x = zoom.x + zoom.w + 2
+    local y = zoom.y + (zoom.h / 2) + 10
+    local zoomPos = { x = x, y = y }
+    local mousePos = hs.mouse.absolutePosition()
 
-    -- Store current mouse position
-    local currentMouse = hs.mouse.getAbsolutePosition()
-
-    -- Move mouse to window header
-    hs.mouse.absolutePosition({ x = headerX, y = headerY })
-
-    -- Mouse down (press and hold)
-    hs.eventtap.event.newMouseEvent(hs.eventtap.event.types.leftMouseDown, { x = headerX, y = headerY }):post()
-    -- hs.timer.usleep(10000) -- Wait 10ms
-
-    -- Press Alt + number key (while holding mouse)
+    hs.mouse.absolutePosition(zoomPos)
+    hs.eventtap.event.newMouseEvent(hs.eventtap.event.types.leftMouseDown, zoomPos):post()
+    hs.timer.usleep(10000)
     hs.eventtap.keyStroke({ "ctrl" }, tostring(spaceNumber), 0)
-    hs.timer.usleep(10000) -- Wait 10ms
-
-    -- Mouse up (release)
-    hs.eventtap.event.newMouseEvent(hs.eventtap.event.types.leftMouseUp, { x = headerX, y = headerY }):post()
-    hs.timer.usleep(10000) -- Wait 10ms
-
-    -- Restore original mouse position
-    hs.mouse.absolutePosition(currentMouse)
-
-    -- Focus window
-    hs.timer.doAfter(0.3, function()
-        win:focus()
-    end)
+    hs.timer.usleep(10000)
+    hs.eventtap.event.newMouseEvent(hs.eventtap.event.types.leftMouseUp, zoomPos):post()
+    hs.timer.usleep(10000)
+    hs.timer.doAfter(0.333, function() win:focus() end)
+    hs.mouse.absolutePosition(mousePos)
 end
 
 for i = 1, 5 do

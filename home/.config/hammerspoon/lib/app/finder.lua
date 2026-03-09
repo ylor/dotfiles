@@ -10,7 +10,7 @@ finderKeys:bind({ "cmd" }, "l", function()
 end)
 
 -- Use a watcher to enable/disable the modal
-finderWatcher = hs.application.watcher.new(function(appName, eventType, appObject)
+appWatcher = hs.application.watcher.new(function(appName, eventType, appObject)
     if appName == "Finder" then
         if eventType == hs.application.watcher.activated then
             finderKeys:enter()
@@ -20,4 +20,4 @@ finderWatcher = hs.application.watcher.new(function(appName, eventType, appObjec
     end
 end)
 
-finderWatcher:start()
+appWatcher:start()
