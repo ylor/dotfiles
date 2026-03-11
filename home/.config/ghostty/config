@@ -3,8 +3,6 @@
 config-file = ?local
 
 # function
-shell-integration = detect
-shell-integration-features = true
 clipboard-read = "allow"
 clipboard-paste-protection = false
 copy-on-select = true
@@ -21,18 +19,16 @@ font-feature = -liga
 font-feature = zero
 macos-titlebar-style = tabs
 theme = Atom One Dark
-window-padding-balance = false
-window-padding-x = 10,1
-window-padding-y = 0,2
+window-padding-balance = true
+# window-padding-x = 10,1
+# window-padding-y = 0,2
 window-subtitle = working-directory
 gtk-custom-css = style.css
 
 # keybinds
-#keybind = global:ctrl+`=toggle_quick_terminal
+keybind = global:super+`=toggle_quick_terminal
 keybind = super+r=reload_config
-keybind = global:ctrl+escape=toggle_quick_terminal
 keybind = super+shift+p=toggle_command_palette
-# keybind = control+c=copy_to_clipboard
 keybind = performable:ctrl+c=copy_to_clipboard
 keybind = control+t=new_tab
-keybind = control+w=close_tab:this
+keybind = control+w=close_surface
