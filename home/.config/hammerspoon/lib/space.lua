@@ -1,85 +1,82 @@
 ---@diagnostic disable-next-line: undefined-global
 local hs = hs
 
-local spacesToAdd = 5 - #hs.spaces.spacesForScreen("Primary")
-for _ = 1, math.max(0, spacesToAdd) do
-    hs.spaces.addSpaceToScreen("Primary")
-end
-
--- MARK: Menubar item
 local spaceMenu = hs.menubar.new()
 
--- Function to get current space index and total count
-function getSpaceInfo()
-    local screenSpaces = hs.spaces.spacesForScreen("Primary")
-    local currentSpace = hs.spaces.activeSpaceOnScreen("Primary")
-
-    for i, id in ipairs(screenSpaces) do
-        if id == currentSpace then
-            return i, #screenSpaces
-        end
-    end
-    return nil, #screenSpaces
+local function getSpaceInfo()
+    local spaces = hs.spaces.spacesForScreen("Main")
+    local active = hs.spaces.activeSpaceOnScreen("Main")
+    return hs.fnutils.indexOf(spaces, active), #spaces
 end
 
-local function updateSpace()
-    local currentIndex, totalSpaces = getSpaceInfo()
-
-    if not currentIndex then
-        spaceMenu:setTitle("?"); return
-    end
-
-    -- build indicator (e.g., ●○○○○)
-    local indicator = ""
-    for i = 1, totalSpaces do
-        if i == currentIndex then
-            indicator = indicator .. "◉"
-        else
-            indicator = indicator .. "○"
-        end
-    end
-
-    spaceMenu:setTitle(indicator)
+local function updateMenu()
+    local index, total = getSpaceInfo()
+    local dots = string.rep("○", index - 1) .. "◉" .. string.rep("○", total - index)
+    spaceMenu:setTitle(dots)
 end
 
--- WATCHER: Update when the active space changes
-hs.spaces.watcher.new(updateSpace):start()
+spaceMenu:setClickCallback(hs.openConsole)
+updateMenu()
 
-updateSpace()
+SpaceWatcherForSpaces = hs.spaces.watcher.new(updateMenu):start()
+ScreenWatcherForSpaces = hs.screen.watcher.new(updateMenu):start()
 
-spaceMenu:setClickCallback(function()
-    hs.openConsole(true)
-    CenterMouse()
-end)
-
-local function moveWindowToSpaceByDrag(spaceNumber)
-    if spaceNumber == getSpaceInfo() then return end
+local function moveWindowToSpaceByDrag(targetSpace)
+    local currentSpace = getSpaceInfo()
+    if targetSpace == currentSpace then return end
 
     local win = hs.window.focusedWindow()
     if not win then return end
 
     local zoom = win:zoomButtonRect()
-    local x = zoom.x + zoom.w + 2
-    local y = zoom.y + (zoom.h / 2) + 10
-    local zoomPos = { x = x, y = y }
-    local mousePos = hs.mouse.absolutePosition()
+    local dragPos = { x = zoom.x + zoom.w + 2, y = zoom.y + (zoom.h / 2) + 10 }
+    local savedPos = hs.mouse.absolutePosition()
 
-    hs.mouse.absolutePosition(zoomPos)
-    hs.eventtap.event.newMouseEvent(hs.eventtap.event.types.leftMouseDown, zoomPos):post()
+    hs.mouse.absolutePosition(dragPos)
+    hs.eventtap.event.newMouseEvent(hs.eventtap.event.types.leftMouseDown, dragPos):post()
     hs.timer.usleep(10000)
-    hs.eventtap.keyStroke({ "ctrl" }, tostring(spaceNumber), 0)
+    hs.eventtap.keyStroke({ "ctrl" }, tostring(targetSpace), 0)
     hs.timer.usleep(10000)
-    hs.eventtap.event.newMouseEvent(hs.eventtap.event.types.leftMouseUp, zoomPos):post()
-    hs.timer.usleep(10000)
+    hs.eventtap.event.newMouseEvent(hs.eventtap.event.types.leftMouseUp, dragPos):post()
     hs.timer.doAfter(0.333, function() win:focus() end)
-    hs.mouse.absolutePosition(mousePos)
+    hs.mouse.absolutePosition(savedPos)
 end
 
 for i = 1, 5 do
+    if i > #hs.spaces.spacesForScreen("Primary") then
+        hs.spaces.addSpaceToScreen("Primary")
+    end
+
     hs.hotkey.bind({ "ctrl", "shift" }, tostring(i), function()
         moveWindowToSpaceByDrag(i)
     end)
 end
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 
 -- local function handleAppLaunch(appName)
 --     local apps = {}

@@ -1,24 +1,26 @@
 ---@diagnostic disable-next-line: undefined-global
 local hs = hs
 
-local exempt = {
-    ["Finder"] = true,
-    ["Keychain Access"] = true,
-    ["Safari"] = true,
-    ["Google Chrome"] = true,
-    ["Google Chrome Beta"] = true,
-    ["Google Chrome Dev"] = true,
-    ["Google Chrome Canary"] = true,
-    ["Terminal"] = true,
+local zombies = {
     ["Arc"] = true,
-    ["Orion"] = true,
+    ["Finder"] = true,
     ["Ghostty"] = true,
+    ["Google Chrome Beta"] = true,
+    ["Google Chrome Canary"] = true,
+    ["Google Chrome Dev"] = true,
+    ["Google Chrome"] = true,
+    ["Keychain Access"] = true,
     ["Moonlight"] = true,
+    ["Orion"] = true,
+    ["Safari"] = true,
+    ["Terminal"] = true,
 }
 
 hs.window.filter.default:subscribe(hs.window.filter.windowDestroyed, function(_, appName)
     local app = hs.application.get(appName)
-    if app and app:kind() > 0 and not exempt[appName] and #app:allWindows() == 0 then
+    if not app or app:kind() == 0 or zombies[appName] then return end
+
+    if #app:allWindows() == 0 then
         app:kill()
     end
 end)

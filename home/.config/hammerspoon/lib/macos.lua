@@ -1,8 +1,11 @@
 ---@diagnostic disable-next-line: undefined-global
 local hs = hs
 
-function ShowDesktop()
-    hs.spaces.toggleShowDesktop()
+hs.spotlight.showClipboard = function()
+    hs.eventtap.keyStroke({ "cmd" }, "space", 0)
+    hs.timer.doAfter(0.05, function()
+        hs.eventtap.keyStroke({ "cmd" }, "4", 0)
+    end)
 end
 
 function WindowCenter()
@@ -41,11 +44,6 @@ function WindowFloat()
     f.y = max.y + (max.h / 2) - (sideLength / 2)
 
     win:setFrame(f)
-end
-
-function WindowFullscreen()
-    local win = hs.window.focusedWindow()
-    if win then win:toggleFullScreen() end
 end
 
 function WindowLeftScreen()

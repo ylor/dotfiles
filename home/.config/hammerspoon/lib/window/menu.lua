@@ -1,85 +1,62 @@
 ---@diagnostic disable-next-line: undefined-global
 local hs = hs
 
-local menu = hs.menubar.new()
 local iconCache = {}
-local excludedApps = { ["Notification Center"] = true }
-local max_char = 50
 
-local function getIcon(bundleID)
-    if iconCache[bundleID] == nil then
-        local img = hs.image.imageFromAppBundle(bundleID)
-        iconCache[bundleID] = img and img:setSize({ w = 32, h = 32 }) or false
+local function appIcon(app)
+    local id = app and app:bundleID()
+    if not id then return nil end
+    if not iconCache[id] then
+        local img = hs.image.imageFromAppBundle(id)
+        iconCache[id] = img and img:setSize({ w = 16, h = 16 }) or false
     end
-    return iconCache[bundleID] or nil
+    return iconCache[id] or nil
 end
 
-local mainFont = { size = 12, name = ".AppleSystemUIFontBold" }
-local subFont  = { size = 10 }
-local subColor = { white = 0.5 }
+local wf = hs.window.filter.defaultCurrentSpace
+local menu = hs.menubar.new()
 
-local function styledTitle(winTitle, appName)
-    return hs.styledtext.new(winTitle .. "\n", { font = mainFont })
-        .. hs.styledtext.new(appName, { font = subFont, color = subColor })
+local function updateCount()
+    hs.timer.usleep(10000)
+    menu:setTitle("⧉ " .. #wf:getWindows())
 end
 
-local function showMenu()
-    local f = menu:frame()
-    menu:popupMenu({ x = f.x, y = f.y + f.h })
-end
+menu:setMenu(function()
+    local windows = wf:getWindows()
+    if #windows == 0 then
+        return { { title = "No windows in current space", disabled = true } }
+    end
 
-local function updateMenu()
-    local menuData = {}
+    table.sort(windows, function(a, b)
+        local nameA = a:application() and a:application():name() or ""
+        local nameB = b:application() and b:application():name() or ""
+        if nameA ~= nameB then return nameA < nameB end
+        return a:title() < b:title()
+    end)
 
-    for _, win in ipairs(hs.window.allWindows()) do
-        local app = win:application()
-        local winTitle = win:title()
-        local appName = app and app:name()
+    local items = {}
+    local prevApp = nil
+    for _, w in ipairs(windows) do
+        local app = w:application()
+        local appName = app and app:name() or "Unknown"
+        local title = w:title()
 
-        if app and appName and not excludedApps[appName] and winTitle and winTitle ~= "" then
-            if #winTitle > max_char then
-                winTitle = winTitle:sub(1, max_char) .. "…"
-            end
-
-            local bundleID = app:bundleID()
-            menuData[#menuData + 1] = {
-                title = styledTitle(winTitle, appName),
-                key   = (appName .. winTitle):lower(),
-                image = getIcon(bundleID),
-                fn    = function(mods)
-                    if mods.alt then
-                        win:close()
-                        updateMenu()
-                        showMenu()
-                    else
-                        if win:isMinimized() then win:unminimize() end
-                        app:unhide()
-                        win:focus()
-                        if CenterMouse then CenterMouse(win) end
-                    end
-                end
-            }
+        if prevApp and prevApp ~= appName then
+            items[#items + 1] = { title = "-" }
         end
+        prevApp = appName
+
+        if title == "" then title = "Untitled" end
+        if #title > 50 then title = title:sub(1, 49) .. "…" end
+
+        items[#items + 1] = {
+            title = title,
+            image = appIcon(app),
+            fn = function() w:focus() end,
+        }
     end
-
-    table.sort(menuData, function(a, b) return a.key < b.key end)
-
-    menu:setMenu(#menuData > 0 and menuData or { { title = "No windows found", disabled = true } })
-    menu:setTitle(#menuData > 0 and tostring(#menuData) or "")
-end
-
-hs.hotkey.bind({ "alt" }, "W", function()
-    updateMenu()
-    showMenu()
+    return items
 end)
 
-hs.spaces.watcher.new(updateMenu):start()
-
-hs.window.filter.new(true):subscribe({
-    hs.window.filter.windowCreated,
-    hs.window.filter.windowDestroyed,
-    hs.window.filter.windowMinimized,
-    hs.window.filter.windowUnminimized
-}, updateMenu)
-
-updateMenu()
+wf:subscribe(hs.window.filter.windowsChanged, updateCount)
+updateCount()

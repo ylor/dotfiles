@@ -1,12 +1,8 @@
 ---@diagnostic disable-next-line: undefined-global
 local hs = hs
 
--- Window Filter
-local wf = hs.window.filter.new()
-    :setCurrentSpace(true)
-    :setScreens(hs.screen.primaryScreen():getUUID())
-
 -- Window Cycling
+local wf = hs.window.filter.defaultCurrentSpace:setScreens(hs.screen.mainScreen():getUUID())
 local windowList, windowIndex = {}, 0
 
 local function WindowHandler(reverse)
@@ -22,10 +18,12 @@ local function WindowHandler(reverse)
             windowIndex = (windowIndex % #windowList) + 1
         end
     end
+
     local win = windowList[windowIndex]
     if win then
         win:focus()
-        FlashWindow(win)
+        win:flash()
+        win:centerMouse()
     end
 end
 
@@ -39,18 +37,17 @@ local function handleKeyDown(event)
     local mods                  = event:getFlags()
     local cmd, ctrl, alt, shift = mods.cmd, mods.ctrl, mods.alt, mods.shift
 
-    -- Cmd+Tab or Alt+Tab: cycle windows
+    -- cycle windows
     if (cmd or alt) and kc == TAB then
         if shift then
             WindowHandler(true)
         else
             WindowHandler()
         end
-        CenterMouse()
         return true
     end
 
-    -- Ctrl+Arrow: window management
+    -- Ctrl+Arrow: window "management"
     if ctrl and not (alt or cmd or shift) then
         if kc == LEFT then
             WindowLeft(); return true
@@ -64,14 +61,8 @@ local function handleKeyDown(event)
     end
 
     -- Hyper+Arrow: float
-    if cmd and ctrl and alt and not shift then
-        -- if kc == LEFT then
-        --     hs.eventtap.keyStroke({ "ctrl" }, tostring((getSpaceInfo() - 1)))
-        -- elseif kc == RIGHT then
-        --     hs.eventtap.keyStroke({ "ctrl" }, tostring((getSpaceInfo() + 1)))
-        if kc == DOWN then
-            WindowFloat(); return true
-        end
+    if cmd and ctrl and alt and not shift and kc == DOWN then
+        WindowFloat(); return true
     end
 
     return false
