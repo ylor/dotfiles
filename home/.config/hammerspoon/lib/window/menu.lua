@@ -17,7 +17,7 @@ local wf = hs.window.filter.defaultCurrentSpace
 local menu = hs.menubar.new()
 
 local function updateCount()
-    hs.timer.usleep(10000)
+    hs.timer.usleep(100000)
     menu:setTitle("⧉ " .. #wf:getWindows())
 end
 
@@ -46,7 +46,7 @@ menu:setMenu(function()
         end
         prevApp = appName
 
-        if title == "" then title = "Untitled" end
+        if title == nil then title = "Untitled" end
         if #title > 50 then title = title:sub(1, 49) .. "…" end
 
         items[#items + 1] = {

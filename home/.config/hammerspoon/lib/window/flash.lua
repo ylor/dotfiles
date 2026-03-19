@@ -6,7 +6,6 @@ function FlashWindow(win)
     if not f then return end
     if not win:isVisible() or hs.window.focusedWindow() ~= win then return end
 
-    -- Bind exactly to the window frame. No padding, no external clipping.
     local canvas = hs.canvas.new(f)
     local r = 16
 
@@ -39,7 +38,7 @@ function FlashWindow(win)
     canvas:show()
 
     local hz = win:screen():currentMode().freq or 60
-    local duration = 0.3 -- Faster, punchier duration
+    local duration = 0.5
     local steps = math.floor(hz * duration)
     local step = 0
 
@@ -65,4 +64,5 @@ end
 
 hs.getObjectMetatable("hs.window").flash = function(self)
     FlashWindow(self)
+    return self
 end

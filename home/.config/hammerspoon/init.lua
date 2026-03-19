@@ -9,7 +9,7 @@ Mod.hyper.shift = { "control", "option", "command", "shift" }
 
 Work            = string.find(hs.host.localizedName(), "^PAPA")
 
-require("lib.macos")
+require("lib.mac")
 require("lib.app")
 require("lib.scroll")
 require("lib.space")
@@ -31,13 +31,13 @@ App(Mod.main.shift, "Return", "Zed")
 App(Mod.main.shift, "T", "Terminal")
 Tui(Mod.hyper, "P", "/opt/homebrew/bin/btop")
 Web(Mod.main, "A", "https://claude.ai")
+Run(Mod.main, "R", "open vnc://10.0.1.2")
 
 if Work then
     App(Mod.main, "I", "Google Chrome Dev")
     App(Mod.main, "O", "Helium")
     App(Mod.main, "S", "Slack")
     Web(Mod.main, "A", "https://gemini.google.com")
-    Web(Mod.main.shift, "A", "https://claude.ai")
 end
 
 hs.hotkey.bind(Mod.main, "D", hs.spaces.toggleShowDesktop)
@@ -45,6 +45,8 @@ hs.hotkey.bind(Mod.main, "F", hs.window.toggleFullscreen)
 hs.hotkey.bind(Mod.main, "L", hs.caffeinate.lockScreen)
 hs.hotkey.bind(Mod.main, "W", hs.spaces.toggleMissionControl)
 hs.hotkey.bind(Mod.main, "V", hs.spotlight.showClipboard)
+
+-- hs.hotkey.bind(Mod.main.shift, "down", hs.window.centerForce)
 
 hs.hotkey.bind(Mod.hyper, "left", WindowLeftScreen)
 hs.hotkey.bind(Mod.hyper, "right", WindowRightScreen)

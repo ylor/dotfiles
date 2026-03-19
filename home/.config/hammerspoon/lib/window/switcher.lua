@@ -2,7 +2,7 @@
 local hs = hs
 
 -- Window Cycling
-local wf = hs.window.filter.defaultCurrentSpace:setScreens(hs.screen.mainScreen():getUUID())
+local wf = hs.window.filter.copy(hs.window.filter.defaultCurrentSpace:setScreens(hs.screen.mainScreen():getUUID()))
 local windowList, windowIndex = {}, 0
 
 local function WindowHandler(reverse)
@@ -21,9 +21,7 @@ local function WindowHandler(reverse)
 
     local win = windowList[windowIndex]
     if win then
-        win:focus()
-        win:flash()
-        win:centerMouse()
+        win:focus():flash():centerMouse()
     end
 end
 
@@ -56,7 +54,7 @@ local function handleKeyDown(event)
         elseif kc == UP then
             WindowFill(); return true
         elseif kc == DOWN then
-            WindowCenter(); return true
+            hs.window.center(); return true
         end
     end
 
@@ -68,7 +66,7 @@ local function handleKeyDown(event)
     return false
 end
 
-EventTapper = hs.eventtap.new({ hs.eventtap.event.types.keyDown }, handleKeyDown):start()
-SpaceWatcher = hs.spaces.watcher.new(function()
+_G.windowEventTapper = hs.eventtap.new({ hs.eventtap.event.types.keyDown }, handleKeyDown):start()
+_G.windowSpaceWatcher = hs.spaces.watcher.new(function()
     windowList, windowIndex = {}, 1
 end):start()
