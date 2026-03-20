@@ -19,7 +19,7 @@ _G.snippetKeyWatcher = hs.eventtap.new({ hs.eventtap.event.types.keyDown }, func
     local char = event:getCharacters()
     local k = hs.keycodes.map
 
-    -- Ignore modifier combos (Cmd+C, etc.)
+    -- ignore modifier combos
     if flags.cmd or flags.ctrl or flags.alt then
         buffer = ""
         return false

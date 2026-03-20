@@ -2,7 +2,7 @@
 local hs = hs
 
 local modal = hs.hotkey.modal.new()
-modal:bind({ "cmd", "shift" }, "k", function()
+modal:bind(Mod.main, "k", function()
     hs.eventtap.keyStroke({ "cmd", "shift" }, "a")
 end)
 
@@ -13,7 +13,7 @@ local apps = {
     ["Helium"] = true,
 }
 
-ChromeWatcher = hs.application.watcher.new(function(name, eventType)
+_G.chromeWatcher = hs.application.watcher.new(function(name, eventType)
     if not apps[name] then return end
 
     if eventType == hs.application.watcher.activated then

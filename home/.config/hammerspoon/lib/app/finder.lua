@@ -20,7 +20,7 @@ local scrollReverse = hs.eventtap.new({ hs.eventtap.event.types.otherMouseDown }
     return false
 end)
 
-FinderWatcher = hs.application.watcher.new(function(appName, eventType)
+_G.finderWatcher = hs.application.watcher.new(function(appName, eventType)
     if appName ~= "Finder" then return end
 
     if eventType == hs.application.watcher.activated then
