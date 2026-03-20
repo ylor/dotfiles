@@ -52,9 +52,7 @@ menu:setMenu(function()
 end)
 
 local function updateCount()
-    hs.timer.doAfter(0.1, function()
-        menu:setTitle("⧉ " .. #wf:getWindows())
-    end)
+    menu:setTitle("⧉ " .. #wf:getWindows())
 end
 
 wf:subscribe(hs.window.filter.windowsChanged, updateCount)
