@@ -1,11 +1,24 @@
 ---@diagnostic disable-next-line: undefined-global
 local hs = hs
 
-hs.spotlight.showClipboard = function()
-    hs.eventtap.keyStroke({ "cmd" }, "space", 0)
-    hs.timer.doAfter(0.05, function()
-        hs.eventtap.keyStroke({ "cmd" }, "4", 0)
-    end)
+function AppHandler(app)
+    local focused = hs.window.focusedWindow()
+    local filter = hs.window.filter.new(app):setScreens(hs.screen.mainScreen():name())
+    local windows = filter:getWindows()
+
+    if #windows == 0 then
+        return hs.application.launchOrFocus(app)
+    end
+
+    local target = windows[1]
+    if focused:application():name() == app and #windows > 1 then
+        table.sort(windows, function(a, b) return a:id() < b:id() end)
+
+        local currentIndex = hs.fnutils.indexOf(windows, focused) or 1
+        target = windows[(currentIndex % #windows) + 1]
+    end
+
+    target:focus():centerMouse()
 end
 
 function App(mods, key, app)
@@ -37,16 +50,31 @@ function Web(mods, key, url)
     end)
 end
 
-function AppExists(app)
-    return hs.application.find(app)
+function SpaceInfo()
+    local spaces = hs.spaces.spacesForScreen("Main")
+    local active = hs.spaces.activeSpaceOnScreen("Main")
+    return hs.fnutils.indexOf(spaces, active), #spaces
 end
 
-function AppActive(app)
-    return hs.application.get(app):isFrontmost()
-end
+function MoveWindowToSpaceByDrag(space)
+    local currentSpace = SpaceInfo()
+    if space == currentSpace then return end
 
-function AppRunning(app)
-    return hs.application.get(app)
+    local win = hs.window.focusedWindow()
+    if not win then return end
+
+    local zoom = win:zoomButtonRect()
+    local dragPos = { x = zoom.x + zoom.w + 2, y = zoom.y + (zoom.h / 2) + 10 }
+    local savedPos = hs.mouse.absolutePosition()
+
+    hs.mouse.absolutePosition(dragPos)
+    hs.eventtap.event.newMouseEvent(hs.eventtap.event.types.leftMouseDown, dragPos):post()
+    hs.timer.usleep(10000)
+    hs.eventtap.keyStroke({ "ctrl" }, tostring(space), 0)
+    hs.timer.usleep(10000)
+    hs.eventtap.event.newMouseEvent(hs.eventtap.event.types.leftMouseUp, dragPos):post()
+    hs.timer.doAfter(0.333, function() win:focus() end)
+    hs.mouse.absolutePosition(savedPos)
 end
 
 function RunCommand(bin)
@@ -54,3 +82,14 @@ function RunCommand(bin)
     local cmd = home .. "/.local/bin/" .. bin
     hs.execute(hs.fs.symlinkAttributes(cmd).target)
 end
+
+require("lib.app.chrome")
+require("lib.app.clipboard")
+require("lib.app.finder")
+require("lib.menu.spaces")
+require("lib.menu.windows")
+require("lib.quitter")
+require("lib.scroll")
+require("lib.snippets")
+require("lib.window")
+require("lib.window.switcher")

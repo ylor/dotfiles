@@ -1,72 +1,68 @@
 ---@diagnostic disable-next-line: undefined-global
 local hs = hs
 
--- Window Cycling
 local wf = hs.window.filter.copy(hs.window.filter.defaultCurrentSpace:setScreens(hs.screen.mainScreen():getUUID()))
-local windowList, windowIndex = {}, 0
+local list = {}
+local index = 1
+local last = nil
 
-local function WindowHandler(reverse)
-    local windows = wf:getWindows(hs.window.filter.sortByFocusedLast)
-    if #windows <= 1 then return end
-    if #windows ~= #windowList then
-        windowList = windows
-        windowIndex = reverse and #windowList or 2
-    else
-        if reverse then
-            windowIndex = (windowIndex - 2) % #windowList + 1
-        else
-            windowIndex = (windowIndex % #windowList) + 1
-        end
-    end
-
-    local win = windowList[windowIndex]
-    if win then
-        win:focus():flash():centerMouse()
-    end
+local function resetWindowHandler()
+    list, index = {}, 1
 end
 
--- Key Codes (cached)
+_G.windowSpaceWatcher = hs.spaces.watcher.new(resetWindowHandler):start()
+
+local function windowHandler(reverse)
+    local focused = hs.window.focusedWindow()
+    local current = focused and focused:id() or nil
+
+    if current ~= last or #list == 0 then
+        list = wf:getWindows(hs.window.filter.sortByFocusedLast)
+        index = 1
+    end
+
+    if #list <= 1 then return end
+
+    if reverse then
+        index = index - 1
+        if index < 1 then index = #list end
+    else
+        index = index + 1
+        if index > #list then index = 1 end
+    end
+
+    last = list[index]:id()
+    list[index]:focus():flash():centerMouse()
+end
+
 local km = hs.keycodes.map
 local TAB, LEFT, RIGHT, UP, DOWN = km.tab, km.left, km.right, km.up, km.down
 
--- Event Handler
 local function handleKeyDown(event)
-    local kc                    = event:getKeyCode()
-    local mods                  = event:getFlags()
-    local cmd, ctrl, alt, shift = mods.cmd, mods.ctrl, mods.alt, mods.shift
+    local kc   = event:getKeyCode()
+    local mods = event:getFlags()
 
-    -- cycle windows
-    if (cmd or alt) and kc == TAB then
-        if shift then
-            WindowHandler(true)
-        else
-            WindowHandler()
-        end
+    if (mods.cmd or mods.alt) and kc == TAB then
+        windowHandler(mods.shift or nil)
         return true
     end
 
-    -- Ctrl+Arrow: window "management"
-    if ctrl and not (alt or cmd or shift) then
+    if mods.ctrl and not (mods.alt or mods.cmd or mods.shift) then
         if kc == LEFT then
-            WindowLeft(); return true
+            WindowLeft()
         elseif kc == RIGHT then
-            WindowRight(); return true
+            WindowRight()
         elseif kc == UP then
-            WindowFill(); return true
+            WindowFill()
         elseif kc == DOWN then
-            hs.window.center(); return true
+            hs.window.center()
+        else
+            return false
         end
-    end
-
-    -- Hyper+Arrow: float
-    if cmd and ctrl and alt and not shift and kc == DOWN then
-        WindowFloat(); return true
+        return true
     end
 
     return false
 end
 
 _G.windowEventTapper = hs.eventtap.new({ hs.eventtap.event.types.keyDown }, handleKeyDown):start()
-_G.windowSpaceWatcher = hs.spaces.watcher.new(function()
-    windowList, windowIndex = {}, 1
-end):start()

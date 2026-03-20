@@ -1,13 +1,13 @@
 ---@diagnostic disable-next-line: undefined-global
 local hs = hs
 
-local finderKeys = hs.hotkey.modal.new()
-finderKeys:bind({ "cmd" }, "l", function()
+local modal = hs.hotkey.modal.new()
+modal:bind({ "cmd" }, "l", function()
     hs.eventtap.keyStroke({ "cmd", "shift" }, "g")
 end)
 
 
-local mouseWatcher = hs.eventtap.new({ hs.eventtap.event.types.otherMouseDown }, function(event)
+local scrollReverse = hs.eventtap.new({ hs.eventtap.event.types.otherMouseDown }, function(event)
     local button = event:getProperty(hs.eventtap.event.properties.mouseEventButtonNumber)
 
     if button == 3 then
@@ -24,10 +24,10 @@ FinderWatcher = hs.application.watcher.new(function(appName, eventType)
     if appName ~= "Finder" then return end
 
     if eventType == hs.application.watcher.activated then
-        finderKeys:enter()
-        mouseWatcher:start()
+        modal:enter()
+        scrollReverse:start()
     elseif eventType == hs.application.watcher.deactivated then
-        finderKeys:exit()
-        mouseWatcher:stop()
+        modal:exit()
+        scrollReverse:stop()
     end
 end):start()

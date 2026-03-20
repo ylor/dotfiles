@@ -2,16 +2,15 @@
 local hs = hs
 
 local zombies = {
-    ["Arc"] = true,
     ["Finder"] = true,
     ["Ghostty"] = true,
     ["Google Chrome Beta"] = true,
     ["Google Chrome Canary"] = true,
     ["Google Chrome Dev"] = true,
     ["Google Chrome"] = true,
+    ["Helium"] = true,
     ["Keychain Access"] = true,
     ["Moonlight"] = true,
-    ["Orion"] = true,
     ["Safari"] = true,
     ["Terminal"] = true,
 }

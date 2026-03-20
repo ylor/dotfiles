@@ -13,7 +13,7 @@ local snippets = {
 
 local buffer = ""
 
-expanderKeyWatcher = hs.eventtap.new({ hs.eventtap.event.types.keyDown }, function(event)
+_G.snippetKeyWatcher = hs.eventtap.new({ hs.eventtap.event.types.keyDown }, function(event)
     local flags = event:getFlags()
     local keyCode = event:getKeyCode()
     local char = event:getCharacters()
@@ -75,10 +75,13 @@ expanderKeyWatcher = hs.eventtap.new({ hs.eventtap.event.types.keyDown }, functi
     end
 
     return false
-end):start()
+end)
 
 -- Mouse Watcher
-expanderMouseWatcher = hs.eventtap.new({ hs.eventtap.event.types.leftMouseDown }, function()
+_G.snippetMouseWatcher = hs.eventtap.new({ hs.eventtap.event.types.leftMouseDown }, function()
     buffer = ""
     return false
-end):start()
+end)
+
+_G.snippetKeyWatcher:start()
+_G.snippetMouseWatcher:start()
