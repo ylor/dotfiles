@@ -8,10 +8,8 @@ local zombies = {
     ["Google Chrome Canary"] = true,
     ["Google Chrome Dev"] = true,
     ["Google Chrome"] = true,
-    ["Helium"] = true,
     ["Keychain Access"] = true,
     ["Moonlight"] = true,
-    ["Safari"] = true,
     ["Terminal"] = true,
 }
 

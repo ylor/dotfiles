@@ -1,7 +1,8 @@
 ---@diagnostic disable-next-line: undefined-global
 local hs = hs
 
-local wf = hs.window.filter.copy(hs.window.filter.defaultCurrentSpace:setScreens(hs.screen.mainScreen():getUUID()))
+local wf = hs.window.filter.copy(hs.window.filter.defaultCurrentSpace)
+    :setScreens(hs.screen.mainScreen():getUUID())
 local list = {}
 local index = 1
 local last = nil
@@ -15,14 +16,11 @@ _G.windowSpaceWatcher = hs.spaces.watcher.new(resetWindowHandler):start()
 local function windowHandler(reverse)
     local focused = hs.window.focusedWindow()
     local current = focused and focused:id() or nil
-
     if current ~= last or #list == 0 then
         list = wf:getWindows(hs.window.filter.sortByFocusedLast)
         index = 1
     end
-
     if #list <= 1 then return end
-
     if reverse then
         index = index - 1
         if index < 1 then index = #list end
@@ -30,7 +28,6 @@ local function windowHandler(reverse)
         index = index + 1
         if index > #list then index = 1 end
     end
-
     last = list[index]:id()
     list[index]:focus():flash():centerMouse()
 end

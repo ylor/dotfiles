@@ -2,23 +2,31 @@
 local hs = hs
 
 function AppHandler(app)
-    local focused = hs.window.focusedWindow()
-    local filter = hs.window.filter.new(app):setScreens(hs.screen.mainScreen():name())
-    local windows = filter:getWindows()
+  local focused = hs.window.focusedWindow()
+  local running = hs.application.find(app)
 
-    if #windows == 0 then
-        return hs.application.launchOrFocus(app)
+  if not running then return hs.application.launchOrFocus(app) end
+
+  local windows = hs.fnutils.filter(running:allWindows(), function(w)
+    return w:isStandard() and w:screen() == hs.screen.mainScreen()
+  end)
+
+  if #windows == 0 then return hs.application.launchOrFocus(app) end
+
+  table.sort(windows, function(a, b) return a:id() < b:id() end)
+
+  local target = windows[1]
+
+  if focused and focused:application():name() == app and #windows > 1 then
+    for i, w in ipairs(windows) do
+      if w:id() == focused:id() then
+        target = windows[i % #windows + 1]
+        break
+      end
     end
+  end
 
-    local target = windows[1]
-    if focused:application():name() == app and #windows > 1 then
-        table.sort(windows, function(a, b) return a:id() < b:id() end)
-
-        local currentIndex = hs.fnutils.indexOf(windows, focused) or 1
-        target = windows[(currentIndex % #windows) + 1]
-    end
-
-    target:focus():centerMouse()
+  target:focus():centerMouse()
 end
 
 function App(mods, key, app)
