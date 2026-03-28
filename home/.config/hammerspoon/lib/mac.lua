@@ -1,38 +1,59 @@
 ---@diagnostic disable-next-line: undefined-global
 local hs = hs
 
+-- Focus or cycle an app's windows on the main screen
 function AppHandler(app)
-  local focused = hs.window.focusedWindow()
-  local running = hs.application.find(app)
+    local running = hs.application.find(app)
+    if not running then return hs.application.launchOrFocus(app) end
 
-  if not running then return hs.application.launchOrFocus(app) end
+    local wf = hs.window.filter.new(app)
+        :setScreens(hs.screen.primaryScreen():getUUID())
+    local windows = wf:getWindows(hs.window.filter.sortByLastFocused)
 
-  local windows = hs.fnutils.filter(running:allWindows(), function(w)
-    return w:isStandard() and w:screen() == hs.screen.mainScreen()
-  end)
+    -- app is running but there are no windows
+    if #windows == 0 then return hs.application.launchOrFocus(app) end
 
-  if #windows == 0 then return hs.application.launchOrFocus(app) end
-
-  table.sort(windows, function(a, b) return a:id() < b:id() end)
-
-  local target = windows[1]
-
-  if focused and focused:application():name() == app and #windows > 1 then
-    for i, w in ipairs(windows) do
-      if w:id() == focused:id() then
-        target = windows[i % #windows + 1]
-        break
-      end
+    -- app is running but isn't current focus
+    local focused = hs.window.focusedWindow()
+    if not focused or focused:application():name() ~= app then
+        return windows[1]:focus():centerMouse()
     end
-  end
 
-  target:focus():centerMouse()
+    -- otherwise cycle to the next window
+    for i, w in ipairs(windows) do
+        if w:id() == focused:id() then
+            return windows[(i % #windows) + 1]:focus():centerMouse()
+        end
+    end
 end
 
 function App(mods, key, app)
     hs.hotkey.bind(mods, key, function()
         AppHandler(app)
     end)
+end
+
+function AppFocus()
+    local focused = hs.window.focusedWindow()
+    if not focused then return end
+
+    local mainScreen = hs.screen.mainScreen()
+    local focusedApp = focused:application()
+    local hiddenApps = {}
+
+    for _, win in ipairs(hs.window.allWindows()) do
+        if win:screen() == mainScreen and win ~= focused then
+            local app = win:application()
+            if app ~= focusedApp then
+                if not hiddenApps[app] then
+                    app:hide()
+                    hiddenApps[app] = true
+                end
+            else
+                win:minimize()
+            end
+        end
+    end
 end
 
 function Tui(mods, key, cmd)
@@ -59,8 +80,8 @@ function Web(mods, key, url)
 end
 
 function SpaceInfo()
-    local spaces = hs.spaces.spacesForScreen("Main")
-    local active = hs.spaces.activeSpaceOnScreen("Main")
+    local spaces = hs.spaces.spacesForScreen("Primary")
+    local active = hs.spaces.activeSpaceOnScreen("Primary")
     return hs.fnutils.indexOf(spaces, active), #spaces
 end
 
@@ -94,6 +115,7 @@ end
 require("lib.app.chrome")
 require("lib.app.clipboard")
 require("lib.app.finder")
+require("lib.app.helium")
 require("lib.menu.spaces")
 require("lib.menu.windows")
 require("lib.quitter")

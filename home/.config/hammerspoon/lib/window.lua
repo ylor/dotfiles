@@ -14,9 +14,22 @@ local function WindowCenter(win)
 end
 
 function WindowFill(win)
-    if not win then win = hs.application.frontmostApplication() end
-    win:selectMenuItem({ "Window", "Fill" })
+    win = win or hs.window.focusedWindow()
+    win:application():selectMenuItem({ "Window", "Fill" })
 end
+
+function WindowToggleFillCenter(win)
+    win = win or hs.window.focusedWindow()
+    if not win then return end
+
+    if win:frame() == win:screen():frame() then
+        WindowCenter(win)
+    else
+        WindowFill(win)
+    end
+end
+
+hs.hotkey.bind(Mod.main, "F", WindowToggleFillCenter)
 
 function WindowFlash(win)
     local f = win:frame()
@@ -161,3 +174,24 @@ hs.window.float = function(self)
     WindowFloat(self)
     return self
 end
+
+
+
+
+
+
+
+
+local previousScreens = {}
+hs.window.filter.new():subscribe(hs.window.filter.windowMoved, function(win)
+    local winID = win:id()
+    local screen = win:screen()
+    local currentScreen = screen:id()
+    local prevScreen = previousScreens[winID]
+    previousScreens[winID] = currentScreen
+
+    if prevScreen and prevScreen ~= currentScreen and screen:name() == "Built-in Retina Display" then
+        hs.alert.show("Window arrived on internal screen!")
+        WindowFill(win)
+    end
+end)

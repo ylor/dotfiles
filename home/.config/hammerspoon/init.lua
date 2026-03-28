@@ -32,7 +32,6 @@ if Work then
 end
 
 hs.hotkey.bind(Mod.main, "D", hs.spaces.toggleShowDesktop)
-hs.hotkey.bind(Mod.main, "F", hs.window.toggleFullscreen)
 hs.hotkey.bind(Mod.main, "L", hs.caffeinate.lockScreen)
 hs.hotkey.bind(Mod.main, "W", hs.spaces.toggleMissionControl)
 hs.hotkey.bind(Mod.main, "V", hs.spotlight.showClipboard)
@@ -43,9 +42,12 @@ for i = 1, 5 do
     end)
 end
 
+hs.hotkey.bind(Mod.hyper, "F", hs.window.toggleFullscreen)
+hs.hotkey.bind(Mod.hyper, "H", AppFocus)
+
+hs.hotkey.bind(Mod.hyper, "down", WindowFloat)
 hs.hotkey.bind(Mod.hyper, "left", WindowLeftScreen)
 hs.hotkey.bind(Mod.hyper, "right", WindowRightScreen)
-hs.hotkey.bind(Mod.hyper, "down", WindowFloat)
 
 hs.hotkey.bind(Mod.hyper, "\\", hs.reload)
 hs.hotkey.bind(Mod.hyper, "R", hs.reload)

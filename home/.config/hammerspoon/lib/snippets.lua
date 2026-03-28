@@ -9,6 +9,7 @@ local snippets = {
     ["xx"]     = "×",
     ["foo"]    = "bar",
     ["@date"]  = function() return os.date("%Y-%m-%d") end,
+    ["@ts"]    = function() return os.date("!%Y-%m-%dT%H:%M:%SZ") end,
 }
 
 local buffer = ""

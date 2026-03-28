@@ -5,12 +5,20 @@ local modal = hs.hotkey.modal.new()
 modal:bind(Mod.main, "k", function()
     hs.eventtap.keyStroke({ "cmd", "shift" }, "a")
 end)
+modal:bind({ "cmd", "shift" }, "c", function()
+    hs.eventtap.keyStroke({ "cmd" }, "l")
+    hs.timer.usleep(10)
+    hs.eventtap.keyStroke({ "cmd" }, "c")
+    hs.timer.usleep(10)
+    hs.eventtap.keyStroke({}, "escape")
+    hs.timer.usleep(10)
+    hs.eventtap.keyStroke({}, "escape")
+end)
 
 local apps = {
     ["Google Chrome"] = true,
     ["Google Chrome Beta"] = true,
     ["Google Chrome Dev"] = true,
-    ["Helium"] = true,
 }
 
 _G.chromeWatcher = hs.application.watcher.new(function(name, eventType)

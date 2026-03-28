@@ -20,8 +20,8 @@ local scrollReverse = hs.eventtap.new({ hs.eventtap.event.types.otherMouseDown }
     return false
 end)
 
-_G.finderWatcher = hs.application.watcher.new(function(appName, eventType)
-    if appName ~= "Finder" then return end
+_G.finderWatcher = hs.application.watcher.new(function(app, eventType)
+    if app ~= "Finder" then return end
 
     if eventType == hs.application.watcher.activated then
         modal:enter()

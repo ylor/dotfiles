@@ -12,7 +12,10 @@ window-save-state = always
 background = #000000
 background-blur-radius = 80
 background-opacity = 0.85
-font-family = "JetBrainsMono Nerd Font"
+font-family = "Berkeley Mono Retina"
+#font-family = "Berkeley Mono Variable"
+#font-family = "SF Mono"
+#font-family = "Myna"
 font-size = 16
 font-feature = -calt
 font-feature = -liga
@@ -27,6 +30,7 @@ gtk-custom-css = style.css
 
 # keybinds
 keybind = global:super+`=toggle_quick_terminal
+keybind = global:alt+`=toggle_quick_terminal
 keybind = super+r=reload_config
 keybind = super+shift+p=toggle_command_palette
 keybind = performable:ctrl+c=copy_to_clipboard

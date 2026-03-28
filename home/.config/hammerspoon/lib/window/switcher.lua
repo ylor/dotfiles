@@ -1,8 +1,7 @@
 ---@diagnostic disable-next-line: undefined-global
 local hs = hs
 
-local wf = hs.window.filter.copy(hs.window.filter.defaultCurrentSpace)
-    :setScreens(hs.screen.mainScreen():getUUID())
+
 local list = {}
 local index = 1
 local last = nil
@@ -14,6 +13,8 @@ end
 _G.windowSpaceWatcher = hs.spaces.watcher.new(resetWindowHandler):start()
 
 local function windowHandler(reverse)
+    local wf = hs.window.filter.copy(hs.window.filter.defaultCurrentSpace)
+        :setScreens(hs.screen.mainScreen():getUUID())
     local focused = hs.window.focusedWindow()
     local current = focused and focused:id() or nil
     if current ~= last or #list == 0 then
