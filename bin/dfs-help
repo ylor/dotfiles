@@ -1,5 +1,6 @@
 #!/usr/bin/env fish
-echo "Usage: dot [OPTIONS]
+dfs-show-art
+echo "Usage: dfs [OPTIONS]
 
 Options:
 -h, --help          Show this message

@@ -1,2 +1,5 @@
 #!/usr/bin/env fish
-printf "\033[A\033[K$argv\n"
+# printf "\033[A\033[K$argv\n"
+tput cuu1   # cursor up 1
+tput el     # erase line
+echo $argv

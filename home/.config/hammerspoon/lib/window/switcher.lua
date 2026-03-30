@@ -6,11 +6,21 @@ local list = {}
 local index = 1
 local last = nil
 
-local function resetWindowHandler()
+local function reset()
     list, index = {}, 1
 end
 
-_G.windowSpaceWatcher = hs.spaces.watcher.new(resetWindowHandler):start()
+local resetTimer = hs.timer.delayed.new(2, reset)
+
+_G.windowSpaceWatcher = hs.spaces.watcher.new(function()
+    reset()
+    resetTimer:stop()
+end):start()
+
+_G.windowFocusWatcher = hs.window.filter.new():subscribe(
+    hs.window.filter.windowFocused,
+    function() resetTimer:start() end
+)
 
 local function windowHandler(reverse)
     local wf = hs.window.filter.copy(hs.window.filter.defaultCurrentSpace)

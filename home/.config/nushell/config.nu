@@ -7,7 +7,7 @@
 # (or import) custom commands, or run any other startup tasks.
 # See https://www.nushell.sh/book/configuration.html
 #
-# Nushell sets "sensible defaults" for most configuration settings, 
+# Nushell sets "sensible defaults" for most configuration settings,
 # so your `config.nu` only needs to override these defaults if desired.
 #
 # You can open this file in your default editor using:
@@ -16,3 +16,5 @@
 # You can also pretty-print and page through the documentation for configuration
 # options using:
 #     config nu --doc | nu-highlight | less -R
+
+# $env.NU_LIB_DIRS = ($env.NU_LIB_DIRS ++ ["scripts"] | uniq)
