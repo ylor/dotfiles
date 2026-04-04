@@ -1,24 +1,31 @@
 #!/usr/bin/env fish
-set --query DOTFILES || dfs-init
-set --local DOTFILES_CACHE "$HOME/.cache/dotfiles/cache.txt"
-set --local DOTFILES_CACHE "cache.txt"
+set --query DOTFILES || dfs
 
-mkdir -p (dirname $DOTFILES_CACHE)
-
+# link dotfiles
+set --local links
 for orig in (fd . "$DOTFILES/home" --hidden --absolute-path --type file)
     set link (string replace "$DOTFILES/home" "$HOME" "$orig")
-    mkdir -p (dirname $link)
-    ln -sfv $orig $link
-    echo "$link" >> $DOTFILES_CACHE
+    mkdir -p (path dirname $link)
+    ln -sf $orig $link
+    set_color green && printf "✓ "
+    set_color normal && echo $link
+    set --append links $link
 end
-sort -uo $DOTFILES_CACHE $DOTFILES_CACHE
 
-while read -l link
-    if not test -e $link
-        rm -v $link
-    end
-end < file.txt
+set --local cache "$HOME/.cache/dotfiles/cache.txt"
+mkdir -p (path dirname $cache)
 
-for dir in (path dirname (cat file.txt) | sort -u)
+# purge stale symlinks
+test -f $cache && while read -l old
+    contains $old $links || rm -vf $old
+end < $cache
+
+# replace cache
+string join \n $links | sort > $cache
+
+# purge empty dirs
+for dir in (path dirname (cat $cache) | sort -u)
     find $dir -maxdepth 1 -type d -empty -delete 2>/dev/null
 end
+
+dfs-success "linked $(count $links) dotfiles"
