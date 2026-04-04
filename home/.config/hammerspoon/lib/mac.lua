@@ -34,25 +34,33 @@ function App(mods, key, app)
 end
 
 function AppFocus()
+    local screen = hs.screen.mainScreen()
     local focused = hs.window.focusedWindow()
-    if not focused then return end
+    local visible = hs.fnutils.filter(hs.window.visibleWindows(), function(w) return w:screen() == screen end)
 
-    local mainScreen = hs.screen.mainScreen()
-    local focusedApp = focused:application()
-    local hiddenApps = {}
-
-    for _, win in ipairs(hs.window.allWindows()) do
-        if win:screen() == mainScreen and win ~= focused then
-            local app = win:application()
-            if app ~= focusedApp then
-                if not hiddenApps[app] then
+    if #visible > 1 and focused then
+        local focusedApp = focused:application()
+        local hidden = {}
+        for _, win in ipairs(visible) do
+            if win ~= focused then
+                local app = win:application()
+                if app == focusedApp then
+                    win:minimize()
+                elseif not hidden[app] then
                     app:hide()
-                    hiddenApps[app] = true
+                    hidden[app] = true
                 end
-            else
-                win:minimize()
+                
             end
         end
+    else
+        for _, app in ipairs(hs.application.runningApplications()) do
+            if app:isHidden() then app:unhide() end
+        end
+        for _, win in ipairs(hs.window.minimizedWindows()) do
+            win:unminimize()
+        end
+        focused:focus()
     end
 end
 

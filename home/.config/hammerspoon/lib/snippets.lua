@@ -7,7 +7,7 @@ local snippets = {
     ["shrugg"] = "¯\\_(ツ)_/¯",
     ["tmm"]    = "™",
     ["xx"]     = "×",
-    ["foo"]    = "bar",
+    -- ["foo"]    = "bar",
     ["@date"]  = function() return os.date("%Y-%m-%d") end,
     ["@ts"]    = function() return os.date("!%Y-%m-%dT%H:%M:%SZ") end,
 }

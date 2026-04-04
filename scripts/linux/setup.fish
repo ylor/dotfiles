@@ -1,9 +1,6 @@
 # SETUP
 set distro (cat /etc/os-release | grep '^ID=' | cut -d= -f2)
-
-pushd scripts/linux
-source $distro.fish
-popd
+source $distro/*.fish
 
 # POWER MANAGEMENT
 if upower --enumerate | grep BAT
@@ -47,7 +44,7 @@ end
 #     sudo sbctl create-keys
 #     sudo sbctl enroll-keys --microsoft || exit 1
 #     sudo sbctl status
-#     sudo sbctl verify 
+#     sudo sbctl verify
 #     #| sed 's/✗ /sbctl sign -s /e'
 #     #sbctl status
 # end
@@ -67,11 +64,11 @@ end
 #     echo '[Unit]
 #     Description=Disable XH00 as ACPI wakeup source to workaround Gigabyte isntant wake issue
 #     After=multi-user.target
-    
+
 #     [Service]
 #     Type=oneshot
 #     ExecStart=sh -c "echo XH00 > /proc/acpi/wakeup"
-    
+
 #     [Install]
 #     WantedBy=multi-user.target' | sudo tee /etc/systemd/system/gigabyte-suspend-workaround.service >/dev/null
 

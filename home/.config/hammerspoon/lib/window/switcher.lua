@@ -25,6 +25,7 @@ _G.windowFocusWatcher = hs.window.filter.new():subscribe(
 local function windowHandler(reverse)
     local wf = hs.window.filter.copy(hs.window.filter.defaultCurrentSpace)
         :setScreens(hs.screen.mainScreen():getUUID())
+        :setDefaultFilter({ visible = nil })
     local focused = hs.window.focusedWindow()
     local current = focused and focused:id() or nil
     if current ~= last or #list == 0 then

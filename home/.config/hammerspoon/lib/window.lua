@@ -191,7 +191,7 @@ hs.window.filter.new():subscribe(hs.window.filter.windowMoved, function(win)
     previousScreens[winID] = currentScreen
 
     if prevScreen and prevScreen ~= currentScreen and screen:name() == "Built-in Retina Display" then
-        hs.alert.show("Window arrived on internal screen!")
+        -- hs.alert.show("Window arrived on internal screen!")
         WindowFill(win)
     end
 end)

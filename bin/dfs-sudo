@@ -1,5 +1,9 @@
 #!/usr/bin/env fish
 
+if test (count $argv) -eq 0
+    exit 1
+end
+
 # Already authenticated — skip prompting
 if command /usr/bin/sudo --non-interactive true 2>/dev/null
     exec command /usr/bin/sudo $argv
@@ -16,7 +20,7 @@ for i in (seq $max_attempts)
     and exec command /usr/bin/sudo $argv
 
     test $i -lt $max_attempts
-    and gum log --level error "Wrong password. Attempt $i of $max_attempts."
+    and gum log --level error "Sorry, try again."
 end
 
 gum log --level error "Authentication failed after $max_attempts attempts."

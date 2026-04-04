@@ -31,8 +31,6 @@ if Work then
     Web(Mod.main, "A", "https://gemini.google.com")
 end
 
-hs.hotkey.bind(Mod.main, "D", hs.spaces.toggleShowDesktop)
-hs.hotkey.bind(Mod.main, "L", hs.caffeinate.lockScreen)
 hs.hotkey.bind(Mod.main, "W", hs.spaces.toggleMissionControl)
 hs.hotkey.bind(Mod.main, "V", hs.spotlight.showClipboard)
 
@@ -42,8 +40,10 @@ for i = 1, 5 do
     end)
 end
 
+hs.hotkey.bind(Mod.hyper, "D", hs.spaces.toggleShowDesktop)
 hs.hotkey.bind(Mod.hyper, "F", hs.window.toggleFullscreen)
 hs.hotkey.bind(Mod.hyper, "H", AppFocus)
+hs.hotkey.bind(Mod.hyper, "L", hs.caffeinate.lockScreen)
 
 hs.hotkey.bind(Mod.hyper, "down", WindowFloat)
 hs.hotkey.bind(Mod.hyper, "left", WindowLeftScreen)

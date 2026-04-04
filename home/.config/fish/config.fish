@@ -12,12 +12,11 @@ if status --is-interactive
     set -x XDG_STATE_HOME "$HOME/.local/state"
     set -x XDG_RUNTIME_DIR "/run/user/$EUID"
 
-    # Syntax highlighting
     set fish_color_command green
     set fish_color_normal brblack
     set fish_color_param white
 
-    fish_vi_key_bindings # I'm trying to grow a neckbeard
+    fish_vi_key_bindings # i'm trying to grow a neckbeard
     set fish_cursor_default block
     set fish_cursor_insert line
     set fish_cursor_replace_one underscore
@@ -31,7 +30,6 @@ if status --is-interactive
 
     # Aliases
     alias h="cd $HOME"
-    alias mcd="mkdir -p"
     alias md="mkdir -p"
     alias rd="rmdir"
     alias re="source $__fish_config_dir/config.fish"

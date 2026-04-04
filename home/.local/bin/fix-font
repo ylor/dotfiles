@@ -1,0 +1,12 @@
+#!/bin/bash
+
+# Convert to ttx
+uvx --from fonttools ttx ./*.otf
+
+# set isFixedPitch to 1
+sed -i '' -e 's/isFixedPitch value="0"/isFixedPitch value="1"/g' ./*.ttx
+
+# Convert back to otf
+mkdir fixed
+uvx --from fonttools ttx -d fixed/ ./*.ttx
+rm *.ttx

@@ -1,6 +1,6 @@
 paru -Syu
 
-set pkgs (awk '{print $1}' "cachy/pkgs.txt")
+set pkgs (awk '{print $1}' "pkgs.txt")
 paru -S --needed --skipreview $pkgs
 paru --clean
 
@@ -9,9 +9,9 @@ paru --clean
 #    sudo cp /usr/share/icons/zed.png /usr/share/icons/hicolor/512x512/apps/zed.png
 #end
 
-if command -vq nvidia-smi
-    paru -S --needed --skipreview vk-hdr-layer-kwin6-git
-end
+# if command -vq nvidia-smi
+#     paru -S --needed --skipreview vk-hdr-layer-kwin6-git
+# end
 
 # AUTOLOGIN
 if command -vq hyprland niri

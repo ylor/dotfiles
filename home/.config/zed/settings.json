@@ -11,7 +11,7 @@
     "provider": "none",
   },
   "buffer_font_size": 15.0,
-  "buffer_font_family": "JetBrainsMono Nerd Font",
+  "buffer_font_family": "Berkeley Mono",
   "buffer_font_features": {
     "calt": true,
     "liga": true,
@@ -52,7 +52,7 @@
     "metrics": false,
   },
   "terminal": {
-    "font_family": "JetBrainsMono Nerd Font",
+    "font_family": "Berkeley Mono",
   },
   "title_bar": {
     "show_branch_icon": true,

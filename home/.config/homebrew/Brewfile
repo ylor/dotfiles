@@ -10,5 +10,16 @@ brew "git"
 brew "gum"
 brew "mise"
 brew "ripgrep"
-brew "viu"
 brew "zoxide"
+
+mode = ENV.fetch("HOMEBREW_DOTFILES_MODE", "minimal")
+if mode == "full"
+  cask "1password"
+  cask "appcleaner"
+  cask "betterdisplay"
+  cask "ghostty"
+  cask "hammerspoon"
+  cask "trex"
+  cask "virtualbuddy"
+  cask "zed"
+end
