@@ -1,3 +1,4 @@
 #!/usr/bin/env fish
 set_color green && printf "✓ "
-set_color normal && dfs-npc "$argv"
+#set_color normal && dfs-npc "$argv"
+set_color normal && echo "$argv"
