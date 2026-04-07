@@ -1,3 +1,3 @@
 function mac
-    test (uname) = "Darwin"
+    test (uname) = Darwin
 end

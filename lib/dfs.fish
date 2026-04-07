@@ -1,0 +1,9 @@
+function dfs
+    argparse r/reset -- $argv
+
+    if set -q _flag_reset
+        set -e DOTFILES DOTFILES_HOME DOTFILES_MODE
+    end
+
+    fish (status dirname)/../main.fish
+end

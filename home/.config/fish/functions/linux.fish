@@ -1,3 +1,3 @@
 function linux
-    test (uname) = "Linux"
+    test (uname) = Linux
 end

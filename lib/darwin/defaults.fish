@@ -1,6 +1,5 @@
 # https://macos-defaults.com
 # https://github.com/mathiasbynens/dotfiles/blob/main/.macos
-
 mkdir -p /Applications/Xcode.app # enable spotlight category
 mkdir -p "$HOME/Developer" # pretty finder icon
 touch "$HOME/.hushlogin" # shut up terminal
@@ -109,3 +108,4 @@ defaults write org.hammerspoon.Hammerspoon MJConfigFile "$HOME/.config/hammerspo
 defaults write org.hammerspoon.Hammerspoon MJShowMenuIconKey -int 0
 
 killall Finder Dock
+dfs-success "defaults set!"

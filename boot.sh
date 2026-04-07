@@ -48,7 +48,7 @@ if missing fd fish git gum; then
     exit 67
 fi
 
-DOTFILES="$HOME/.local/share/dotfiles"
+export DOTFILES="$HOME/.local/share/dotfiles"
 rm -rf "$DOTFILES"
 git clone https://github.com/ylor/dotfiles "$DOTFILES"
 fish "$DOTFILES/main.fish"

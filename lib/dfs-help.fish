@@ -1,6 +1,6 @@
-#!/usr/bin/env fish
-dfs-show-art
-echo "Usage: dfs [OPTIONS]
+function dfs-help
+    dfs-show-art
+    echo "Usage: dfs [OPTIONS]
 
 Options:
 -h, --help          Show this message
@@ -9,3 +9,4 @@ Options:
 -s, --sync          Synchronize dotfiles
 -t, --tui           Terminal UI
 "
+end

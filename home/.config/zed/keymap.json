@@ -5,16 +5,18 @@
       "ctrl-a": "editor::SelectAll",
       "ctrl-x": "editor::Cut",
       "ctrl-c": "editor::Copy",
-      "ctrl-v": "editor::Paste"
-    }
+      "ctrl-v": "editor::Paste",
+      "ctrl-k": "file_finder::Toggle",
+    },
   },
   {
     "context": "os == macos",
     "bindings": {
-      "super-a": "editor::SelectAll",
-      "super-x": "editor::Cut",
-      "super-c": "editor::Copy",
-      "super-v": "editor::Paste"
-    }
-  }
+      "cmd-a": "editor::SelectAll",
+      "cmd-x": "editor::Cut",
+      "cmd-c": "editor::Copy",
+      "cmd-v": "editor::Paste",
+      "cmd-k": "file_finder::Toggle",
+    },
+  },
 ]

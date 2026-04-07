@@ -39,27 +39,29 @@ function WindowFlash(win)
     local canvas = hs.canvas.new(f)
     local r = 16
 
-    canvas:appendElements({
-        type = "rectangle",
-        action = "fill",
-        fillColor = { white = 1.0, alpha = 0.02 },
-        roundedRectRadii = { xRadius = r, yRadius = r },
-        frame = { x = 0, y = 0, w = f.w, h = f.h }
-    }, {
-        type = "rectangle",
-        action = "stroke",
-        strokeColor = { black = 1.0, alpha = 0.2 },
-        strokeWidth = 1,
-        roundedRectRadii = { xRadius = r, yRadius = r },
-        frame = { x = 0.5, y = 0.5, w = f.w - 1, h = f.h - 1 }
-    }, {
-        type = "rectangle",
-        action = "stroke",
-        strokeColor = { white = 1.0, alpha = 0.6 },
-        strokeWidth = 2,
-        roundedRectRadii = { xRadius = r - 1, yRadius = r - 1 },
-        frame = { x = 1.5, y = 1.5, w = f.w - 3, h = f.h - 3 }
-    })
+    canvas:appendElements(
+        -- {
+        --     type = "rectangle",
+        --     action = "fill",
+        --     fillColor = { white = 1.0, alpha = 0.02 },
+        --     roundedRectRadii = { xRadius = r, yRadius = r },
+        --     frame = { x = 0, y = 0, w = f.w, h = f.h }
+        -- },
+        {
+            type = "rectangle",
+            action = "stroke",
+            strokeColor = { black = 1.0, alpha = 0.2 },
+            strokeWidth = 1,
+            roundedRectRadii = { xRadius = r, yRadius = r },
+            frame = { x = 0.5, y = 0.5, w = f.w - 1, h = f.h - 1 }
+        }, {
+            type = "rectangle",
+            action = "stroke",
+            strokeColor = { white = 1.0, alpha = 0.6 },
+            strokeWidth = 2,
+            roundedRectRadii = { xRadius = r - 1, yRadius = r - 1 },
+            frame = { x = 1.5, y = 1.5, w = f.w - 3, h = f.h - 3 }
+        })
 
     canvas:show()
 

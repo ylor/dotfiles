@@ -38,6 +38,11 @@ if status --is-interactive
         source $module
     end
 
+    # if test -d "$DOTFILES"
+    #     and not contains "$DOTFILES/lib" $fish_function_path
+    set --prepend fish_function_path "$DOTFILES/lib"
+    # end
+
     fish_add_path "$DOTFILES/bin" \
         "$HOME/.local/bin" \
         "$HOME/.local/bin/$KERNEL"

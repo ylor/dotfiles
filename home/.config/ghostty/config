@@ -21,17 +21,58 @@ font-feature = zero
 macos-titlebar-style = tabs
 theme = Atom One Dark
 window-padding-balance = true
-window-padding-x = 16
-#window-padding-y = 16
+window-padding-x = 8
 window-padding-color = background
 window-subtitle = working-directory
 gtk-custom-css = style.css
 gtk-single-instance = desktop
 
 # keybinds
+keybind = global:super+escape=toggle_quick_terminal
 keybind = global:super+`=toggle_quick_terminal
 keybind = super+r=reload_config
-# keybind = super+shift+p=toggle_command_palette
 keybind = performable:ctrl+c=copy_to_clipboard
 # keybind = control+t=new_tab
 # keybind = control+w=close_surface
+
+
+#font-family = "Berkeley Mono Variable"
+
+# Font width (60 to 100)
+#  60 = UltraCondensed
+#  70 = ExtraCondensed
+#  80 = Condensed
+#  90 = SemiCondensed
+# 100 = Normal
+font-variation = wdth=90
+
+# Font weight (100 to 900)
+# 100 = Thin
+# 200 = ExtraLight
+# 300 = Light
+# 350 = SemiLight
+# 400 = Regular
+# 500 = Medium
+# 600 = SemiBold
+# 700 = Bold
+# 800 = ExtraBold
+# 900 = Black
+font-variation = wght=100
+
+# otfinfo -f ~/.local/share/fonts/Berkeley\ Mono\ Variable.otf
+# aalt    Access All Alternates
+# calt    Contextual Alternates
+# ccmp    Glyph Composition/Decomposition
+# mark    Mark Positioning
+# mkmk    Mark to Mark Positioning
+# salt    Stylistic Alternates
+# ss01    Stylistic Set 1 <- slashed 0
+# ss02    Stylistic Set 2 <- dotted 0
+# ss03    Stylistic Set 3 <- gap 0
+# ss04    Stylistic Set 4 <- slashed 0, slash 7
+# ss05    Stylistic Set 5 <- dotted 0, slash 7
+# ss06    Stylistic Set 6 <- gap 0, slash 7
+
+#font-size = 13
+# Personal preference
+#adjust-cell-height = -2%

@@ -1,11 +1,16 @@
 set -Ux DOTFILES (realpath (status dirname))
 set -Ux DOTFILES_HOME "$DOTFILES/home"
-fish_add_path "$DOTFILES/bin" #"$DOTFILES/home/.local/bin"
+# source $DOTFILES/lib/*.fish
+set --prepend fish_function_path "$DOTFILES/lib"
 
-clear
-test -z "$DOTFILES_MODE" && dfs-mode || dfs-show-art
+
+test -z "$DOTFILES_MODE" && dfs-mode
+clear && dfs-show-art
 set kernel (uname | string lower)
-[ "$DOTFILES_MODE" = full ] && source $DOTFILES/scripts/$kernel/**.fish
-dfs-spin --title "linking..." dfs-sync
-dfs-success "dotfiles linked!"
-dfs-npc "✈ $(set_color --italic)SEE YOU SPACE COWBOY…"
+test "$DOTFILES_MODE" = full && for s in $DOTFILES/lib/$kernel/**.fish
+    source $s
+end
+dfs-spin --title="linking…" -- fish --interactive --command 'dfs-link'
+
+# echo
+# gum style --align center --border rounded --padding "0 1" --width 25 "✈ SEE YOU SPACE COWBOY… "
