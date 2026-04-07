@@ -1,6 +1,7 @@
 theme = "transparent"
 
 [editor]
+default-yank-register = "+"
 line-number = "relative"
 
 [editor.auto-save]

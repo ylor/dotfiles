@@ -10,7 +10,7 @@ local function reset()
     list, index = {}, 1
 end
 
-local resetTimer = hs.timer.delayed.new(2, reset)
+local resetTimer = hs.timer.delayed.new(1, reset)
 
 _G.windowSpaceWatcher = hs.spaces.watcher.new(function()
     reset()
