@@ -14,7 +14,7 @@ function dfs-link
         # dfs-success $link
     end
 
-    printf '%s\n' $links | sort > $cache.tmp
+    printf '%s\n' $links | sort >$cache.tmp
     set stale (comm -23 $cache $cache.tmp)
     rm $stale 2>/dev/null
     mv $cache.tmp $cache

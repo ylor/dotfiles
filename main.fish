@@ -5,7 +5,7 @@ test -z $DOTFILES_MODE && dfs-mode || dfs-show-art
 test "$DOTFILES_MODE" = full && for s in $DOTFILES/scripts/(uname | string lower)/*.fish
     source $s
 end
-dfs-spin --title="linking…" -- fish --interactive --command 'dfs-link'
+dfs-spin --title="linking…" -- fish --interactive --command dfs-link
 
 # echo
 # gum style --align center --border rounded --padding "0 1" --width 25 "✈ SEE YOU SPACE COWBOY… "

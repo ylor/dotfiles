@@ -1,28 +1,23 @@
-#!/usr/bin/env fish
 function sudo
-    if test (count $argv) -eq 0
-        return 1
+    test (count $argv) -eq 0; and return 1
+
+    if /usr/bin/sudo --non-interactive true 2>/dev/null
+        /usr/bin/sudo $argv
+        return
     end
 
-    # Already authenticated — skip prompting
-    if command /usr/bin/sudo --non-interactive true 2>/dev/null
-        exec command /usr/bin/sudo $argv
-    end
-
-    set -l max_attempts 3
-
-    for i in (seq $max_attempts)
+    for i in (seq 3)
         set -l password (gum input --password --placeholder "Enter sudo password" --cursor.foreground fff --no-show-help)
-        or break # Ctrl+C / ESC in gum
+        or return 1
 
-        test -n "$password"
-        and echo "$password" | command /usr/bin/sudo --validate --stdin 2>/dev/null
-        and exec command /usr/bin/sudo $argv
+        if echo "$password" | /usr/bin/sudo --validate --stdin 2>/dev/null
+            /usr/bin/sudo $argv
+            return
+        end
 
-        test $i -lt $max_attempts
-        and gum log --level error "Sorry, try again."
+        test $i -lt 3; and gum log --level error "Sorry, try again."
     end
 
-    gum log --level error "Authentication failed after $max_attempts attempts."
+    gum log --level error "Authentication failed after 3 attempts."
     return 1
 end
