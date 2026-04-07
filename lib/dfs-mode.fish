@@ -1,4 +1,5 @@
 function dfs-mode
-    clear && dfs-show-art
-    set -Ux DOTFILES_MODE (gum choose "Full" "Minimal" | string lower)
+    dfs-show-art
+    set res (gum choose "Full" "Minimal" | string lower)
+    set -Ux DOTFILES_MODE $res
 end

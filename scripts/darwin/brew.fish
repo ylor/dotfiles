@@ -6,8 +6,8 @@
 # dfs-spin --title "brewing..." brew update
 # dfs-success "brew updated!"
 export HOMEBREW_DOTFILES_MODE=$DOTFILES_MODE
-dfs-spin --title="brewing…" -- brew bundle --file "$DOTFILES_HOME/.config/homebrew/Brewfile" --quiet
-dfs-success "brew bundled!"
+dfs-spin --title="brewing…" -- brew bundle --file "$DOTFILES/home/.config/homebrew/Brewfile" --quiet
+dfs-success "brew bundled"
 
 # if test "$DOTFILES_MODE" = full
 #     set --export HOMEBREW_BUNDLE_FILE "$DOTFILES_HOME/.config/homebrew/Caskfile"

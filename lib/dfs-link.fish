@@ -1,6 +1,6 @@
 function dfs-link
     set --query DOTFILES || dfs
-    set cache "$HOME/.cache/dotfiles/cache.txt"
+    set cache "$HOME/.cache/dotfiles/cache"
     mkdir -p (path dirname $cache)
     touch $cache
 
@@ -20,6 +20,6 @@ function dfs-link
     mv $cache.tmp $cache
 
     rmdir (path dirname (cat $cache) | sort -u) 2>/dev/null
-    # dfs-success "$(count $links) linked"
-    dfs-success "dotfiles linked!"
+    dfs-success "$(count $links) files linked"
+    # dfs-success "dotfiles linked!"
 end
