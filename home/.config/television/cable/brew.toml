@@ -7,13 +7,9 @@ requirements = ["brew"]
 command = "(brew formulae; brew casks) | sort"
 
 [preview]
-command = "brew info '{1}'"
-
-[ui]
-# preview_panel = { size = 60 }
+command = "brew info '{1}' | sed 's/[[:blank:]]*$//'"
 
 [keybindings]
-# shortcut = "f3"
 enter = "actions:open"
 
 [actions.open]

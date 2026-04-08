@@ -1,4 +1,5 @@
 function dfs-link
+    argparse m/minimal q/quiet -- $argv
     set --query DOTFILES || dfs
     set cache "$HOME/.cache/dotfiles/cache"
     mkdir -p (path dirname $cache)
@@ -11,7 +12,7 @@ function dfs-link
 
         mkdir -p (path dirname $link)
         ln -sf $orig $link
-        # dfs-success $link
+        set --query _flag_minimal || set --query _flag_quiet || dfs-success $link
     end
 
     printf '%s\n' $links | sort >$cache.tmp
@@ -20,6 +21,5 @@ function dfs-link
     mv $cache.tmp $cache
 
     rmdir (path dirname (cat $cache) | sort -u) 2>/dev/null
-    dfs-success "$(count $links) files linked"
-    # dfs-success "dotfiles linked!"
+    set --query _flag_quiet || dfs-success "$(count $links) files linked"
 end
