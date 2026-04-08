@@ -6,7 +6,7 @@
 # dfs-spin --title "brewing..." brew update
 # dfs-success "brew updated!"
 export HOMEBREW_DOTFILES_MODE=$DOTFILES_MODE
-dfs-spin --title="brewing…" -- brew bundle --file "$DOTFILES/home/.config/homebrew/Brewfile" --quiet
+dfs-spin --title="brewing…" -- brew bundle --file "$DOTFILES/home/darwin/.config/homebrew/Brewfile" --quiet --no-upgrade
 dfs-success "brew bundled"
 
 # if test "$DOTFILES_MODE" = full

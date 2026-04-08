@@ -1,3 +1,0 @@
-graph TD
-boot.sh --> main.fish
-main.fish --> lib.fish --> macos/*.fish & linux/*.fish --> link.fish

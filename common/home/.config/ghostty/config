@@ -44,7 +44,7 @@ keybind = performable:ctrl+c=copy_to_clipboard
 #  80 = Condensed
 #  90 = SemiCondensed
 # 100 = Normal
-font-variation = wdth=90
+font-variation = wdth=60
 
 # Font weight (100 to 900)
 # 100 = Thin

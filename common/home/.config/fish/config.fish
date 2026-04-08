@@ -32,19 +32,12 @@ if status --is-interactive
     alias h="cd $HOME"
     alias md="mkdir -p"
     alias rd="rmdir"
-    alias re="source $__fish_config_dir/config.fish"
+    alias re="exec fish"
 
     for module in $__fish_config_dir/conf.d/{$KERNEL,prompt}/*.fish
         source $module
     end
 
-    # if test -d "$DOTFILES"
-    #     and not contains "$DOTFILES/lib" $fish_function_path
-    set --prepend fish_function_path "$DOTFILES/lib"
-    # end
-
-    fish_add_path "$DOTFILES/bin" \
-        "$HOME/.local/bin" \
-        "$HOME/.local/bin/$KERNEL"
     fish_add_path --prepend --move "$HOME/.local/bin"
+    set --prepend fish_function_path "$DOTFILES/src"
 end
