@@ -13,6 +13,7 @@ set wildmenu                   " Great command-line completion, use `<Tab>` to m
                                " around and `<CR>` to validate.
 set number                     " Show current line number
 set relativenumber             " Show relative line numbers
+set clipboard=unnamedplus
 "set textwidth=0
 "set wrapmargin=0
 set wrap
@@ -36,7 +37,7 @@ let &t_EI.="\e[1 q" "EI = NORMAL mode (ELSE)
 "Cursor settings:
 
 "  1 -> blinking block
-"  2 -> solid block 
+"  2 -> solid block
 "  3 -> blinking underscore
 "  4 -> solid underscore
 "  5 -> blinking vertical bar
