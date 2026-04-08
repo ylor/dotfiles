@@ -1,0 +1,22 @@
+[metadata]
+name = "brew"
+description = "Browse and preview homebrew packages"
+requirements = ["brew"]
+
+[source]
+command = "(brew formulae; brew casks) | sort"
+
+[preview]
+command = "brew info '{1}'"
+
+[ui]
+# preview_panel = { size = 60 }
+
+[keybindings]
+# shortcut = "f3"
+enter = "actions:open"
+
+[actions.open]
+description = "Installs brew package"
+command = "brew install '{}'"
+mode = "execute"
