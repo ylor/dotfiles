@@ -50,7 +50,6 @@ function AppFocus()
                     app:hide()
                     hidden[app] = true
                 end
-                
             end
         end
     else
