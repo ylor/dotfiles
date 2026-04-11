@@ -3,6 +3,7 @@ theme = "transparent"
 [editor]
 default-yank-register = "+"
 line-number = "relative"
+text-width = 100
 
 [editor.auto-save]
 focus-lost = true
@@ -18,4 +19,4 @@ hidden = false
 
 [editor.soft-wrap]
 enable = true
-wrap-at-text-width = 100
+wrap-at-text-width = true
