@@ -18,3 +18,4 @@ hidden = false
 
 [editor.soft-wrap]
 enable = true
+wrap-at-text-width = 100

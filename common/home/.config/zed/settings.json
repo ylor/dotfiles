@@ -7,8 +7,9 @@
 // custom settings, run the `open default settings` command
 // from the command palette or from `Zed` application menu.
 {
-  "buffer_font_size": 14.0,
-  "buffer_font_family": "Berkeley Mono",
+  "buffer_font_size": 15.0,
+  "buffer_line_height": "comfortable",
+  "buffer_font_family": "Berkeley Mono Variable",
   "cursor_blink": false,
   "disable_ai": false,
   "format_on_save": "on",
@@ -16,16 +17,13 @@
   "relative_line_numbers": "enabled",
   "soft_wrap": "bounded",
   "show_whitespaces": "trailing",
-  // "show_wrap_guides": false,
+  "show_wrap_guides": false,
   "theme": "One Dark",
   "ui_font_family": ".SystemUIFont",
-  // "ui_font_family": "Berkeley Mono Variable",
   "vim_mode": true,
   "auto_install_extensions": {
     "color-highlight": true,
     "fish": true,
-    "hyprlang": true,
-    "ssh-config": true,
   },
   "autosave": {
     "after_delay": {
@@ -33,11 +31,9 @@
     },
   },
   "buffer_font_features": {
-    "calt": true,
-    "liga": true,
+    "calt": false,
     // "ss01": true,
-    // "ss02": true,
-    // "wdth": 10,
+    // "wdth": 90,
   },
   "edit_predictions": {
     "provider": "none",
@@ -65,9 +61,6 @@
     "diagnostics": false,
     "metrics": false,
   },
-  "terminal": {
-    "font_family": "Berkeley Mono",
-  },
   "title_bar": {
     "show_branch_icon": true,
     "show_sign_in": false,
@@ -90,7 +83,7 @@
     "tab.active_background": "#282c3380",
     "tab_bar.background": "#00000000",
     "terminal.background": "#00000000",
-    "title_bar.background": "#000000d7",
+    "title_bar.background": "#000000ee",
     "title_bar.inactive_background": "#000000d7",
     "toolbar.background": "#00000000",
   },

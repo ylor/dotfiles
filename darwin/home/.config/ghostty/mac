@@ -1,0 +1,8 @@
+# form
+font-size = 16
+macos-titlebar-style = tabs
+
+# function
+keybind = global:super+escape=toggle_quick_terminal
+keybind = global:super+`=toggle_quick_terminal
+keybind = super+r=reload_config

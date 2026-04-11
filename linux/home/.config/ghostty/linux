@@ -1,0 +1,10 @@
+# form
+font-size = 16
+# function
+gtk-custom-css = style.css
+gtk-single-instance = desktop
+keybind = global:control+escape=toggle_quick_terminal
+keybind = global:control+`=toggle_quick_terminal
+keybind = performable:ctrl+c=copy_to_clipboard
+# keybind = control+t=new_tab
+# keybind = control+w=close_surface

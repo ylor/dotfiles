@@ -46,8 +46,8 @@ defaults write com.apple.desktopservices DSDontWriteNetworkStores -bool true
 defaults write com.apple.desktopservices DSDontWriteUSBStores -bool true
 
 # Spotlight
-defaults write com.apple.spotlight PasteboardHistoryEnabled -int 1
-defaults write com.apple.spotlight PasteboardHistoryTimeout -int 604800
+defaults write com.apple.Spotlight PasteboardHistoryEnabled -bool true
+defaults write com.apple.Spotlight PasteboardHistoryTimeout -int 604800
 
 # Keyboard
 ## disable accent menu & enable key repeat
@@ -101,12 +101,13 @@ defaults write com.apple.dock wvous-br-modifier -int 0
 
 # Window Management
 ## Drag with cmd+ctrl
-defaults write -g NSWindowShouldDragOnGesture -bool true
-defaults write com.apple.WindowManager EnableStandardClickToShowDesktop 0
+defaults write -g NSWindowS houldDragOnGesture -bool true
+defaults write com.apple.WindowManager EnableStandardClickToShowDesktop -bool false
+
 
 # Hammerspoon
 defaults write org.hammerspoon.Hammerspoon MJConfigFile "$HOME/.config/hammerspoon/init.lua"
 defaults write org.hammerspoon.Hammerspoon MJShowMenuIconKey -int 0
 
-killall Finder Dock
+# killall Finder Dock
 dfs-success "defaults set"

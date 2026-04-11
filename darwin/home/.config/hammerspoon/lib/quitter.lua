@@ -1,23 +1,25 @@
 ---@diagnostic disable-next-line: undefined-global
 local hs = hs
 
-local zombies = {
+local pinned = {}
+local output = hs.execute("defaults read com.apple.dock persistent-apps")
+for bundleID in output:gmatch('"bundle%-identifier" = "([^"]+)";') do
+    pinned[bundleID] = true
+end
+
+local exempt = {
     ["Finder"] = true,
-    ["Ghostty"] = true,
-    ["Google Chrome Beta"] = true,
-    ["Google Chrome Canary"] = true,
-    ["Google Chrome Dev"] = true,
-    ["Google Chrome"] = true,
     ["Keychain Access"] = true,
-    ["Moonlight"] = true,
-    ["Terminal"] = true,
+    -- ["Moonlight"] = true
 }
 
 hs.window.filter.default:subscribe(hs.window.filter.windowDestroyed, function(_, appName)
     local app = hs.application.get(appName)
-    if not app or app:kind() == 0 or zombies[appName] then return end
+    if app:kind() == 1 or exempt[appName] then return end
+    if pinned[app:bundleID()] then return end
 
-    if #app:allWindows() == 0 then
+    local wf = hs.window.filter.new(appName)
+    if #wf:getWindows() == 0 then
         app:kill()
     end
 end)

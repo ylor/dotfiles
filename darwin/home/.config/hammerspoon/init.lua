@@ -34,12 +34,6 @@ end
 hs.hotkey.bind(Mod.main, "W", hs.spaces.toggleMissionControl)
 hs.hotkey.bind(Mod.main, "V", hs.spotlight.showClipboard)
 
-for i = 1, 5 do
-    hs.hotkey.bind({ "ctrl", "shift" }, tostring(i), function()
-        MoveWindowToSpaceByDrag(i)
-    end)
-end
-
 hs.hotkey.bind(Mod.hyper, "D", hs.spaces.toggleShowDesktop)
 hs.hotkey.bind(Mod.hyper, "F", hs.window.toggleFullscreen)
 hs.hotkey.bind(Mod.hyper, "H", AppFocus)
@@ -52,4 +46,10 @@ hs.hotkey.bind(Mod.hyper, "right", WindowRightScreen)
 hs.hotkey.bind(Mod.hyper, "\\", hs.reload)
 hs.hotkey.bind(Mod.hyper, "R", hs.reload)
 
-hs.alert.show("Config loaded")
+for i = 1, 5 do
+    hs.hotkey.bind({ "ctrl", "shift" }, tostring(i), function()
+        MoveWindowToSpaceByDrag(i)
+    end)
+end
+
+-- hs.alert.show("Config loaded")
