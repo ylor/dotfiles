@@ -15,7 +15,7 @@ local exempt = {
 
 hs.window.filter.default:subscribe(hs.window.filter.windowDestroyed, function(_, appName)
     local app = hs.application.get(appName)
-    if app:kind() == 1 or exempt[appName] then return end
+    if app:kind() == 0 or exempt[appName] then return end
     if pinned[app:bundleID()] then return end
 
     local wf = hs.window.filter.new(appName)

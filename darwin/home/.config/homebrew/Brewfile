@@ -5,11 +5,11 @@ brew "evil-helix"
 brew "eza"
 brew "fd"
 brew "fish"
-brew "fzf"
 brew "git"
 brew "gum"
 brew "mise"
 brew "ripgrep"
+brew "television"
 brew "zoxide"
 
 mode = ENV.fetch("HOMEBREW_DOTFILES_MODE", "minimal")

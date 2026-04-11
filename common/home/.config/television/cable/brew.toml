@@ -1,18 +1,28 @@
 [metadata]
 name = "brew"
-description = "Browse and preview homebrew packages"
+description = "Manage Homebrew packages"
 requirements = ["brew"]
 
 [source]
-command = "(brew formulae; brew casks) | sort"
+command = "{ brew leaves; brew list --casks } | sort"
+no_sort = true
 
 [preview]
-command = "brew info '{1}' | sed 's/[[:blank:]]*$//'"
+command = "brew info '{}'"
+
+# [ui]
+# layout = "portrait"
 
 [keybindings]
-enter = "actions:open"
+ctrl-u = "actions:upgrade"
+ctrl-d = "actions:uninstall"
 
-[actions.open]
-description = "Installs brew package"
-command = "brew install '{}'"
+[actions.upgrade]
+description = "Upgrade the selected package"
+command = "brew upgrade {}"
+mode = "execute"
+
+[actions.uninstall]
+description = "Uninstall the selected package"
+command = "brew uninstall {}"
 mode = "execute"
