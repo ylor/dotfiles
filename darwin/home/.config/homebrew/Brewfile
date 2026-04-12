@@ -12,7 +12,7 @@ brew "ripgrep"
 brew "television"
 brew "zoxide"
 
-mode = ENV.fetch("HOMEBREW_DOTFILES_MODE", "minimal")
+mode = ENV.fetch("HOMEBREW_DOTFILES_PROFILE", "full")
 if mode == "full"
   cask "1password"
   cask "appcleaner"

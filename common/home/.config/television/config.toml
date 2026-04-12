@@ -1,30 +1,38 @@
 [ui]
-# theme = "television"
+theme = "onedark"
+
+[ui.input_bar]
+prompt = " ✦"
+
+[ui.remote_control]
+disabled = true
+
+[ui.status_bar]
+# hidden = true
 
 [ui.theme_overrides]
 # general
-# background = 'black'
-background = "#000000"
-# border_fg = 'bright-black'
-text_fg = 'bright-blue'
-dimmed_text_fg = 'white'
+background = '#000000'
+border_fg = 'bright-black'
+# text_fg = ''
+dimmed_text_fg = 'bright-white'
 # input
-input_text_fg = 'bright-black'
-result_count_fg = 'bright-red'
+input_text_fg = 'white'
+result_count_fg = 'bright-black'
 # results
-result_name_fg = 'bright-blue'
-result_line_number_fg = 'bright-yellow'
-result_value_fg = 'white'
-selection_fg = 'bright-green'
-selection_bg = 'bright-black'
-match_fg = 'bright-red'
+result_name_fg = 'bright-black'
+# result_line_number_fg = ''
+# result_value_fg = ''
+selection_fg = 'white'
+selection_bg = 'black'
+match_fg = 'bright-white'
 # preview
-preview_title_fg = 'bright-magenta'
+preview_title_fg = 'bright-black'
 # modes
-channel_mode_fg = 'black'
-channel_mode_bg = 'green'
-remote_control_mode_fg = 'black'
-remote_control_mode_bg = 'yellow'
-action_picker_mode_fg = 'black'
 action_picker_mode_bg = 'magenta'
+action_picker_mode_fg = 'black'
+channel_mode_bg = 'bright-black'
+channel_mode_fg = 'black'
+remote_control_mode_bg = 'green'
+remote_control_mode_fg = 'black'
 send_to_channel_mode_fg = 'cyan'

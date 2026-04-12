@@ -8,7 +8,7 @@ end
 if scutil --get ComputerName | grep -q "’s" && gum confirm "Change hostname? (Current: '$(hostname)')"
     set gum_hostname (gum input --placeholder (hostname))
     if test -n "$gum_hostname"
-        pls scutil --set ComputerName "$gum_hostname"
+        pls scutil --set ComputerName "$gum_hostnameu"
         pls scutil --set HostName "$gum_hostname"
         pls scutil --set LocalHostName "$gum_hostname"
     end

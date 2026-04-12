@@ -21,7 +21,7 @@ App(Mod.main, "O", "Helium")
 App(Mod.main, "P", "1Password")
 App(Mod.main, "Return", "Ghostty")
 Web(Mod.main, "A", "https://claude.ai")
-Run(Mod.main, "R", "open vnc://10.0.1.2")
+Run(Mod.hyper, "R", "open vnc://10.0.1.2")
 Tui(Mod.hyper, "P", "/opt/homebrew/bin/btop")
 
 if Work then
@@ -31,20 +31,22 @@ if Work then
     Web(Mod.main, "A", "https://gemini.google.com")
 end
 
-hs.hotkey.bind(Mod.main, "W", hs.spaces.toggleMissionControl)
+hs.hotkey.bind(Mod.main, "F", WindowToggleFillCenter)
 hs.hotkey.bind(Mod.main, "V", hs.spotlight.showClipboard)
 
 hs.hotkey.bind(Mod.hyper, "D", hs.spaces.toggleShowDesktop)
 hs.hotkey.bind(Mod.hyper, "F", hs.window.toggleFullscreen)
 hs.hotkey.bind(Mod.hyper, "H", AppFocus)
 hs.hotkey.bind(Mod.hyper, "L", hs.caffeinate.lockScreen)
+hs.hotkey.bind(Mod.hyper, "O", hs.spaces.toggleMissionControl)
+
 
 hs.hotkey.bind(Mod.hyper, "down", WindowFloat)
 hs.hotkey.bind(Mod.hyper, "left", WindowLeftScreen)
 hs.hotkey.bind(Mod.hyper, "right", WindowRightScreen)
 
 hs.hotkey.bind(Mod.hyper, "\\", hs.reload)
-hs.hotkey.bind(Mod.hyper, "R", hs.reload)
+-- hs.hotkey.bind(Mod.hyper, "R", hs.reload)
 
 for i = 1, 5 do
     hs.hotkey.bind({ "ctrl", "shift" }, tostring(i), function()

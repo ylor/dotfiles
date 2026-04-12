@@ -1,4 +1,4 @@
-if command -vq git # https://git-scm.com
+if command -q git # https://git-scm.com
     alias gb="git branch"
     alias gco="git checkout"
     alias gp="git pull"

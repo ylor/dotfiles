@@ -1,3 +1,3 @@
-if command -vq bat
-    alias cat="bat"
+if command -q bat
+    alias cat="bat --style=plain"
 end

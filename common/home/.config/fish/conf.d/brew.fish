@@ -1,20 +1,15 @@
-set --global --export HOMEBREW_NO_ANALYTICS 1
-set --global --export HOMEBREW_NO_AUTO_UPDATE 1
-set --global --export HOMEBREW_NO_ENV_HINTS 1
-# set --global --export HOMEBREW_USE_INTERNAL_API 1
+set -gx HOMEBREW_NO_ANALYTICS 1
+set -gx HOMEBREW_NO_AUTO_UPDATE 1
+set -gx HOMEBREW_NO_ENV_HINTS 1
 
-for path in /opt/homebrew "/home/linuxbrew/.linuxbrew"
-    [ -d $path ] && "$path/bin/brew" shellenv | source
+for path in /opt/homebrew /home/linuxbrew/.linuxbrew
+    test -d $path && "$path/bin/brew" shellenv | source
 end
 
-if command -vq brew # https://github.com/Homebrew/brew
-    alias bi="brew install"
-    alias bu="brew uninstall"
-    alias bs="brew search"
-
+if command -q brew
     function brew
         set cmd $argv[1]
-        set args $argv[2..-1]
+        set args $argv[2..]
 
         switch $cmd
             case i
@@ -23,12 +18,15 @@ if command -vq brew # https://github.com/Homebrew/brew
                 command brew uninstall $args
             case re
                 command brew reinstall $args
+            case list ls
+                if command -q tv
+                    test -n "$args" && tv brew --input $args || tv brew
+                else
+                    command brew list $args
+                end
             case search s
-                if command -vq tv
-                    set -l tv_args --preview-command 'brew info {1}'
-                    test -n "$args[1]"; and set -a tv_args --input "$args[1]"
-                    set -l selection (begin; command brew formulae; command brew casks; end | sort | tv $tv_args)
-                    test -n "$selection"; and command brew install $selection
+                if command -q tv
+                    test -n "$args" && tv brew-packages --input $args || tv brew-packages
                 else
                     command brew search $args
                 end
@@ -38,4 +36,9 @@ if command -vq brew # https://github.com/Homebrew/brew
                 command brew $argv
         end
     end
+
+    alias bi="brew i"
+    alias bls="brew ls"
+    alias bu="brew u"
+    alias bs="brew s"
 end

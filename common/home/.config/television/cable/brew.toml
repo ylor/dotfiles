@@ -8,7 +8,7 @@ command = "{ brew leaves; brew list --casks } | sort"
 no_sort = true
 
 [preview]
-command = "brew info '{}'"
+command = "HOMEBREW_COLOR=1 brew info '{}'"
 
 # [ui]
 # layout = "portrait"

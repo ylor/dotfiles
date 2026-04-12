@@ -1,4 +1,4 @@
-if command -vq zoxide # https://github.com/ajeetdsouza/zoxide - smarter cd
+if command -q zoxide # https://github.com/ajeetdsouza/zoxide - smarter cd
     zoxide init fish | source
 
     function zd

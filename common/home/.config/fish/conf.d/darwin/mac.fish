@@ -33,7 +33,7 @@ if test (uname) = Darwin
 
     # macOS Functions
     function mac
-        command -vq gum || return 127
+        command -q gum || return 127
 
         # set ACTION $(gum choose $OPTIONS)
         # echo $ACTION

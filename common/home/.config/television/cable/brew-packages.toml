@@ -4,11 +4,11 @@ description = "Browse homebrew packages"
 requirements = ["brew"]
 
 [source]
-command = "{brew formulae; brew casks} | sort"
+command = "{ brew formulae; brew casks } | sort"
 no_sort = true
 
 [preview]
-command = "brew info '{}'"
+command = "HOMEBREW_COLOR=1 brew info '{}'"
 
 # [ui]
 # layout = "portrait"

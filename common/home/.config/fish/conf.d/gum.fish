@@ -1,4 +1,4 @@
-if command -vq gum
+if command -q gum
     function pls
         while not command /usr/bin/sudo --non-interactive true 2>/dev/null
             gum input --password --placeholder="password" --no-show-help | sudo --validate --stdin 2>/dev/null

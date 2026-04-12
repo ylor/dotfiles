@@ -42,7 +42,6 @@
     "min_line_number_digits": 0,
   },
   "project_panel": {
-    "default_width": 240,
     "hide_root": true,
     "auto_fold_dirs": false,
   },

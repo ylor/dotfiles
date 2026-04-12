@@ -2,7 +2,7 @@
 local hs = hs
 
 local function WindowCenter(win)
-    win = win or hs.window.focusedWindow()
+    win = win or hs.window.frontmostWindow()
     if not win then return end
 
     if not win:application():selectMenuItem({ "Window", "Center" }) then
@@ -14,12 +14,12 @@ local function WindowCenter(win)
 end
 
 function WindowFill(win)
-    win = win or hs.window.focusedWindow()
+    win = win or hs.window.frontmostWindow()
     win:application():selectMenuItem({ "Window", "Fill" })
 end
 
 function WindowToggleFillCenter(win)
-    win = win or hs.window.focusedWindow()
+    win = win or hs.window.frontmostWindow()
     if not win then return end
 
     if win:frame() == win:screen():frame() then
@@ -29,8 +29,6 @@ function WindowToggleFillCenter(win)
     end
 end
 
-hs.hotkey.bind(Mod.main, "F", WindowToggleFillCenter)
-
 function WindowFlash(win)
     local f = win:frame()
     if not f then return end
@@ -39,29 +37,21 @@ function WindowFlash(win)
     local canvas = hs.canvas.new(f)
     local r = 16
 
-    canvas:appendElements(
-        -- {
-        --     type = "rectangle",
-        --     action = "fill",
-        --     fillColor = { white = 1.0, alpha = 0.02 },
-        --     roundedRectRadii = { xRadius = r, yRadius = r },
-        --     frame = { x = 0, y = 0, w = f.w, h = f.h }
-        -- },
-        {
-            type = "rectangle",
-            action = "stroke",
-            strokeColor = { black = 1.0, alpha = 0.2 },
-            strokeWidth = 1,
-            roundedRectRadii = { xRadius = r, yRadius = r },
-            frame = { x = 0.5, y = 0.5, w = f.w - 1, h = f.h - 1 }
-        }, {
-            type = "rectangle",
-            action = "stroke",
-            strokeColor = { white = 1.0, alpha = 0.6 },
-            strokeWidth = 2,
-            roundedRectRadii = { xRadius = r - 1, yRadius = r - 1 },
-            frame = { x = 1.5, y = 1.5, w = f.w - 3, h = f.h - 3 }
-        })
+    canvas:appendElements({
+        type = "rectangle",
+        action = "stroke",
+        strokeColor = { black = 1.0, alpha = 0.2 },
+        strokeWidth = 1,
+        roundedRectRadii = { xRadius = r, yRadius = r },
+        frame = { x = 0.5, y = 0.5, w = f.w - 1, h = f.h - 1 }
+    }, {
+        type = "rectangle",
+        action = "stroke",
+        strokeColor = { white = 1.0, alpha = 0.6 },
+        strokeWidth = 2,
+        roundedRectRadii = { xRadius = r - 1, yRadius = r - 1 },
+        frame = { x = 1.5, y = 1.5, w = f.w - 3, h = f.h - 3 }
+    })
 
     canvas:show()
 
@@ -95,17 +85,30 @@ function WindowFlash(win)
 end
 
 function WindowLeft(win)
-    if not win then win = hs.application.frontmostApplication() end
-    win:selectMenuItem({ "Window", "Move & Resize", "Left" })
+    win = win or hs.window.frontmostWindow()
+
+    local frame = win:frame()
+    local screen = win:screen():frame()
+    if frame.x <= screen.x then
+        WindowCycleWidth(win)
+    else
+        win:application():selectMenuItem({ "Window", "Move & Resize", "Left" })
+    end
 end
 
 function WindowRight(win)
-    if not win then win = hs.application.frontmostApplication() end
-    win:selectMenuItem({ "Window", "Move & Resize", "Right" })
+    win = win or hs.window.frontmostWindow()
+    local frame = win:frame()
+    local screen = win:screen():frame()
+    if frame.x + frame.w >= screen.x + screen.w then
+        WindowCycleWidth(win)
+    else
+        win:application():selectMenuItem({ "Window", "Move & Resize", "Right" })
+    end
 end
 
 function WindowFloat(win)
-    if not win then win = hs.window.focusedWindow() end
+    win = win or hs.window.frontmostWindow()
 
     local frame = win:frame()
     local screen = win:screen()
@@ -122,28 +125,26 @@ function WindowFloat(win)
 end
 
 function WindowFullscreen(win)
-    if not win then win = hs.window.focusedWindow() end
+    win = win or hs.window.frontmostWindow()
     if not win then return end
     if win then win:toggleFullScreen() end
 end
 
-function WindowLeftScreen()
-    local app = hs.application.frontmostApplication()
-    local win = hs.window.focusedWindow()
+function WindowLeftScreen(win)
+    win = win or hs.window.frontmostWindow()
     local westScreen = win:screen():toWest()
     if not westScreen then return end
-    app:selectMenuItem({ "Window", "Move to " .. westScreen:name() })
+    win:application():selectMenuItem({ "Window", "Move to " .. westScreen:name() })
 end
 
-function WindowRightScreen()
-    local app = hs.application.frontmostApplication()
-    local win = hs.window.focusedWindow()
+function WindowRightScreen(win)
+    win = win or hs.window.frontmostWindow()
     local eastScreen = win:screen():toEast()
     if not eastScreen then return end
-    app:selectMenuItem({ "Window", "Move to " .. eastScreen:name() })
+    win:application():selectMenuItem({ "Window", "Move to " .. eastScreen:name() })
 end
 
-local function centerMouse(win, force)
+local function centerMouse(win)
     win = win or hs.window.focusedWindow()
     if not win then return end
     local frame = win:frame()

@@ -1,3 +1,3 @@
-if command -vq rg # https://github.com/BurntSushi/ripgrep - modern grep
+if command -q rg # https://github.com/BurntSushi/ripgrep - modern grep
     alias grep="rg"
 end
