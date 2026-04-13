@@ -22,8 +22,9 @@ if test -z $DOTFILES_PROFILE
     end
 end
 
+set KERNEL (uname | string lower)
 if test "$DOTFILES_PROFILE" = full
-    for script in $DOTFILES/(uname | string lower)/scripts/*.fish
+    for script in $DOTFILES/$KERNEL/scripts/*.fish
         source $script
     end
 end
