@@ -29,26 +29,30 @@ function WindowToggleFillCenter(win)
     end
 end
 
+local function isFullScreen(frame, screen)
+    return frame.x <= screen.x + 10
+        and frame.x + frame.w >= screen.x + screen.w - 10
+end
+
 function WindowLeft(win)
     win = win or hs.window.frontmostWindow()
-
-    local frame = win:frame()
+    local frame  = win:frame()
     local screen = win:screen():frame()
-    if frame.x <= screen.x then
+    if not isFullScreen(frame, screen) and frame.x <= screen.x then
         WindowCycleWidth(win)
     else
-        win:application():selectMenuItem({ "Window", "Move & Resize", "Left" })
+        win:setFrame({ x = screen.x, y = screen.y, w = screen.w / 2, h = screen.h })
     end
 end
 
 function WindowRight(win)
     win = win or hs.window.frontmostWindow()
-    local frame = win:frame()
+    local frame  = win:frame()
     local screen = win:screen():frame()
-    if frame.x + frame.w >= screen.x + screen.w then
+    if not isFullScreen(frame, screen) and frame.x + frame.w >= screen.x + screen.w then
         WindowCycleWidth(win)
     else
-        win:application():selectMenuItem({ "Window", "Move & Resize", "Right" })
+        win:setFrame({ x = screen.x + screen.w / 2, y = screen.y, w = screen.w / 2, h = screen.h })
     end
 end
 

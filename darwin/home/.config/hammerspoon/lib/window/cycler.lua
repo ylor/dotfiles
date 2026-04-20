@@ -3,6 +3,7 @@ local hs = hs
 
 local widthCycles = { 0.4, 0.5, 0.6 }
 
+
 local function cycleIndex(winW, screenW)
     for i, w in ipairs(widthCycles) do
         if math.abs(winW / screenW - w) < 0.05 then return i end
@@ -23,7 +24,7 @@ function WindowCycleWidth(win)
 
     local screen   = win:screen():frame()
     local frame    = win:frame()
-    local newWidth = math.floor(screen.w * widthCycles[(cycleIndex(frame.w, screen.w) % #widthCycles) + 1])
+    local newWidth = math.floor(screen.w * widthCycles[(cycleIndex(frame.w, screen.w) or 0) % #widthCycles + 1])
     local side     = anchor(frame, screen)
 
     local newX
