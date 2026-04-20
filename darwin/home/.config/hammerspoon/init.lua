@@ -6,6 +6,9 @@ Mod.main        = { "option" }
 Mod.main.shift  = { "option", "shift" }
 Mod.hyper       = { "control", "option", "command" }
 Mod.hyper.shift = { "control", "option", "command", "shift" }
+Mod.win         = {"control"}
+Mod.win.shift   = {"control", "shift"}
+
 Work            = string.find(hs.host.localizedName(), "^PAPA")
 
 require("lib.mac")
@@ -33,17 +36,14 @@ end
 
 hs.hotkey.bind(Mod.main, "F", WindowToggleFillCenter)
 hs.hotkey.bind(Mod.main, "V", hs.spotlight.showClipboard)
-
 hs.hotkey.bind(Mod.hyper, "D", hs.spaces.toggleShowDesktop)
 hs.hotkey.bind(Mod.hyper, "F", hs.window.toggleFullscreen)
 hs.hotkey.bind(Mod.hyper, "H", AppFocus)
 hs.hotkey.bind(Mod.hyper, "L", hs.caffeinate.lockScreen)
-hs.hotkey.bind(Mod.hyper, "O", hs.spaces.toggleMissionControl)
-
-
 hs.hotkey.bind(Mod.hyper, "down", WindowFloat)
 hs.hotkey.bind(Mod.hyper, "left", WindowLeftScreen)
 hs.hotkey.bind(Mod.hyper, "right", WindowRightScreen)
+hs.hotkey.bind(Mod.win, "O", hs.spaces.toggleMissionControl)
 
 hs.hotkey.bind(Mod.hyper, "\\", hs.reload)
 -- hs.hotkey.bind(Mod.hyper, "R", hs.reload)

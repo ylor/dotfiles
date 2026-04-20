@@ -41,7 +41,7 @@ local function windowHandler(reverse)
         if index > #list then index = 1 end
     end
     last = list[index]:id()
-    list[index]:focus():flash():centerMouse()
+    list[index]:focus():centerMouse()
 end
 
 local km = hs.keycodes.map
