@@ -12,6 +12,7 @@ brew "ripgrep"
 brew "television"
 brew "zoxide"
 
+
 mode = ENV.fetch("HOMEBREW_DOTFILES_PROFILE", "full")
 if mode == "full"
   cask "1password"
@@ -23,4 +24,6 @@ if mode == "full"
   cask "trex"
   cask "virtualbuddy"
   cask "zed"
+
+  cask "jurplel/tap/instant-space-switcher"
 end

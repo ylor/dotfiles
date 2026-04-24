@@ -2,7 +2,7 @@
 theme = "onedark"
 
 [ui.input_bar]
-prompt = " ✦"
+prompt = " "
 
 [ui.remote_control]
 disabled = true

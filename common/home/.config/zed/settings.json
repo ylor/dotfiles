@@ -7,6 +7,20 @@
 // custom settings, run the `open default settings` command
 // from the command palette or from `Zed` application menu.
 {
+  "outline_panel": {
+    "dock": "left"
+  },
+  "collaboration_panel": {
+    "dock": "left"
+  },
+  "agent": {
+    "dock": "right",
+    "favorite_models": [],
+    "model_parameters": []
+  },
+  "git_panel": {
+    "dock": "left"
+  },
   "buffer_font_size": 15.0,
   "buffer_line_height": "comfortable",
   "buffer_font_family": "Berkeley Mono Variable",
@@ -42,6 +56,7 @@
     "min_line_number_digits": 0,
   },
   "project_panel": {
+    "dock": "left",
     "hide_root": true,
     "auto_fold_dirs": false,
   },
@@ -61,7 +76,7 @@
     "metrics": false,
   },
   "title_bar": {
-    "show_branch_icon": true,
+    "show_branch_status_icon": true,
     "show_sign_in": false,
   },
   "experimental.theme_overrides": {

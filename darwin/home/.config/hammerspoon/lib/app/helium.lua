@@ -3,7 +3,7 @@ local hs = hs
 
 local modal = hs.hotkey.modal.new()
 modal:bind(Mod.main, "k", function()
-    hs.eventtap.keyStroke({ "cmd", "shift" }, "a")
+    hs.eventtap.keyStroke({ "cmd", "shift" }, "a", 0)
 end)
 
 _G.heliumWatcher = hs.application.watcher.new(function(app, eventType)

@@ -1,6 +1,10 @@
 ---@diagnostic disable-next-line: undefined-global
 local hs = hs
 
+function keyStroke(mods, key)
+    hs.eventtap.keyStroke(mods, key, 0)
+end
+
 -- Focus or cycle an app's windows on the main screen
 function AppHandler(app)
     local running = hs.application.find(app)

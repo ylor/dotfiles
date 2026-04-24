@@ -6,8 +6,8 @@ Mod.main        = { "option" }
 Mod.main.shift  = { "option", "shift" }
 Mod.hyper       = { "control", "option", "command" }
 Mod.hyper.shift = { "control", "option", "command", "shift" }
-Mod.win         = {"control"}
-Mod.win.shift   = {"control", "shift"}
+Mod.win         = { "control" }
+Mod.win.shift   = { "control", "shift" }
 
 Work            = string.find(hs.host.localizedName(), "^PAPA")
 
@@ -24,7 +24,7 @@ App(Mod.main, "O", "Helium")
 App(Mod.main, "P", "1Password")
 App(Mod.main, "Return", "Ghostty")
 Web(Mod.main, "A", "https://claude.ai")
-Run(Mod.hyper, "R", "open vnc://10.0.1.2")
+Run(Mod.hyper, "R", "open vnc://roly@10.0.1.2")
 Tui(Mod.hyper, "P", "/opt/homebrew/bin/btop")
 
 if Work then

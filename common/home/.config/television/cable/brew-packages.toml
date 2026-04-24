@@ -18,5 +18,5 @@ enter = "actions:open"
 
 [actions.open]
 description = "Installs brew package"
-command = "brew install '{}'"
+command = "brew install {}"
 mode = "execute"

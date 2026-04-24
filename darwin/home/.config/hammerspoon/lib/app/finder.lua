@@ -3,7 +3,7 @@ local hs = hs
 
 local modal = hs.hotkey.modal.new()
 modal:bind({ "cmd" }, "l", function()
-    hs.eventtap.keyStroke({ "cmd", "shift" }, "g")
+    hs.eventtap.keyStroke({ "cmd", "shift" }, "g", 0)
 end)
 
 
@@ -11,10 +11,10 @@ local scrollReverse = hs.eventtap.new({ hs.eventtap.event.types.otherMouseDown }
     local button = event:getProperty(hs.eventtap.event.properties.mouseEventButtonNumber)
 
     if button == 3 then
-        hs.eventtap.keyStroke({ "cmd" }, "[")
+        hs.eventtap.keyStroke({ "cmd" }, "[", 0)
         return true
     elseif button == 4 then
-        hs.eventtap.keyStroke({ "cmd" }, "]")
+        hs.eventtap.keyStroke({ "cmd" }, "]", 0)
         return true
     end
     return false

@@ -5,8 +5,16 @@ local function WindowCenter(win)
     win = win or hs.window.frontmostWindow()
     if not win then return end
 
-    if not win:application():selectMenuItem({ "Window", "Center" }) then
-        local s, f = win:screen():frame(), win:frame()
+    local s, f = win:screen():frame(), win:frame()
+    local isCentered = math.abs(f.x - (s.x + (s.w - f.w) / 2)) < 10
+
+    if isCentered then
+        WindowCycleWidth(win)
+        -- f = win:frame()
+        -- f.x = s.x + (s.w - f.w) / 2
+        -- f.y = s.y + (s.h - f.h) / 2
+        -- win:setFrame(f)
+    elseif not win:application():selectMenuItem({ "Window", "Center" }) then
         f.x = s.x + (s.w - f.w) / 2
         f.y = s.y + (s.h - f.h) / 2
         win:setFrame(f)
@@ -35,7 +43,7 @@ local function isFullScreen(frame, screen)
 end
 
 function WindowLeft(win)
-    win = win or hs.window.frontmostWindow()
+    win          = win or hs.window.frontmostWindow()
     local frame  = win:frame()
     local screen = win:screen():frame()
     if not isFullScreen(frame, screen) and frame.x <= screen.x then
@@ -46,7 +54,7 @@ function WindowLeft(win)
 end
 
 function WindowRight(win)
-    win = win or hs.window.frontmostWindow()
+    win          = win or hs.window.frontmostWindow()
     local frame  = win:frame()
     local screen = win:screen():frame()
     if not isFullScreen(frame, screen) and frame.x + frame.w >= screen.x + screen.w then
@@ -58,18 +66,24 @@ end
 
 function WindowFloat(win)
     win = win or hs.window.frontmostWindow()
-
     local frame = win:frame()
     local screen = win:screen()
     local max = screen:frame()
-    local height = max.h * 0.8
-    local width = height * (4 / 3)
-
+    local heights = { 0.75, 0.8, 0.9 }
+    local currentRatio = frame.h / max.h
+    local nextHeight = heights[2]
+    for i, h in ipairs(heights) do
+        if math.abs(currentRatio - h) < 0.01 then
+            nextHeight = heights[(i % #heights) + 1]
+            break
+        end
+    end
+    local height = max.h * nextHeight
+    local width = height * (3 / 2)
     frame.w = width
     frame.h = height
     frame.x = max.x + (max.w / 2) - (width / 2)
     frame.y = max.y + (max.h / 2) - (height / 2)
-
     win:setFrame(frame)
 end
 
