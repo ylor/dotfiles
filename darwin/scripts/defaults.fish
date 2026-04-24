@@ -110,4 +110,4 @@ defaults write org.hammerspoon.Hammerspoon MJConfigFile "$HOME/.config/hammerspo
 defaults write org.hammerspoon.Hammerspoon MJShowMenuIconKey -int 0
 
 # killall Finder Dock
-dfs-success "defaults set"
+# dfs-success "defaults set"

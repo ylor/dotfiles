@@ -1,3 +1,4 @@
 if command -q bat
-    alias cat="bat --style=plain"
+    alias cat="bat -p"
+    alias catp="bat -pp"
 end

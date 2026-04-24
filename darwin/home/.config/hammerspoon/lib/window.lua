@@ -69,9 +69,9 @@ function WindowFloat(win)
     local frame = win:frame()
     local screen = win:screen()
     local max = screen:frame()
-    local heights = { 0.75, 0.8, 0.9 }
+    local heights = { 0.5, 0.75 }
     local currentRatio = frame.h / max.h
-    local nextHeight = heights[2]
+    local nextHeight = heights[1]
     for i, h in ipairs(heights) do
         if math.abs(currentRatio - h) < 0.01 then
             nextHeight = heights[(i % #heights) + 1]
