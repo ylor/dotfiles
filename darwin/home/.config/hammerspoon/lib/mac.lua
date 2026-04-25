@@ -1,32 +1,56 @@
----@diagnostic disable-next-line: undefined-global
-local hs = hs
+local hs = hs ---@diagnostic disable-line: undefined-global
 
-function keyStroke(mods, key)
-    hs.eventtap.keyStroke(mods, key, 0)
+local SYNTHETIC = 0xDEAD
+
+local function syntheticStroke(mods, key)
+    for _, down in ipairs({ true, false }) do
+        local ev = hs.eventtap.event.newKeyEvent(mods, key, down)
+        ev:setProperty(hs.eventtap.event.properties.eventSourceUserData, SYNTHETIC)
+        ev:post()
+    end
 end
 
 -- Focus or cycle an app's windows on the main screen
 function AppHandler(app)
-    local running = hs.application.find(app)
-    if not running then return hs.application.launchOrFocus(app) end
+    local primary = hs.screen.primaryScreen()
+    local primaryUUID = primary:getUUID()
 
-    local wf = hs.window.filter.new(app)
-        :setScreens(hs.screen.primaryScreen():getUUID())
-    local windows = wf:getWindows(hs.window.filter.sortByLastFocused)
+    local windows = hs.fnutils.filter(
+        hs.window.filter.new(app)
+        :setScreens(primaryUUID)
+        :getWindows(hs.window.filter.sortByLastFocused),
+        function(w) return w:screen():getUUID() == primaryUUID end
+    )
 
-    -- app is running but there are no windows
-    if #windows == 0 then return hs.application.launchOrFocus(app) end
-
-    -- app is running but isn't current focus
-    local focused = hs.window.focusedWindow()
-    if not focused or focused:application():name() ~= app then
-        return windows[1]:focus():centerMouse()
+    if not hs.application.find(app) or #windows == 0 then
+        return hs.application.launchOrFocus(app)
     end
 
-    -- otherwise cycle to the next window
+    local function focusInSpace(win)
+        local winSpaces = hs.spaces.windowSpaces(win)
+        if not winSpaces or #winSpaces == 0 then return end
+
+        for i, sid in ipairs(hs.spaces.spacesForScreen(primary)) do
+            if sid == winSpaces[1] then
+                hs.eventtap.keyStroke({ "ctrl", "alt", "cmd" }, tostring(i), 0)
+                break
+            end
+        end
+        hs.timer.doAfter(0.1, function()
+            win:focus():centerMouse()
+        end)
+    end
+
+    local focused = hs.window.focusedWindow()
+    if not focused
+        or focused:application():name() ~= app
+        or focused:screen():getUUID() ~= primaryUUID then
+        return focusInSpace(windows[1])
+    end
+
     for i, w in ipairs(windows) do
         if w:id() == focused:id() then
-            return windows[(i % #windows) + 1]:focus():centerMouse()
+            return focusInSpace(windows[(i % #windows) + 1])
         end
     end
 end
@@ -35,6 +59,10 @@ function App(mods, key, app)
     hs.hotkey.bind(mods, key, function()
         AppHandler(app)
     end)
+end
+
+function AppExists(name)
+    return hs.fs.attributes("/Applications/" .. name .. ".app") ~= nil
 end
 
 function AppFocus()
@@ -110,7 +138,7 @@ function MoveWindowToSpaceByDrag(space)
     hs.mouse.absolutePosition(dragPos)
     hs.eventtap.event.newMouseEvent(hs.eventtap.event.types.leftMouseDown, dragPos):post()
     hs.timer.usleep(10000)
-    hs.eventtap.keyStroke({ "ctrl", "alt", "cmd" }, tostring(space), 0)
+    syntheticStroke({ "ctrl" }, tostring(space))
     hs.timer.usleep(10000)
     hs.eventtap.event.newMouseEvent(hs.eventtap.event.types.leftMouseUp, dragPos):post()
     hs.timer.doAfter(0.333, function() win:focus() end)
@@ -122,6 +150,24 @@ function RunCommand(bin)
     local cmd = home .. "/.local/bin/" .. bin
     hs.execute(hs.fs.symlinkAttributes(cmd).target)
 end
+
+_G.Instant = hs.eventtap.new({ hs.eventtap.event.types.keyDown }, function(e)
+    if e:getProperty(hs.eventtap.event.properties.eventSourceUserData) == SYNTHETIC then
+        return false
+    end
+
+    local flags = e:getFlags()
+    local key = hs.keycodes.map[e:getKeyCode()]
+
+    if hs.application.find("InstantSpaceSwitcher") then
+        if flags.ctrl and not flags.cmd and not flags.alt and not flags.shift and tonumber(key) then
+            syntheticStroke({ "ctrl", "alt", "cmd" }, key)
+            return true
+        end
+    end
+
+    return false
+end):start()
 
 require("lib.app.chrome")
 require("lib.app.clipboard")

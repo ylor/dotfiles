@@ -23,15 +23,27 @@ App(Mod.main, "M", "Mail")
 App(Mod.main, "O", "Helium")
 App(Mod.main, "P", "1Password")
 App(Mod.main, "Return", "Ghostty")
-Web(Mod.main, "A", "https://claude.ai")
-Run(Mod.hyper, "R", "open vnc://roly@10.0.1.2")
+
+if AppExists("/Applications/Claude.app") then
+    Web(Mod.main, "A", "https://claude.ai")
+else
+    App(Mod.main, "A", "Claude")
+end
+
+-- Run(Mod.hyper, "R", "open vnc://roly@10.0.1.2")
+App(Mod.main, "R", "Screen Sharing")
 Tui(Mod.hyper, "P", "/opt/homebrew/bin/btop")
 
 if Work then
     App(Mod.main, "I", "Google Chrome Dev")
     App(Mod.main, "O", "Helium")
     App(Mod.main, "S", "Slack")
-    Web(Mod.main, "A", "https://gemini.google.com")
+    -- Web(Mod.main, "A", "https://gemini.google.com")
+    -- if AppExists("/Applications/Gemini.app") then
+    --     Web(Mod.main, "A", "https://gemini.google.com")
+    -- else
+    --     App(Mod.main, "A", "Gemini")
+    -- end
 end
 
 hs.hotkey.bind(Mod.main, "F", WindowToggleFillCenter)
@@ -54,4 +66,6 @@ for i = 1, 5 do
     end)
 end
 
+
+-- TODO: idempotent by-default instantspaceswitcher
 -- hs.alert.show("Config loaded")

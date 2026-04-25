@@ -24,3 +24,5 @@ if test "$DOTFILES_PROFILE" = full
 end
 
 dfs-spin --title="linking…" -- fish --interactive --command "dfs-link --minimal"
+dfs-success "SEE YOU SPACE COWBOY"
+exec fish

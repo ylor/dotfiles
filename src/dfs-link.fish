@@ -9,7 +9,7 @@ function dfs-link
     mkdir -p (path dirname $links | sort -u)
     for i in (seq (count $originals))
         ln -sf $originals[$i] $links[$i]
-        set --query _flag_minimal || set --query _flag_quiet || dfs-success $links[$i]
+        # set --query _flag_minimal || set --query _flag_quiet || dfs-success $links[$i]
     end
 
     set cache "$HOME/.cache/dotfiles/cache"
@@ -23,5 +23,5 @@ function dfs-link
     rmdir (path dirname $stale | sort -u) 2>/dev/null
     mv $cache.new $cache
 
-    set --query _flag_quiet || dfs-success "$(count $links) files linked"
+    # set --query _flag_quiet || dfs-success "$(count $links) files linked"
 end
