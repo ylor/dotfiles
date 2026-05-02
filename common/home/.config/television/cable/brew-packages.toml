@@ -5,7 +5,7 @@ requirements = ["brew"]
 
 [source]
 command = "{ brew formulae; brew casks } | sort"
-no_sort = true
+frecency = false
 
 [preview]
 command = "HOMEBREW_COLOR=1 brew info '{}'"

@@ -3,21 +3,23 @@ local hs = hs
 
 local function WindowCenter(win)
     win = win or hs.window.frontmostWindow()
-    if not win then return end
+    -- if not win then return end
 
-    local s, f = win:screen():frame(), win:frame()
-    local isCentered = math.abs(f.x - (s.x + (s.w - f.w) / 2)) < 10
+    -- local s, f = win:screen():frame(), win:frame()
+    -- local isCentered = math.abs(f.x - (s.x + (s.w - f.w) / 2)) < 10
 
-    if isCentered then
-        WindowCycleWidth(win)
-        -- f = win:frame()
+    -- if isCentered then
+    -- WindowCycleWidth(win)
+    -- f = win:frame()
+    -- f.x = s.x + (s.w - f.w) / 2
+    -- f.y = s.y + (s.h - f.h) / 2
+    -- win:setFrame(f)
+    -- else
+    if not win:application():selectMenuItem({ "Window", "Center" }) then
         -- f.x = s.x + (s.w - f.w) / 2
         -- f.y = s.y + (s.h - f.h) / 2
         -- win:setFrame(f)
-    elseif not win:application():selectMenuItem({ "Window", "Center" }) then
-        f.x = s.x + (s.w - f.w) / 2
-        f.y = s.y + (s.h - f.h) / 2
-        win:setFrame(f)
+        WindowFloat(win)
     end
 end
 
@@ -69,9 +71,9 @@ function WindowFloat(win)
     local frame = win:frame()
     local screen = win:screen()
     local max = screen:frame()
-    local heights = { 0.5, 0.75 }
+    local heights = { 0.5, 0.75, 0.9 }
     local currentRatio = frame.h / max.h
-    local nextHeight = heights[1]
+    local nextHeight = heights[2]
     for i, h in ipairs(heights) do
         if math.abs(currentRatio - h) < 0.01 then
             nextHeight = heights[(i % #heights) + 1]
@@ -85,6 +87,7 @@ function WindowFloat(win)
     frame.x = max.x + (max.w / 2) - (width / 2)
     frame.y = max.y + (max.h / 2) - (height / 2)
     win:setFrame(frame)
+    win:application():selectMenuItem({ "Window", "Center" })
 end
 
 function WindowFullscreen(win)
