@@ -3,40 +3,28 @@ local hs = hs ---@diagnostic disable-line: undefined-global
 -- Focus or cycle an app's windows on the main screen
 function AppCycler(app)
     local primary = hs.screen.primaryScreen()
-    local primaryUUID = primary:getUUID()
-
     local windows = hs.window.filter.new(app)
-        :setScreens(primaryUUID)
+        :setScreens(primary:getUUID())
         :getWindows(hs.window.filter.sortByLastFocused)
 
-    if #windows == 0 then
-        return hs.application.launchOrFocus(app)
-    end
-
-    local function focusInSpace(win)
-        local winSpaces = hs.spaces.windowSpaces(win)
-        if not winSpaces or #winSpaces == 0 then return end
-        for i, sid in ipairs(hs.spaces.spacesForScreen(primary)) do
-            if sid == winSpaces[1] then
-                hs.eventtap.keyStroke({ "ctrl", "alt", "cmd" }, tostring(i), 0)
-                break
-            end
-        end
-        hs.timer.doAfter(0.1, function() win:focus():centerMouse() end)
-    end
+    if #windows == 0 then return hs.application.launchOrFocus(app) end
 
     local focused = hs.window.focusedWindow()
-    if not focused
-        or focused:application():name() ~= app
-        or focused:screen():getUUID() ~= primaryUUID then
-        return focusInSpace(windows[1])
-    end
-
+    local idx = 0
     for i, w in ipairs(windows) do
-        if w:id() == focused:id() then
-            return focusInSpace(windows[(i % #windows) + 1])
+        if focused and w:id() == focused:id() then
+            idx = i; break
         end
     end
+
+    local win = windows[(idx % #windows) + 1]
+    for i, sid in ipairs(hs.spaces.spacesForScreen(primary)) do
+        if sid == hs.spaces.windowSpaces(win)[1] then
+            hs.eventtap.keyStroke({ "ctrl", "alt", "cmd" }, tostring(i), 0)
+            break
+        end
+    end
+    hs.timer.doAfter(0.1, function() win:focus():centerMouse() end)
 end
 
 function App(mods, key, app)
