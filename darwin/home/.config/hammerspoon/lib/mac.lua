@@ -90,6 +90,14 @@ function RunCommand(bin)
     hs.execute(hs.fs.symlinkAttributes(cmd).target)
 end
 
+function ShowClipboard()
+    hs.eventtap.keyStroke({ "cmd" }, "space", 0)
+    hs.timer.doAfter(0.02, function()
+        hs.eventtap.keyStroke({ "cmd" }, "4", 0)
+    end
+    )
+end
+
 function Web(mods, key, url)
     hs.hotkey.bind(mods, key, function()
         hs.execute("open " .. url)
@@ -133,7 +141,36 @@ function MoveWindowToSpaceByDrag(space)
     hs.mouse.absolutePosition(savedPos)
 end
 
-_G.InstantSpaceSwitcherHandler = hs.eventtap.new({ hs.eventtap.event.types.keyDown }, function(e)
+-- local function switchApp(apps)
+--     local front = hs.application.frontmostApplication()
+--     local name = front and front:name() or ""
+--     local next = 1
+--     for i, app in ipairs(apps) do
+--         if name == app then
+--             next = (i % #apps) + 1; break
+--         end
+--     end
+--     hs.application.launchOrFocus(apps[next])
+-- end
+
+-- local bindings = {
+--     m = { "Mail", "Messages" },
+--     n = { "Notes", "Reminders" },
+-- }
+
+-- local keymap = hs.keycodes.map
+-- _G.SwitcherEventTapper = hs.eventtap.new({ hs.eventtap.event.types.keyDown }, function(event)
+--     local mods = event:getFlags()
+--     if not (mods:containExactly({ "alt" }) or mods:containExactly({ "alt", "fn" })) then return end
+--     local code = event:getKeyCode()
+--     for char, apps in pairs(bindings) do
+--         if code == keymap[char] then
+--             switchApp(apps); return true
+--         end
+--     end
+-- end):start()
+
+_G.InstantSpaceSwitcherTapper = hs.eventtap.new({ hs.eventtap.event.types.keyDown }, function(e)
     if e:getProperty(hs.eventtap.event.properties.eventSourceUserData) == SYNTHETIC then
         return false
     end
@@ -151,7 +188,7 @@ _G.InstantSpaceSwitcherHandler = hs.eventtap.new({ hs.eventtap.event.types.keyDo
     return false
 end):start()
 
-_G.MouseScrollHandler = hs.eventtap.new({ hs.eventtap.event.types.scrollWheel }, function(e)
+_G.MouseScrollReverser = hs.eventtap.new({ hs.eventtap.event.types.scrollWheel }, function(e)
     local p = hs.eventtap.event.properties
     if e:getProperty(p.scrollWheelEventIsContinuous) == 0 then
         e:setProperty(p.scrollWheelEventDeltaAxis1,
@@ -160,12 +197,12 @@ _G.MouseScrollHandler = hs.eventtap.new({ hs.eventtap.event.types.scrollWheel },
     return false
 end):start()
 
-require("lib.alt_tab")
 require("lib.app.chrome")
 require("lib.app.finder")
 require("lib.app.helium")
 require("lib.menubar.spaces")
-require("lib.menubar.windows")
+-- require("lib.menubar.windows")
+require("lib.expander")
 require("lib.quitter")
-require("lib.snippets")
+require("lib.tabber")
 require("lib.window")

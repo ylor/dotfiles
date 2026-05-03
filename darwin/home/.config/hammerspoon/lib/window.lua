@@ -143,8 +143,26 @@ end
 
 hs.hotkey.bind({ "ctrl" }, "W", cycleWindowWidth)
 
-
 -- events
+local actions = {
+    [hs.keycodes.map.left]  = WindowLeft,
+    [hs.keycodes.map.right] = WindowRight,
+    [hs.keycodes.map.up]    = WindowFill,
+    [hs.keycodes.map.down]  = WindowCenter,
+}
+
+_G.WindowEventTapper = hs.eventtap.new({ hs.eventtap.event.types.keyDown }, function(event)
+    local mods = event:getFlags()
+    local ctrl = mods:containExactly({ "ctrl" }) or mods:containExactly({ "ctrl", "fn" })
+    if not ctrl then return end
+
+    local action = actions[event:getKeyCode()]
+    if action then
+        action()
+        return true
+    end
+end):start()
+
 
 local previousScreens = {}
 hs.window.filter.new():subscribe(hs.window.filter.windowMoved, function(win)

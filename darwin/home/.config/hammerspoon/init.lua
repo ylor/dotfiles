@@ -14,7 +14,6 @@ Work                        = string.find(hs.host.localizedName(), "^PAPA")
 
 require("lib.mac")
 
-App(Mod.main, ",", "System Settings")
 App(Mod.main, ".", "1Password")
 App(Mod.main, "C", "Zed")
 App(Mod.main, "E", "Finder")
@@ -25,6 +24,8 @@ App(Mod.main, "M", "Mail")
 App(Mod.main, "O", "Helium")
 App(Mod.main, "P", "1Password")
 App(Mod.main, "Return", "Ghostty")
+
+App(Mod.hyper, ",", "System Settings")
 
 if AppExists("/Applications/Claude.app") then
     Web(Mod.main, "A", "https://claude.ai")
@@ -47,18 +48,20 @@ if Work then
     -- end
 end
 
+if not Work then
+    App(Mod.main, "M", "Messages")
+    App(Mod.hyper, "M", "Mail")
+end
+
 hs.hotkey.bind(Mod.main, "F", WindowFillToggle)
-hs.hotkey.bind(Mod.main, "V", function()
-    hs.eventtap.keyStroke({ "cmd" }, "space", 0)
-    hs.eventtap.keyStroke({ "cmd" }, "4", 100)
-end)
+hs.hotkey.bind(Mod.main, "V", ShowClipboard)
 hs.hotkey.bind(Mod.hyper, "D", hs.spaces.toggleShowDesktop)
 hs.hotkey.bind(Mod.hyper, "H", AppZen)
 hs.hotkey.bind(Mod.hyper, "L", hs.caffeinate.lockScreen)
 hs.hotkey.bind(Mod.hyper, "up", WindowMaxi)
 hs.hotkey.bind(Mod.hyper, "down", WindowMini)
 hs.hotkey.bind(Mod.hyper, "left", MoveWindowLeftScreen)
-hs.hotkey.bind(Mod.hyper, "right", MoveWindowLeftScreen)
+hs.hotkey.bind(Mod.hyper, "right", MoveWindowRightScreen)
 hs.hotkey.bind(Mod.win, "O", hs.spaces.toggleMissionControl)
 
 hs.hotkey.bind(Mod.hyper, "\\", hs.reload)

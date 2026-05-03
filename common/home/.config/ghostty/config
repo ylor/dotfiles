@@ -4,6 +4,7 @@
 clipboard-read = "allow"
 clipboard-paste-protection = false
 copy-on-select = true
+focus-follows-mouse = true
 window-save-state = always
 
 # form
