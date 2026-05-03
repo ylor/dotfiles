@@ -1,44 +1,28 @@
 local hs = hs ---@diagnostic disable-line: undefined-global
 
-local SYNTHETIC = 0xDEAD
-
-local function syntheticStroke(mods, key)
-    for _, down in ipairs({ true, false }) do
-        local ev = hs.eventtap.event.newKeyEvent(mods, key, down)
-        ev:setProperty(hs.eventtap.event.properties.eventSourceUserData, SYNTHETIC)
-        ev:post()
-    end
-end
-
 -- Focus or cycle an app's windows on the main screen
-function AppHandler(app)
+function AppCycler(app)
     local primary = hs.screen.primaryScreen()
     local primaryUUID = primary:getUUID()
 
-    local windows = hs.fnutils.filter(
-        hs.window.filter.new(app)
+    local windows = hs.window.filter.new(app)
         :setScreens(primaryUUID)
-        :getWindows(hs.window.filter.sortByLastFocused),
-        function(w) return w:screen():getUUID() == primaryUUID end
-    )
+        :getWindows(hs.window.filter.sortByLastFocused)
 
-    if not hs.application.find(app) or #windows == 0 then
+    if #windows == 0 then
         return hs.application.launchOrFocus(app)
     end
 
     local function focusInSpace(win)
         local winSpaces = hs.spaces.windowSpaces(win)
         if not winSpaces or #winSpaces == 0 then return end
-
         for i, sid in ipairs(hs.spaces.spacesForScreen(primary)) do
             if sid == winSpaces[1] then
                 hs.eventtap.keyStroke({ "ctrl", "alt", "cmd" }, tostring(i), 0)
                 break
             end
         end
-        hs.timer.doAfter(0.1, function()
-            win:focus():centerMouse()
-        end)
+        hs.timer.doAfter(0.1, function() win:focus():centerMouse() end)
     end
 
     local focused = hs.window.focusedWindow()
@@ -57,7 +41,7 @@ end
 
 function App(mods, key, app)
     hs.hotkey.bind(mods, key, function()
-        AppHandler(app)
+        AppCycler(app)
     end)
 end
 
@@ -65,7 +49,7 @@ function AppExists(name)
     return hs.fs.attributes("/Applications/" .. name .. ".app") ~= nil
 end
 
-function AppFocus()
+function AppZen()
     local screen = hs.screen.mainScreen()
     local focused = hs.window.focusedWindow()
     local visible = hs.fnutils.filter(hs.window.visibleWindows(), function(w) return w:screen() == screen end)
@@ -101,7 +85,7 @@ function Tui(mods, key, cmd)
         "/usr/bin/open -na /Applications/Ghostty.app --args --confirm-close-surface=false --quit-after-last-window-closed=true --window-decoration=none --command="
         hs.execute(terminal .. cmd)
         hs.timer.doAfter(0.5, function()
-            WindowFloat()
+            WindowMaxi()
         end)
     end)
 end
@@ -110,6 +94,12 @@ function Run(mods, key, cmd)
     hs.hotkey.bind(mods, key, function()
         hs.execute(cmd)
     end)
+end
+
+function RunCommand(bin)
+    local home = os.getenv("HOME")
+    local cmd = home .. "/.local/bin/" .. bin
+    hs.execute(hs.fs.symlinkAttributes(cmd).target)
 end
 
 function Web(mods, key, url)
@@ -122,6 +112,16 @@ function SpaceInfo()
     local spaces = hs.spaces.spacesForScreen("Primary")
     local active = hs.spaces.activeSpaceOnScreen("Primary")
     return hs.fnutils.indexOf(spaces, active), #spaces
+end
+
+local SYNTHETIC = 0xDEAD
+
+local function syntheticKeypress(mods, key)
+    for _, down in ipairs({ true, false }) do
+        local e = hs.eventtap.event.newKeyEvent(mods, key, down)
+        e:setProperty(hs.eventtap.event.properties.eventSourceUserData, SYNTHETIC)
+        e:post()
+    end
 end
 
 function MoveWindowToSpaceByDrag(space)
@@ -138,20 +138,14 @@ function MoveWindowToSpaceByDrag(space)
     hs.mouse.absolutePosition(dragPos)
     hs.eventtap.event.newMouseEvent(hs.eventtap.event.types.leftMouseDown, dragPos):post()
     hs.timer.usleep(10000)
-    syntheticStroke({ "ctrl" }, tostring(space))
+    syntheticKeypress({ "ctrl" }, tostring(space))
     hs.timer.usleep(10000)
     hs.eventtap.event.newMouseEvent(hs.eventtap.event.types.leftMouseUp, dragPos):post()
     hs.timer.doAfter(0.333, function() win:focus() end)
     hs.mouse.absolutePosition(savedPos)
 end
 
-function RunCommand(bin)
-    local home = os.getenv("HOME")
-    local cmd = home .. "/.local/bin/" .. bin
-    hs.execute(hs.fs.symlinkAttributes(cmd).target)
-end
-
-_G.Instant = hs.eventtap.new({ hs.eventtap.event.types.keyDown }, function(e)
+_G.InstantSpaceSwitcherHandler = hs.eventtap.new({ hs.eventtap.event.types.keyDown }, function(e)
     if e:getProperty(hs.eventtap.event.properties.eventSourceUserData) == SYNTHETIC then
         return false
     end
@@ -161,7 +155,7 @@ _G.Instant = hs.eventtap.new({ hs.eventtap.event.types.keyDown }, function(e)
 
     if hs.application.find("InstantSpaceSwitcher") then
         if flags.ctrl and not flags.cmd and not flags.alt and not flags.shift and tonumber(key) then
-            syntheticStroke({ "ctrl", "alt", "cmd" }, key)
+            syntheticKeypress({ "ctrl", "alt", "cmd" }, key)
             return true
         end
     end
@@ -169,15 +163,21 @@ _G.Instant = hs.eventtap.new({ hs.eventtap.event.types.keyDown }, function(e)
     return false
 end):start()
 
+_G.MouseScrollHandler = hs.eventtap.new({ hs.eventtap.event.types.scrollWheel }, function(e)
+    local p = hs.eventtap.event.properties
+    if e:getProperty(p.scrollWheelEventIsContinuous) == 0 then
+        e:setProperty(p.scrollWheelEventDeltaAxis1,
+            -e:getProperty(p.scrollWheelEventDeltaAxis1))
+    end
+    return false
+end):start()
+
+require("lib.alt_tab")
 require("lib.app.chrome")
-require("lib.app.clipboard")
 require("lib.app.finder")
 require("lib.app.helium")
-require("lib.menu.spaces")
-require("lib.menu.windows")
+require("lib.menubar.spaces")
+require("lib.menubar.windows")
 require("lib.quitter")
-require("lib.scroll")
 require("lib.snippets")
 require("lib.window")
-require("lib.window.cycler")
-require("lib.window.switcher")

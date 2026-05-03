@@ -1,25 +1,24 @@
 ---@diagnostic disable-next-line: undefined-global
 local hs = hs
 
-
-local list = {}
 local index = 1
 local last = nil
+local list = {}
 
 local function reset()
-    list, index = {}, 1
+    index, list = 1, {}
 end
 
-local resetTimer = hs.timer.delayed.new(1, reset)
+local timer = hs.timer.delayed.new(1, reset)
 
-_G.windowSpaceWatcher = hs.spaces.watcher.new(function()
+_G.switcherSpaceWatcher = hs.spaces.watcher.new(function()
     reset()
-    resetTimer:stop()
+    timer:stop()
 end):start()
 
-_G.windowFocusWatcher = hs.window.filter.new():subscribe(
+_G.switcherFocusWatcher = hs.window.filter.new():subscribe(
     hs.window.filter.windowFocused,
-    function() resetTimer:start() end
+    function() timer:start() end
 )
 
 local function windowHandler(reverse)
@@ -64,7 +63,7 @@ local function handleKeyDown(event)
         elseif kc == UP then
             WindowFill()
         elseif kc == DOWN then
-            hs.window.center()
+            WindowCenter()
         else
             return false
         end

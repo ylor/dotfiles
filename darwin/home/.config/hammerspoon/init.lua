@@ -1,15 +1,16 @@
 ---@diagnostic disable-next-line: undefined-global
-local hs        = hs
+local hs                    = hs
+hs.window.animationDuration = 0.1
 
-Mod             = {}
-Mod.main        = { "option" }
-Mod.main.shift  = { "option", "shift" }
-Mod.hyper       = { "control", "option", "command" }
-Mod.hyper.shift = { "control", "option", "command", "shift" }
-Mod.win         = { "control" }
-Mod.win.shift   = { "control", "shift" }
+Mod                         = {}
+Mod.main                    = { "option" }
+Mod.main.shift              = { "option", "shift" }
+Mod.hyper                   = { "control", "option", "command" }
+-- Mod.hyper.shift = { "control", "option", "command", "shift" }
+Mod.win                     = { "control" }
+-- Mod.win.shift  = { "control", "shift" }
 
-Work            = string.find(hs.host.localizedName(), "^PAPA")
+Work                        = string.find(hs.host.localizedName(), "^PAPA")
 
 require("lib.mac")
 
@@ -19,6 +20,7 @@ App(Mod.main, "C", "Zed")
 App(Mod.main, "E", "Finder")
 App(Mod.main, "G", "Moonlight")
 App(Mod.main, "I", "Safari")
+App(Mod.main, "I", "Dia")
 App(Mod.main, "M", "Mail")
 App(Mod.main, "O", "Helium")
 App(Mod.main, "P", "1Password")
@@ -30,7 +32,6 @@ else
     App(Mod.main, "A", "Claude")
 end
 
--- Run(Mod.hyper, "R", "open vnc://roly@10.0.1.2")
 App(Mod.main, "R", "Screen Sharing")
 Tui(Mod.hyper, "P", "/opt/homebrew/bin/btop")
 
@@ -46,15 +47,18 @@ if Work then
     -- end
 end
 
-hs.hotkey.bind(Mod.main, "F", WindowToggleFillCenter)
-hs.hotkey.bind(Mod.main, "V", hs.spotlight.showClipboard)
+hs.hotkey.bind(Mod.main, "F", WindowFillToggle)
+hs.hotkey.bind(Mod.main, "V", function()
+    hs.eventtap.keyStroke({ "cmd" }, "space", 0)
+    hs.eventtap.keyStroke({ "cmd" }, "4", 100)
+end)
 hs.hotkey.bind(Mod.hyper, "D", hs.spaces.toggleShowDesktop)
-hs.hotkey.bind(Mod.hyper, "F", hs.window.toggleFullscreen)
-hs.hotkey.bind(Mod.hyper, "H", AppFocus)
+hs.hotkey.bind(Mod.hyper, "H", AppZen)
 hs.hotkey.bind(Mod.hyper, "L", hs.caffeinate.lockScreen)
-hs.hotkey.bind(Mod.hyper, "down", WindowFloat)
-hs.hotkey.bind(Mod.hyper, "left", WindowLeftScreen)
-hs.hotkey.bind(Mod.hyper, "right", WindowRightScreen)
+hs.hotkey.bind(Mod.hyper, "up", WindowMaxi)
+hs.hotkey.bind(Mod.hyper, "down", WindowMini)
+hs.hotkey.bind(Mod.hyper, "left", MoveWindowLeftScreen)
+hs.hotkey.bind(Mod.hyper, "right", MoveWindowLeftScreen)
 hs.hotkey.bind(Mod.win, "O", hs.spaces.toggleMissionControl)
 
 hs.hotkey.bind(Mod.hyper, "\\", hs.reload)
@@ -65,7 +69,3 @@ for i = 1, 5 do
         MoveWindowToSpaceByDrag(i)
     end)
 end
-
-
--- TODO: idempotent by-default instantspaceswitcher
--- hs.alert.show("Config loaded")
