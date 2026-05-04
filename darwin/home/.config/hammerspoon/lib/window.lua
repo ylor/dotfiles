@@ -164,15 +164,15 @@ _G.WindowEventTapper = hs.eventtap.new({ hs.eventtap.event.types.keyDown }, func
 end):start()
 
 
-local previousScreens = {}
+local prevScreens = {}
 hs.window.filter.new():subscribe(hs.window.filter.windowMoved, function(win)
-    local winID = win:id()
-    local screen = win:screen()
-    local currentScreen = screen:id()
-    local prevScreen = previousScreens[winID]
-    previousScreens[winID] = currentScreen
+    local id, screen = win:id(), win:screen()
+    local prev, curr = prevScreens[id], screen:id()
+    prevScreens[id] = curr
 
-    if prevScreen and prevScreen ~= currentScreen and screen:name() == "Built-in Retina Display" then
-        WindowFill(win)
+    if prev and prev ~= curr and screen:name() == "Built-in Retina Display" then
+        if hs.fnutils.find(hs.screen.allScreens(), function(s) return s:id() == prev end) then
+            WindowFill(win)
+        end
     end
 end)
