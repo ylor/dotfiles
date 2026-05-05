@@ -10,16 +10,18 @@ function AppCycler(app)
     if #windows == 0 then return hs.application.launchOrFocus(app) end
 
     local focused = hs.window.focusedWindow()
+    local focusedId = focused and focused:id()
     local idx = 0
     for i, w in ipairs(windows) do
-        if focused and w:id() == focused:id() then
+        if w:id() == focusedId then
             idx = i; break
         end
     end
 
-    local win = windows[(idx % #windows) + 1]
+    local win = windows[idx % #windows + 1]
+    local winSpace = hs.spaces.windowSpaces(win)[1]
     for i, sid in ipairs(hs.spaces.spacesForScreen(primary)) do
-        if sid == hs.spaces.windowSpaces(win)[1] then
+        if sid == winSpace then
             hs.eventtap.keyStroke({ "ctrl", "alt", "cmd" }, tostring(i), 0)
             break
         end

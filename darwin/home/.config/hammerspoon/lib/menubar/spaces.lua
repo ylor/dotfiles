@@ -10,7 +10,7 @@ end
 
 updateMenu()
 
-_G.SpaceWatcherForSpaces = hs.spaces.watcher.new(updateMenu):start()
-_G.ScreenWatcherForSpaces = hs.screen.watcher.new(updateMenu):start()
+_G.SpaceMenubarSpaceWatcher = hs.spaces.watcher.new(updateMenu):start()
+_G.SpaceMenubarScreenWatcher = hs.screen.watcher.new(updateMenu):start()
 
 menu:setClickCallback(hs.openConsole)
