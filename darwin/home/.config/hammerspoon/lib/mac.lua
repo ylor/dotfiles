@@ -3,30 +3,32 @@ local hs = hs ---@diagnostic disable-line: undefined-global
 -- Focus or cycle an app's windows on the main screen
 function AppCycler(app)
     local primary = hs.screen.primaryScreen()
-    local windows = hs.window.filter.new(app)
-        :setScreens(primary:getUUID())
-        :getWindows(hs.window.filter.sortByLastFocused)
+    local primaryUUID = primary:getUUID()
+
+    local windows = hs.fnutils.filter(
+        hs.window.filter.new(app):getWindows(hs.window.filter.sortByLastFocused),
+        function(w) return w:screen():getUUID() == primaryUUID end
+    )
 
     if #windows == 0 then return hs.application.launchOrFocus(app) end
 
     local focused = hs.window.focusedWindow()
     local focusedId = focused and focused:id()
-    local idx = 0
-    for i, w in ipairs(windows) do
-        if w:id() == focusedId then
-            idx = i; break
-        end
-    end
+    local idx = hs.fnutils.indexOf(windows, hs.fnutils.find(windows, function(w)
+        return w:id() == focusedId
+    end)) or 0
 
     local win = windows[idx % #windows + 1]
     local winSpace = hs.spaces.windowSpaces(win)[1]
+
     for i, sid in ipairs(hs.spaces.spacesForScreen(primary)) do
         if sid == winSpace then
             hs.eventtap.keyStroke({ "ctrl", "alt", "cmd" }, tostring(i), 0)
             break
         end
     end
-    hs.timer.doAfter(0.1, function() win:focus():centerMouse() end)
+
+    win:focus():centerMouse()
 end
 
 function App(mods, key, app)
