@@ -5,6 +5,9 @@
 	email = 2200609+ylor@users.noreply.github.com
 	name = ylor
 
+[includeIf "hasconfig:remote.*.url:git@github.com:joinpapa/*"]
+    path = papa
+
 # clearly makes git better - https://blog.gitbutler.com/how-git-core-devs-configure-git/
 
 [column]
