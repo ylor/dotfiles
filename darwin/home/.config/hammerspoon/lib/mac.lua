@@ -13,19 +13,13 @@ function AppCycler(app)
     if #windows == 0 then return hs.application.launchOrFocus(app) end
 
     local focused = hs.window.focusedWindow()
-    local focusedId = focused and focused:id()
-    local idx = hs.fnutils.indexOf(windows, hs.fnutils.find(windows, function(w)
-        return w:id() == focusedId
-    end)) or 0
-
+    local idx = focused and hs.fnutils.indexOf(windows, focused) or 0
     local win = windows[idx % #windows + 1]
-    local winSpace = hs.spaces.windowSpaces(win)[1]
 
-    for i, sid in ipairs(hs.spaces.spacesForScreen(primary)) do
-        if sid == winSpace then
-            hs.eventtap.keyStroke({ "ctrl", "alt", "cmd" }, tostring(i), 0)
-            break
-        end
+    local winSpace = hs.spaces.windowSpaces(win)[1]
+    local spaceIdx = hs.fnutils.indexOf(hs.spaces.spacesForScreen(primary), winSpace)
+    if spaceIdx then
+        hs.eventtap.keyStroke({ "ctrl", "alt", "cmd" }, tostring(spaceIdx), 0)
     end
 
     win:focus():centerMouse()
@@ -114,15 +108,15 @@ function SpaceInfo()
     return hs.fnutils.indexOf(spaces, active), #spaces
 end
 
-local SYNTHETIC = 0xDEAD
+-- local SYNTHETIC = 0xDEAD
 
-local function syntheticKeypress(mods, key)
-    for _, down in ipairs({ true, false }) do
-        local e = hs.eventtap.event.newKeyEvent(mods, key, down)
-        e:setProperty(hs.eventtap.event.properties.eventSourceUserData, SYNTHETIC)
-        e:post()
-    end
-end
+-- local function syntheticKeypress(mods, key)
+--     for _, down in ipairs({ true, false }) do
+--         local e = hs.eventtap.event.newKeyEvent(mods, key, down)
+--         e:setProperty(hs.eventtap.event.properties.eventSourceUserData, SYNTHETIC)
+--         e:post()
+--     end
+-- end
 
 function MoveWindowToSpaceByDrag(space)
     local currentSpace = SpaceInfo()
@@ -138,7 +132,8 @@ function MoveWindowToSpaceByDrag(space)
     hs.mouse.absolutePosition(dragPos)
     hs.eventtap.event.newMouseEvent(hs.eventtap.event.types.leftMouseDown, dragPos):post()
     hs.timer.usleep(10000)
-    syntheticKeypress({ "ctrl" }, tostring(space))
+    -- syntheticKeypress({ "ctrl" }, tostring(space))
+    hs.eventtap.keyStroke({ "ctrl" }, tostring(space), 0)
     hs.timer.usleep(10000)
     hs.eventtap.event.newMouseEvent(hs.eventtap.event.types.leftMouseUp, dragPos):post()
     hs.timer.doAfter(0.333, function() win:focus() end)
@@ -174,23 +169,23 @@ end
 --     end
 -- end):start()
 
-_G.InstantSpaceSwitcherTapper = hs.eventtap.new({ hs.eventtap.event.types.keyDown }, function(e)
-    if e:getProperty(hs.eventtap.event.properties.eventSourceUserData) == SYNTHETIC then
-        return false
-    end
+-- _G.InstantSpaceSwitcherTapper = hs.eventtap.new({ hs.eventtap.event.types.keyDown }, function(e)
+--     if e:getProperty(hs.eventtap.event.properties.eventSourceUserData) == SYNTHETIC then
+--         return false
+--     end
 
-    local flags = e:getFlags()
-    local key = hs.keycodes.map[e:getKeyCode()]
+--     local flags = e:getFlags()
+--     local key = hs.keycodes.map[e:getKeyCode()]
 
-    if hs.application.find("InstantSpaceSwitcher") then
-        if flags.ctrl and not flags.cmd and not flags.alt and not flags.shift and tonumber(key) then
-            syntheticKeypress({ "ctrl", "alt", "cmd" }, key)
-            return true
-        end
-    end
+--     if hs.application.find("InstantSpaceSwitcher") then
+--         if flags.ctrl and not flags.cmd and not flags.alt and not flags.shift and tonumber(key) then
+--             syntheticKeypress({ "ctrl", "alt", "cmd" }, key)
+--             return true
+--         end
+--     end
 
-    return false
-end):start()
+--     return false
+-- end):start()
 
 _G.MouseScrollReverser = hs.eventtap.new({ hs.eventtap.event.types.scrollWheel }, function(e)
     local p = hs.eventtap.event.properties
