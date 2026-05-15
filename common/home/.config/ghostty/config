@@ -1,6 +1,7 @@
 # https://ghostty.org/docs/config
 
 # function
+auto-update-channel = tip
 clipboard-read = "allow"
 clipboard-paste-protection = false
 copy-on-select = true
