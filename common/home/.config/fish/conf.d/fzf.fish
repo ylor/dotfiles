@@ -6,8 +6,8 @@ if command -q fzf # https://github.com/junegunn/fzf - fuzzy finder
       --color=border:#262626,label:#aeaeae,query:#d9d9d9
       --border=\"rounded\" --border-label=\"\" --preview-window=\"border-rounded\" --prompt=\"→ \"
       --marker=\"›\" --pointer=\"◆\" --separator=\"─\" --scrollbar=\"│\""
-#     fzf --fish | source
+    #     fzf --fish | source
 
-#     alias fcd="fzf --preview 'bat --style=numbers --color=always {}'"
-#     alias ff="fzf --preview 'bat --style=numbers --color=always {}'"
+    #     alias fcd="fzf --preview 'bat --style=numbers --color=always {}'"
+    #     alias ff="fzf --preview 'bat --style=numbers --color=always {}'"
 end

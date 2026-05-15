@@ -104,7 +104,6 @@ defaults write com.apple.dock wvous-br-modifier -int 0
 defaults write -g NSWindowS houldDragOnGesture -bool true
 defaults write com.apple.WindowManager EnableStandardClickToShowDesktop -bool false
 
-
 # Hammerspoon
 defaults write org.hammerspoon.Hammerspoon MJConfigFile "$HOME/.config/hammerspoon/init.lua"
 defaults write org.hammerspoon.Hammerspoon MJShowMenuIconKey -int 0

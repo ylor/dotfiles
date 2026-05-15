@@ -1,7 +1,7 @@
 set -Ux DOTFILES (realpath (status dirname))
 set --prepend fish_function_path "$DOTFILES/src"
 
-argparse 'r/reset' -- $argv; or return
+argparse r/reset -- $argv; or return
 if set -q _flag_reset
     set --erase DOTFILES_HOMEBREW DOTFILES_FULL DOTFILES_MODE DOTFILES_INTERACTIVE DOTFILES_PROFILE
 end
