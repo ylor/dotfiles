@@ -45,7 +45,7 @@ hs.hotkey.bind(Mod.hyper, "up", WindowMaxi)
 hs.hotkey.bind(Mod.hyper, "down", WindowMini)
 hs.hotkey.bind(Mod.hyper, "left", MoveWindowLeftScreen)
 hs.hotkey.bind(Mod.hyper, "right", MoveWindowRightScreen)
-hs.hotkey.bind(Mod.win, "O", hs.spaces.toggleMissionControl)
+hs.hotkey.bind(Mod.hyper, "O", hs.spaces.toggleMissionControl)
 
 for i = 1, 5 do
     hs.hotkey.bind({ "ctrl", "shift" }, tostring(i), function()

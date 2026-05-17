@@ -39,6 +39,8 @@ if command -q brew
 
     alias bi="brew i"
     alias bls="brew ls"
-    alias bu="brew u"
+    alias brm="brew uninstall"
     alias bs="brew s"
+    alias bu="brew u"
+    alias bup="brew up"
 end

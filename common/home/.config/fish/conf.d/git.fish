@@ -1,11 +1,4 @@
 if command -q git # https://git-scm.com
-    alias ga="git add -u"
-    alias gaa="git add -A"
-    alias gb="git branch"
-    alias gco="git checkout"
-    alias gc="git clone"
-    alias gp="git pull"
-
     function git
         set cmd $argv[1]
         set args $argv[2..]
@@ -47,4 +40,11 @@ if command -q git # https://git-scm.com
                 command git $argv
         end
     end
+
+    alias ga="git add -u"
+    alias gaa="git add -A"
+    alias gb="git branch"
+    alias gco="git checkout"
+    alias gc="git clone"
+    alias gp="git pull"
 end
