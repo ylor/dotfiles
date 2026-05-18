@@ -16,6 +16,7 @@ theme = Atom One Dark
 window-padding-balance = true
 window-padding-x = 8
 window-subtitle = working-directory
+unfocused-split-opacity = 0.5
 
 # modules
 config-file = ?berkeley

@@ -1,7 +1,5 @@
 if status --is-interactive
-    set -x KERNEL (uname | string lower)
-    set -x DARWIN (test $KERNEL = "darwin" && echo true || echo false)
-    set -x LINUX (test $KERNEL = "linux"  && echo true || echo false)
+    set -x KERNEL (string lower (uname))
 
     set -x EDITOR vim
     set -x VISUAL vim
@@ -10,7 +8,7 @@ if status --is-interactive
     set -x XDG_CONFIG_HOME "$HOME/.config"
     set -x XDG_DATA_HOME "$HOME/.local/share"
     set -x XDG_STATE_HOME "$HOME/.local/state"
-    set -x XDG_RUNTIME_DIR "/run/user/$EUID"
+    set -x XDG_RUNTIME_DIR "/run/user/$fish_user_id"
 
     set fish_color_command green
     set fish_color_normal brblack

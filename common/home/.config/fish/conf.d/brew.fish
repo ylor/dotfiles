@@ -20,13 +20,21 @@ if command -q brew
                 command brew reinstall $args
             case list ls
                 if command -q tv
-                    test -n "$args" && tv brew --input "$args" || tv brew
+                    if set -q args[1]
+                        tv brew --input $args[1]
+                    else
+                        tv brew
+                    end
                 else
                     command brew list $args
                 end
             case search s
                 if command -q tv
-                    test -n "$args" && tv brew-packages --input "$args" || tv brew-packages
+                    if set -q args[1]
+                        tv brew-packages --input $args[1]
+                    else
+                        tv brew-packages
+                    end
                 else
                     command brew search $args
                 end

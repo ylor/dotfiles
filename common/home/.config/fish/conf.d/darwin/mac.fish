@@ -43,15 +43,15 @@ if test (uname) = Darwin
         set -a OPTIONS hide
         set -a OPTIONS show
 
-        switch $(gum choose $OPTIONS --header "asdfadf" )
+        switch $(gum choose $OPTIONS --header "Choose action")
             case dscleanup
-                echo dscleanup
+                dsclean
             case "Flush DNS"
-                echo flushdns
+                flushdns
             case hide
-                echo hide
+                defaults write com.apple.finder AppleShowAllFiles -bool false && killall Finder
             case show
-                echo show
+                defaults write com.apple.finder AppleShowAllFiles -bool true && killall Finder
             case *
                 echo "i have no idea how you got here but i'm impressed"
                 return 1

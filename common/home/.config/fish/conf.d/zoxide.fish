@@ -2,19 +2,15 @@ if command -q zoxide # https://github.com/ajeetdsouza/zoxide - smarter cd
     zoxide init fish | source
 
     function zd
-        if test (count $argv) -eq 0
+        if not set -q argv[1]
             builtin cd $HOME
-        else if test -d $argv
-            builtin cd $argv
+        else if test -d $argv[1]
+            builtin cd $argv[1]
+        else if set -l dir (zoxide query -- $argv 2>/dev/null)
+            builtin cd $dir
+            echo (set_color green)✓(set_color normal) $PWD
         else
-            set dir (zoxide query $argv 2>/dev/null)
-            if test $status -eq 0
-                builtin cd $dir
-                set_color green && printf "✓ "
-                set_color normal && pwd
-            else
-                false
-            end
+            false
         end
     end
 

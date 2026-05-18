@@ -1,12 +1,12 @@
 function sudo
-    test (count $argv) -eq 0; and return 1
+    set -q argv[1]; or return 1
 
     if /usr/bin/sudo --non-interactive true 2>/dev/null
         /usr/bin/sudo $argv
         return
     end
 
-    for i in (seq 3)
+    for i in 1 2 3
         set -l password (gum input --password --placeholder "Enter sudo password" --cursor.foreground fff --no-show-help)
         or return 1
 

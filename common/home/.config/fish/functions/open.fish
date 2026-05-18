@@ -1,14 +1,10 @@
 function open
     set -l target $argv
-    if test (count $argv) -eq 0
-        set target .
-    end
-
-    if $DARWIN
-        command open $target
-    end
-
-    if $LINUX
-        xdg-open $target
+    set -q argv[1]; or set target .
+    switch $KERNEL
+        case darwin
+            command open $target
+        case linux
+            xdg-open $target
     end
 end
