@@ -6,7 +6,7 @@ function sudo
         return
     end
 
-    for i in 1 2 3
+    for i in (seq 3)
         set -l password (gum input --password --placeholder "Enter sudo password" --cursor.foreground fff --no-show-help)
         or return 1
 

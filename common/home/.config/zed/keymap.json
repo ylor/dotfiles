@@ -1,22 +1,45 @@
 [
   {
+    "bindings": {},
+  },
+  {
+    "context": "Editor && VimControl && !VimWaiting",
+    "bindings": {
+      "super f": "buffer_search::Deploy",
+      "space f": "file_finder::Toggle",
+      "space s g": "pane::DeploySearch",
+      "space -": "pane::SplitHorizontal",
+      "space =": "pane::SplitVertical",
+      "space \\": "pane::SplitVertical",
+      "space space": ["workspace::SendKeystrokes", "ctrl-tab enter"],
+    },
+  },
+  {
     "context": "os == linux",
     "bindings": {
       "ctrl-a": "editor::SelectAll",
+      "ctrl-f": "buffer_search::Deploy",
       "ctrl-x": "editor::Cut",
       "ctrl-c": "editor::Copy",
       "ctrl-v": "editor::Paste",
-      "ctrl-k": "file_finder::Toggle",
     },
+  },
+  {
+    "context": "os == linux && Editor && VimControl && !VimWaiting",
+    "bindings": {},
   },
   {
     "context": "os == macos",
     "bindings": {
       "cmd-a": "editor::SelectAll",
+      "cmd-f": "buffer_search::Deploy",
       "cmd-x": "editor::Cut",
       "cmd-c": "editor::Copy",
       "cmd-v": "editor::Paste",
-      "cmd-k": "file_finder::Toggle",
     },
+  },
+  {
+    "context": "os == macos && Editor && VimControl && !VimWaiting",
+    "bindings": {},
   },
 ]

@@ -18,6 +18,11 @@ window-padding-x = 8
 window-subtitle = working-directory
 unfocused-split-opacity = 0.5
 
+# keybinds
+keybind = ctrl+-=new_split:down
+keybind = ctrl+==new_split:right
+keybind = ctrl+\=new_split:right
+
 # modules
 config-file = ?berkeley
 config-file = ?mac

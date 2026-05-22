@@ -1,41 +1,34 @@
 if status --is-interactive
-    set -x KERNEL (string lower (uname))
-
-    set -x EDITOR vim
-    set -x VISUAL vim
-
-    set -x XDG_CACHE_HOME "$HOME/.cache"
-    set -x XDG_CONFIG_HOME "$HOME/.config"
-    set -x XDG_DATA_HOME "$HOME/.local/share"
-    set -x XDG_STATE_HOME "$HOME/.local/state"
-    set -x XDG_RUNTIME_DIR "/run/user/$fish_user_id"
-
-    set fish_color_command green
-    set fish_color_normal brblack
-    set fish_color_param white
-
+    fish_add_path --prepend --move "$HOME/.local/bin"
     fish_vi_key_bindings # i'm trying to grow a neckbeard
+
     set fish_cursor_default block
     set fish_cursor_insert line
     set fish_cursor_replace_one underscore
     set fish_cursor_visual block
 
+    set fish_color_command green
+    set fish_color_normal brblack
+    set fish_color_param white
+
+    set -p fish_function_path "$DOTFILES/src"
+
+    set -x KERNEL (string lower (uname))
+    set -x EDITOR vim
+    set -x VISUAL vim
+    set -x XDG_CACHE_HOME "$HOME/.cache"
+    set -x XDG_CONFIG_HOME "$HOME/.config"
+    set -x XDG_DATA_HOME "$HOME/.local/share"
+    set -x XDG_STATE_HOME "$HOME/.local/state"
+
     # Abbreviations
-    abbr --add b brew
-    abbr --add d docker
-    abbr --add g git
-    abbr --add o open
+    abbr d docker
+    abbr g git
 
     # Aliases
-    alias h="cd $HOME"
-    alias md="mkdir -p"
-    alias rd="rmdir"
     alias re="exec fish"
 
     for module in $__fish_config_dir/conf.d/{$KERNEL,prompt}/*.fish
         source $module
     end
-
-    fish_add_path --prepend --move "$HOME/.local/bin"
-    set --prepend fish_function_path "$DOTFILES/src"
 end

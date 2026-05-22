@@ -3,52 +3,50 @@ set -gx HOMEBREW_NO_AUTO_UPDATE 1
 set -gx HOMEBREW_NO_ENV_HINTS 1
 
 for path in /opt/homebrew /home/linuxbrew/.linuxbrew
-    test -d $path && "$path/bin/brew" shellenv | source
+    test -x $path/bin/brew; and $path/bin/brew shellenv | source; and break
 end
 
 if command -q brew
     function brew
-        set cmd $argv[1]
-        set args $argv[2..]
+        set -l cmd $argv[1]
+        set -l args $argv[2..]
+        set -l fzf_opts --multi --preview 'HOMEBREW_COLOR=1 brew info {}' --query=(string join ' ' $args)
 
         switch $cmd
             case i
                 command brew install $args
-            case u
-                command brew uninstall $args
+
             case re
                 command brew reinstall $args
-            case list ls
-                if command -q tv
-                    if set -q args[1]
-                        tv brew --input $args[1]
-                    else
-                        tv brew
-                    end
+
+            case rm
+                if command -q fzf
+                    set -l pkgs (brew leaves | fzf $fzf_opts)
+                    and command brew uninstall $pkgs
                 else
-                    command brew list $args
+                    command brew uninstall $args
                 end
+
             case search s
-                if command -q tv
-                    if set -q args[1]
-                        tv brew-packages --input $args[1]
-                    else
-                        tv brew-packages
-                    end
+                if command -q fzf
+                    set -l pkgs (begin; brew formulae; brew casks; end | fzf $fzf_opts)
+                    and command brew install $pkgs
                 else
                     command brew search $args
                 end
+
             case up
-                command brew update && command brew upgrade
+                command brew update; and command brew upgrade
+
             case '*'
                 command brew $argv
         end
     end
 
+    abbr b brew
     alias bi="brew i"
     alias bls="brew ls"
-    alias brm="brew uninstall"
+    alias brm="brew rm"
     alias bs="brew s"
-    alias bu="brew u"
     alias bup="brew up"
 end
