@@ -1,7 +1,7 @@
 if command -q zoxide
     zoxide init fish | source
 
-    function j
+    function j --wraps cd
         builtin cd $argv 2>/dev/null && return
 
         if set -l dir (zoxide query -- $argv 2>/dev/null) && builtin cd $dir

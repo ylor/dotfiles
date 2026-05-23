@@ -1,6 +1,7 @@
-if command -vq zed zeditor # http://zed.dev
+if command -q zed zeditor # http://zed.dev
     function zed
-        set zed (command -v zed zeditor)[1]
-        set -q argv[1] && $zed $argv || $zed .
+        set --query argv[1]; or set argv "."
+        set bin (command --search zed zeditor)[1]
+        $bin $argv
     end
 end

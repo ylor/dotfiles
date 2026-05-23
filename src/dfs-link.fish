@@ -36,7 +36,7 @@ function dfs-link
 
     # 6. Update cache file
     mkdir -p (path dirname $cache)
-    string join \n $links > $cache
+    string join \n $links >$cache
 
     # set -q _flag_quiet; or dfs-success "$(count $links) files linked"
 end
