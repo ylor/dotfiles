@@ -8,13 +8,15 @@ if command -q fzf # https://github.com/junegunn/fzf
         --color fg:-1,fg+:#d0d0d0,bg:-1,bg+:#262626
         --color hl:#5f87af,hl+:#5fd7ff,info:#d0d0d0,marker:#d0d0d0
         --color prompt:#d0d0d0,spinner:#d0d0d0,pointer:#d0d0d0,header:#d0d0d0
+        --height ~100%
         --marker '›'
         --pointer '◆'
+        --popup center
         --preview-window wrap,border-rounded
         --prompt '→ '
         --scrollbar '│'
         --separator '─'
     "
 
-    set -x FZF_CTRL_R_OPTS "--with-nth=3.." #--nth=3..,..
+    set -x FZF_CTRL_R_OPTS "--with-nth=3.."
 end

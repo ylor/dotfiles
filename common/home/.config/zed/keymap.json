@@ -5,23 +5,23 @@
   {
     "context": "Editor && VimControl && !VimWaiting",
     "bindings": {
-      "super f": "buffer_search::Deploy",
-      "space f": "file_finder::Toggle",
-      "space s g": "pane::DeploySearch",
       "space -": "pane::SplitHorizontal",
       "space =": "pane::SplitVertical",
       "space \\": "pane::SplitVertical",
-      "space space": ["workspace::SendKeystrokes", "ctrl-tab enter"],
+      "space b": "tab_switcher::Toggle",
+      "space f": "file_finder::Toggle",
+      "space s g": "pane::DeploySearch",
+      "space space": "pane::AlternateFile",
     },
   },
   {
     "context": "os == linux",
     "bindings": {
       "ctrl-a": "editor::SelectAll",
-      "ctrl-f": "buffer_search::Deploy",
-      "ctrl-x": "editor::Cut",
       "ctrl-c": "editor::Copy",
+      "ctrl-f": ["buffer_search::DeployReplace", "buffer_search::Deploy"],
       "ctrl-v": "editor::Paste",
+      "ctrl-x": "editor::Cut",
     },
   },
   {
@@ -32,10 +32,10 @@
     "context": "os == macos",
     "bindings": {
       "cmd-a": "editor::SelectAll",
-      "cmd-f": "buffer_search::Deploy",
-      "cmd-x": "editor::Cut",
       "cmd-c": "editor::Copy",
+      "cmd-f": ["buffer_search::DeployReplace", "buffer_search::Deploy"],
       "cmd-v": "editor::Paste",
+      "cmd-x": "editor::Cut",
     },
   },
   {

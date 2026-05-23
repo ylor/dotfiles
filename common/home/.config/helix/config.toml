@@ -20,3 +20,6 @@ hidden = false
 [editor.soft-wrap]
 enable = true
 wrap-at-text-width = true
+
+[keys.normal]
+"space" = { "space" = "goto_last_accessed_file" }

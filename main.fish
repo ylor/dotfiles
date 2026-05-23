@@ -23,7 +23,6 @@ if test "$DOTFILES_PROFILE" = full
     end
 end
 
-# dfs-spin --title="linking…" -- fish --interactive --command "dfs-link --minimal"
-# dfs-success "SEE YOU SPACE COWBOY"
-# exec fish
-dfs-link
+dfs-spin --title="linking…" -- fish --interactive --command "dfs-link --minimal"
+dfs-success "SEE YOU SPACE COWBOY"
+exec fish
