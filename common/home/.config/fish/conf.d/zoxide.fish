@@ -12,5 +12,6 @@ if command -q zoxide
         end
     end
 
+    alias h=j
     alias ji=zi
 end

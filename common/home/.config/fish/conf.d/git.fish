@@ -27,7 +27,7 @@ if command -q git
 
             case lol
                 command git rev-parse --is-inside-work-tree >/dev/null 2>&1; or return 67
-                command git add -u
+                command git add -A
                 and command git commit -m (curl -sf https://whatthecommit.com/index.txt)
                 and command git push
 

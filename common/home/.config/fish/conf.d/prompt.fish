@@ -15,7 +15,9 @@ end
 
 # --- secments ---
 function _sec_host
-    set --query SSH_CONNECTION && echo -n "❬$USER@$machine❭ "
+    # if set --query SSH_CONNECTION
+        echo -n "❬$USER@$machine❭"
+    # end
 end
 
 function _sec_cwd
@@ -55,7 +57,7 @@ function _sec_git
     set ab (string match --regex --groups-only '^# branch\.ab \+(\d+) -(\d+)' $git_info)
 
     # test "$branch" = main; and echo -n "❬"; or echo -n "❬$branch"
-    echo -n '❬'
+    echo -n ' ❬'
     # set_color --italic
     echo -n "$branch"
     # set_color --reset brblack
@@ -72,15 +74,15 @@ end
 function fish_prompt # https://github.com/usgraphics/usgc-themes/
     set last_status $status
 
-    _sec_host
     _sec_cwd
+    _sec_git
     _sec_duration
     _sec_arrow $last_status
 end
 
 function fish_right_prompt
     set_color brblack
-    _sec_git
+    _sec_host
 end
 
 function fish_mode_prompt
