@@ -12,7 +12,10 @@ window-save-state = always
 background = #000000
 background-blur-radius = 20
 background-opacity = 0.85
-theme = Atom One Dark
+font-family = "Berkeley Mono Retina"
+# font-family = "Berkeley Mono"
+theme = usgc-amber
+# theme = usgc-green
 window-padding-balance = true
 window-padding-x = 8
 window-subtitle = working-directory
@@ -24,6 +27,6 @@ keybind = ctrl+==new_split:right
 keybind = ctrl+\=new_split:right
 
 # modules
-config-file = ?berkeley
 config-file = ?mac
 config-file = ?linux
+config-file = ?local

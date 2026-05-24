@@ -4,7 +4,10 @@ if command -q git
         set -l args $argv[2..]
 
         switch $cmd
-            case branch b checkout co
+            # case branch b
+            #     command git checkout $args; or command git checkout -b $args
+
+            case checkout co
                 command git checkout $args; or command git checkout -b $args
 
             case clone c

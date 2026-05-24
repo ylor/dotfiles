@@ -18,5 +18,5 @@ if command -q fzf # https://github.com/junegunn/fzf
         --separator '─'
     "
 
-    set -x FZF_CTRL_R_OPTS "--with-nth=3.."
+    set -x FZF_CTRL_R_OPTS "--no-color --height ~20% --with-nth=3.."
 end

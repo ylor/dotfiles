@@ -33,7 +33,7 @@
     "bindings": {
       "cmd-a": "editor::SelectAll",
       "cmd-c": "editor::Copy",
-      "cmd-f": ["buffer_search::DeployReplace", "buffer_search::Deploy"],
+      "cmd-f": "buffer_search::Deploy",
       "cmd-v": "editor::Paste",
       "cmd-x": "editor::Cut",
     },

@@ -1,8 +1,7 @@
-if command -q gum
-    function pls
-        while not command /usr/bin/sudo --non-interactive true 2>/dev/null
-            gum input --password --placeholder="password" --no-show-help | sudo --validate --stdin 2>/dev/null
-        end
-        command /usr/bin/sudo $argv
-    end
-end
+export GUM_CHOOSE_HEADER_FOREGROUND="#fff"
+export GUM_CONFIRM_PROMPT_FOREGROUND="#FFF"
+export GUM_CONFIRM_SELECTED_BACKGROUND=""
+export GUM_CONFIRM_SELECTED_FOREGROUND="#FFF"
+export GUM_CONFIRM_UNSELECTED_BACKGROUND=""
+export GUM_CONFIRM_UNSELECTED_FOREGROUND="#666"
+export GUM_SPIN_SPINNER_FOREGROUND="FFF"

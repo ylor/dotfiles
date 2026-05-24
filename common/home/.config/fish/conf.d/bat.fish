@@ -1,4 +1,5 @@
 if command -q bat
-    alias cat="bat -p"
-    alias catp="bat -pp"
+    alias batp="bat --paging=never"
+    alias cat="bat"
+    alias catp="bat --style=plain --paging=never"
 end

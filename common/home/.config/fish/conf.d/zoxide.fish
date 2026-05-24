@@ -5,9 +5,9 @@ if command -q zoxide
         builtin cd $argv 2>/dev/null && return
 
         if set -l dir (zoxide query -- $argv 2>/dev/null) && builtin cd $dir
-            echo (set_color green)✓(set_color normal) $PWD
+            echo (set_color green)✓(set_color --bold) $PWD
         else
-            echo (set_color red)✗(set_color normal) "No such directory:" (set_color --bold)$argv
+            echo (set_color red)✗(set_color --reset) "No such directory:" (set_color --bold)$argv
             return 1
         end
     end

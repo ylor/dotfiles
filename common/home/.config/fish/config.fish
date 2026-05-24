@@ -8,8 +8,8 @@ if status --is-interactive
     set fish_cursor_visual block
 
     set fish_color_command green
-    set fish_color_normal brblack
-    set fish_color_param white
+    set fish_color_param green
+    set fish_greeting
 
     set -p fish_function_path "$DOTFILES/src"
 
@@ -21,14 +21,17 @@ if status --is-interactive
     set -x XDG_DATA_HOME "$HOME/.local/share"
     set -x XDG_STATE_HOME "$HOME/.local/state"
 
-    # Abbreviations
+    # abbreviations
     abbr d docker
     abbr g git
 
-    # Aliases
+    # aliases
+    alias mac="test (uname) = Darwin"
+    alias linux="test (uname) = Linux"
     alias re="exec fish"
 
-    for module in $__fish_config_dir/conf.d/{$KERNEL,prompt}/*.fish
+    for module in $__fish_config_dir/conf.d/{$KERNEL}/*.fish
+        # for module in $__fish_config_dir/conf.d/{$KERNEL,prompt}/*.fish
         source $module
     end
 end
