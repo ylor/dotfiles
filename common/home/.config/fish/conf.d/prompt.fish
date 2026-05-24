@@ -20,7 +20,11 @@ end
 
 function _sec_cwd
     set_color --bold
-    test $PWD = $HOME && echo -n ~ || echo -n (path basename $PWD)
+    if test $PWD = $HOME
+        echo -n '~'
+    else
+        echo -n (path basename $PWD)
+    end
     set_color --reset
 end
 
