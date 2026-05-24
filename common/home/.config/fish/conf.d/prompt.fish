@@ -75,6 +75,7 @@ function fish_prompt # https://github.com/usgraphics/usgc-themes/
 end
 
 function fish_right_prompt
+    set_color brblack
     _sec_git
 end
 
@@ -82,7 +83,8 @@ function fish_mode_prompt
 end
 
 function fish_title
-    set -q SSH_CLIENT SSH_TTY && echo "❬$(prompt_hostname)❭ "
+    set -q SSH_CLIENT SSH_TTY && echo "[$(prompt_hostname)] "
+    # set -q SSH_CLIENT SSH_TTY && echo "❬$(prompt_hostname)❭ "
 
     if test $PWD = $HOME
         echo 👻
