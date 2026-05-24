@@ -1,12 +1,12 @@
-# function fish_right_prompt
-#     if not set -q machine
-#         set -g machine (string split -m1 -f1 . $hostname)
-#         string match -r "^PAPA" "$machine" && set machine papa
-#     end
+# set symbol ""
+# set symbol "⌘"
+# █ ▓ ▒ ░ ⣿
 
-#     # set symbol ""
-#     # set symbol "⌘"
-#     # █ ▓ ▒ ░ ⣿
-#     set_color brblack
-#     string lower "$USER@$machine ✦"
-# end
+set --query machine; or set -g machine (string split --max 1 --fields 1 '.' $hostname)
+string match --quiet --regex '^PAPA' $machine; and set -g machine papa
+function fish_right_prompt
+    set_color brblack
+    if set --query SSH_CONNECTION
+        string lower "❬$USER@$machine❭"
+    end
+end
