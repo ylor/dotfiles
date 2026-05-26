@@ -10,7 +10,7 @@ function dfs-link
 
     # 3. Gather source files and initialize link tracking
     set originals (fd . $src_dirs --hidden --absolute-path --type file)
-    set -l links
+    set links
 
     # 4. Single loop to map, build directories, and symlink
     for src in $originals
@@ -18,7 +18,7 @@ function dfs-link
         set -a links $dst
 
         mkdir -p (path dirname $dst)
-        ln -sfv $src $dst
+        ln -sf $src $dst
 
         # set -q _flag_minimal; or set -q _flag_quiet; or dfs-success $dst
     end

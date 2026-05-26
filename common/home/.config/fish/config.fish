@@ -8,6 +8,7 @@ if status --is-interactive
     set fish_cursor_insert line
     set fish_cursor_replace_one underscore
     set fish_cursor_visual block
+    set fish_features qmark-noglob glob-dotfiles
     set fish_greeting
     set fish_prompt_pwd_dir_length 0
 

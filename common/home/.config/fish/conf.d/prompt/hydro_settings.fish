@@ -1,12 +1,2 @@
-# Hydro Prompt - https://github.com/jorgebucaran/hydro
-# set hydro_color_pwd blue
-# set hydro_color_git magenta
-# set hydro_color_duration yellow
-# set hydro_color_prompt green
-
-# set hydro_multiline true
-# set hydro_symbol_git_ahead "⇡"
-# set hydro_symbol_git_dirty "≡"
-# set hydro_symbol_git_behind "⇣"
-# set hydro_symbol_prompt "✦"
+# Hydro - https://github.com/jorgebucaran/hydro
 set hydro_symbol_prompt "→"

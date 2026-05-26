@@ -7,7 +7,7 @@ if set -q _flag_reset
 end
 
 source $DOTFILES/.env
-clear && cat $DOTFILES/art.txt
+clear && command cat $DOTFILES/art.txt
 if test -z $DOTFILES_PROFILE
     if gum confirm "interactive?" --timeout=10s --affirmative=yes --negative=no --default=false
         set -Ux DOTFILES_PROFILE full
