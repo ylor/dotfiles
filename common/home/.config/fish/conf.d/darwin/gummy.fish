@@ -32,7 +32,7 @@ if test (uname) = Darwin
     # alias showhidden="defaults write com.apple.finder AppleShowAllFiles -bool true && killall Finder"
 
     # macOS Functions
-    function mac
+    function gummy
         command -q gum || return 127
 
         # set ACTION $(gum choose $OPTIONS)

@@ -34,6 +34,7 @@
       "cmd-a": "editor::SelectAll",
       "cmd-c": "editor::Copy",
       "cmd-f": "buffer_search::Deploy",
+      "cmd-k": "file_finder::Toggle",
       "cmd-v": "editor::Paste",
       "cmd-x": "editor::Cut",
     },

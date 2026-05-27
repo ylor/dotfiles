@@ -10,18 +10,18 @@ if command -q brew
     function brew
         set -l cmd $argv[1]
         set -l args $argv[2..]
-        set -l fzf_opts --multi --preview 'HOMEBREW_COLOR=1 brew info {}' --query=(string join ' ' $args)
+        set -l fzf_opts --multi --preview 'HOMEBREW_COLOR=1 brew info {}' --query=(string join -- ' ' $args)
 
         switch $cmd
-            case i
+            case install i
                 command brew install $args
 
-            case re
+            case reinstall re
                 command brew reinstall $args
 
-            case rm
+            case remove rm
                 if command -q fzf
-                    set -l pkgs (brew leaves | fzf $fzf_opts)
+                    set -l pkgs (begin; command brew leaves; command brew list --casks; end | fzf $fzf_opts)
                     and command brew uninstall $pkgs
                 else
                     command brew uninstall $args
@@ -44,9 +44,9 @@ if command -q brew
     end
 
     abbr b brew
-    alias bi="brew i"
-    alias bls="brew ls"
-    alias brm="brew rm"
-    alias bs="brew s"
-    alias bup="brew up"
+    # alias bi="brew i"
+    # alias bls="brew ls"
+    # alias brm="brew rm"
+    # alias bs="brew s"
+    # alias bup="brew up"
 end

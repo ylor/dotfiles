@@ -4,19 +4,29 @@ if command -q fzf # https://github.com/junegunn/fzf
     set -x FZF_DEFAULT_OPTS "
         --bind change:first
         --border rounded
-        --color border:#262626,label:#aeaeae,query:#d9d9d9
-        --color fg:-1,fg+:#d0d0d0,bg:-1,bg+:#262626
-        --color hl:#5f87af,hl+:#5fd7ff,info:#d0d0d0,marker:#d0d0d0
-        --color prompt:#d0d0d0,spinner:#d0d0d0,pointer:#d0d0d0,header:#d0d0d0
-        --height ~100%
+
         --marker '›'
+        --no-color
         --pointer '◆'
-        --popup center
-        --preview-window wrap,border-rounded
+        --popup
+        --preview-window wrap
         --prompt '→ '
-        --scrollbar '│'
-        --separator '─'
     "
 
-    set -x FZF_CTRL_R_OPTS "--no-color --height ~20% --with-nth=3.."
+    set -x FZF_CTRL_R_OPTS "--no-color --height ~50% --with-nth=3.."
+
+    if command -q bat
+        set -x FZF_CTRL_T_OPTS "--preview 'bat {}'"
+    end
+
+    if command -q eza
+        set -x FZF_ALT_C_OPTS "--preview 'eza --tree --level 2 --color always {}'"
+    else
+        set -x FZF_ALT_C_OPTS "--preview 'ls -1 {}'"
+    end
+
+    if command -q fd
+        set -x FZF_DEFAULT_COMMAND "fd --type file --hidden --follow --exclude .git"
+        set -x FZF_CTRL_T_COMMAND $FZF_DEFAULT_COMMAND
+    end
 end
