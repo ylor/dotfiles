@@ -6,3 +6,4 @@ macos-titlebar-style = tabs
 keybind = global:super+escape=toggle_quick_terminal
 keybind = global:alt+`=toggle_quick_terminal
 keybind = super+r=reload_config
+keybind = super+,=text:$EDITOR ~/.config/ghostty/\r

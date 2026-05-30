@@ -1,7 +1,7 @@
 if command -q zoxide
     zoxide init fish | source
 
-    function j --wraps cd
+    function j
         builtin cd $argv 2>/dev/null && return
 
         if set -l dir (zoxide query -- $argv 2>/dev/null) && builtin cd $dir
@@ -14,4 +14,7 @@ if command -q zoxide
 
     alias h=j
     alias ji=zi
+    complete --command j --erase
+    complete --command j --arguments "(zoxide query --list \$TOKEN 2>/dev/null)"
+    complete --command j --force-files
 end

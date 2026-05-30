@@ -108,16 +108,6 @@ function SpaceInfo()
     return hs.fnutils.indexOf(spaces, active), #spaces
 end
 
--- local SYNTHETIC = 0xDEAD
-
--- local function syntheticKeypress(mods, key)
---     for _, down in ipairs({ true, false }) do
---         local e = hs.eventtap.event.newKeyEvent(mods, key, down)
---         e:setProperty(hs.eventtap.event.properties.eventSourceUserData, SYNTHETIC)
---         e:post()
---     end
--- end
-
 function MoveWindowToSpaceByDrag(space)
     local currentSpace = SpaceInfo()
     if space == currentSpace then return end
@@ -132,7 +122,6 @@ function MoveWindowToSpaceByDrag(space)
     hs.mouse.absolutePosition(dragPos)
     hs.eventtap.event.newMouseEvent(hs.eventtap.event.types.leftMouseDown, dragPos):post()
     hs.timer.usleep(10000)
-    -- syntheticKeypress({ "ctrl" }, tostring(space))
     hs.eventtap.keyStroke({ "ctrl" }, tostring(space), 0)
     hs.timer.usleep(10000)
     hs.eventtap.event.newMouseEvent(hs.eventtap.event.types.leftMouseUp, dragPos):post()
