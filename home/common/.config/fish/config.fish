@@ -13,7 +13,7 @@ if status --is-interactive
 
     set -p fish_function_path "$DOTFILES/src"
 
-    set -x KERNEL (string lower (uname))
+    set -x KERNEL (uname | string lower)
     set -x EDITOR vim
     set -x VISUAL vim
     set -x XDG_CACHE_HOME "$HOME/.cache"

@@ -31,8 +31,11 @@ function App(mods, key, app)
     end)
 end
 
-function AppExists(name)
-    return hs.fs.attributes("/Applications/" .. name .. ".app") ~= nil
+function AppExists(app)
+    if not string.match(app, "^/") then
+        app = "/Applications/" .. app .. ".app"
+    end
+    return hs.application.infoForBundlePath(app) ~= nil
 end
 
 function AppZen()

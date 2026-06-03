@@ -1,10 +1,10 @@
-set -Ux DOTFILES (realpath (status dirname))
-set --prepend fish_function_path "$DOTFILES/src"
-
 argparse r/reset -- $argv; or return
 if set -q _flag_reset
     set --erase DOTFILES_HOMEBREW DOTFILES_FULL DOTFILES_MODE DOTFILES_INTERACTIVE DOTFILES_PROFILE
 end
+
+set -Ux DOTFILES (path resolve (status dirname))
+set --prepend fish_function_path "$DOTFILES/src"
 
 source $DOTFILES/.env
 clear && command cat $DOTFILES/art.txt
@@ -16,13 +16,13 @@ if test -z $DOTFILES_PROFILE
     end
 end
 
-set KERNEL (uname | string lower)
+set -x KERNEL (uname | string lower)
 if test "$DOTFILES_PROFILE" = full
-    for script in $DOTFILES/$KERNEL/scripts/*.fish
+    for script in $DOTFILES/src/$KERNEL/*.fish
         source $script
     end
 end
 
-dfs-spin --title="linking…" -- fish --interactive --command "dfs-link --minimal"
-dfs-success "SEE YOU SPACE COWBOY"
+dfs-link
+echo "SEE YOU SPACE COWBOY"
 exec fish

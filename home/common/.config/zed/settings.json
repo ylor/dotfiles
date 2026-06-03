@@ -7,6 +7,16 @@
 // custom settings, run the `open default settings` command
 // from the command palette or from `Zed` application menu.
 {
+  "icon_theme": {
+    "mode": "light",
+    "light": "Zed (Default)",
+    "dark": "Zed (Default)"
+  },
+  "theme": {
+    "mode": "dark",
+    "light": "One Light",
+    "dark": "Autumn"
+  },
   "cli_default_open_behavior": "new_window",
   "outline_panel": {
     "dock": "left",
@@ -33,7 +43,6 @@
   "soft_wrap": "bounded",
   "show_whitespaces": "trailing",
   "show_wrap_guides": false,
-  "theme": "One Dark",
   "ui_font_family": ".SystemUIFont",
   "vim_mode": true,
   "auto_install_extensions": {

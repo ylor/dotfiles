@@ -15,22 +15,22 @@ Work                        = string.find(hs.host.localizedName(), "^PAPA")
 require("lib.mac")
 
 App(Mod.main, ".", "1Password")
-App(Mod.main, "C", "Zed")
+App(Mod.main, "\\", "Zed")
 App(Mod.main, "E", "Finder")
 App(Mod.main, "G", "Moonlight")
 -- App(Mod.main, "I", "Safari")
 App(Mod.main, "I", "Dia")
 App(Mod.main, "M", "Mail")
-App(Mod.main, "O", "Helium")
+-- App(Mod.main, "O", "Helium")
 App(Mod.main, "P", "1Password")
 App(Mod.main, "Return", "Ghostty")
 
 App(Mod.hyper, ",", "System Settings")
 
 if AppExists("/Applications/Claude.app") then
-    Web(Mod.main, "A", "https://claude.ai")
-else
     App(Mod.main, "A", "Claude")
+else
+    Web(Mod.main, "A", "https://claude.ai")
 end
 
 App(Mod.main, "R", "Screen Sharing")
@@ -45,7 +45,7 @@ hs.hotkey.bind(Mod.hyper, "up", WindowMaxi)
 hs.hotkey.bind(Mod.hyper, "down", WindowMini)
 hs.hotkey.bind(Mod.hyper, "left", MoveWindowLeftScreen)
 hs.hotkey.bind(Mod.hyper, "right", MoveWindowRightScreen)
-hs.hotkey.bind(Mod.hyper, "O", hs.spaces.toggleMissionControl)
+hs.hotkey.bind(Mod.win, "O", hs.spaces.toggleMissionControl)
 
 for i = 1, 5 do
     hs.hotkey.bind({ "ctrl", "shift" }, tostring(i), function()
@@ -55,15 +55,14 @@ end
 
 if Work then
     -- App(Mod.main, "I", "Google Chrome Dev")
-    App(Mod.main, "O", "Helium")
+    -- App(Mod.main, "O", "Helium")
     App(Mod.main, "S", "Slack")
     App(Mod.hyper, "I", "Island")
-    -- Web(Mod.main, "A", "https://gemini.google.com")
-    -- if AppExists("/Applications/Gemini.app") then
-    --     Web(Mod.main, "A", "https://gemini.google.com")
-    -- else
-    --     App(Mod.main, "A", "Gemini")
-    -- end
+    if AppExists("/Applications/Gemini.app") then
+        App(Mod.main.shift, "A", "Gemini")
+    else
+        Web(Mod.main.shift, "A", "https://gemini.google.com")
+    end
 end
 
 if not Work then

@@ -4,15 +4,19 @@ if command -q git
         set -l args $argv[2..]
 
         switch $cmd
-            # case branch b
-            #     command git checkout $args; or command git checkout -b $args
-
-            case checkout co
-                command git checkout $args; or command git checkout -b $args
+            case branch b checkout co #switch s
+                command git switch $args 2>/dev/null; or command git switch --create $args
 
             case clone c
-                set -l repo "https://github.com/"(string match -q "*/*" $args; and echo $args; or echo "ylor/$args")
-                command git clone $repo; and cd (path change-extension '' (path basename -- $repo))
+                set -l repo
+                if string match --quiet "http*" $args[1]; or string match --quiet "git@*" $args[1]
+                    set repo $args
+                else if string match --quiet "*/*" $args[1]
+                    set repo "https://github.com/$args"
+                else
+                    set repo "https://github.com/ylor/$args"
+                end
+                command git clone $repo; and cd (path change-extension '' (path basename -- $repo[1]))
 
             case convert
                 set -l url (command git remote get-url origin 2>/dev/null)

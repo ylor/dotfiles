@@ -1,42 +1,27 @@
 function dfs-link
-    argparse m/minimal q/quiet -- $argv; or return 1
-
     set --query DOTFILES || dfs
+    argparse c/count v/verboase m/minimal q/quiet -- $argv; or return 1
 
-    # 2. Get valid source directories using Fish's built-in 'path filter'
     set kernel (uname | string lower)
-    set src_dirs (path filter -d "$DOTFILES/common/home" "$DOTFILES/$kernel/home")
-    test -n "$src_dirs"; or return 0
-
-    # 3. Gather source files and initialize link tracking
-    set originals (fd . $src_dirs --hidden --absolute-path --type file)
-    set links
-
-    # 4. Single loop to map, build directories, and symlink
-    for src in $originals
-        set dst (string replace -r "^$DOTFILES/(common|$kernel)/home" "$HOME" $src)
-        set -a links $dst
-
-        mkdir -p (path dirname $dst)
-        ln -sf $src $dst
-
-        # set -q _flag_minimal; or set -q _flag_quiet; or dfs-success $dst
+    set dirs (path filter --type dir $DOTFILES/home/{common,$kernel})
+    set files (fd . $dirs --hidden --absolute-path --type file)
+    set links (string replace --regex "^$DOTFILES/home/(common|$kernel)" "$HOME" $files)
+    mkdir -p (path dirname $links | sort --unique)
+    for i in (seq (count $files))
+        ln -sf $files[$i] $links[$i]
+        dfs-success $links[$i]
     end
 
-    # 5. Clean up stale links using clean in-memory matching
-    set cache "$HOME/.cache/dotfiles/cache"
-    if test -f $cache
-        for old_link in (cat $cache)
-            if not contains $old_link $links
-                rm -f $old_link
-                rmdir (path dirname $old_link) 2>/dev/null
-            end
+    set manifest $DOTFILES/home/manifest
+    for link in (cat $manifest 2>/dev/null)
+        contains -- $link $links; and continue
+        if test -L $link; and string match --quiet -- "$DOTFILES/*" (path resolve $link)
+            rm $link
         end
     end
+    # mkdir -p (path dirname $manifest)
+    string join \n $links >$manifest
 
-    # 6. Update cache file
-    mkdir -p (path dirname $cache)
-    string join \n $links >$cache
-
-    # set -q _flag_quiet; or dfs-success "$(count $links) files linked"
+    #set -q _flag_count; and dfs-success "$(count $links) files linked"
+    dfs-success "$(count $links) files linked"
 end
