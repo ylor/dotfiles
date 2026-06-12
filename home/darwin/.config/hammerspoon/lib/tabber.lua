@@ -30,10 +30,8 @@ _G.SwitcherFocusWatcher = hs.window.filter.new():subscribe(
     function() timer:start() end
 )
 
-_G.SwitcherSpaceWatcher = hs.spaces.watcher.new(function()
-    reset()
-    -- timer:stop()
-end):start()
+_G.SwitcherSpaceWatcher = hs.spaces.watcher.new(reset):start()
+_G.SwitcherScreenWatcher = hs.screen.watcher.new(reset):start()
 
 local TAB = hs.keycodes.map.tab
 _G.TabberEventTapper = hs.eventtap.new({ hs.eventtap.event.types.keyDown },

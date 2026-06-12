@@ -126,10 +126,11 @@ function MoveWindowToSpaceByDrag(space)
     hs.eventtap.event.newMouseEvent(hs.eventtap.event.types.leftMouseDown, dragPos):post()
     hs.timer.usleep(10000)
     hs.eventtap.keyStroke({ "ctrl" }, tostring(space), 0)
-    hs.timer.usleep(10000)
+    hs.timer.usleep(1000)
     hs.eventtap.event.newMouseEvent(hs.eventtap.event.types.leftMouseUp, dragPos):post()
+    hs.timer.usleep(1000)
     hs.timer.doAfter(0.333, function() win:focus() end)
-    hs.mouse.absolutePosition(savedPos)
+    -- hs.mouse.absolutePosition(savedPos)
 end
 
 -- local function switchApp(apps)

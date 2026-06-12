@@ -59,9 +59,9 @@ if Work then
     App(Mod.main, "S", "Slack")
     App(Mod.hyper, "I", "Island")
     if AppExists("/Applications/Gemini.app") then
-        App(Mod.main.shift, "A", "Gemini")
+        App(Mod.hyper, "A", "Gemini")
     else
-        Web(Mod.main.shift, "A", "https://gemini.google.com")
+        Web(Mod.hyper, "A", "https://gemini.google.com")
     end
 end
 

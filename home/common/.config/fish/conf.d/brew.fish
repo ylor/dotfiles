@@ -1,4 +1,5 @@
 set -gx HOMEBREW_NO_ANALYTICS 1
+set -gx HOMEBREW_NO_ASK 1
 set -gx HOMEBREW_NO_AUTO_UPDATE 1
 set -gx HOMEBREW_NO_ENV_HINTS 1
 
@@ -44,6 +45,7 @@ if command -q brew
     end
 
     abbr b brew
+    alias up="brew up"
     # alias bi="brew i"
     # alias bls="brew ls"
     # alias brm="brew rm"
