@@ -2,10 +2,6 @@ if test (uname) = Darwin
     abbr o open
     alias liberate="xattr -d com.apple.quarantine"
 
-    function cdf
-        cd (osascript -e 'tell application "Finder" to POSIX path of (target of window 1 as alias)')
-    end
-
     function open
         test (count $argv) -eq 0 && command open . || command open $argv
     end

@@ -12,8 +12,7 @@ brew "mise"
 brew "ripgrep"
 brew "zoxide"
 
-
-mode = ENV.fetch("HOMEBREW_DOTFILES_PROFILE", "full")
+mode = ENV.fetch("DOTFILES_PROFILE", "full")
 if mode == "full"
   cask "1password"
   cask "appcleaner"

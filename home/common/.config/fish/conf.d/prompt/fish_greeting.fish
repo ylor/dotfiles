@@ -58,7 +58,5 @@
 # end
 
 function fish_greeting
-    # set greeting (random choice cowboy-bebop half-life hollow-knight metal-gear-solid zelda)
-    # $greeting
-    # command -q viu || return 67
+    usgc
 end
