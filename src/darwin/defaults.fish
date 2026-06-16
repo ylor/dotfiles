@@ -26,7 +26,7 @@ defaults write com.apple.dock mineffect -string scale
 
 # Finder
 ## set default location of new Finder windows
-defaults write com.apple.finder NewWindowTarget -string "PfLo"
+defaults write com.apple.finder NewWindowTarget -string PfLo
 defaults write com.apple.finder NewWindowTargetPath -string "file://$HOME/Downloads/"
 ## show extensions
 defaults write NSGlobalDomain AppleShowAllExtensions -bool true
@@ -50,8 +50,10 @@ defaults write com.apple.desktopservices DSDontWriteUSBStores -bool true
 defaults write com.apple.Spotlight PasteboardHistoryEnabled -bool true
 defaults write com.apple.Spotlight PasteboardHistoryTimeout -int 604800
 ## New Siri - Golden Gate
-if not defaults read "/Library/Preferences/FeatureFlags/Domain/GenerativeModels.plist" EnhancedSiriWaitlist 2>/dev/null | grep --quiet "Enabled = 0"; then
-    sudo defaults write "/Library/Preferences/FeatureFlags/Domain/GenerativeModels.plist" EnhancedSiriWaitlist -dict-add Enabled -bool NO;
+if not defaults read "/Library/Preferences/FeatureFlags/Domain/GenerativeModels.plist" EnhancedSiriWaitlist 2>/dev/null | grep --quiet "Enabled = 0"
+    then
+    sudo defaults write "/Library/Preferences/FeatureFlags/Domain/GenerativeModels.plist" EnhancedSiriWaitlist -dict-add Enabled -bool NO
+
 end
 
 # Keyboard
