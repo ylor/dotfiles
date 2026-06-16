@@ -17,7 +17,7 @@ function usgc
     set -g BORDERS_AND_PADDING 7
 
     # Basic configuration, change as needed
-    set -g report_title "TR-100"
+    set -g report_title TR-100
     set -g app_name "MACHINE REPORT"
     set -g last_login_ip_present 0
     set -g zfs_present 0
@@ -65,7 +65,10 @@ function usgc
             set percent (awk -v used=$used -v total=$total 'BEGIN { printf "%.0f", (used / total) * 100 }')
         end
 
-        set num_blocks (awk -v percent=$percent -v width=$width 'BEGIN { printf "%d", (percent / 100) * width }')
+        set num_blocks (awk -v percent=$percent -v width=$width 'BEGIN {
+            n = int((percent / 100) * width)
+            print (n > width ? width : n)
+        }')
 
         set i 0
         while test $i -lt $num_blocks
@@ -157,7 +160,6 @@ function usgc
         end
         printf '%s' $name
     end
-
 
     function PRINT_DECORATED_HEADER
         border_line "┌" "┬" "┐"
@@ -347,14 +349,16 @@ function usgc
     # Memory Information
     switch (uname)
         case Darwin
-            set physmem (sysctl -n hw.memsize)
-            set -g mem_total (math -s 0 "$physmem / 1024")
             set pagesize (sysctl -n hw.pagesize)
-            set pages_free (vm_stat | grep "Pages free:" | tr -d " ." | cut -d ":" -f 2)
-            set pages_inactive (vm_stat | grep "Pages inactive:" | tr -d " ." | cut -d ":" -f 2)
-            set pages_speculative (vm_stat | grep "Pages speculative:" | tr -d " ." | cut -d ":" -f 2)
-            set pages_purgeable (vm_stat | grep "File-backed pages:" | tr -d " ." | cut -d ":" -f 2)
-            set -g mem_available (math -s 0 "$pagesize * ($pages_free + $pages_inactive + $pages_speculative + $pages_purgeable) / 1024")
+            set -g mem_total (math -s 0 (sysctl -n hw.memsize) / 1024)
+
+            set vmstat (vm_stat)
+            set anon       (printf '%s\n' $vmstat | string match -rg 'Anonymous pages:\s+(\d+)')
+            set purgeable  (printf '%s\n' $vmstat | string match -rg 'Pages purgeable:\s+(\d+)')
+            set wired      (printf '%s\n' $vmstat | string match -rg 'Pages wired down:\s+(\d+)')
+            set compressed (printf '%s\n' $vmstat | string match -rg 'Pages occupied by compressor:\s+(\d+)')
+            set -g mem_used      (math -s 0 "$pagesize * ($anon - $purgeable + $wired + $compressed) / 1024")
+            set -g mem_available (math -s 0 "$mem_total - $mem_used")
         case Linux
             set -g mem_total (grep 'MemTotal' /proc/meminfo | awk '{print $2}')
             set -g mem_available (grep 'MemAvailable' /proc/meminfo | awk '{print $2}')
@@ -387,12 +391,15 @@ function usgc
         set -g disk_percent (awk -v used=$zfs_used -v available=$zfs_available 'BEGIN { printf "%.0f", (used / available) * 100 }')
     else if test (uname) = Darwin
         set root_partition /System/Volumes/Data
-        set -g df_output (df -Pm $root_partition | awk 'NR==2')
-        set -g root_used (echo $df_output | awk '{print $3}')
-        set -g root_total (echo $df_output | awk '{print $2}')
-        set -g root_total_gb (awk -v total=$root_total 'BEGIN { printf "%.0f", total / 1024 }')
-        set -g root_used_gb (awk -v used=$root_used   'BEGIN { printf "%.0f", used  / 1024 }')
-        set -g disk_percent (awk -v used=$root_used -v total=$root_total 'BEGIN { printf "%.0f", (used / total) * 100 }')
+        set df_output (df -Pk $root_partition | awk 'NR==2')   # KiB blocks
+        set -g root_total (echo $df_output | awk '{print $2}') # KiB
+        set -g root_avail (echo $df_output | awk '{print $4}') # KiB
+        set -g root_used (math "$root_total - $root_avail")    # whole container
+
+        # decimal GB, to match Finder / About This Mac
+        set -g root_total_gb (math -s 0 "$root_total * 1024 / 1000000000")
+        set -g root_used_gb  (math -s 0 "$root_used  * 1024 / 1000000000")
+        set -g disk_percent  (math -s 0 "$root_used / $root_total * 100")
     else
         # Thanks https://github.com/AnarchistHoneybun
         set root_partition /
@@ -454,17 +461,40 @@ function usgc
         # end
     end
 
-    # sys_uptime=$(uptime | cut -d',' -f1 | sed 's/^[^ ]* //; s/up\s*//; s/\s*day\(s*\)/d/; s/\s*hour\(s*\)/h/; s/\s*minute\(s*\)/m/')
+    # set -g sys_uptime $(uptime | cut -d',' -f1 | sed 's/^[^ ]* //; s/up\s*//; s/\s*day\(s*\)/d/; s/\s*hour\(s*\)/h/; s/\s*minute\(s*\)/m/')
     # set -g sys_uptime (uptime | cut -d',' -f1 \
     #     | sed 's/^[^ ]* //' \
     #     | sed 's/^[^ ]* //' \
     #     | sed 's/^[ ]* //' \
     #     | sed "s/up[ ][[:space:]]*//" \
-    #     # | sed 's/[[:space:]]*day\(s*\)/d/' \
-    #     # | sed 's/[[:space:]]*hour\(s*\)/h/' \
-    #     # | sed 's/[[:space:]]*minute\(s*\)/m/'
+    #     | sed 's/[[:space:]]*day\(s*\)/d/' \
+    #     | sed 's/[[:space:]]*hour\(s*\)/h/' \
+    #     | sed 's/[[:space:]]*minute\(s*\)/m/'
     # )
-    set -g sys_uptime (uptime | awk '{print $3, $4}' | tr -d ',')
+    # set -g sys_uptime (uptime | awk -F'(up |, [0-9]+ user)' '{print $2}' | string trim)
+    switch (uname)
+        case Darwin
+            set boot (sysctl -n kern.boottime | string match -rg 'sec = (\d+)')
+            set secs (math (date +%s) - $boot)
+
+            set parts
+            # set y (math --scale=0 $secs / 31536000)
+            # set mo (math --scale=0 $secs % 31536000 / 2592000)
+            set w (math --scale=0 $secs % 2592000 / 604800)
+            set d (math --scale=0 $secs % 604800 / 86400)
+            set h (math --scale=0 $secs % 86400 / 3600)
+            set m (math --scale=0 $secs % 3600 / 60)
+            # test $y -gt 0; and set -a parts {$y}y
+            # test $mo -gt 0; and set -a parts {$mo}mo
+            test $w -gt 0; and set -a parts {$w}w
+            test $d -gt 0; and set -a parts {$d}d
+            test $h -gt 0; and set -a parts {$h}h
+            test $m -gt 0; and set -a parts {$m}m
+
+            set -g sys_uptime (string join ', ' $parts)
+        case '*'
+            set -g sys_uptime (uptime -p | string replace 'up ' '')
+    end
 
     # ─── Graphs + width ──────────────────────────────────────────────────────────
 
@@ -515,8 +545,8 @@ function usgc
     PRINT_DATA CPU $cpu_model
     PRINT_DATA CORES "$cpu_cores_per_socket"
     # PRINT_DATA "SESSION" (set -q SSH_TTY && $net_client_ip || echo "Local")
-    PRINT_DATA "IP" $net_machine_ip
-    PRINT_DATA "DNS" (string join ", " $net_dns_ip)
+    PRINT_DATA IP $net_machine_ip
+    PRINT_DATA DNS (string join ", " $net_dns_ip)
     PRINT_DIVIDER
     PRINT_DATA UPTIME $sys_uptime
     PRINT_BAR "LOAD  1m" $cpu_1min_bar_graph
@@ -530,8 +560,8 @@ function usgc
         PRINT_BAR "DISK USAGE" $disk_bar_graph
         PRINT_DATA "ZFS HEALTH" $zfs_health
     else
-        PRINT_DATA "DISK" "$root_used_gb/$root_total_gb GB [$disk_percent%]"
-        PRINT_BAR "USAGE" $disk_bar_graph
+        PRINT_DATA DISK "$root_used_gb/$root_total_gb GB [$disk_percent%]"
+        PRINT_BAR USAGE $disk_bar_graph
     end
     PRINT_DIVIDER
     PRINT_DATA MEMORY "$mem_used_gb/$mem_total_gb GB [$mem_percent%]"

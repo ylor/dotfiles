@@ -53,7 +53,6 @@ defaults write com.apple.Spotlight PasteboardHistoryTimeout -int 604800
 if not defaults read "/Library/Preferences/FeatureFlags/Domain/GenerativeModels.plist" EnhancedSiriWaitlist 2>/dev/null | grep --quiet "Enabled = 0"
     then
     sudo defaults write "/Library/Preferences/FeatureFlags/Domain/GenerativeModels.plist" EnhancedSiriWaitlist -dict-add Enabled -bool NO
-
 end
 
 # Keyboard
