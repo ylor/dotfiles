@@ -10,10 +10,10 @@ function usgc
     # ─── Config ──────────────────────────────────────────────────────────────────
 
     set -g MIN_NAME_LEN 5
-    set -g MAX_NAME_LEN 10
+    set -g MAX_NAME_LEN 8
     set -g MIN_DATA_LEN 5
     set -g MAX_DATA_LEN 32
-    set -g CURRENT_LEN 24
+    set -g CURRENT_LEN 28
     set -g BORDERS_AND_PADDING 7
 
     # Basic configuration, change as needed
@@ -471,10 +471,6 @@ function usgc
     debug "PREPARING GRAPHS"
     # Set current length before graphs get calculated
 
-    set -g barcode_header "█▐ ▌ ▐▌█▌ ▌█ ▐▐█▐ █▐█ ▌▐█ █▐ █▌█ ▌▐█▐▌▐█▐ █ █ ▐█▐▐▌"
-
-    # set_current_len
-
     debug "PREPARING GRAPHS - CPU"
     # Create graphs
     debug "PREPARING GRAPHS - CPU 1 MIN LOAD: $load_avg_1min, $cpu_cores"
@@ -516,7 +512,7 @@ function usgc
     # PRINT_DATA MACHINE $net_hostname
     PRINT_DIVIDER
     PRINT_DATA HOST "MacBook Pro"
-    PRINT_DATA PROCESSOR $cpu_model
+    PRINT_DATA CPU $cpu_model
     PRINT_DATA CORES "$cpu_cores_per_socket"
     # PRINT_DATA "SESSION" (set -q SSH_TTY && $net_client_ip || echo "Local")
     PRINT_DATA "IP" $net_machine_ip
