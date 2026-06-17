@@ -5,8 +5,6 @@
 # Copyright © 2024, U.S. Graphics, LLC. BSD-3-Clause License.
 # Copyright © 2025, Dmitry Achkasov <achkasov.dmitry@live.com>.
 
-function usgc
-
     # ─── Config ──────────────────────────────────────────────────────────────────
 
     set -g MIN_NAME_LEN 5
@@ -357,8 +355,12 @@ function usgc
             set purgeable  (printf '%s\n' $vmstat | string match -rg 'Pages purgeable:\s+(\d+)')
             set wired      (printf '%s\n' $vmstat | string match -rg 'Pages wired down:\s+(\d+)')
             set compressed (printf '%s\n' $vmstat | string match -rg 'Pages occupied by compressor:\s+(\d+)')
-            set -g mem_used      (math -s 0 "$pagesize * ($anon - $purgeable + $wired + $compressed) / 1024")
-            set -g mem_available (math -s 0 "$mem_total - $mem_used")
+
+            set app_mem        (math -s 0 "$pagesize * ($anon - $purgeable) / 1024")
+            set wired_mem      (math -s 0 "$pagesize * $wired / 1024")
+            set compressed_mem (math -s 0 "$pagesize * $compressed / 1024")
+            set -g mem_used       (math -s 0 "$app_mem + $wired_mem + $compressed_mem")
+            set -g mem_available  (math -s 0 "$mem_total - $mem_used")
         case Linux
             set -g mem_total (grep 'MemTotal' /proc/meminfo | awk '{print $2}')
             set -g mem_available (grep 'MemAvailable' /proc/meminfo | awk '{print $2}')
@@ -522,6 +524,7 @@ function usgc
         set -g disk_bar_graph (bar_graph $root_used $root_total)
     end
 
+function tr100
     # ─── Report ──────────────────────────────────────────────────────────────────
 
     # Machine Report

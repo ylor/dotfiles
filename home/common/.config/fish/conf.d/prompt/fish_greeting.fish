@@ -58,5 +58,5 @@
 # end
 
 function fish_greeting
-    usgc
+    tr100
 end

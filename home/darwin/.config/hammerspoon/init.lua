@@ -38,6 +38,7 @@ Tui(Mod.hyper, "P", "/opt/homebrew/bin/btop")
 
 hs.hotkey.bind(Mod.main, "F", WindowFillToggle)
 hs.hotkey.bind(Mod.main, "V", ShowClipboard)
+hs.hotkey.bind(Mod.main, "W1", hs.spaces.toggleMissionControl)
 hs.hotkey.bind(Mod.hyper, "D", hs.spaces.toggleShowDesktop)
 hs.hotkey.bind(Mod.hyper, "H", AppZen)
 hs.hotkey.bind(Mod.hyper, "L", hs.caffeinate.lockScreen)
@@ -45,7 +46,6 @@ hs.hotkey.bind(Mod.hyper, "up", WindowMaxi)
 hs.hotkey.bind(Mod.hyper, "down", WindowMini)
 hs.hotkey.bind(Mod.hyper, "left", MoveWindowLeftScreen)
 hs.hotkey.bind(Mod.hyper, "right", MoveWindowRightScreen)
-hs.hotkey.bind(Mod.win, "O", hs.spaces.toggleMissionControl)
 
 for i = 1, 5 do
     hs.hotkey.bind({ "ctrl", "shift" }, tostring(i), function()

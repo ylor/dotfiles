@@ -1,7 +1,7 @@
 if command -q git
     function git
-        set -l cmd $argv[1]
-        set -l args $argv[2..]
+        set cmd $argv[1]
+        set args $argv[2..]
 
         switch $cmd
             case branch b checkout co #switch s
@@ -9,14 +9,19 @@ if command -q git
 
             case clone c
                 set -l repo
+                set -l https
                 if string match --quiet "http*" $args[1]; or string match --quiet "git@*" $args[1]
                     set repo $args
                 else if string match --quiet "*/*" $args[1]
-                    set repo "https://github.com/$args"
+                    set repo "git@github.com:$args[1].git" $args[2..]
+                    set https "https://github.com/$args[1]" $args[2..]
                 else
-                    set repo "https://github.com/ylor/$args"
+                    set repo "git@github.com:ylor/$args[1].git" $args[2..]
+                    set https "https://github.com/ylor/$args[1]" $args[2..]
                 end
-                command git clone $repo; and cd (path change-extension '' (path basename -- $repo[1]))
+                command git clone $repo
+                or test -z "$https"; or command git clone $https
+                and cd (path change-extension '' (path basename -- $repo[1]))
 
             case convert
                 set -l url (command git remote get-url origin 2>/dev/null)
