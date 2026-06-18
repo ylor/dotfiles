@@ -493,7 +493,7 @@
             test $h -gt 0; and set -a parts {$h}h
             test $m -gt 0; and set -a parts {$m}m
 
-            set -g sys_uptime (string join ', ' $parts)
+            set -g sys_uptime (string join ' ' $parts)
         case '*'
             set -g sys_uptime (uptime -p | string replace 'up ' '')
     end
