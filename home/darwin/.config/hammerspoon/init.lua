@@ -38,7 +38,7 @@ Tui(Mod.hyper, "P", "/opt/homebrew/bin/btop")
 
 hs.hotkey.bind(Mod.main, "F", WindowFillToggle)
 hs.hotkey.bind(Mod.main, "V", ShowClipboard)
-hs.hotkey.bind(Mod.main, "W1", hs.spaces.toggleMissionControl)
+hs.hotkey.bind(Mod.main, "W", hs.spaces.toggleMissionControl)
 hs.hotkey.bind(Mod.hyper, "D", hs.spaces.toggleShowDesktop)
 hs.hotkey.bind(Mod.hyper, "H", AppZen)
 hs.hotkey.bind(Mod.hyper, "L", hs.caffeinate.lockScreen)
