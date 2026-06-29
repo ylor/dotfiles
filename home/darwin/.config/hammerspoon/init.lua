@@ -33,6 +33,10 @@ else
     Web(Mod.main, "A", "https://claude.ai")
 end
 
+if AppRunning("Safari")() then
+    App(Mod.main, "I", "Safari")
+end
+
 App(Mod.main, "R", "Screen Sharing")
 Tui(Mod.hyper, "P", "/opt/homebrew/bin/btop")
 

@@ -2,6 +2,7 @@ local hs = hs ---@diagnostic disable-line: undefined-global
 
 -- Focus or cycle an app's windows on the main screen
 function AppCycler(app)
+    if not hs.application.find(app) then return end
     local primary = hs.screen.primaryScreen()
     local primaryUUID = primary:getUUID()
 
@@ -16,11 +17,11 @@ function AppCycler(app)
     local idx = focused and hs.fnutils.indexOf(windows, focused) or 0
     local win = windows[idx % #windows + 1]
 
-    local winSpace = hs.spaces.windowSpaces(win)[1]
-    local spaceIdx = hs.fnutils.indexOf(hs.spaces.spacesForScreen(primary), winSpace)
-    if spaceIdx then
-        hs.eventtap.keyStroke({ "ctrl", "alt", "cmd" }, tostring(spaceIdx), 0)
-    end
+    -- local winSpace = hs.spaces.windowSpaces(win)[1]
+    -- local spaceIdx = hs.fnutils.indexOf(hs.spaces.spacesForScreen(primary), winSpace)
+    -- if spaceIdx then
+    --     hs.eventtap.keyStroke({ "ctrl", "alt", "cmd" }, tostring(spaceIdx), 0)
+    -- end
 
     win:focus():centerMouse()
 end
@@ -36,6 +37,13 @@ function AppExists(app)
         app = "/Applications/" .. app .. ".app"
     end
     return hs.application.infoForBundlePath(app) ~= nil
+end
+
+function AppRunning(appName)
+    return function()
+        local app = hs.application.find(appName)
+        return app ~= nil and app:isRunning()
+    end
 end
 
 function AppZen()

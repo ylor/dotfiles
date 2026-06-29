@@ -546,7 +546,7 @@ function tr100
     PRINT_DIVIDER
     PRINT_DATA HOST "MacBook Pro"
     PRINT_DATA CPU $cpu_model
-    PRINT_DATA CORES "$cpu_cores_per_socket"
+    # PRINT_DATA CORES "$cpu_cores_per_socket"
     # PRINT_DATA "SESSION" (set -q SSH_TTY && $net_client_ip || echo "Local")
     PRINT_DATA IP $net_machine_ip
     PRINT_DATA DNS (string join ", " $net_dns_ip)
