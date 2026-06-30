@@ -21,11 +21,11 @@ if command -q brew
                 command brew reinstall $args
 
             case remove rm
-                if command -q fzf
+                if command brew uninstall $args
+                    true
+                else if command -q fzf
                     set -l pkgs (begin; command brew leaves; command brew list --casks; end | fzf $fzf_opts)
                     and command brew uninstall $pkgs
-                else
-                    command brew uninstall $args
                 end
 
             case search s
