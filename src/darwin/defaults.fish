@@ -64,9 +64,30 @@ defaults write NSGlobalDomain NSAutomaticSpellingCorrectionEnabled -bool false
 defaults write NSGlobalDomain NSAutomaticCapitalizationEnabled -bool false
 defaults write NSGlobalDomain NSAutomaticInlinePredictionEnabled -bool false
 defaults write NSGlobalDomain NSAutomaticPeriodSubstitutionEnabled -bool false
+
+## Text expansions
+# sqlite3 ~/Library/KeyboardServices/TextReplacements.db "DELETE FROM ZTEXTREPLACEMENTENTRY;"
 sqlite3 ~/Library/KeyboardServices/TextReplacements.db \
     "DELETE FROM ZTEXTREPLACEMENTENTRY WHERE ZSHORTCUT = 'omw';"
 
+# set replacements \
+#     "shrugg:¯\_(ツ)_/¯" \
+#     "@@:$(echo cm9seXJleWVzQG1lLmNvbQo= | base64 --decode)"
+
+# for r in $replacements
+#     set parts (string split -m1 ":" $r)
+#     set ts (math (date +%s) - 978307200)
+#     sqlite3 ~/Library/KeyboardServices/TextReplacements.db "
+#         DELETE FROM ZTEXTREPLACEMENTENTRY WHERE ZSHORTCUT = '$parts[1]' AND ZPHRASE != '$parts[2]';
+#         UPDATE ZTEXTREPLACEMENTENTRY SET ZWASDELETED = 0 WHERE ZSHORTCUT = '$parts[1]' AND ZPHRASE = '$parts[2]';
+#         INSERT OR IGNORE INTO ZTEXTREPLACEMENTENTRY (Z_ENT, Z_OPT, ZNEEDSSAVETOCLOUD, ZWASDELETED, ZTIMESTAMP, ZPHRASE, ZSHORTCUT, ZUNIQUENAME)
+#         SELECT (SELECT Z_ENT FROM ZTEXTREPLACEMENTENTRY LIMIT 1), 1, 1, 0, $ts, '$parts[2]', '$parts[1]', '"(uuidgen)"'
+#         WHERE NOT EXISTS (SELECT 1 FROM ZTEXTREPLACEMENTENTRY WHERE ZSHORTCUT = '$parts[1]' AND ZPHRASE = '$parts[2]');
+#     "
+# end
+
+# sqlite3 ~/Library/KeyboardServices/TextReplacements.db "SELECT * FROM ZTEXTREPLACEMENTENTRY"
+# killall cfprefsd
 # General
 ## Hide scrollbars when scrolling
 # defaults write -g AppleShowScrollBars -string WhenScrolling

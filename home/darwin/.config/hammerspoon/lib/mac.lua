@@ -2,7 +2,7 @@ local hs = hs ---@diagnostic disable-line: undefined-global
 
 -- Focus or cycle an app's windows on the main screen
 function AppCycler(app)
-    if not hs.application.find(app) then return end
+    -- if not hs.application.find(app) then return end
     local primary = hs.screen.primaryScreen()
     local primaryUUID = primary:getUUID()
 
@@ -16,12 +16,6 @@ function AppCycler(app)
     local focused = hs.window.focusedWindow()
     local idx = focused and hs.fnutils.indexOf(windows, focused) or 0
     local win = windows[idx % #windows + 1]
-
-    -- local winSpace = hs.spaces.windowSpaces(win)[1]
-    -- local spaceIdx = hs.fnutils.indexOf(hs.spaces.spacesForScreen(primary), winSpace)
-    -- if spaceIdx then
-    --     hs.eventtap.keyStroke({ "ctrl", "alt", "cmd" }, tostring(spaceIdx), 0)
-    -- end
 
     win:focus():centerMouse()
 end
@@ -141,55 +135,11 @@ function MoveWindowToSpaceByDrag(space)
     -- hs.mouse.absolutePosition(savedPos)
 end
 
--- local function switchApp(apps)
---     local front = hs.application.frontmostApplication()
---     local name = front and front:name() or ""
---     local next = 1
---     for i, app in ipairs(apps) do
---         if name == app then
---             next = (i % #apps) + 1; break
---         end
---     end
---     hs.application.launchOrFocus(apps[next])
--- end
-
--- local bindings = {
---     m = { "Mail", "Messages" },
---     n = { "Notes", "Reminders" },
--- }
-
--- local keymap = hs.keycodes.map
--- _G.SwitcherEventTapper = hs.eventtap.new({ hs.eventtap.event.types.keyDown }, function(event)
---     local mods = event:getFlags()
---     if not (mods:containExactly({ "alt" }) or mods:containExactly({ "alt", "fn" })) then return end
---     local code = event:getKeyCode()
---     for char, apps in pairs(bindings) do
---         if code == keymap[char] then
---             switchApp(apps); return true
---         end
---     end
--- end):start()
-
--- _G.InstantSpaceSwitcherTapper = hs.eventtap.new({ hs.eventtap.event.types.keyDown }, function(e)
---     if e:getProperty(hs.eventtap.event.properties.eventSourceUserData) == SYNTHETIC then
---         return false
---     end
-
---     local flags = e:getFlags()
---     local key = hs.keycodes.map[e:getKeyCode()]
-
---     if hs.application.find("InstantSpaceSwitcher") then
---         if flags.ctrl and not flags.cmd and not flags.alt and not flags.shift and tonumber(key) then
---             syntheticKeypress({ "ctrl", "alt", "cmd" }, key)
---             return true
---         end
---     end
-
---     return false
--- end):start()
-
 _G.MouseScrollReverser = hs.eventtap.new({ hs.eventtap.event.types.scrollWheel }, function(e)
     local p = hs.eventtap.event.properties
+    if e:getProperty(p.eventSourceStateID) ~= 1 then
+        return false -- not real hardware input, leave it alone
+    end
     if e:getProperty(p.scrollWheelEventIsContinuous) == 0 then
         e:setProperty(p.scrollWheelEventDeltaAxis1,
             -e:getProperty(p.scrollWheelEventDeltaAxis1))
