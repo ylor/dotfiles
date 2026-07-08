@@ -1,12 +1,13 @@
+command --query dockutil; or brew install --quiet dockutil
+command --query nightlight; or brew install --quiet smudge/smudge/nightlight
+
 # Configure dock
 if defaults read com.apple.Dock | grep -q "com.apple.apps.launcher"
-    command --query dockutil; or brew install --quiet dockutil
     dockutil --remove all --add /Applications --add "$HOME/Downloads" >/dev/null
 end
 
 # Configure Night Shift
 if not nightlight status | grep -qi on; and gum confirm "Enable Night Shift schedule?"
-    command --query nightlight; or brew install --quiet smudge/smudge/nightlight
     nightlight schedule sunset; and nightlight on
 end
 
