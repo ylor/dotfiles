@@ -5,7 +5,7 @@ if defaults read com.apple.Dock | grep -q "com.apple.apps.launcher"
 end
 
 # Configure Night Shift
-if gum confirm "Enable Night Shift schedule?"
+if not nightlight status | grep -qi on; and gum confirm "Enable Night Shift schedule?"
     command --query nightlight; or brew install --quiet smudge/smudge/nightlight
     nightlight schedule sunset; and nightlight on
 end
