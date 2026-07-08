@@ -49,10 +49,6 @@ defaults write com.apple.desktopservices DSDontWriteUSBStores -bool true
 # Spotlight
 defaults write com.apple.Spotlight PasteboardHistoryEnabled -bool true
 defaults write com.apple.Spotlight PasteboardHistoryTimeout -int 604800
-## New Siri - Golden Gate
-if not defaults read "/Library/Preferences/FeatureFlags/Domain/GenerativeModels.plist" EnhancedSiriWaitlist 2>/dev/null | grep --quiet "Enabled = 0"
-    sudo defaults write "/Library/Preferences/FeatureFlags/Domain/GenerativeModels.plist" EnhancedSiriWaitlist -dict-add Enabled -bool NO
-end
 
 # Keyboard
 defaults write NSGlobalDomain ApplePressAndHoldEnabled -bool false

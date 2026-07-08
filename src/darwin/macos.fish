@@ -4,6 +4,12 @@ if defaults read com.apple.Dock | grep -q "com.apple.apps.launcher"
     dockutil --remove all --add /Applications --add "$HOME/Downloads" >/dev/null
 end
 
+# Configure Night Shift
+if gum confirm "Enable Night Shift schedule?"
+    command --query nightlight; or brew install --quiet smudge/smudge/nightlight
+    nightlight schedule sunset; and nightlight on
+end
+
 # Set hostname
 if scutil --get ComputerName | grep -q "’s"; and gum confirm "Change hostname? (Current: '$hostname')"
     set gum_hostname (gum input --placeholder $hostname)
