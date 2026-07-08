@@ -15,7 +15,7 @@ function MoveWindowToSpaceByDrag(space)
 
     local zoom = win:zoomButtonRect()
     local dragPos = { x = zoom.x + zoom.w + 5, y = zoom.y + (zoom.h / 2) }
-    local savedPos = hs.mouse.absolutePosition()
+    -- local savedPos = hs.mouse.absolutePosition()
 
     hs.mouse.absolutePosition(dragPos)
     hs.eventtap.event.newMouseEvent(hs.eventtap.event.types.leftMouseDown, dragPos):post()

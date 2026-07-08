@@ -170,24 +170,20 @@ hs.getObjectMetatable("hs.window").centerMouse = function(self)
 end
 
 -- events
-local actions = {
-    [hs.keycodes.map.left]  = WindowLeft,
-    [hs.keycodes.map.right] = WindowRight,
-    [hs.keycodes.map.up]    = WindowFill,
-    [hs.keycodes.map.down]  = WindowCenter,
-}
 
-_G.WindowEventTapper = hs.eventtap.new({ hs.eventtap.event.types.keyDown }, function(event)
-    local mods = event:getFlags()
-    local ctrl = mods:containExactly({ "ctrl" }) or mods:containExactly({ "ctrl", "fn" })
-    if not ctrl then return end
+function WindowArrowKeyHandler(actions)
+    return function(event)
+        local mods = event:getFlags()
+        local ctrl = mods:containExactly({ "ctrl" }) or mods:containExactly({ "ctrl", "fn" })
+        if not ctrl then return end
 
-    local action = actions[event:getKeyCode()]
-    if action then
-        action()
-        return true
+        local action = actions[event:getKeyCode()]
+        if action then
+            action()
+            return true
+        end
     end
-end):start()
+end
 
 
 -- local prevScreens = {}

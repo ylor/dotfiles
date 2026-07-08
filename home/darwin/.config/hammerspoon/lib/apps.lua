@@ -20,10 +20,8 @@ function AppCycler(app)
     win:focus():centerMouse()
 end
 
-function App(mods, key, app)
-    hs.hotkey.bind(mods, key, function()
-        AppCycler(app)
-    end)
+function App(app)
+    return function() AppCycler(app) end
 end
 
 function AppExists(app)
@@ -40,21 +38,21 @@ function AppRunning(appName)
     end
 end
 
-function Tui(mods, key, cmd)
-    hs.hotkey.bind(mods, key, function()
+function Tui(cmd)
+    return function()
         local terminal =
         "/usr/bin/open -na /Applications/Ghostty.app --args --confirm-close-surface=false --quit-after-last-window-closed=true --window-decoration=none --command="
         hs.execute(terminal .. cmd)
         hs.timer.doAfter(0.5, function()
             WindowMaxi()
         end)
-    end)
+    end
 end
 
-function Web(mods, key, url)
-    hs.hotkey.bind(mods, key, function()
+function Web(url)
+    return function()
         hs.execute("open " .. url)
-    end)
+    end
 end
 
 -- unused, kept for ad hoc use from the Hammerspoon console

@@ -1,5 +1,6 @@
 ---@diagnostic disable-next-line: undefined-global
 local hs = hs
+require("lib.spaces")
 
 local menu = hs.menubar.new()
 local function updateMenu()
