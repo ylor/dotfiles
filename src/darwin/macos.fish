@@ -6,7 +6,7 @@ end
 
 # Set hostname
 if scutil --get ComputerName | grep -q "’s"; and gum confirm "Change hostname? (Current: '$hostname')"
-    set gum_hostname (gum input --placeholder ($hostname))
+    set gum_hostname (gum input --placeholder $hostname)
     if test -n "$gum_hostname"
         sudo scutil --set ComputerName "$gum_hostname"
         sudo scutil --set HostName "$gum_hostname"
