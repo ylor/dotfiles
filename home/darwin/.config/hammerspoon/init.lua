@@ -12,7 +12,18 @@ Mod.win                     = { "control" }
 
 Work                        = string.find(hs.host.localizedName(), "^PAPA")
 
-require("lib.mac")
+require("lib.apps")
+require("lib.spaces")
+require("lib.window")
+require("lib.input")
+require("lib.app.chrome")
+require("lib.app.finder")
+require("lib.app.helium")
+require("lib.menubar.spaces")
+-- require("lib.menubar.windows")
+require("lib.expander")
+require("lib.quitter")
+require("lib.tabber")
 
 App(Mod.main, ".", "1Password")
 App(Mod.main, "\\", "Zed")
@@ -43,6 +54,7 @@ Tui(Mod.hyper, "P", "/opt/homebrew/bin/btop")
 hs.hotkey.bind(Mod.main, "F", WindowFillToggle)
 hs.hotkey.bind(Mod.main, "V", ShowClipboard)
 hs.hotkey.bind(Mod.main, "W", hs.spaces.toggleMissionControl)
+hs.hotkey.bind({ "ctrl" }, "W", WindowCycleWidth)
 hs.hotkey.bind(Mod.hyper, "D", hs.spaces.toggleShowDesktop)
 hs.hotkey.bind(Mod.hyper, "H", AppZen)
 hs.hotkey.bind(Mod.hyper, "L", hs.caffeinate.lockScreen)
@@ -50,6 +62,10 @@ hs.hotkey.bind(Mod.hyper, "up", WindowMaxi)
 hs.hotkey.bind(Mod.hyper, "down", WindowMini)
 hs.hotkey.bind(Mod.hyper, "left", MoveWindowLeftScreen)
 hs.hotkey.bind(Mod.hyper, "right", MoveWindowRightScreen)
+
+ChromeModal:bind({ "cmd", "shift" }, "c", CopyChromeTabURL)
+FinderModal:bind({ "cmd" }, "l", FinderJumpToFolder)
+HeliumModal:bind(Mod.main, "k", HeliumSelectAll)
 
 for i = 1, 5 do
     hs.hotkey.bind({ "ctrl", "shift" }, tostring(i), function()

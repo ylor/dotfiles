@@ -1,11 +1,9 @@
 ---@diagnostic disable-next-line: undefined-global
 local hs = hs
 
-local modal = hs.hotkey.modal.new()
-modal:bind({ "cmd" }, "l", function()
+function FinderJumpToFolder()
     hs.eventtap.keyStroke({ "cmd", "shift" }, "g", 0)
-end)
-
+end
 
 local scrollReverse = hs.eventtap.new({ hs.eventtap.event.types.otherMouseDown }, function(event)
     local button = event:getProperty(hs.eventtap.event.properties.mouseEventButtonNumber)
@@ -20,14 +18,6 @@ local scrollReverse = hs.eventtap.new({ hs.eventtap.event.types.otherMouseDown }
     return false
 end)
 
-_G.finderWatcher = hs.application.watcher.new(function(app, eventType)
-    if app ~= "Finder" then return end
-
-    if eventType == hs.application.watcher.activated then
-        modal:enter()
-        scrollReverse:start()
-    elseif eventType == hs.application.watcher.deactivated then
-        modal:exit()
-        scrollReverse:stop()
-    end
-end):start()
+_G.FinderModal = AppModal("Finder",
+    function() scrollReverse:start() end,
+    function() scrollReverse:stop() end)

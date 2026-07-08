@@ -12,7 +12,7 @@ local function centerMouse(win)
     end
 end
 
-local function cycleWindowWidth(win)
+function WindowCycleWidth(win)
     win          = win or hs.window.focusedWindow()
 
     local screen = win:screen():frame()
@@ -132,16 +132,42 @@ function MoveWindowRightScreen(win)
     win:application():selectMenuItem({ "Window", "Move to " .. eastScreen:name() })
 end
 
+function AppZen()
+    local screen = hs.screen.mainScreen()
+    local focused = hs.window.focusedWindow()
+    local visible = hs.fnutils.filter(hs.window.visibleWindows(), function(w) return w:screen() == screen end)
+
+    if #visible > 1 and focused then
+        local focusedApp = focused:application()
+        local hidden = {}
+        for _, win in ipairs(visible) do
+            if win ~= focused then
+                local app = win:application()
+                if app == focusedApp then
+                    win:minimize()
+                elseif not hidden[app] then
+                    app:hide()
+                    hidden[app] = true
+                end
+            end
+        end
+    else
+        for _, app in ipairs(hs.application.runningApplications()) do
+            if app:isHidden() then app:unhide() end
+        end
+        for _, win in ipairs(hs.window.minimizedWindows()) do
+            win:unminimize()
+        end
+        focused:focus()
+    end
+end
+
 -- extensions
 
 hs.getObjectMetatable("hs.window").centerMouse = function(self)
     centerMouse(self)
     return self
 end
-
--- hotkeys
-
-hs.hotkey.bind({ "ctrl" }, "W", cycleWindowWidth)
 
 -- events
 local actions = {
