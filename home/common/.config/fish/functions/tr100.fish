@@ -1,9 +1,8 @@
 #!/usr/bin/env fish
 # SPDX-License-Identified: BSD-3-Clause
 #
-# TR-102 Machine Report
+# TR-100 Machine Report
 # Copyright © 2024, U.S. Graphics, LLC. BSD-3-Clause License.
-# Copyright © 2025, Dmitry Achkasov <achkasov.dmitry@live.com>.
 
 # ─── Config ──────────────────────────────────────────────────────────────────
 
@@ -536,7 +535,8 @@ function tr100
     PRINT_CENTERED_DATA "MACHINE REPORT"
     # PRINT_CENTERED_DATA $net_current_user
     # PRINT_CENTERED_DATA $net_hostname
-    PRINT_CENTERED_DATA $(echo "$net_current_user @ $net_hostname" | string upper)
+    # PRINT_CENTERED_DATA $(echo "$net_current_user @ $net_hostname" | string upper)
+    PRINT_CENTERED_DATA "$(string upper $USER) @ $(prompt_hostname)"
     PRINT_DIVIDER top
     # PRINT_DATA USER $net_current_user
     test (uname -s) = Darwin && PRINT_DATA OS $os_name || PRINT_DATA DISTRO $os_name

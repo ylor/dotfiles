@@ -33,7 +33,7 @@ if [ "$(uname)" = "Darwin" ]; then
 		NONINTERACTIVE=1 bash -c "$(curl -fsSL https://raw.githubusercontent.com/Homebrew/install/HEAD/install.sh)"
 	fi
 	eval "$(/opt/homebrew/bin/brew shellenv)"
-	brew install fd fish git gum
+	brew install --yes fd fish git gum
 fi
 
 if [ "$(uname)" = "Linux" ] && exist pacman; then
