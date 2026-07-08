@@ -30,11 +30,6 @@ if not launchctl print system/com.apple.screensharing >/dev/null 2>&1; and gum c
     sudo launchctl load -w /System/Library/LaunchDaemons/com.apple.screensharing.plist
 end
 
-# Enable SSH
-if sudo systemsetup -getremotelogin | grep -q "Off"; and gum confirm "Enable SSH?"
-    sudo systemsetup -setremotelogin on
-end
-
 # Configure TouchID for sudo
 # if test ! -e /etc/pam.d/sudo_local && gum confirm "Use TouchID for sudo?"
 #     sed -e 's/^#auth/auth/' /etc/pam.d/sudo_local.template | sudo tee /etc/pam.d/sudo_local >/dev/null
