@@ -4,11 +4,12 @@ local email = Work and "cnJleWVzQHBhcGEuY29t" or "cm9seXJleWVzQ@1lLmNvbQ=="
 
 local triggers = {
     ["@@"]     = hs.base64.decode(email),
+    ["@dd"]    = function() return os.date("%Y-%m-%d") end,
+    ["@ts"]    = function() return os.date("!%Y-%m-%dT%H:%M:%SZ") end,
+    ["aapl"]   = "",
     ["shrugg"] = "¯\\_(ツ)_/¯",
     ["tmm"]    = "™",
     ["xx"]     = "×",
-    ["@date"]  = function() return os.date("%Y-%m-%d") end,
-    ["@ts"]    = function() return os.date("!%Y-%m-%dT%H:%M:%SZ") end,
 }
 
 local buffer = ""

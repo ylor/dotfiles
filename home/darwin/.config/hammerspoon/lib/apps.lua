@@ -31,9 +31,11 @@ function AppExists(app)
     return hs.application.infoForBundlePath(app) ~= nil
 end
 
-function AppRunning(appName)
-    local app = hs.application.find(appName)
-    return app ~= nil and app:isRunning()
+function AppRunning(name)
+    local app = hs.application.find(name)
+    if not app then return false end
+    if app:name() ~= name and app:bundleID() ~= name then return false end
+    return app:isRunning()
 end
 
 function Tui(cmd)
