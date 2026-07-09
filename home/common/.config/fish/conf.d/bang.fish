@@ -10,4 +10,4 @@ function _last_argument
 end
 
 # Register !$ as an expanding abbreviation
-abbr --add !\$ --position anywhere --function __last_argument
+abbr --add !\$ --position anywhere --function _last_argument

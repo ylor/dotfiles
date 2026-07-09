@@ -1,6 +1,11 @@
 function sudo
     set -q argv[1]; or return 1
 
+    if not status --is-interactive
+        /usr/bin/sudo $argv
+        return
+    end
+
     if /usr/bin/sudo --non-interactive true 2>/dev/null
         /usr/bin/sudo $argv
         return

@@ -1,4 +1,4 @@
-if command -q git
+if command -q git; and status --is-interactive
     function git
         set cmd $argv[1]
         set args $argv[2..]
@@ -19,9 +19,11 @@ if command -q git
                     set repo "git@github.com:ylor/$args[1].git" $args[2..]
                     set https "https://github.com/ylor/$args[1]" $args[2..]
                 end
-                command git clone $repo
-                or test -z "$https"; or command git clone $https
-                and cd (path change-extension '' (path basename -- $repo[1]))
+                if command git clone $repo
+                    cd (path change-extension '' (path basename -- $repo[1]))
+                else if test -n "$https"; and command git clone $https
+                    cd (path change-extension '' (path basename -- $repo[1]))
+                end
 
             case convert
                 set -l url (command git remote get-url origin 2>/dev/null)

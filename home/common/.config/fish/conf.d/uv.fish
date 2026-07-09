@@ -1,5 +1,8 @@
 # function load_uv_completions --on-event fish_prompt
 if command -q uv
-    test -f $HOME/.config/fish/completions/uv.fish; or uv generate-shell-completion fish >$HOME/.config/fish/completions/uv.fish
-    test -f $HOME/.config/fish/completions/uvx.fish; or uvx --generate-shell-completion fish >$HOME/.config/fish/completions/uvx.fish
+    for pair in "uv generate-shell-completion" "uvx --generate-shell-completion"
+        set -l cmd (string split ' ' -- $pair)
+        set -l completion_file $__fish_config_dir/completions/$cmd[1].fish
+        test -f $completion_file; or $cmd fish >$completion_file
+    end
 end

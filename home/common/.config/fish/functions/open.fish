@@ -9,6 +9,4 @@ function open
         case '*'
             return 1
     end
-
-    abbr o open
 end

@@ -7,7 +7,7 @@ for path in /opt/homebrew /home/linuxbrew/.linuxbrew
     test -x $path/bin/brew; and $path/bin/brew shellenv | source; and break
 end
 
-if command -q brew
+if command -q brew; and status --is-interactive
     function brew
         set -l cmd $argv[1]
         set -l args $argv[2..]
