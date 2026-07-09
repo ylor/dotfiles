@@ -27,8 +27,9 @@ hs.hotkey.bind(Mod.main, ".", App("1Password"))
 hs.hotkey.bind(Mod.main, "\\", App("Zed"))
 hs.hotkey.bind(Mod.main, "E", App("Finder"))
 hs.hotkey.bind(Mod.main, "G", App("Moonlight"))
--- hs.hotkey.bind(Mod.main, "I", App("Safari"))
-hs.hotkey.bind(Mod.main, "I", App("Dia"))
+hs.hotkey.bind(Mod.main, "I", function()
+    AppCycler(AppRunning("Safari") and "Safari" or "Dia")
+end)
 -- hs.hotkey.bind(Mod.main, "O", App("Helium"))
 hs.hotkey.bind(Mod.main, "P", App("1Password"))
 hs.hotkey.bind(Mod.main, "Return", App("Ghostty"))
@@ -39,10 +40,6 @@ if AppExists("/Applications/Claude.app") then
     hs.hotkey.bind(Mod.main, "A", App("Claude"))
 else
     hs.hotkey.bind(Mod.main, "A", Web("https://claude.ai"))
-end
-
-if AppRunning("Safari")() then
-    hs.hotkey.bind(Mod.main, "I", App("Safari"))
 end
 
 hs.hotkey.bind(Mod.main, "R", App("Screen Sharing"))

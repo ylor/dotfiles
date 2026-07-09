@@ -32,10 +32,8 @@ function AppExists(app)
 end
 
 function AppRunning(appName)
-    return function()
-        local app = hs.application.find(appName)
-        return app ~= nil and app:isRunning()
-    end
+    local app = hs.application.find(appName)
+    return app ~= nil and app:isRunning()
 end
 
 function Tui(cmd)
