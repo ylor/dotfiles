@@ -1,4 +1,4 @@
-inherits = "autumn"
+inherits = "autumn_night"
 "ui.background" = {}
 "ui.gutter" = {}
 "ui.linenr" = {fg="#404040"}

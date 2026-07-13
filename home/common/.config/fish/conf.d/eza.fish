@@ -1,6 +1,6 @@
 if command -q eza # https://github.com/eza-community/eza - modern ls
     # Shared base flags for consistency
-    set -l _eza_flags --header --hyperlink --icons
+    set -l _eza_flags --header --hyperlink --icons auto
 
     alias ls="eza $_eza_flags"
     alias ll="eza --long $_eza_flags"

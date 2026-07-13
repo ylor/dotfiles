@@ -1,6 +1,6 @@
 local hs = hs ---@diagnostic disable-line: undefined-global
 
-local email = Work and "cnJleWVzQHBhcGEuY29t" or "cm9seXJleWVzQ@1lLmNvbQ=="
+local email = Work and "cnJleWVzQHBhcGEuY29t" or "cm9seXJleWVzQG1lLmNvbQo=ˆ"
 
 local triggers = {
     ["@@"]     = hs.base64.decode(email),

@@ -1,29 +1,28 @@
 function dfs-link
-    set --query DOTFILES || dfs
-    argparse c/count v/verbose m/minimal q/quiet -- $argv; or return 1
+    set -q DOTFILES; or dfs
+    argparse c/count v/verbose m/minimal q/quiet -- $argv; or return
 
-    set kernel (uname | string lower)
-    set dirs (path filter --type dir $DOTFILES/home/{common,$kernel})
+    set kernel (string lower (uname))
+    set dirs (path filter -d $DOTFILES/home/{common,$kernel})
     set files (fd . $dirs --hidden --absolute-path --type file)
-    set links (string replace --regex "^$DOTFILES/home/(common|$kernel)" "$HOME" $files)
+    set links (string replace -r "^$DOTFILES/home/(common|$kernel)" "$HOME" $files)
+    set manifest $DOTFILES/home/manifest
+    set old (cat $manifest 2>/dev/null)
 
-    mkdir -p (path dirname $links | sort --unique)
+    mkdir -p (path dirname $links | sort -u)
+
     for i in (seq (count $files))
         ln -sf $files[$i] $links[$i]
         dfs-success $links[$i]
     end
 
-    set manifest $DOTFILES/home/manifest
-    for link in (cat $manifest 2>/dev/null)
+    for link in $old
         contains -- $link $links; and continue
-        if test -L $link; and string match --quiet -- "$DOTFILES/*" (readlink $link)
-            echo $link
-            # rm $link
-        end
+        test -L $link; or continue
+        string match -q "$DOTFILES/*" (readlink $link); or continue
+        rm $link
     end
-    # mkdir -p (path dirname $manifest)
-    string join \n $links >$manifest
 
-    #set -q _flag_count; and dfs-success "$(count $links) files linked"
+    printf '%s\n' $old $links | sort -u >$manifest
     dfs-success "$(count $links) files linked"
 end
