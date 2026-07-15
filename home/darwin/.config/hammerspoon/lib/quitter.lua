@@ -18,7 +18,7 @@ local timers = {}
 
 hs.window.filter.default:subscribe(hs.window.filter.windowDestroyed, function(_, appName)
     local app = hs.application.get(appName)
-    if app:kind() == 0 or exempt[appName] then return end
+    if not app or app:kind() == 0 or exempt[appName] then return end
     if pinned[app:bundleID()] then return end
 
     if timers[appName] then

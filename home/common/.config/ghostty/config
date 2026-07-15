@@ -8,18 +8,21 @@ focus-follows-mouse = true
 window-save-state = always
 
 # form
-background = #000000
-background-blur-radius = 20
-background-opacity = 0.85
-font-family = "Berkeley Mono Retina"
-# font-family = "Berkeley Mono"
 theme = amber
-#theme = usgc-amber
-#theme = usgc-green
+#background = #000000
+background-opacity = 0.85
+#background-blur = macos-glass-regular
+background-blur = true
+background-opacity = 0.85
+palette-generate=true
+#font-family = "SF Mono"
+font-family = "Berkeley Mono Retina"
+font-size = 16
+macos-titlebar-style = tabs
 window-padding-balance = true
 window-padding-x = 8
 window-subtitle = working-directory
-unfocused-split-opacity = 0.5
+unfocused-split-opacity = 0.75
 
 # keybinds
 keybind = ctrl+-=new_split:down

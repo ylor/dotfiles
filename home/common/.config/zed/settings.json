@@ -15,7 +15,7 @@
   "theme": {
     "mode": "dark",
     "light": "One Light",
-    "dark": "Ars Goetia - Gusion (Amber P3)",
+    "dark": "Amber",
   },
   "cli_default_open_behavior": "new_window",
   "outline_panel": {
@@ -79,6 +79,7 @@
     "dock": "left",
     "hide_root": true,
     "auto_fold_dirs": false,
+    // "sticky_scroll": false,
   },
   "ssh_connections": [
     {

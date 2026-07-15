@@ -2,6 +2,7 @@ theme = "transparent"
 
 [editor]
 default-yank-register = "+"
+middle-click-paste = false
 line-number = "relative"
 text-width = 100
 
@@ -23,3 +24,4 @@ wrap-at-text-width = true
 
 [keys.normal]
 "space" = { "space" = "goto_last_accessed_file" }
+"%" = "select_all"
