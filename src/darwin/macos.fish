@@ -25,10 +25,10 @@ if /usr/libexec/ApplicationFirewall/socketfilterfw --getglobalstate | grep -q di
 end
 
 # Enable Screen Sharing
-if not launchctl print system/com.apple.screensharing >/dev/null 2>&1; and gum confirm "Enable Screen Sharing?"
-    sudo launchctl enable system/com.apple.screensharing
-    sudo launchctl load -w /System/Library/LaunchDaemons/com.apple.screensharing.plist
-end
+# if not launchctl print system/com.apple.screensharing >/dev/null 2>&1; and gum confirm "Enable Screen Sharing?"
+#     sudo launchctl enable system/com.apple.screensharing
+#     sudo launchctl load -w /System/Library/LaunchDaemons/com.apple.screensharing.plist
+# end
 
 # Configure TouchID for sudo
 # if test ! -e /etc/pam.d/sudo_local && gum confirm "Use TouchID for sudo?"
