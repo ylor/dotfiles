@@ -14,16 +14,33 @@ local triggers = {
 
 local buffer = ""
 local maxLen = 0
-for k in pairs(triggers) do maxLen = math.max(maxLen, #k) end
+
+-- bucket triggers by their last character so a keystroke only needs to
+-- check the handful of triggers it could possibly complete, not all of them
+local byLastChar = {}
+for trigger, replacement in pairs(triggers) do
+    maxLen = math.max(maxLen, #trigger)
+    local lastChar = trigger:sub(-1)
+    local bucket = byLastChar[lastChar]
+    if not bucket then
+        bucket = {}
+        byLastChar[lastChar] = bucket
+    end
+    bucket[#bucket + 1] = { trigger = trigger, replacement = replacement }
+end
 
 _G.textExpander = hs.eventtap.new({
     hs.eventtap.event.types.keyDown,
     hs.eventtap.event.types.leftMouseDown,
     hs.eventtap.event.types.rightMouseDown,
 }, function(event)
+    if event:getType() ~= hs.eventtap.event.types.keyDown then
+        buffer = ""
+        return false
+    end
+
     local flags = event:getFlags()
-    if event:getType() ~= hs.eventtap.event.types.keyDown
-        or event:getKeyCode() == hs.keycodes.map.escape
+    if event:getKeyCode() == hs.keycodes.map.escape
         or event:getKeyCode() == hs.keycodes.map.left
         or event:getKeyCode() == hs.keycodes.map.right
         or event:getKeyCode() == hs.keycodes.map.up
@@ -34,11 +51,15 @@ _G.textExpander = hs.eventtap.new({
     end
 
     local chars = event:getCharacters()
-    if not chars then return false end
+    if not chars or chars == "" then return false end
 
     buffer = (buffer .. chars):sub(-(maxLen + 1))
 
-    for trigger, replacement in pairs(triggers) do
+    local bucket = byLastChar[chars:sub(-1)]
+    if not bucket then return false end
+
+    for _, entry in ipairs(bucket) do
+        local trigger, replacement = entry.trigger, entry.replacement
         if buffer:sub(- #trigger) == trigger
             and not buffer:sub(-(#trigger + 1), -(#trigger + 1)):match("%w") then
             buffer = ""
