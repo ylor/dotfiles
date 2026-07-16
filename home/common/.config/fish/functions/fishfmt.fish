@@ -1,3 +1,4 @@
 function fishfmt
-    fd --hidden --type f .fish --exec-batch fish_indent --write $argv
+    set -q argv[1]; or set argv $PWD
+    fd --extension fish --type file --hidden --no-ignore . $argv --exec fish_indent --write
 end

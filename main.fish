@@ -8,7 +8,8 @@ set --prepend fish_function_path "$DOTFILES/src"
 
 source $DOTFILES/.env
 clear && command cat $DOTFILES/art.txt
-if test -z $DOTFILES_PROFILE
+
+if test -z "$DOTFILES_PROFILE"
     if gum confirm "interactive?" --timeout=10s --affirmative=yes --negative=no --default=false
         set -Ux DOTFILES_PROFILE full
     else

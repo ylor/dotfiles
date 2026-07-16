@@ -1,0 +1,47 @@
+"ui.background" = {bg = "black", fg = "white"}
+"ui.popup" = { bg = "fl_yellow", fg = "black" }
+"ui.menu" = { bg = "fl_yellow", fg = "black" }
+"ui.text.focus" = { fg = "fl_blue"}
+"ui.window" = { bg = "fl_yellow", fg = "black" }
+"ui.help" = { bg = "fl_yellow", fg = "black" }
+"ui.popup.info" = {  bg= "black", fg = "white" }
+"ui.text" = "fl_magenta"
+"ui.cursor" = { fg = "black", bg = "white" }
+"ui.selection" = { bg = "gray", fg = "fl_blue" }
+"ui.selection.primary" = { bg = "blue", fg = "fl_yellow" }  
+"selection_foreground" = "fl_yellow"
+"selection_corner_style" = "cut"
+"selection_corner_radius" = "2"
+"inactive_selection" = "gray"
+"inactive_selection_foreground" = "fl_blue"
+"inactive_sheet_dimming" = "0"
+"gutter" = "black"
+"ui.linenr" = "fl_blue"
+"line_highlight" = "fl_yellow"
+"ui.linenr.selected" = "black"
+"ui.gutter.selected" = {bg = "fl_yellow"}
+
+"ui.statusline" = {bg = "fl_yellow", fg = "black"}
+"ui.cursorline" = { fg = "fl_yellow", bg = "#1C1C1C" }
+
+"markup.bold" = { modifiers = ["bold"] }
+"markup.italic" = { modifiers = ["italic"] }
+
+[palette]
+"black" = "#000000"
+"white" = "#FFFFFF"
+"fl_red" = "#FF0000"
+"fl_green" = "#00FF00"
+"fl_blue" = "#0000FF"
+"fl_cyan" = "#00FFFF"
+"fl_magenta" = "#FF00FF"
+"fl_yellow" = "#FFFF00"
+"fl_orange" = "#FF6600"
+"maroon" = "#660000"
+"green" = "#00A645"
+"blue" = "#000066"
+"cyan" = "#006666"
+"magenta" = "#660066"
+"yellow" = "#FFBF00"
+"olive" = "#666600"
+"gray" = "#999999"
