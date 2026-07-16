@@ -1,0 +1,23 @@
+# mfd-flir-bh - mfd.nvim (https://github.com/kungfusheep/mfd.nvim)
+palette = 0=#505050
+palette = 1=#cc5545
+palette = 2=#505050
+palette = 3=#505050
+palette = 4=#505050
+palette = 5=#505050
+palette = 6=#505050
+palette = 7=#a8a8a8
+palette = 8=#909090
+palette = 9=#dd6655
+palette = 10=#505050
+palette = 11=#505050
+palette = 12=#505050
+palette = 13=#505050
+palette = 14=#505050
+palette = 15=#b8b8b8
+background = #b8b8b8
+foreground = #505050
+cursor-color = #383838
+cursor-text = #b8b8b8
+selection-background = #acacac
+selection-foreground = #505050

@@ -1,0 +1,23 @@
+# mfd-stealth - mfd.nvim (https://github.com/kungfusheep/mfd.nvim)
+palette = 0=#0d1410
+palette = 1=#cc5545
+palette = 2=#7a9a7a
+palette = 3=#7a9a7a
+palette = 4=#7a9a7a
+palette = 5=#7a9a7a
+palette = 6=#7a9a7a
+palette = 7=#7a9a7a
+palette = 8=#253828
+palette = 9=#dd6655
+palette = 10=#9abb9a
+palette = 11=#7a9a7a
+palette = 12=#7a9a7a
+palette = 13=#7a9a7a
+palette = 14=#7a9a7a
+palette = 15=#9abb9a
+background = #0d1410
+foreground = #7a9a7a
+cursor-color = #9abb9a
+cursor-text = #0d1410
+selection-background = #1a2a1a
+selection-foreground = #7a9a7a

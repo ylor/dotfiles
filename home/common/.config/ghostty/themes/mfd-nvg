@@ -1,0 +1,23 @@
+# mfd-nvg - mfd.nvim (https://github.com/kungfusheep/mfd.nvim)
+palette = 0=#162014
+palette = 1=#cc5545
+palette = 2=#78b858
+palette = 3=#78b858
+palette = 4=#78b858
+palette = 5=#78b858
+palette = 6=#78b858
+palette = 7=#78b858
+palette = 8=#4a7a3a
+palette = 9=#dd6655
+palette = 10=#90d868
+palette = 11=#78b858
+palette = 12=#78b858
+palette = 13=#78b858
+palette = 14=#78b858
+palette = 15=#90d868
+background = #162014
+foreground = #78b858
+cursor-color = #90d868
+cursor-text = #162014
+selection-background = #1e3018
+selection-foreground = #78b858

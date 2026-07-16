@@ -1,0 +1,23 @@
+# mfd-scarlet - mfd.nvim (https://github.com/kungfusheep/mfd.nvim)
+palette = 0=#0c0404
+palette = 1=#cc5545
+palette = 2=#cc5545
+palette = 3=#cc5545
+palette = 4=#cc5545
+palette = 5=#cc5545
+palette = 6=#cc5545
+palette = 7=#cc5545
+palette = 8=#3a1812
+palette = 9=#dd6655
+palette = 10=#dd6655
+palette = 11=#cc5545
+palette = 12=#cc5545
+palette = 13=#cc5545
+palette = 14=#cc5545
+palette = 15=#dd6655
+background = #0c0404
+foreground = #cc5545
+cursor-color = #dd6655
+cursor-text = #0c0404
+selection-background = #1a0808
+selection-foreground = #cc5545

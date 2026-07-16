@@ -1,0 +1,23 @@
+# mfd-dark - mfd.nvim (https://github.com/kungfusheep/mfd.nvim)
+palette = 0=#1e2d1e
+palette = 1=#cc5545
+palette = 2=#8a9b70
+palette = 3=#8a9b70
+palette = 4=#8a9b70
+palette = 5=#8a9b70
+palette = 6=#8a9b70
+palette = 7=#8a9b70
+palette = 8=#3a4a3a
+palette = 9=#dd6655
+palette = 10=#8a9b70
+palette = 11=#8a9b70
+palette = 12=#8a9b70
+palette = 13=#8a9b70
+palette = 14=#8a9b70
+palette = 15=#a0b180
+background = #1e2d1e
+foreground = #8a9b70
+cursor-color = #a0b180
+cursor-text = #1e2d1e
+selection-background = #2a3d2a
+selection-foreground = #8a9b70

@@ -1,0 +1,23 @@
+# mfd-mono - mfd.nvim (https://github.com/kungfusheep/mfd.nvim)
+palette = 0=#08080c
+palette = 1=#cc5545
+palette = 2=#d0d0d8
+palette = 3=#d0d0d8
+palette = 4=#d0d0d8
+palette = 5=#d0d0d8
+palette = 6=#d0d0d8
+palette = 7=#d0d0d8
+palette = 8=#282830
+palette = 9=#dd6655
+palette = 10=#f0f0ff
+palette = 11=#d0d0d8
+palette = 12=#d0d0d8
+palette = 13=#d0d0d8
+palette = 14=#d0d0d8
+palette = 15=#f0f0ff
+background = #08080c
+foreground = #d0d0d8
+cursor-color = #f0f0ff
+cursor-text = #08080c
+selection-background = #1a1a22
+selection-foreground = #d0d0d8

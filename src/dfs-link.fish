@@ -16,11 +16,20 @@ function dfs-link
         dfs-success $links[$i]
     end
 
+    set removed
     for link in $old
         contains -- $link $links; and continue
         test -L $link; or continue
         string match -q "$DOTFILES/*" (readlink $link); or continue
         rm $link
+        set -a removed $link
+    end
+
+    if set -q removed[1]
+        for link in $removed
+            echo (set_color red)"✗"(set_color normal)" $link"
+        end
+        echo (set_color red)"✗"(set_color normal)" $(count $removed) files removed"
     end
 
     printf '%s\n' $old $links | sort -u >$manifest

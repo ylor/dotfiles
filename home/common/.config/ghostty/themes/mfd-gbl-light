@@ -1,0 +1,23 @@
+# mfd-gbl-light - mfd.nvim (https://github.com/kungfusheep/mfd.nvim)
+palette = 0=#004f3a
+palette = 1=#cc5545
+palette = 2=#004f3a
+palette = 3=#004f3a
+palette = 4=#004f3a
+palette = 5=#004f3a
+palette = 6=#004f3a
+palette = 7=#01694a
+palette = 8=#009a70
+palette = 9=#dd6655
+palette = 10=#004f3a
+palette = 11=#004f3a
+palette = 12=#004f3a
+palette = 13=#004f3a
+palette = 14=#004f3a
+palette = 15=#02b582
+background = #02b582
+foreground = #004f3a
+cursor-color = #004f3a
+cursor-text = #02b582
+selection-background = #01694a
+selection-foreground = #004f3a

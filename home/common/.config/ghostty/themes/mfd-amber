@@ -1,0 +1,23 @@
+# mfd-amber - mfd.nvim (https://github.com/kungfusheep/mfd.nvim)
+palette = 0=#0f0c08
+palette = 1=#cc5545
+palette = 2=#cc9944
+palette = 3=#cc9944
+palette = 4=#cc9944
+palette = 5=#cc9944
+palette = 6=#cc9944
+palette = 7=#cc9944
+palette = 8=#382818
+palette = 9=#dd6655
+palette = 10=#ffbb55
+palette = 11=#cc9944
+palette = 12=#cc9944
+palette = 13=#cc9944
+palette = 14=#cc9944
+palette = 15=#ffbb55
+background = #0f0c08
+foreground = #cc9944
+cursor-color = #ffbb55
+cursor-text = #0f0c08
+selection-background = #2a1c10
+selection-foreground = #cc9944

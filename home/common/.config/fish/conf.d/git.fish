@@ -12,17 +12,15 @@ if command -q git; and status --is-interactive
                 set -l https
                 if string match --quiet "http*" $args[1]; or string match --quiet "git@*" $args[1]
                     set repo $args
-                else if string match --quiet "*/*" $args[1]
-                    set repo "git@github.com:$args[1].git" $args[2..]
-                    set https "https://github.com/$args[1]" $args[2..]
                 else
-                    set repo "git@github.com:ylor/$args[1].git" $args[2..]
-                    set https "https://github.com/ylor/$args[1]" $args[2..]
+                    set -l spec $args[1]
+                    string match --quiet "*/*" $spec; or set spec "ylor/$spec"
+                    set repo "git@github.com:$spec.git" $args[2..]
+                    set https "https://github.com/$spec" $args[2..]
                 end
-                if command git clone $repo
-                    cd (path change-extension '' (path basename -- $repo[1]))
-                else if test -n "$https"; and command git clone $https
-                    cd (path change-extension '' (path basename -- $repo[1]))
+                set -l dir (string replace -r '\.git$' '' (path basename -- $repo[1]))
+                command git clone $repo; and cd $dir; or begin
+                    test -n "$https"; and command git clone $https; and cd $dir
                 end
 
             case convert

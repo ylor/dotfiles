@@ -1,0 +1,23 @@
+# mfd-blackout - mfd.nvim (https://github.com/kungfusheep/mfd.nvim)
+palette = 0=#000000
+palette = 1=#cc5545
+palette = 2=#24282c
+palette = 3=#24282c
+palette = 4=#24282c
+palette = 5=#24282c
+palette = 6=#24282c
+palette = 7=#24282c
+palette = 8=#181c20
+palette = 9=#dd6655
+palette = 10=#24282c
+palette = 11=#24282c
+palette = 12=#24282c
+palette = 13=#24282c
+palette = 14=#24282c
+palette = 15=#24282c
+background = #000000
+foreground = #24282c
+cursor-color = #24282c
+cursor-text = #000000
+selection-background = #0c0e10
+selection-foreground = #24282c

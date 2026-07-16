@@ -1,0 +1,23 @@
+# mfd-nerv - mfd.nvim (https://github.com/kungfusheep/mfd.nvim)
+palette = 0=#1a0a02
+palette = 1=#cc5545
+palette = 2=#ee8822
+palette = 3=#ee8822
+palette = 4=#ee8822
+palette = 5=#ee8822
+palette = 6=#ee8822
+palette = 7=#ee8822
+palette = 8=#6b3510
+palette = 9=#dd6655
+palette = 10=#ffaa44
+palette = 11=#ee8822
+palette = 12=#ee8822
+palette = 13=#ee8822
+palette = 14=#ee8822
+palette = 15=#ffaa44
+background = #1a0a02
+foreground = #ee8822
+cursor-color = #ffaa44
+cursor-text = #1a0a02
+selection-background = #2a1208
+selection-foreground = #ee8822

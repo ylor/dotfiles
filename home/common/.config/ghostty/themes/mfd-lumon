@@ -1,0 +1,23 @@
+# mfd-lumon - mfd.nvim (https://github.com/kungfusheep/mfd.nvim)
+palette = 0=#5ac8d8
+palette = 1=#cc5545
+palette = 2=#66dd88
+palette = 3=#e0bb55
+palette = 4=#66ccee
+palette = 5=#dd8899
+palette = 6=#5ac8d8
+palette = 7=#143040
+palette = 8=#1a3848
+palette = 9=#dd6655
+palette = 10=#88ffaa
+palette = 11=#f0dd77
+palette = 12=#88eeff
+palette = 13=#ffaacc
+palette = 14=#5ac8d8
+palette = 15=#0a1520
+background = #0a1520
+foreground = #5ac8d8
+cursor-color = #a0f0ff
+cursor-text = #0a1520
+selection-background = #122838
+selection-foreground = #5ac8d8
