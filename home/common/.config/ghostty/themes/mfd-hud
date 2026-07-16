@@ -19,5 +19,5 @@ background = #060c06
 foreground = #55bb55
 cursor-color = #77dd77
 cursor-text = #060c06
-selection-background = #0a1a0a
-selection-foreground = #55bb55
+selection-background = #55bb55
+selection-foreground = #060c06

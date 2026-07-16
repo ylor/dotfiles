@@ -19,5 +19,5 @@ background = #1e2d1e
 foreground = #8a9b70
 cursor-color = #a0b180
 cursor-text = #1e2d1e
-selection-background = #2a3d2a
-selection-foreground = #8a9b70
+selection-background = #8a9b70
+selection-foreground = #1e2d1e
