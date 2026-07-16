@@ -1,6 +1,6 @@
 # mfd - mfd.nvim (https://github.com/kungfusheep/mfd.nvim)
 palette = 0=#1e2d1e
-palette = 1=#cc5545
+palette = 1=#aa4040
 palette = 2=#1e2d1e
 palette = 3=#1e2d1e
 palette = 4=#1e2d1e
@@ -8,13 +8,13 @@ palette = 5=#1e2d1e
 palette = 6=#1e2d1e
 palette = 7=#687858
 palette = 8=#5a6b49
-palette = 9=#dd6655
-palette = 10=#1e2d1e
-palette = 11=#1e2d1e
-palette = 12=#1e2d1e
-palette = 13=#1e2d1e
-palette = 14=#1e2d1e
-palette = 15=#7a8b69
+palette = 9=#cc5545
+palette = 10=#0d1d0d
+palette = 11=#0d1d0d
+palette = 12=#0d1d0d
+palette = 13=#0d1d0d
+palette = 14=#0d1d0d
+palette = 15=#848f72
 background = #7a8b69
 foreground = #1e2d1e
 cursor-color = #0d1d0d

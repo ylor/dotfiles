@@ -1,6 +1,6 @@
 # mfd-paper - mfd.nvim (https://github.com/kungfusheep/mfd.nvim)
 palette = 0=#002611
-palette = 1=#cc5545
+palette = 1=#aa4040
 palette = 2=#002611
 palette = 3=#002611
 palette = 4=#002611
@@ -8,13 +8,13 @@ palette = 5=#002611
 palette = 6=#002611
 palette = 7=#a5b2a2
 palette = 8=#8a9a88
-palette = 9=#dd6655
-palette = 10=#002611
-palette = 11=#002611
-palette = 12=#002611
-palette = 13=#002611
-palette = 14=#002611
-palette = 15=#bbc5b7
+palette = 9=#cc5545
+palette = 10=#001008
+palette = 11=#001008
+palette = 12=#001008
+palette = 13=#001008
+palette = 14=#001008
+palette = 15=#c5cfc2
 background = #bbc5b7
 foreground = #002611
 cursor-color = #001008

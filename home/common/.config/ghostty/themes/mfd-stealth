@@ -8,12 +8,12 @@ palette = 5=#7a9a7a
 palette = 6=#7a9a7a
 palette = 7=#7a9a7a
 palette = 8=#253828
-palette = 9=#dd6655
+palette = 9=#ff6644
 palette = 10=#9abb9a
-palette = 11=#7a9a7a
-palette = 12=#7a9a7a
-palette = 13=#7a9a7a
-palette = 14=#7a9a7a
+palette = 11=#9abb9a
+palette = 12=#9abb9a
+palette = 13=#9abb9a
+palette = 14=#9abb9a
 palette = 15=#9abb9a
 background = #0d1410
 foreground = #7a9a7a
