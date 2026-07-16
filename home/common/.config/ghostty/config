@@ -10,7 +10,6 @@ window-save-state = always
 # form
 theme = amber
 #background = #000000
-background-opacity = 0.85
 #background-blur = macos-glass-regular
 background-blur = true
 background-opacity = 0.85

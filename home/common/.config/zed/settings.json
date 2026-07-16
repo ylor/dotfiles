@@ -104,7 +104,7 @@
     "show_sign_in": false,
   },
   "experimental.theme_overrides": {
-    // "background": "#000000d7",
+    // "background": "#000000e6",
     "background.appearance": "blurred",
     // "border": "#ffffff22",
     // "border.variant": "#ffffff11",
