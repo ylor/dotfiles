@@ -21,12 +21,23 @@ local byLastChar = {}
 for trigger, replacement in pairs(triggers) do
     maxLen = math.max(maxLen, #trigger)
     local lastChar = trigger:sub(-1)
-    local bucket = byLastChar[lastChar]
-    if not bucket then
-        bucket = {}
-        byLastChar[lastChar] = bucket
-    end
-    bucket[#bucket + 1] = { trigger = trigger, replacement = replacement }
+    byLastChar[lastChar] = byLastChar[lastChar] or {}
+    byLastChar[lastChar][trigger] = replacement
+end
+
+-- keys that always abort a pending trigger, checked with one getKeyCode()
+-- call and one table lookup instead of a chain of equality comparisons
+local RESET_KEYCODES = {
+    [hs.keycodes.map.escape] = true,
+    [hs.keycodes.map.left]   = true,
+    [hs.keycodes.map.right]  = true,
+    [hs.keycodes.map.up]     = true,
+    [hs.keycodes.map.down]   = true,
+}
+
+local function resetBuffer()
+    buffer = ""
+    return false
 end
 
 _G.textExpander = hs.eventtap.new({
@@ -35,19 +46,16 @@ _G.textExpander = hs.eventtap.new({
     hs.eventtap.event.types.rightMouseDown,
 }, function(event)
     if event:getType() ~= hs.eventtap.event.types.keyDown then
-        buffer = ""
-        return false
+        return resetBuffer()
+    end
+
+    if RESET_KEYCODES[event:getKeyCode()] then
+        return resetBuffer()
     end
 
     local flags = event:getFlags()
-    if event:getKeyCode() == hs.keycodes.map.escape
-        or event:getKeyCode() == hs.keycodes.map.left
-        or event:getKeyCode() == hs.keycodes.map.right
-        or event:getKeyCode() == hs.keycodes.map.up
-        or event:getKeyCode() == hs.keycodes.map.down
-        or flags.cmd or flags.ctrl or flags.alt then
-        buffer = ""
-        return false
+    if flags.cmd or flags.ctrl or flags.alt then
+        return resetBuffer()
     end
 
     local chars = event:getCharacters()
@@ -58,8 +66,7 @@ _G.textExpander = hs.eventtap.new({
     local bucket = byLastChar[chars:sub(-1)]
     if not bucket then return false end
 
-    for _, entry in ipairs(bucket) do
-        local trigger, replacement = entry.trigger, entry.replacement
+    for trigger, replacement in pairs(bucket) do
         if buffer:sub(- #trigger) == trigger
             and not buffer:sub(-(#trigger + 1), -(#trigger + 1)):match("%w") then
             buffer = ""
