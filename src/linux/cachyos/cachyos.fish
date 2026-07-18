@@ -25,10 +25,10 @@ if command -vq hyprland niri
     paru -S --needed --skipreview noctalia-shell ddcutil ddcci-driver-linux-dkms cliphist matugen cava wlsunset
 end
 
-if pidof -q hyprland && command -vq qs
-    qs -c noctalia-shell ipc call darkMode setLight
-    qs -c noctalia-shell ipc call darkMode setDark
-end
+# if pidof -q hyprland && command -vq qs
+#     qs -c noctalia-shell ipc call darkMode setLight
+#     qs -c noctalia-shell ipc call darkMode setDark
+# end
 
 if command -vq lact
     paru -S --needed --skipreview lact

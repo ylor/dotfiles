@@ -1,0 +1,210 @@
+[bar.default]
+border_width = 1.0
+center = [ "workspaces" ]
+concave_edge_corners = false
+end = [
+    "tray",
+    "cat",
+    "clipboard",
+    "network",
+    "bluetooth",
+    "brightness",
+    "volume",
+    "battery",
+    "launcher",
+    "notifications",
+    "clock"
+]
+margin_edge = 10
+margin_ends = 12
+panel_overlap = 0
+scale = 0.90000000596046448
+start = [ "control-center" ]
+thickness = 26
+
+[brightness]
+enable_ddcutil = true
+
+[control_center]
+sidebar = "full"
+sidebar_section = "full"
+
+[desktop_widgets]
+enabled = false
+
+[dock]
+auto_hide = true
+enabled = true
+reserve_space = false
+show_dots = true
+
+[idle]
+behavior_order = [ "lock", "screen-off", "lock-and-suspend" ]
+
+    [idle.behavior.lock]
+    action = "lock"
+    enabled = true
+    timeout = 600.0
+
+    [idle.behavior.lock-and-suspend]
+    action = "lock_and_suspend"
+    enabled = true
+    timeout = 900.0
+
+    [idle.behavior.screen-off]
+    action = "screen_off"
+    enabled = true
+    timeout = 660.0
+
+[location]
+address = "Miami, FL"
+
+[lockscreen]
+blurred_desktop = true
+
+[lockscreen_widgets]
+enabled = true
+schema_version = 2
+widget_order = [ "lockscreen-login-box@DP-1" ]
+
+    [lockscreen_widgets.grid]
+    cell_size = 16
+    major_interval = 4
+    visible = true
+
+    [lockscreen_widgets.widget."lockscreen-login-box@DP-1"]
+    box_height = 70.0
+    box_width = 400.0
+    cx = 1920.0
+    cy = 1296.0
+    output = "DP-1"
+    rotation = 0.0
+    type = "login_box"
+
+        [lockscreen_widgets.widget."lockscreen-login-box@DP-1".settings]
+        background_color = "surface_variant"
+        background_opacity = 0.88
+        background_radius = 12.0
+        input_opacity = 1.0
+        input_radius = 6.0
+        show_caps_lock = true
+        show_keyboard_layout = true
+        show_login_button = true
+        show_password_hint = true
+
+[nightlight]
+enabled = true
+temperature_day = 6600
+
+[plugins]
+enabled = [ "noctalia/bongocat" ]
+
+[shell]
+font_family = "Adwaita Mono"
+polkit_agent = true
+telemetry_enabled = true
+ui_scale = 0.90000000596046448
+
+    [shell.animation]
+    speed = 2.0000000298023224
+
+    [shell.launcher]
+    categories = false
+    compact = true
+    session_search = true
+    sort_by_usage = false
+
+    [shell.panel]
+    control_center_placement = "floating"
+    open_near_click_control_center = true
+    transparency_mode = "glass"
+
+    [[shell.session.actions]]
+    action = "lock"
+    countdown_seconds = 5.0
+    enabled = true
+    shortcut = "l"
+    variant = "default"
+
+    [[shell.session.actions]]
+    action = "logout"
+    command = "hyprshutdown -t \"Logging out…\""
+    countdown_seconds = 5.0
+    enabled = true
+    shortcut = "i"
+    variant = "default"
+
+    [[shell.session.actions]]
+    action = "lock_and_suspend"
+    countdown_seconds = 5.0
+    enabled = true
+    label = "Suspend"
+    shortcut = "s"
+    variant = "default"
+
+    [[shell.session.actions]]
+    action = "reboot"
+    command = "hyprshutdown -t \"Restarting…\" --post-cmd \"reboot\""
+    countdown_seconds = 5.0
+    enabled = true
+    shortcut = "r"
+    variant = "default"
+
+    [[shell.session.actions]]
+    action = "shutdown"
+    command = "hyprshutdown -t \"Shutting down...\" --post-cmd \"shutdown -P 0\""
+    countdown_seconds = 10.0
+    enabled = true
+    shortcut = "u"
+    variant = "destructive"
+
+[theme]
+custom_palette = "Amber"
+pure_black_dark = true
+source = "custom"
+
+    [theme.templates]
+    builtin_ids = [ "gtk3", "gtk4", "hyprland", "qt" ]
+    community_ids = [ "hyprtoolkit" ]
+
+[widget.bluetooth]
+enabled = false
+
+[widget.brightness]
+show_label = false
+
+[widget.cat]
+audio_spectrum = true
+tappy_mode = true
+type = "noctalia/bongocat:cat"
+
+[widget.clipboard]
+enabled = false
+
+[widget.clock]
+format = "{:%-l:%M %p}"
+tooltip_format = "{:%a %b %e}  "
+
+[widget.control-center]
+glyph = "hyprland"
+
+[widget.launcher]
+enabled = true
+
+[widget.media]
+hide_when_no_media = true
+title_scroll = "on_hover"
+
+[widget.network]
+enabled = false
+show_label = false
+
+[widget.tray]
+drawer = true
+
+[widget.volume]
+show_label = false
+
+[widget.workspaces]
+display = "none"
+focused_color = "secondary"
