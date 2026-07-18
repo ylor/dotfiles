@@ -12,7 +12,7 @@
     "light": "Zed (Default)",
     "dark": "Zed (Default)",
   },
-  "theme": "Ars Goetia - Gusion (Amber P3)",
+  "theme": "Amber",
   "cli_default_open_behavior": "new_window",
   "outline_panel": {
     "dock": "left",

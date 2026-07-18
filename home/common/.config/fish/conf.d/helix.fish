@@ -1,5 +1,5 @@
-if command -q hx # https://helix-editor.com
-    and hx --version | string match -qr evil # https://github.com/usagi-flow/evil-helix
-    alias vi=hx
-    alias vim=hx
-end
+# if command -q hx # https://helix-editor.com
+#     and hx --version | string match -qr evil # https://github.com/usagi-flow/evil-helix
+#     alias vi=hx
+#     alias vim=hx
+# end

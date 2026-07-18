@@ -112,10 +112,10 @@ do
 	--  Experiment for yourself to see if you like it!
 	vim.o.relativenumber = true
 
-	-- Enable mouse mode, can be useful for resizing splits for example!
-	vim.o.mouse = "a"
+  -- Enable mouse mode, can be useful for resizing splits for example!
+  vim.o.mouse = "a"
 
-	-- Don't show the mode, since it's already in the status line
+  -- Don't show the mode, since it's already in the status line
 	vim.o.showmode = false
 
 	-- Sync clipboard between OS and Neovim.
@@ -331,14 +331,6 @@ do
 	})
 end
 
----Because most plugins are hosted on GitHub, you can use the helper
----function to have less repetition in the following sections.
----@param repo string
----@return string
-local function gh(repo)
-	return "https://github.com/" .. repo
-end
-
 -- ============================================================
 -- SECTION 4: UI / CORE UX PLUGINS
 -- guess-indent, gitsigns, which-key, colorscheme, todo-comments, mini modules
@@ -357,14 +349,14 @@ do
 	--
 	-- We first install it from https://github.com/NMAC427/guess-indent.nvim
 	-- and then call its `setup()` function to start it with default settings.
-	vim.pack.add({ gh("NMAC427/guess-indent.nvim") })
+	vim.pack.add({ "https://github.com/NMAC427/guess-indent.nvim" })
 	require("guess-indent").setup({})
 
 	-- Here is a more advanced configuration example that passes options to `gitsigns.nvim`
 	--
 	-- See `:help gitsigns` to understand what each configuration key does.
 	-- Adds git related signs to the gutter, as well as utilities for managing changes
-	vim.pack.add({ gh("lewis6991/gitsigns.nvim") })
+	vim.pack.add({ "https://github.com/lewis6991/gitsigns.nvim" })
 	require("gitsigns").setup({
 		signs = {
 			add = { text = "+" }, ---@diagnostic disable-line: missing-fields
@@ -376,7 +368,7 @@ do
 	})
 
 	-- Useful plugin to show you pending keybinds.
-	vim.pack.add({ gh("folke/which-key.nvim") })
+	vim.pack.add({ "https://github.com/folke/which-key.nvim" })
 	require("which-key").setup({
 		-- Delay between pressing a key and opening which-key (milliseconds)
 		delay = 0,
@@ -408,7 +400,7 @@ do
 	-- Like many other themes, this one has different styles, and you could load
 	-- any other, such as 'tokyonight-storm', 'tokyonight-moon', or 'tokyonight-day'.
 	--vim.cmd.colorscheme 'tokyonight-night'
-	-- vim.pack.add({ gh("wnkz/monoglow.nvim") })
+	-- vim.pack.add({ "https://github.com/wnkz/monoglow.nvim" })
 	-- require("monoglow").setup({
 	-- 	on_colors = function(colors)
 	-- 		colors.glow = "#FFB000"
@@ -419,9 +411,9 @@ do
 	--
 	-- vim.cmd.colorscheme("monoglow")
 
-vim.pack.add({gh("kungfusheep/mfd.nvim")})
+vim.pack.add({"https://github.com/kungfusheep/mfd.nvim"})
 require('mfd').setup({
-  --accessibility_contrast = 0, -- 0 (default) to 10 (max WCAG compliance)
+  accessibility_contrast = 3, -- 0 (default) to 10 (max WCAG compliance)
   --no_italic = true,           -- disable italic highlighting (default: false)
   --bright_comments = true,     -- legacy: equivalent to accessibility_contrast = 4
 })
@@ -436,12 +428,12 @@ vim.api.nvim_create_autocmd('ColorScheme', {
     vim.api.nvim_set_hl(0, 'EndOfBuffer', { bg = 'none' })
   end,
 })  -- Highlight todo, notes, etc in comments
-	vim.pack.add({ gh("folke/todo-comments.nvim") })
+	vim.pack.add({ "https://github.com/folke/todo-comments.nvim" })
 	require("todo-comments").setup({ signs = false })
 
 	-- [[ mini.nvim ]]
 	--  A collection of various small independent plugins/modules
-	vim.pack.add({ gh("nvim-mini/mini.nvim") })
+	vim.pack.add({ "https://github.com/nvim-mini/mini.nvim" })
 
 	-- If a nerd font is available, load the icons module for pretty icons in various plugins.
 	if vim.g.have_nerd_font then
@@ -522,12 +514,12 @@ do
 
 	---@type (string|vim.pack.Spec)[]
 	local telescope_plugins = {
-		gh("nvim-lua/plenary.nvim"),
-		gh("nvim-telescope/telescope.nvim"),
-		gh("nvim-telescope/telescope-ui-select.nvim"),
+		"https://github.com/nvim-lua/plenary.nvim",
+		"https://github.com/nvim-telescope/telescope.nvim",
+		"https://github.com/nvim-telescope/telescope-ui-select.nvim",
 	}
 	if vim.fn.executable("make") == 1 then
-		table.insert(telescope_plugins, gh("nvim-telescope/telescope-fzf-native.nvim"))
+		table.insert(telescope_plugins, "https://github.com/nvim-telescope/telescope-fzf-native.nvim")
 	end
 
 	-- NOTE: You can install multiple plugins at once
@@ -667,7 +659,7 @@ do
 	-- and elegantly composed help section, `:help lsp-vs-treesitter`
 
 	-- Useful status updates for LSP.
-	vim.pack.add({ gh("j-hui/fidget.nvim") })
+	vim.pack.add({ "https://github.com/j-hui/fidget.nvim" })
 	require("fidget").setup({})
 
 	--  This function gets run when an LSP attaches to a particular buffer.
@@ -799,10 +791,10 @@ do
 	}
 
 	vim.pack.add({
-		gh("neovim/nvim-lspconfig"),
-		gh("mason-org/mason.nvim"),
-		gh("mason-org/mason-lspconfig.nvim"),
-		gh("WhoIsSethDaniel/mason-tool-installer.nvim"),
+		"https://github.com/neovim/nvim-lspconfig",
+		"https://github.com/mason-org/mason.nvim",
+		"https://github.com/mason-org/mason-lspconfig.nvim",
+		"https://github.com/WhoIsSethDaniel/mason-tool-installer.nvim",
 	})
 
 	-- Automatically install LSPs and related tools to stdpath for Neovim
@@ -834,7 +826,7 @@ end
 -- ============================================================
 do
 	-- [[ Formatting ]]
-	vim.pack.add({ gh("stevearc/conform.nvim") })
+	vim.pack.add({ "https://github.com/stevearc/conform.nvim" })
 	require("conform").setup({
 		notify_on_error = false,
 		format_on_save = function(bufnr)
@@ -877,7 +869,7 @@ do
 
 	-- NOTE: You can also specify plugin using a version range for its git tag.
 	--  See `:help vim.version.range()` for more info
-	vim.pack.add({ { src = gh("L3MON4D3/LuaSnip"), version = vim.version.range("2.*") } })
+	vim.pack.add({ { src = "https://github.com/L3MON4D3/LuaSnip", version = vim.version.range("2.*") } })
 	require("luasnip").setup({})
 
 	-- `friendly-snippets` contains a variety of premade snippets.
@@ -888,7 +880,7 @@ do
 	-- require('luasnip.loaders.from_vscode').lazy_load()
 
 	-- [[ Autocomplete Engine ]]
-	vim.pack.add({ { src = gh("saghen/blink.cmp"), version = vim.version.range("1.*") } })
+	vim.pack.add({ { src = "https://github.com/saghen/blink.cmp", version = vim.version.range("1.*") } })
 	require("blink.cmp").setup({
 		keymap = {
 			-- 'default' (recommended) for mappings similar to built-in completions
@@ -961,7 +953,7 @@ do
 	--  See `:help nvim-treesitter-intro`
 
 	-- NOTE: You can also specify a branch or a specific commit
-	vim.pack.add({ { src = gh("nvim-treesitter/nvim-treesitter"), version = "main" } })
+	vim.pack.add({ { src = "https://github.com/nvim-treesitter/nvim-treesitter", version = "main" } })
 
 	-- Ensure basic parsers are installed
 	local parsers =
