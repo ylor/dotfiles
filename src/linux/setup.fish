@@ -59,36 +59,21 @@ end
 # end
 
 # DESKTOP
-# if cat /sys/devices/virtual/dmi/id/board_name | grep -iq "B650 AORUS ELITE AX"
-#     echo '[Unit]
-#     Description=Disable XH00 as ACPI wakeup source to workaround Gigabyte isntant wake issue
-#     After=multi-user.target
-
-#     [Service]
-#     Type=oneshot
-#     ExecStart=sh -c "echo XH00 > /proc/acpi/wakeup"
-
-#     [Install]
-#     WantedBy=multi-user.target' | sudo tee /etc/systemd/system/gigabyte-suspend-workaround.service >/dev/null
-
-#     sudo systemctl daemon-reload
-#     sudo systemctl enable gigabyte-suspend-workaround.service
-#     sudo systemctl start gigabyte-suspend-workaround.service
-# end
 if grep -iq "B650 AORUS ELITE AX" /sys/devices/virtual/dmi/id/board_name
     echo '[Unit]
-Description=Disable USB devices as wakeup sources
-After=multi-user.target
+    Description=Disable XH00 as ACPI wakeup source to workaround Gigabyte wake issues.
+    After=multi-user.target
 
-[Service]
-Type=oneshot
-ExecStart=/bin/sh -c "echo disabled | tee /sys/bus/usb/devices/*/power/wakeup"
+    [Service]
+    Type=oneshot
+    ExecStart=sh -c "echo XH00 > /proc/acpi/wakeup"
 
-[Install]
-WantedBy=multi-user.target' | sudo tee /etc/systemd/system/disable-usb-wakeup.service
+    [Install]
+    WantedBy=multi-user.target' | sudo tee /etc/systemd/system/gigabyte-suspend-workaround.service >/dev/null
 
     sudo systemctl daemon-reload
-    sudo systemctl enable --now disable-usb-wakeup.service
+    sudo systemctl enable gigabyte-suspend-workaround.service
+    sudo systemctl start gigabyte-suspend-workaround.service
 end
 
 if command -vq efibootmgr
