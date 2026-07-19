@@ -50,16 +50,15 @@ end
 # end
 
 # GNOME
-if command -vq gsettings
-    gsettings set org.gnome.desktop.interface font-name 'Iosevka Aile 11'
-    gsettings set org.gnome.desktop.interface document-font-name 'Adwaita Sans 12'
-    gsettings set org.gnome.desktop.interface monospace-font-name 'JetBrainsMono Nerd Font 11'
-    gsettings set org.gnome.desktop.interface icon-theme breeze-dark
-    gsettings set org.gnome.desktop.wm.preferences button-layout :
-end
+# if command -vq gsettings
+#     gsettings set org.gnome.desktop.interface font-name 'Iosevka Aile 11'
+#     gsettings set org.gnome.desktop.interface document-font-name 'Adwaita Sans 12'
+#     gsettings set org.gnome.desktop.interface monospace-font-name 'JetBrainsMono Nerd Font 11'
+#     gsettings set org.gnome.desktop.interface icon-theme breeze-dark
+#     gsettings set org.gnome.desktop.wm.preferences button-layout :
+# end
 
 # DESKTOP
-# FIX GIGABYTE SLEEP
 # if cat /sys/devices/virtual/dmi/id/board_name | grep -iq "B650 AORUS ELITE AX"
 #     echo '[Unit]
 #     Description=Disable XH00 as ACPI wakeup source to workaround Gigabyte isntant wake issue
@@ -76,10 +75,25 @@ end
 #     sudo systemctl enable gigabyte-suspend-workaround.service
 #     sudo systemctl start gigabyte-suspend-workaround.service
 # end
+if grep -iq "B650 AORUS ELITE AX" /sys/devices/virtual/dmi/id/board_name
+    echo '[Unit]
+Description=Disable USB devices as wakeup sources
+After=multi-user.target
 
-# if command -vq efibootmgr
-#     echo "$(whoami) ALL=(root) NOPASSWD: /usr/bin/efibootmgr -n *" | sudo tee "/etc/sudoers.d/efibootmgr"
-# end
+[Service]
+Type=oneshot
+ExecStart=/bin/sh -c "echo disabled | tee /sys/bus/usb/devices/*/power/wakeup"
+
+[Install]
+WantedBy=multi-user.target' | sudo tee /etc/systemd/system/disable-usb-wakeup.service
+
+    sudo systemctl daemon-reload
+    sudo systemctl enable --now disable-usb-wakeup.service
+end
+
+if command -vq efibootmgr
+    echo "$(whoami) ALL=(root) NOPASSWD: /usr/bin/efibootmgr -n *" | sudo tee "/etc/sudoers.d/efibootmgr"
+end
 
 # if command -vq 1password
 #     sudo mkdir -p /etc/1password

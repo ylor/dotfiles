@@ -61,9 +61,9 @@ end)
 -- for security reasons
 
 hl.config({
-  ecosystem = {
-    enforce_permissions = true,
-  },
+    ecosystem = {
+        enforce_permissions = true,
+    },
 })
 
 hl.permission("/usr/bin/noctalia", "screencopy", "allow")
@@ -140,14 +140,14 @@ hl.config({
 -- hl.workspace_rule({ workspace = "w[tv1]", gaps_out = 2, gaps_in = 0 })
 -- hl.workspace_rule({ workspace = "f[1]",   gaps_out = 2, gaps_in = 0 })
 hl.window_rule({
-    name  = "no-gaps-wtv1",
-    match = { float = false, workspace = "w[tv1]" },
+    name        = "no-gaps-wtv1",
+    match       = { float = false, workspace = "w[tv1]" },
     border_size = 0,
     -- rounding    = 0,
 })
 hl.window_rule({
-    name  = "no-gaps-f1",
-    match = { float = false, workspace = "f[1]" },
+    name        = "no-gaps-f1",
+    match       = { float = false, workspace = "f[1]" },
     border_size = 0,
     -- rounding    = 0,
 })
@@ -238,8 +238,8 @@ local function app(class, command)
         else
             hl.dispatch(
                 window
-                    and hl.dsp.focus({ window = window })
-                    or hl.dsp.exec_raw(command)
+                and hl.dsp.focus({ window = window })
+                or hl.dsp.exec_raw(command)
             )
         end
     end
@@ -253,7 +253,7 @@ hl.bind(
 hl.bind(mod.main .. " + Return", hl.dsp.exec_cmd(terminal))
 hl.bind(mod.hypr .. " + COMMA", hl.dsp.exec_cmd("noctalia msg settings-toggle"))
 hl.bind(mod.hypr .. " + L", hl.dsp.exec_cmd("noctalia msg session lock"))
-hl.bind(mod.main .. " + X", hl.dsp.submap("session_menu"))
+-- hl.bind(mod.main .. " + X", hl.dsp.submap("session_menu"))
 hl.bind(mod.main .. " + Q", hl.dsp.window.close())
 hl.bind(mod.main .. " + E", hl.dsp.exec_cmd(fileManager))
 hl.bind(mod.main .. " + V", hl.dsp.window.float({ action = "toggle" }))
@@ -272,12 +272,29 @@ hl.bind(mod.hypr .. " + up", hl.dsp.exec_cmd("noctalia msg brightness-up"))
 hl.bind(mod.hypr .. " + down", hl.dsp.exec_cmd("noctalia msg brightness-down"))
 
 -- Session menu submap (muscle memory)
+local function exit_session_menu()
+    hl.dispatch(hl.dsp.exec_cmd(
+        "noctalia msg notification-clear-active"
+    ))
+    hl.dispatch(hl.dsp.submap("reset"))
+end
+
 hl.bind(mod.main .. " + X", function()
     hl.dispatch(hl.dsp.exec_cmd([[
         noctalia msg notification-show \
         '{"app_name":"Hyprland","summary":"Session menu active","body":"Press U to open the session panel","urgency":"low","timeout_ms":3000,"icon":"power"}'
     ]]))
+
     hl.dispatch(hl.dsp.submap("session_menu"))
+
+    hl.timer(function()
+        if hl.get_current_submap() == "session_menu" then
+            exit_session_menu()
+        end
+    end, {
+        timeout = 3000,
+        type = "oneshot",
+    })
 end)
 
 hl.define_submap("session_menu", "reset", function()
@@ -285,10 +302,10 @@ hl.define_submap("session_menu", "reset", function()
         hl.dispatch(hl.dsp.exec_cmd(
             "noctalia msg panel-toggle session"
         ))
-        hl.dispatch(hl.dsp.submap("reset"))
+        exit_session_menu()
     end)
 
-    hl.bind("catchall", hl.dsp.submap("reset"))
+    hl.bind("catchall", exit_session_menu)
 end)
 
 
