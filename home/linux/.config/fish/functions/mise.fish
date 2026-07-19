@@ -1,4 +1,5 @@
 if command -q mise
+    mise activate fish | source
     mise settings ruby.compile=true
 end
 # https://github.com/ublue-os/toolboxes/tree/main/toolboxes/bluefin-cli/files

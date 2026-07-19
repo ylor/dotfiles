@@ -411,16 +411,23 @@ do
 	--
 	-- vim.cmd.colorscheme("monoglow")
 
-vim.pack.add({"https://github.com/kungfusheep/mfd.nvim"})
-require('mfd').setup({
-  accessibility_contrast = 3, -- 0 (default) to 10 (max WCAG compliance)
-  --no_italic = true,           -- disable italic highlighting (default: false)
-  --bright_comments = true,     -- legacy: equivalent to accessibility_contrast = 4
+-- vim.pack.add({"https://github.com/kungfusheep/mfd.nvim"})
+-- require('mfd').setup({
+--   accessibility_contrast = 3, -- 0 (default) to 10 (max WCAG compliance)
+--   --no_italic = true,           -- disable italic highlighting (default: false)
+--   --bright_comments = true,     -- legacy: equivalent to accessibility_contrast = 4
+-- })
+-- vim.cmd('colorscheme mfd-amber')
+
+vim.pack.add({ "https://github.com/ember-theme/nvim" })
+require("ember").setup({
+  variant = "ember",
+  transparent = true, -- transparent editor background, follows terminal
 })
-vim.cmd('colorscheme mfd-amber')
+vim.cmd.colorscheme("ember")
 
 vim.api.nvim_create_autocmd('ColorScheme', {
-  pattern = 'mfd-*',
+  pattern = 'ember-*',
   callback = function()
     vim.api.nvim_set_hl(0, 'Normal', { bg = 'none' })
     vim.api.nvim_set_hl(0, 'NormalNC', { bg = 'none' })
