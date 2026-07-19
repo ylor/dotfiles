@@ -80,10 +80,10 @@ if command -vq efibootmgr
     echo "$(whoami) ALL=(root) NOPASSWD: /usr/bin/efibootmgr -n *" | sudo tee "/etc/sudoers.d/efibootmgr"
 end
 
-# if command -vq 1password
-#     sudo mkdir -p /etc/1password
-#     echo helium | sudo tee /etc/1password/custom_allowed_browsers
-# end
+if command -vq 1password
+    sudo mkdir -p /etc/1password
+    echo helium | sudo tee /etc/1password/custom_allowed_browsers
+end
 
 # TODO
 ## TODO: set firefox fonts, userjs, extensions

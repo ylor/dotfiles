@@ -256,11 +256,12 @@ hl.bind(mod.hypr .. " + L", hl.dsp.exec_cmd("noctalia msg session lock"))
 -- hl.bind(mod.main .. " + X", hl.dsp.submap("session_menu"))
 hl.bind(mod.main .. " + Q", hl.dsp.window.close())
 hl.bind(mod.main .. " + E", hl.dsp.exec_cmd(fileManager))
-hl.bind(mod.main .. " + V", hl.dsp.window.float({ action = "toggle" }))
+hl.bind(mod.main .. " + T", hl.dsp.window.float({ action = "toggle" }))
 hl.bind(mod.main .. " + SPACE", hl.dsp.exec_cmd(menu))
 hl.bind(mod.alt .. " + SPACE", hl.dsp.exec_cmd(menu))
 hl.bind(mod.main .. " + P", hl.dsp.window.pseudo())
 hl.bind(mod.main .. " + J", hl.dsp.layout("togglesplit")) -- dwindle only
+hl.bind("SUPER + V", hl.dsp.exec_cmd("noctalia msg panel-open clipboard"))
 
 -- Move focus with mainMod + arrow keys
 hl.bind(mod.main .. " + left", hl.dsp.focus({ direction = "left" }))
@@ -272,42 +273,34 @@ hl.bind(mod.hypr .. " + up", hl.dsp.exec_cmd("noctalia msg brightness-up"))
 hl.bind(mod.hypr .. " + down", hl.dsp.exec_cmd("noctalia msg brightness-down"))
 
 -- Session menu submap (muscle memory)
-local function exit_session_menu()
-    hl.dispatch(hl.dsp.exec_cmd(
-        "noctalia msg notification-clear-active"
-    ))
-    hl.dispatch(hl.dsp.submap("reset"))
-end
-
-hl.bind(mod.main .. " + X", function()
-    hl.dispatch(hl.dsp.exec_cmd([[
-        noctalia msg notification-show \
-        '{"app_name":"Hyprland","summary":"Session menu active","body":"Press U to open the session panel","urgency":"low","timeout_ms":3000,"icon":"power"}'
-    ]]))
-
-    hl.dispatch(hl.dsp.submap("session_menu"))
-
-    hl.timer(function()
-        if hl.get_current_submap() == "session_menu" then
-            exit_session_menu()
-        end
-    end, {
-        timeout = 3000,
-        type = "oneshot",
-    })
-end)
-
-hl.define_submap("session_menu", "reset", function()
-    hl.bind("U", function()
+do
+    local function exit_menu()
         hl.dispatch(hl.dsp.exec_cmd(
-            "noctalia msg panel-toggle session"
+            "noctalia msg notification-clear-active"
         ))
-        exit_session_menu()
+        hl.dispatch(hl.dsp.submap("reset"))
+    end
+
+    hl.define_submap("session_menu", "reset", function()
+        hl.bind("U", function()
+            hl.dispatch(hl.dsp.exec_cmd(
+                "noctalia msg panel-toggle session"
+            ))
+            exit_menu()
+        end)
+
+        hl.bind("catchall", exit_menu)
     end)
 
-    hl.bind("catchall", exit_session_menu)
-end)
+    hl.bind(mod.main .. " + X", function()
+        hl.dispatch(hl.dsp.exec_cmd([[
+            noctalia msg notification-show \
+            '{"app_name":"","summary":"Session mode active","body":"Press U to open the session panel","timeout_ms":0,"icon":"power"}'
+        ]]))
 
+        hl.dispatch(hl.dsp.submap("session_menu"))
+    end)
+end
 
 -- Workspaces
 hl.workspace_rule({ workspace = "1", persistent = true })
