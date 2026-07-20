@@ -25,3 +25,4 @@ trash-cli
 ddcutil
 mise
 usage
+ttc-iosevka-aile

@@ -62,6 +62,7 @@ end)
 
 hl.exec_cmd('gsettings set org.gnome.desktop.interface color-scheme "prefer-dark"')
 hl.exec_cmd('gsettings set org.gnome.desktop.interface gtk-theme "adw-gtk3-dark"')
+hl.exec_cmd('gsettings set org.gnome.desktop.wm.preferences button-layout :')
 
 hl.env("GTK_THEME", "adw-gtk3-dark")
 hl.env("QT_QPA_PLATFORMTHEME", "qt6ct")
@@ -106,7 +107,7 @@ hl.permission("/usr/bin/noctalia", "screencopy", "allow")
 hl.config({
     general = {
         gaps_in          = 4,
-        gaps_out         = 8,
+        gaps_out         = 0,
 
         border_size      = 1,
 
