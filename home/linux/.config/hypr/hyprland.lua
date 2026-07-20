@@ -4,6 +4,8 @@
 require("env")
 require("animations")
 
+local noctalia = "noctalia msg "
+
 ------------------
 ---- MONITORS ----
 ------------------
@@ -20,11 +22,11 @@ hl.monitor({
     output = "desc:LG",
     mode = "preferred",
     position = "auto",
-    scale = "2",
+    scale = "1.67",
     bitdepth = 10,
-    cm = "wide",
-    -- sdr_eotf = "default",
-    sdr_min_luminance = "0"
+    cm = "srgb",
+    -- sdr_eotf = "gamma22",
+    sdr_min_luminance = "0",
 })
 
 ----------------------
@@ -34,7 +36,9 @@ hl.monitor({
 -- Set programs that you use
 local terminal    = "ghostty"
 local fileManager = "dolphin"
-local menu        = "hyprlauncher"
+-- local menu        = "hyprlauncher"
+local browser = "helium-browser"
+local menu        = "noctalia msg panel-toggle launcher"
 
 -------------------
 ---- AUTOSTART ----
@@ -47,10 +51,32 @@ local menu        = "hyprlauncher"
 --
 hl.on("hyprland.start", function()
     hl.exec_cmd("noctalia")
+    hl.exec_cmd("1password --silent")
+    hl.exec_cmd("steam -silent -steamos3")
+    hl.exec_cmd(browser, { workspace = "1 silent" })
+    hl.exec_cmd(terminal, { workspace = "2 silent" })
     --hl.exec_cmd(terminal)
     --hl.exec_cmd("nm-applet")
     --hl.exec_cmd("waybar & hyprpaper & firefox")
 end)
+
+hl.exec_cmd('gsettings set org.gnome.desktop.interface color-scheme "prefer-dark"')
+hl.exec_cmd('gsettings set org.gnome.desktop.interface gtk-theme "adw-gtk3-dark"')
+
+hl.env("GTK_THEME", "adw-gtk3-dark")
+hl.env("QT_QPA_PLATFORMTHEME", "qt6ct")
+
+-- Prefer native Wayland backends
+hl.env("GDK_BACKEND", "wayland,x11,*")
+hl.env("QT_QPA_PLATFORM", "wayland;xcb")
+hl.env("QT_STYLE_OVERRIDE", "kvantum")
+hl.env("SDL_VIDEODRIVER", "wayland")
+hl.env("MOZ_ENABLE_WAYLAND", "1")
+hl.env("ELECTRON_OZONE_PLATFORM_HINT", "wayland")
+hl.env("OZONE_PLATFORM", "wayland")
+hl.env("XDG_SESSION_TYPE", "wayland")
+hl.env("XDG_CURRENT_DESKTOP", "Hyprland")
+hl.env("XDG_SESSION_DESKTOP", "Hyprland")
 
 -----------------------
 ----- PERMISSIONS -----
@@ -79,8 +105,8 @@ hl.permission("/usr/bin/noctalia", "screencopy", "allow")
 -- Refer to https://wiki.hypr.land/Configuring/Basics/Variables/
 hl.config({
     general = {
-        gaps_in          = 5,
-        gaps_out         = 10,
+        gaps_in          = 4,
+        gaps_out         = 8,
 
         border_size      = 1,
 
@@ -103,8 +129,8 @@ hl.config({
         rounding_power   = 4,
 
         -- Change transparency of focused and unfocused windows
-        active_opacity   = 1.0,
-        inactive_opacity = 0.666,
+        -- active_opacity   = 1.0,
+        -- inactive_opacity = 0.8,
 
         shadow           = {
             enabled = true,
@@ -249,7 +275,16 @@ hl.bind(
     mod.main .. " + I",
     app("helium", "helium-browser")
 )
+hl.bind(mod.hypr .. " + S", function()
+    local m = hl.get_active_monitor()
+    if not m then return end
 
+    hl.monitor({
+        output = m.name,
+        mode = "preferred",
+        scale = m.scale == 2 and 1.67 or 2,
+    })
+end)
 hl.bind(mod.main .. " + Return", hl.dsp.exec_cmd(terminal))
 hl.bind(mod.hypr .. " + COMMA", hl.dsp.exec_cmd("noctalia msg settings-toggle"))
 hl.bind(mod.hypr .. " + L", hl.dsp.exec_cmd("noctalia msg session lock"))
@@ -261,7 +296,18 @@ hl.bind(mod.main .. " + SPACE", hl.dsp.exec_cmd(menu))
 hl.bind(mod.alt .. " + SPACE", hl.dsp.exec_cmd(menu))
 hl.bind(mod.main .. " + P", hl.dsp.window.pseudo())
 hl.bind(mod.main .. " + J", hl.dsp.layout("togglesplit")) -- dwindle only
-hl.bind("SUPER + V", hl.dsp.exec_cmd("noctalia msg panel-open clipboard"))
+hl.bind(mod.main .. " + V", hl.dsp.exec_cmd("noctalia msg panel-open clipboard"))
+hl.bind(mod.alt .. " + Tab", hl.dsp.window.cycle_next())
+hl.bind(mod.main .. " + Tab", hl.dsp.focus({ workspace = "previous" }))
+hl.bind(mod.main .. " + M", function ()
+    if hl.get_workspace("special:minimized") then
+        hl.dispatch(hl.dsp.window.move({ workspace = hl.get_active_workspace(), window = "tag:minimized" }))
+        hl.dispatch(hl.dsp.window.clear_tags({ window = "tag:minimized" }))
+    else
+        hl.dispatch(hl.dsp.window.tag({ tag = "minimized", window = hl.get_active_window() }))
+        hl.dispatch(hl.dsp.window.move({ workspace = "special:minimized", follow = false }))
+    end
+end)
 
 -- Move focus with mainMod + arrow keys
 hl.bind(mod.main .. " + left", hl.dsp.focus({ direction = "left" }))
