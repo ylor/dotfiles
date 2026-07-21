@@ -50,6 +50,10 @@
       "rev": "05a80b0340a92136a93ab04346cf97de3f165948",
       "src": "https://github.com/nvim-mini/mini.nvim"
     },
+    "monoglow.nvim": {
+      "rev": "a249b1f55bfe9171e2f8aff7acf140f78ca4b2bb",
+      "src": "https://github.com/wnkz/monoglow.nvim"
+    },
     "nvim": {
       "rev": "7365b8dede43a82ed1df741275b75333422e5402",
       "src": "https://github.com/ember-theme/nvim"
