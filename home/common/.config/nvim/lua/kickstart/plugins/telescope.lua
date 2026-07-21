@@ -27,7 +27,7 @@ local telescope_plugins = {
   'https://github.com/nvim-lua/plenary.nvim',
   'https://github.com/nvim-telescope/telescope.nvim',
   'https://github.com/nvim-telescope/telescope-ui-select.nvim',
-  -- 'https://github.com/nvim-telescope/telescope-file-browser.nvim',
+  'https://github.com/nvim-telescope/telescope-file-browser.nvim',
 }
 if vim.fn.executable 'make' == 1 then table.insert(telescope_plugins, 'https://github.com/nvim-telescope/telescope-fzf-native.nvim') end
 
@@ -68,37 +68,37 @@ require('telescope').setup {
   },
   extensions = {
     ['ui-select'] = { require('telescope.themes').get_dropdown() },
-    -- file_browser = {
-    --   -- `grouped` sorts directories before files (both alphabetically);
-    --   -- without it entries are left in raw scandir order.
-    --   grouped = true,
-    --   -- Telescope's default `sorting_strategy` is "descending", which fills
-    --   -- results upward from the bottom of the window. "ascending" reads
-    --   -- top-down like a normal file listing instead.
-    --   sorting_strategy = 'ascending',
-    --   -- Drop the mode/date/size columns telescope-file-browser shows by
-    --   -- default; just icon + name.
-    --   display_stat = false,
-    --   -- Don't show a `..` entry; use `g` (normal) / `<C-g>` (insert) to go
-    --   -- to the parent directory instead.
-    --   hide_parent_dir = true,
-    --   -- Once you type into the prompt, search recurses into subdirectories
-    --   -- instead of only matching the current directory's entries. This is
-    --   -- still filename-only; it does not search file contents.
-    --   auto_depth = true,
-    --   attach_mappings = function(prompt_bufnr, map)
-    --     -- `<C-p>` swaps out to the regular (fd-backed, gitignore-aware)
-    --     -- find_files picker, recursively rooted at whatever directory is
-    --     -- currently open in the browser.
-    --     map({ 'i', 'n' }, '<C-p>', function()
-    --       local finder = require('telescope.actions.state').get_current_picker(prompt_bufnr).finder
-    --       local cwd = finder.files and finder.path or finder.cwd
-    --       require('telescope.actions').close(prompt_bufnr)
-    --       require('telescope.builtin').find_files { cwd = cwd }
-    --     end)
-    --     return true
-    --   end,
-    -- },
+    file_browser = {
+      -- `grouped` sorts directories before files (both alphabetically);
+      -- without it entries are left in raw scandir order.
+      grouped = true,
+      -- Telescope's default `sorting_strategy` is "descending", which fills
+      -- results upward from the bottom of the window. "ascending" reads
+      -- top-down like a normal file listing instead.
+      sorting_strategy = 'ascending',
+      -- Drop the mode/date/size columns telescope-file-browser shows by
+      -- default; just icon + name.
+      display_stat = false,
+      -- Don't show a `..` entry; use `g` (normal) / `<C-g>` (insert) to go
+      -- to the parent directory instead.
+      hide_parent_dir = true,
+      -- Once you type into the prompt, search recurses into subdirectories
+      -- instead of only matching the current directory's entries. This is
+      -- still filename-only; it does not search file contents.
+      auto_depth = true,
+      attach_mappings = function(prompt_bufnr, map)
+        -- `<C-p>` swaps out to the regular (fd-backed, gitignore-aware)
+        -- find_files picker, recursively rooted at whatever directory is
+        -- currently open in the browser.
+        map({ 'i', 'n' }, '<C-p>', function()
+          local finder = require('telescope.actions.state').get_current_picker(prompt_bufnr).finder
+          local cwd = finder.files and finder.path or finder.cwd
+          require('telescope.actions').close(prompt_bufnr)
+          require('telescope.builtin').find_files { cwd = cwd }
+        end)
+        return true
+      end,
+    },
   },
 }
 
@@ -120,7 +120,7 @@ end
 -- Enable Telescope extensions if they are installed
 pcall(require('telescope').load_extension, 'fzf')
 pcall(require('telescope').load_extension, 'ui-select')
--- pcall(require('telescope').load_extension, 'file_browser')
+pcall(require('telescope').load_extension, 'file_browser')
 
 -- See `:help telescope.builtin`
 local builtin = require 'telescope.builtin'
@@ -198,25 +198,11 @@ vim.keymap.set('n', '<leader>sn', function() builtin.find_files { cwd = vim.fn.s
 
 -- Open the file browser at the current buffer's directory (or cwd for a
 -- buffer with no file, e.g. right after `nvim .`).
--- vim.keymap.set(
---   'n',
---   '<leader>e',
---   function() require('telescope').extensions.file_browser.file_browser { path = '%:p:h', select_buffer = true } end,
---   { desc = 'Open file [E]xplorer' }
--- )
-
--- When Neovim is started with a directory argument (e.g. `nvim .`), show
--- Telescope's find_files picker rooted there instead of Oil's directory buffer.
-vim.api.nvim_create_autocmd('VimEnter', {
-  group = vim.api.nvim_create_augroup('telescope-open-dir', { clear = true }),
-  callback = function(data)
-    local stat = vim.uv.fs_stat(data.file)
-    if not (stat and stat.type == 'directory') then return end
-
-    vim.bo.bufhidden = 'wipe'
-    vim.cmd.cd(data.file)
-    builtin.find_files { cwd = data.file }
-  end,
-})
+vim.keymap.set(
+  'n',
+  '<leader>e',
+  function() require('telescope').extensions.file_browser.file_browser { path = '%:p:h', select_buffer = true } end,
+  { desc = 'Open file [E]xplorer' }
+)
 
 -- vim: ts=2 sts=2 sw=2 et

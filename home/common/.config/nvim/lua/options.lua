@@ -83,6 +83,11 @@ vim.o.scrolloff = 10
 -- See `:help 'confirm'`
 vim.o.confirm = true
 
+-- Reload a buffer automatically when the underlying file changed on disk,
+-- as long as it hasn't been modified in the buffer itself.
+-- See `:help 'autoread'`
+vim.o.autoread = true
+
 -- Remove the "How-to disable mouse" entry (and its separator) that Nvim adds
 -- to the default right-click popup menu. See `:h vim_diff.txt` for this exact
 -- recipe.
