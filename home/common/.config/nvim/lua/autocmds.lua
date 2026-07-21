@@ -3,17 +3,15 @@
 
 local group = vim.api.nvim_create_augroup('kickstart-autosave-autoreload', { clear = true })
 
--- Autosave: silently write the current buffer when it loses focus (switching
--- windows/buffers or leaving insert mode) or when Neovim itself loses focus.
--- Buftype guards against terminal/scratch buffers; `silent!` swallows the rest
--- (unnamed, readonly, non-modifiable) the same way `:write` already would.
-vim.api.nvim_create_autocmd({ 'FocusLost', 'BufLeave', 'InsertLeave' }, {
-  desc = 'Autosave the current buffer on focus/buffer change',
+-- Autosave: write the current buffer on any text change or leaving insert
+-- mode; `autowriteall` covers the focus/buffer-switch cases (`:help 'aw'`).
+vim.opt.autowriteall = true
+
+vim.api.nvim_create_autocmd({ 'InsertLeavePre', 'TextChanged', 'TextChangedP' }, {
+  desc = 'Autosave the current buffer',
   group = group,
-  callback = function(event)
-    local buf = event.buf
-    if vim.bo[buf].buftype ~= '' or not vim.bo[buf].modified then return end
-    vim.api.nvim_buf_call(buf, function() vim.cmd 'silent! write' end)
+  callback = function()
+    if vim.bo.modifiable and not vim.bo.readonly then pcall(function() vim.cmd 'update' end) end
   end,
 })
 
