@@ -41,12 +41,33 @@ require('telescope').setup {
   -- You can put your default mappings / updates / etc. in here
   --  All the info you're looking for is in `:help telescope.setup()`
   --
-  -- defaults = {
-  --   mappings = {
-  --     i = { ['<c-enter>'] = 'to_fuzzy_refine' },
-  --   },
-  -- },
-  -- pickers = {}
+  defaults = {
+    -- Hide the "Find Files" / "Live Grep" / etc border titles on each window.
+    -- `prompt_title`/`preview_title` are deliberately NOT set here: builtin
+    -- pickers hardcode their own `prompt_title`, and `preview_title` never
+    -- consults this table at all, so both are handled below instead via the
+    -- `pickers.new` wrap. `results_title` is the one Telescope actually
+    -- applies from here.
+    results_title = false,
+    -- `find_files`'s `hidden = true` below only skips fd/rg's default dotfile
+    -- skip; it doesn't stop .git/ from being walked, so exclude it here.
+    file_ignore_patterns = { '^%.git/' },
+    -- mappings = {
+    --   i = { ['<c-enter>'] = 'to_fuzzy_refine' },
+    -- },
+  },
+  pickers = {
+    find_files = {
+      -- Show dotfiles too; .gitignore'd paths (e.g. .git/) are still excluded.
+      hidden = true,
+      -- With an empty prompt, entries display in whatever order the finder
+      -- emits them; the sorter only kicks in once you actually type. When rg
+      -- is available (Telescope's own first choice too), `--sort path` makes
+      -- that empty-prompt order alphabetical instead of rg's traversal order.
+      -- Leave unset otherwise so Telescope's own fd/find/where fallback runs.
+      find_command = vim.fn.executable 'rg' == 1 and { 'rg', '--files', '--color', 'never', '--sort', 'path' } or nil,
+    },
+  },
   extensions = {
     ['ui-select'] = { require('telescope.themes').get_dropdown() },
     -- file_browser = {
@@ -82,6 +103,21 @@ require('telescope').setup {
     -- },
   },
 }
+
+-- Most builtin pickers (find_files, live_grep, etc.) hardcode their own
+-- prompt_title, which Telescope always prefers over `defaults.prompt_title`
+-- above (see `:h telescope.defaults.prompt_title`). preview_title is set
+-- dynamically per-previewer and never consults `defaults` at all. Wrap
+-- pickers.new so both are forced off too, while a title passed explicitly at
+-- the call site (like the `<leader>s/` mapping below) still wins.
+local pickers = require 'telescope.pickers'
+if type(pickers.new) == 'function' then
+  local pickers_new = pickers.new
+  pickers.new = function(opts, defaults)
+    defaults = vim.tbl_extend('force', defaults or {}, { prompt_title = false, preview_title = false })
+    return pickers_new(opts, defaults)
+  end
+end
 
 -- Enable Telescope extensions if they are installed
 pcall(require('telescope').load_extension, 'fzf')
@@ -170,5 +206,20 @@ vim.keymap.set('n', '<leader>sn', function() builtin.find_files { cwd = vim.fn.s
 --   function() require('telescope').extensions.file_browser.file_browser { path = '%:p:h', select_buffer = true } end,
 --   { desc = 'Open file [E]xplorer' }
 -- )
+
+-- When Neovim is started with a directory argument (e.g. `nvim .`), show
+-- Telescope's find_files picker rooted there instead of netrw's browser.
+vim.g.loaded_netrwPlugin = 1
+vim.api.nvim_create_autocmd('VimEnter', {
+  group = vim.api.nvim_create_augroup('telescope-open-dir', { clear = true }),
+  callback = function(data)
+    local stat = vim.uv.fs_stat(data.file)
+    if not (stat and stat.type == 'directory') then return end
+
+    vim.bo.bufhidden = 'wipe'
+    vim.cmd.cd(data.file)
+    builtin.find_files { cwd = data.file }
+  end,
+})
 
 -- vim: ts=2 sts=2 sw=2 et

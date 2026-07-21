@@ -37,6 +37,8 @@ vim.schedule(function() vim.o.clipboard = 'unnamedplus' end)
 vim.o.breakindent = true
 
 -- Enable undo/redo changes even after closing and reopening a file
+-- vim.cmd("packadd nvim.undotree")
+-- vim.keymap.set("n", "<leader>u", require("undotree").open)
 vim.o.undofile = true
 
 -- Case-insensitive searching UNLESS \C or one or more capital letters in the search term
@@ -80,5 +82,13 @@ vim.o.scrolloff = 10
 -- instead raise a dialog asking if you wish to save the current file(s)
 -- See `:help 'confirm'`
 vim.o.confirm = true
+
+-- Remove the "How-to disable mouse" entry (and its separator) that Nvim adds
+-- to the default right-click popup menu. See `:h vim_diff.txt` for this exact
+-- recipe.
+vim.cmd [[
+  aunmenu PopUp.How-to\ disable\ mouse
+  aunmenu PopUp.-2-
+]]
 
 -- vim: ts=2 sts=2 sw=2 et
