@@ -1,12 +1,10 @@
-local function gh(repo) return 'https://github.com/' .. repo end
-
 -- [[ Configure Treesitter ]]
 --  Used to highlight, edit, and navigate code
 --
 --  See `:help nvim-treesitter-intro`
 
 -- NOTE: You can also specify a branch or a specific commit
-vim.pack.add { { src = gh 'nvim-treesitter/nvim-treesitter', version = 'main' } }
+vim.pack.add { { src = 'https://github.com/nvim-treesitter/nvim-treesitter', version = 'main' } }
 
 -- Ensure basic parsers are installed
 local parsers = { 'bash', 'c', 'diff', 'html', 'lua', 'luadoc', 'markdown', 'markdown_inline', 'query', 'vim', 'vimdoc' }
