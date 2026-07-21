@@ -26,3 +26,5 @@ ddcutil
 mise
 usage
 ttc-iosevka-aile
+neovim
+tree-sitter-cli
