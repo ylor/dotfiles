@@ -11,6 +11,9 @@ require 'kickstart.plugins.lspconfig'
 require 'kickstart.plugins.conform'
 require 'kickstart.plugins.blink-cmp'
 require 'kickstart.plugins.treesitter'
+require 'kickstart.plugins.oil'
+require 'kickstart.plugins.indent_line'
+require 'kickstart.plugins.autopairs'
 
 -- The following comments only work if you have downloaded the kickstart repo, not just copy pasted the
 -- init.lua. If you want these files, they are in the repository, so you can just download them and
@@ -22,9 +25,7 @@ require 'kickstart.plugins.treesitter'
 --  Uncomment any of the lines below to enable them (you will need to restart nvim).
 --
 -- require 'kickstart.plugins.debug'
--- require 'kickstart.plugins.indent_line'
 -- require 'kickstart.plugins.lint'
--- require 'kickstart.plugins.autopairs'
 -- require 'kickstart.plugins.neo-tree'
 -- require 'kickstart.plugins.gitsigns' -- adds gitsigns recommended keymaps
 

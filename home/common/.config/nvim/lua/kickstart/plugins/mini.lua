@@ -2,12 +2,12 @@
 --  A collection of various small independent plugins/modules
 vim.pack.add { 'https://github.com/nvim-mini/mini.nvim' }
 
--- If a nerd font is available, load the icons module for pretty icons in various plugins.
-if vim.g.have_nerd_font then
-  require('mini.icons').setup()
-  -- Used for backwards compatibility with plugins that require `nvim-web-devicons` (e.g. telescope.nvim)
-  MiniIcons.mock_nvim_web_devicons()
-end
+-- Load the icons module for file-type icons in various plugins (Oil,
+-- Telescope, ...). Falls back to plain ASCII icons without a Nerd Font
+-- instead of glyphs that would render as tofu boxes.
+require('mini.icons').setup { style = vim.g.have_nerd_font and 'glyph' or 'ascii' }
+-- Used for backwards compatibility with plugins that require `nvim-web-devicons` (e.g. telescope.nvim, oil.nvim)
+MiniIcons.mock_nvim_web_devicons()
 
 -- Better Around/Inside textobjects
 --
@@ -30,6 +30,48 @@ require('mini.ai').setup {
 -- - sd'   - [S]urround [D]elete [']quotes
 -- - sr)'  - [S]urround [R]eplace [)] [']
 require('mini.surround').setup()
+
+-- File explorer: mini.files was considered here but oil.nvim
+-- (kickstart.plugins.oil) is used instead.
+
+-- Inline hex color highlighting: paints `#rgb`/`#rgba`/`#rrggbb`/`#rrggbbaa`
+-- literals with the color they name, using the color itself as background.
+-- Not `gen_highlighter.hex_color()` (mini.hipatterns' own built-in): that
+-- only matches full 6-digit hex, because `nvim_set_hl` itself rejects
+-- 3-digit CSS shorthand like `#fff` -- this expands shorthand to 6 digits
+-- (and drops the alpha channel of 4/8-digit forms) before handing off.
+-- Not `vim.lsp.document_color` either: that needs an LSP server that
+-- implements `textDocument/documentColor` (e.g. cssls), and none is
+-- configured here.
+local hipatterns = require 'mini.hipatterns'
+local hex_valid_len = { [3] = true, [4] = true, [6] = true, [8] = true }
+local hex_short_len = { [3] = true, [4] = true }
+-- Filetypes where a leading `#` is far more likely to be a reference (a
+-- git-style short SHA, a markdown/issue anchor) than a color literal.
+local hex_excluded_filetypes = {
+  markdown = true,
+  gitcommit = true,
+  gitrebase = true,
+  help = true,
+}
+hipatterns.setup {
+  highlighters = {
+    hex_color = {
+      pattern = function(buf_id)
+        if hex_excluded_filetypes[vim.bo[buf_id].filetype] then return nil end
+        return '#%x+'
+      end,
+      group = function(_, _, data)
+        local hex = data.full_match:sub(2):lower()
+        if not hex_valid_len[#hex] then return nil end
+        if hex_short_len[#hex] then hex = hex:sub(1, 3):gsub('.', '%0%0') end
+        -- Oklab-based contrast pick + colorscheme-reset cache handled by
+        -- mini.hipatterns itself.
+        return hipatterns.compute_hex_color_group('#' .. hex:sub(1, 6), 'bg')
+      end,
+    },
+  },
+}
 
 -- Simple and easy statusline.
 --  You could remove this setup call if you don't like it,
@@ -88,6 +130,36 @@ starter.setup {
     starter.gen_hook.aligning('center', 'center'),
   },
 }
+
+-- mini.starter only autoopens when Neovim is given no arguments at all (see
+-- its `autoopen` check), so `nvim some_dir` falls through instead of
+-- showing it. Since Oil no longer claims directory buffers either (see
+-- kickstart.plugins.oil), that would otherwise sit there as an empty,
+-- unmanaged buffer. Redirect to the start screen in that case, then
+-- straight on into Telescope's file finder (`<Esc>` from it lands back on
+-- the starter buffer underneath).
+--
+-- Only the window that's current at VimEnter gets this treatment; any other
+-- window that was also given a directory arg (e.g. `nvim -o dir1 dir2`)
+-- keeps its raw directory buffer until it's focused, at which point the
+-- BufEnter autocmd in kickstart.plugins.oil picks it up. Running the
+-- starter+Telescope flow more than once at startup doesn't make sense.
+vim.api.nvim_create_autocmd('VimEnter', {
+  once = true,
+  callback = function()
+    local buf = vim.api.nvim_get_current_buf()
+    local name = vim.api.nvim_buf_get_name(buf)
+    if name ~= '' and vim.fn.isdirectory(name) == 1 then
+      -- Window-local cd (not global) so Telescope (and the starter items
+      -- below: Files, Recent, Grep) search the directory that was passed
+      -- on the command line, without changing cwd for any other window/tab.
+      vim.cmd.lcd(name)
+      starter.open()
+      vim.api.nvim_buf_delete(buf, { force = true })
+      vim.schedule(function() vim.cmd.Telescope 'find_files' end)
+    end
+  end,
+})
 
 -- ... and there is more!
 --  Check out: https://github.com/nvim-mini/mini.nvim

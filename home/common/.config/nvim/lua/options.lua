@@ -27,6 +27,14 @@ vim.o.mouse = 'a'
 -- Don't show the mode, since it's already in the status line
 vim.o.showmode = false
 
+-- Hide the command line when not in use, to reclaim the line beneath the
+-- status line. Trade-off: messages triggered from non-keypress contexts
+-- (autocmds, background jobs) have no reserved row to render in and can pop
+-- a blocking "Press ENTER" prompt instead of a transient one-line message;
+-- 'showcmdloc' can't route around it either, since mini.statusline's custom
+-- content has no %S item for it to land in.
+vim.o.cmdheight = 0
+
 -- Sync clipboard between OS and Neovim.
 --  Schedule the setting after `UiEnter` because it can increase startup-time.
 --  Remove this option if you want your OS clipboard to remain independent.
