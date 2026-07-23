@@ -1,17 +1,17 @@
-if status --is-interactive
+if status is-interactive
     fish_add_path --prepend --move "$HOME/.local/bin"
-    fish_vi_key_bindings # i'm trying to grow a neckbeard
+    fish_vi_key_bindings
 
     set fish_color_command green
     set fish_color_param green
     set fish_cursor_default block
     set fish_cursor_insert line
     set fish_cursor_replace_one underscore
-    set fish_cursor_visual block
+    # set fish_cursor_visual block
+
     set fish_greeting
-
     set -p fish_function_path "$DOTFILES/src"
-
+    set -l os (uname)
     set -x KERNEL (uname | string lower)
     set -x EDITOR vim
     set -x VISUAL vim
@@ -23,6 +23,22 @@ if status --is-interactive
     # abbreviations
     abbr d docker
     abbr g git
+
+    abbr -a --position anywhere s sudo
+    if test "$os" = Darwin
+        abbr b --position anywhere brew
+    else if test "$os" = Linux
+        abbr pc --position anywhere pacman
+    end
+
+    if test "$os" = Darwin
+        if test -d (brew --prefix)"/share/fish/completions"
+            set -p fish_complete_path (brew --prefix)/share/fish/completions
+        end
+        if test -d (brew --prefix)"/share/fish/vendor_completions.d"
+            set -p fish_complete_path (brew --prefix)/share/fish/vendor_completions.d
+        end
+    end
 
     # aliases
     alias mac="test (uname) = Darwin"

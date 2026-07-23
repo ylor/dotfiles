@@ -52,10 +52,14 @@ if command -q git; and status --is-interactive
         end
     end
 
-    alias ga="git add -u"
-    alias gaa="git add -A"
-    alias gb="git branch"
-    alias gco="git checkout"
-    alias gc="git clone"
-    alias gp="git pull"
+    abbr g "git"
+    abbr ga git add
+    abbr gb git branch
+    abbr gc git commit
+    abbr gco git checkout
+    abbr gf git fetch
+    abbr gm git merge
+    abbr gpl git pull
+    abbr gpu git push
+    abbr gst git status
 end

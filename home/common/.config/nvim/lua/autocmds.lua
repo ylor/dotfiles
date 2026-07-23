@@ -1,19 +1,8 @@
--- [[ Autosave / Autoreload ]]
+-- [[ Autoreload ]]
 --  See `:help autocommand`
+--  (Autosave is handled by kickstart.plugins.auto-save.)
 
-local group = vim.api.nvim_create_augroup('kickstart-autosave-autoreload', { clear = true })
-
--- Autosave: write the current buffer on any text change or leaving insert
--- mode; `autowriteall` covers the focus/buffer-switch cases (`:help 'aw'`).
-vim.opt.autowriteall = true
-
-vim.api.nvim_create_autocmd({ 'InsertLeavePre', 'TextChanged', 'TextChangedP' }, {
-  desc = 'Autosave the current buffer',
-  group = group,
-  callback = function()
-    if vim.bo.modifiable and not vim.bo.readonly then pcall(function() vim.cmd 'update' end) end
-  end,
-})
+local group = vim.api.nvim_create_augroup('kickstart-autoreload', { clear = true })
 
 -- Autoreload: pick up changes made to a file on disk outside of Neovim.
 -- `checktime` triggers Neovim's own reload logic (which itself refuses to

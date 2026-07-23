@@ -40,7 +40,25 @@ require('oil').setup {
 }
 
 -- Floating window with the file/directory preview split shown immediately.
-local function open_float(path) require('oil').open_float(path, { preview = {} }) end
+local function open_float(path)
+  require('oil').open_float(path, { preview = {} })
+  local oil_win = vim.api.nvim_get_current_win()
+  -- Oil's own preview cleanup runs from a BufEnter autocmd once focus lands
+  -- elsewhere, but when the float auto-closes from losing focus (its
+  -- WinLeave handler), that close is deferred with vim.schedule_wrap, so
+  -- BufEnter fires first, still sees an Oil buffer in this window, and
+  -- skips closing the preview -- orphaning it. Close it explicitly once
+  -- this window is actually gone, however that happens.
+  vim.api.nvim_create_autocmd('WinClosed', {
+    desc = 'Close the Oil preview window along with its Oil window',
+    pattern = tostring(oil_win),
+    once = true,
+    callback = function()
+      local preview_win = require('oil.util').get_preview_win()
+      if preview_win then pcall(vim.api.nvim_win_close, preview_win, true) end
+    end,
+  })
+end
 
 -- Open the parent directory of the current file (Oil's usual convention).
 vim.keymap.set('n', '-', function() open_float(nil) end, { desc = 'Open parent directory' })
