@@ -167,6 +167,19 @@ starter.setup({
 	},
 })
 
+-- mini.starter's built-in navigation is <Up>/<Down>, <C-p>/<C-n>, and
+-- <M-j>/<M-k> -- plain j/k/l are left free for typing a query (letters
+-- filter items by name). None of the items above start with j or k, so
+-- add j/k/l as extra buffer-local navigation + select keys on top.
+vim.api.nvim_create_autocmd("User", {
+	pattern = "MiniStarterOpened",
+	callback = function(args)
+		vim.keymap.set("n", "j", "<Cmd>lua MiniStarter.update_current_item('next')<CR>", { buffer = args.buf })
+		vim.keymap.set("n", "k", "<Cmd>lua MiniStarter.update_current_item('prev')<CR>", { buffer = args.buf })
+		vim.keymap.set("n", "l", "<Cmd>lua MiniStarter.eval_current_item()<CR>", { buffer = args.buf })
+	end,
+})
+
 -- mini.starter only autoopens when Neovim is given no arguments at all (see
 -- its `autoopen` check), so `nvim some_dir` falls through instead of
 -- showing it. Since Oil no longer claims directory buffers either (see

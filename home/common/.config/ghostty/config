@@ -16,6 +16,7 @@ background-opacity = 0.85
 palette-generate=true
 #font-family = "SF Mono"
 font-family = "Berkeley Mono Retina"
+font-family = "Symbols Nerd Font"
 font-size = 16
 macos-titlebar-style = tabs
 window-padding-balance = true

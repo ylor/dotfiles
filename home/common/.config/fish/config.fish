@@ -24,7 +24,7 @@ if status is-interactive
     abbr d docker
     abbr g git
 
-    abbr -a --position anywhere s sudo
+    abbr s sudo
     if test "$os" = Darwin
         abbr b --position anywhere brew
     else if test "$os" = Linux
