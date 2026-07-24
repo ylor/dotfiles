@@ -64,6 +64,10 @@ require('telescope').setup {
       -- Include files reached through symbolic links.
       follow = true,
     },
+    live_grep = {
+      -- rg skips dotfiles by default; .gitignore'd paths (e.g. .git/) are still excluded.
+      additional_args = { '--hidden' },
+    },
   },
   extensions = {
     ['ui-select'] = { require('telescope.themes').get_dropdown() },
