@@ -38,7 +38,7 @@ if command -q git; and status --is-interactive
                 command git rev-parse --is-inside-work-tree >/dev/null 2>&1; or return 67
                 command git add -A
                 command git commit --quiet -m (curl -sf https://whatthecommit.com/index.txt)
-                command git push --quiet
+                command git push
 
             case p
                 command git pull
@@ -52,7 +52,7 @@ if command -q git; and status --is-interactive
         end
     end
 
-    abbr g "git"
+    abbr g git
     abbr ga git add
     abbr gb git branch
     abbr gc git commit

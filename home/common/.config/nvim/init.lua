@@ -96,6 +96,9 @@ require 'autocmds'
 -- [[ Set up vim.pack ]]
 require 'pack'
 
+-- [[ User Commands ]]
+require 'commands'
+
 -- [[ Configure and install plugins ]]
 require 'plugins'
 

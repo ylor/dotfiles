@@ -32,7 +32,13 @@ require("ember").setup({
   transparent        = true, -- transparent editor background
   transparent_floats = false,   -- follows `transparent` by default; set explicitly to override
   on_colors     = nil, -- function(palette) - modify palette before theme builds
-  on_highlights = nil, -- function(highlights, theme) - modify highlight groups
+  on_highlights = function(highlights, theme)
+    -- Match the Telescope prompt box to the same background as every other
+    -- float instead of the theme's default (slightly different) shade.
+    highlights.TelescopePromptNormal.bg = theme.ui.float_bg
+    highlights.TelescopePromptBorder.bg = theme.ui.float_bg
+    highlights.TelescopePromptTitle.bg = theme.ui.float_bg
+  end,
 })
 vim.cmd.colorscheme("ember")
 

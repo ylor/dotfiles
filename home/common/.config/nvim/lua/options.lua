@@ -127,7 +127,7 @@ vim.opt.autoread = true
 -- Remove the "How-to disable mouse" entry (and its separator) that Nvim adds
 -- to the default right-click popup menu. See `:h vim_diff.txt` for this exact
 -- recipe.
-vim.cmd([[
+pcall(vim.cmd, [[
   aunmenu PopUp.How-to\ disable\ mouse
   aunmenu PopUp.-2-
 ]])

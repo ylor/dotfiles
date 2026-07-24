@@ -24,55 +24,57 @@
 
 ---@type (string|vim.pack.Spec)[]
 local telescope_plugins = {
-  'https://github.com/nvim-lua/plenary.nvim',
-  'https://github.com/nvim-telescope/telescope.nvim',
-  'https://github.com/nvim-telescope/telescope-ui-select.nvim',
+	"https://github.com/nvim-lua/plenary.nvim",
+	"https://github.com/nvim-telescope/telescope.nvim",
+	"https://github.com/nvim-telescope/telescope-ui-select.nvim",
 }
-if vim.fn.executable 'make' == 1 then table.insert(telescope_plugins, 'https://github.com/nvim-telescope/telescope-fzf-native.nvim') end
+if vim.fn.executable("make") == 1 then
+	table.insert(telescope_plugins, "https://github.com/nvim-telescope/telescope-fzf-native.nvim")
+end
 
 -- NOTE: You can install multiple plugins at once
 vim.pack.add(telescope_plugins)
 
 -- See `:help telescope` and `:help telescope.setup()`
-require('telescope').setup {
-  -- You can put your default mappings / updates / etc. in here
-  --  All the info you're looking for is in `:help telescope.setup()`
-  --
-  defaults = {
-    -- Hide the "Find Files" / "Live Grep" / etc border titles on each window.
-    -- `prompt_title`/`preview_title` are deliberately NOT set here: builtin
-    -- pickers hardcode their own `prompt_title`, and `preview_title` never
-    -- consults this table at all, so both are handled below instead via the
-    -- `pickers.new` wrap. `results_title` is the one Telescope actually
-    -- applies from here.
-    results_title = false,
-    prompt_prefix = '  ',
-    selection_caret = '❯ ',
-    entry_prefix = '  ',
-    multi_icon = '●',
-    -- `find_files`'s `hidden = true` below only skips fd/rg's default dotfile
-    -- skip; it doesn't stop .git/ from being walked, so exclude it here.
-    file_ignore_patterns = { '^%.git/', '%.DS_Store$' },
-    -- mappings = {
-    --   i = { ['<c-enter>'] = 'to_fuzzy_refine' },
-    -- },
-  },
-  pickers = {
-    find_files = {
-      -- Show dotfiles too; .gitignore'd paths (e.g. .git/) are still excluded.
-      hidden = true,
-      -- Include files reached through symbolic links.
-      follow = true,
-    },
-    live_grep = {
-      -- rg skips dotfiles by default; .gitignore'd paths (e.g. .git/) are still excluded.
-      additional_args = { '--hidden' },
-    },
-  },
-  extensions = {
-    ['ui-select'] = { require('telescope.themes').get_dropdown() },
-  },
-}
+require("telescope").setup({
+	-- You can put your default mappings / updates / etc. in here
+	--  All the info you're looking for is in `:help telescope.setup()`
+	--
+	defaults = {
+		-- Hide the "Find Files" / "Live Grep" / etc border titles on each window.
+		-- `prompt_title`/`preview_title` are deliberately NOT set here: builtin
+		-- pickers hardcode their own `prompt_title`, and `preview_title` never
+		-- consults this table at all, so both are handled below instead via the
+		-- `pickers.new` wrap. `results_title` is the one Telescope actually
+		-- applies from here.
+		results_title = false,
+		prompt_prefix = "   ",
+		selection_caret = "❯ ",
+		entry_prefix = "  ",
+		multi_icon = "● ",
+		-- `find_files`'s `hidden = true` below only skips fd/rg's default dotfile
+		-- skip; it doesn't stop .git/ from being walked, so exclude it here.
+		file_ignore_patterns = { "^%.git/", "%.DS_Store$" },
+		-- mappings = {
+		--   i = { ['<c-enter>'] = 'to_fuzzy_refine' },
+		-- },
+	},
+	pickers = {
+		find_files = {
+			-- Show dotfiles too; .gitignore'd paths (e.g. .git/) are still excluded.
+			hidden = true,
+			-- Include files reached through symbolic links.
+			follow = true,
+		},
+		live_grep = {
+			-- rg skips dotfiles by default; .gitignore'd paths (e.g. .git/) are still excluded.
+			additional_args = { "--hidden" },
+		},
+	},
+	extensions = {
+		["ui-select"] = { require("telescope.themes").get_dropdown() },
+	},
+})
 
 -- Most builtin pickers (find_files, live_grep, etc.) hardcode their own
 -- prompt_title, which Telescope always prefers over `defaults.prompt_title`
@@ -80,107 +82,112 @@ require('telescope').setup {
 -- dynamically per-previewer and never consults `defaults` at all. Wrap
 -- pickers.new so both are forced off too, while a title passed explicitly at
 -- the call site (like the `<leader>s/` mapping below) still wins.
-local pickers = require 'telescope.pickers'
-if type(pickers.new) == 'function' then
-  local pickers_new = pickers.new
-  pickers.new = function(opts, defaults)
-    defaults = vim.tbl_extend('force', defaults or {}, { prompt_title = false, preview_title = false })
-    return pickers_new(opts, defaults)
-  end
+local pickers = require("telescope.pickers")
+if type(pickers.new) == "function" then
+	local pickers_new = pickers.new
+	pickers.new = function(opts, defaults)
+		defaults = vim.tbl_extend("force", defaults or {}, { prompt_title = false, preview_title = false })
+		return pickers_new(opts, defaults)
+	end
 end
 
 -- Enable Telescope extensions if they are installed
-pcall(require('telescope').load_extension, 'fzf')
-pcall(require('telescope').load_extension, 'ui-select')
+pcall(require("telescope").load_extension, "fzf")
+pcall(require("telescope").load_extension, "ui-select")
 
 -- See `:help telescope.builtin`
-local builtin = require 'telescope.builtin'
+local builtin = require("telescope.builtin")
 
 -- Treat a directory passed at startup as the root of a file picker instead of
 -- leaving Neovim on an unmanaged directory buffer (`nvim path/to/project`).
-vim.api.nvim_create_autocmd('VimEnter', {
-  desc = 'Open Telescope when Neovim starts with a directory',
-  once = true,
-  callback = function()
-    local buf = vim.api.nvim_get_current_buf()
-    local directory = vim.api.nvim_buf_get_name(buf)
-    if directory == '' or vim.fn.isdirectory(directory) == 0 then return end
+vim.api.nvim_create_autocmd("VimEnter", {
+	desc = "Open Telescope when Neovim starts with a directory",
+	once = true,
+	callback = function()
+		local buf = vim.api.nvim_get_current_buf()
+		local directory = vim.api.nvim_buf_get_name(buf)
+		if directory == "" or vim.fn.isdirectory(directory) == 0 then
+			return
+		end
 
-    vim.api.nvim_buf_delete(buf, { force = true })
-    vim.schedule(function() builtin.find_files { cwd = directory } end)
-  end,
+		vim.api.nvim_buf_delete(buf, { force = true })
+		vim.schedule(function()
+			builtin.find_files({ cwd = directory })
+		end)
+	end,
 })
 
-vim.keymap.set('n', '<leader>sh', builtin.help_tags, { desc = '[S]earch [H]elp' })
-vim.keymap.set('n', '<leader>sk', builtin.keymaps, { desc = '[S]earch [K]eymaps' })
-vim.keymap.set('n', '<leader>sf', builtin.find_files, { desc = '[S]earch [F]iles' })
-vim.keymap.set('n', '<leader>ss', builtin.builtin, { desc = '[S]earch [S]elect Telescope' })
-vim.keymap.set({ 'n', 'v' }, '<leader>sw', builtin.grep_string, { desc = '[S]earch current [W]ord' })
-vim.keymap.set('n', '<leader>sg', builtin.live_grep, { desc = '[S]earch by [G]rep' })
-vim.keymap.set('n', '<leader>sd', builtin.diagnostics, { desc = '[S]earch [D]iagnostics' })
-vim.keymap.set('n', '<leader>sr', builtin.resume, { desc = '[S]earch [R]esume' })
-vim.keymap.set('n', '<leader>s.', builtin.oldfiles, { desc = '[S]earch Recent Files ("." for repeat)' })
-vim.keymap.set('n', '<leader>sc', builtin.commands, { desc = '[S]earch [C]ommands' })
-vim.keymap.set('n', '<leader><leader>', builtin.buffers, { desc = '[ ] Find existing buffers' })
+vim.keymap.set("n", "<leader>sh", builtin.help_tags, { desc = "[S]earch [H]elp" })
+vim.keymap.set("n", "<leader>sk", builtin.keymaps, { desc = "[S]earch [K]eymaps" })
+vim.keymap.set("n", "<leader>sf", builtin.find_files, { desc = "[S]earch [F]iles" })
+vim.keymap.set("n", "<leader>ss", builtin.builtin, { desc = "[S]earch [S]elect Telescope" })
+vim.keymap.set({ "n", "v" }, "<leader>sw", builtin.grep_string, { desc = "[S]earch current [W]ord" })
+vim.keymap.set("n", "<leader>sg", builtin.live_grep, { desc = "[S]earch by [G]rep" })
+vim.keymap.set("n", "<leader>sd", builtin.diagnostics, { desc = "[S]earch [D]iagnostics" })
+vim.keymap.set("n", "<leader>sr", builtin.resume, { desc = "[S]earch [R]esume" })
+vim.keymap.set("n", "<leader>s.", builtin.oldfiles, { desc = '[S]earch Recent Files ("." for repeat)' })
+vim.keymap.set("n", "<leader>sc", builtin.commands, { desc = "[S]earch [C]ommands" })
+vim.keymap.set("n", "<leader><leader>", builtin.buffers, { desc = "[ ] Find existing buffers" })
 
 -- Add Telescope-based LSP pickers when an LSP attaches to a buffer.
 -- If you later switch picker plugins, this is where to update these mappings.
-vim.api.nvim_create_autocmd('LspAttach', {
-  group = vim.api.nvim_create_augroup('telescope-lsp-attach', { clear = true }),
-  callback = function(event)
-    local buf = event.buf
+vim.api.nvim_create_autocmd("LspAttach", {
+	group = vim.api.nvim_create_augroup("telescope-lsp-attach", { clear = true }),
+	callback = function(event)
+		local buf = event.buf
 
-    -- Find references for the word under your cursor.
-    vim.keymap.set('n', 'grr', builtin.lsp_references, { buffer = buf, desc = '[G]oto [R]eferences' })
+		-- Find references for the word under your cursor.
+		vim.keymap.set("n", "grr", builtin.lsp_references, { buffer = buf, desc = "[G]oto [R]eferences" })
 
-    -- Jump to the implementation of the word under your cursor.
-    -- Useful when your language has ways of declaring types without an actual implementation.
-    vim.keymap.set('n', 'gri', builtin.lsp_implementations, { buffer = buf, desc = '[G]oto [I]mplementation' })
+		-- Jump to the implementation of the word under your cursor.
+		-- Useful when your language has ways of declaring types without an actual implementation.
+		vim.keymap.set("n", "gri", builtin.lsp_implementations, { buffer = buf, desc = "[G]oto [I]mplementation" })
 
-    -- Jump to the definition of the word under your cursor.
-    -- This is where a variable was first declared, or where a function is defined, etc.
-    -- To jump back, press <C-t>.
-    vim.keymap.set('n', 'grd', builtin.lsp_definitions, { buffer = buf, desc = '[G]oto [D]efinition' })
+		-- Jump to the definition of the word under your cursor.
+		-- This is where a variable was first declared, or where a function is defined, etc.
+		-- To jump back, press <C-t>.
+		vim.keymap.set("n", "grd", builtin.lsp_definitions, { buffer = buf, desc = "[G]oto [D]efinition" })
 
-    -- Fuzzy find all the symbols in your current document.
-    -- Symbols are things like variables, functions, types, etc.
-    vim.keymap.set('n', 'gO', builtin.lsp_document_symbols, { buffer = buf, desc = 'Open Document Symbols' })
+		-- Fuzzy find all the symbols in your current document.
+		-- Symbols are things like variables, functions, types, etc.
+		vim.keymap.set("n", "gO", builtin.lsp_document_symbols, { buffer = buf, desc = "Open Document Symbols" })
 
-    -- Fuzzy find all the symbols in your current workspace.
-    -- Similar to document symbols, except searches over your entire project.
-    vim.keymap.set('n', 'gW', builtin.lsp_dynamic_workspace_symbols, { buffer = buf, desc = 'Open Workspace Symbols' })
+		-- Fuzzy find all the symbols in your current workspace.
+		-- Similar to document symbols, except searches over your entire project.
+		vim.keymap.set(
+			"n",
+			"gW",
+			builtin.lsp_dynamic_workspace_symbols,
+			{ buffer = buf, desc = "Open Workspace Symbols" }
+		)
 
-    -- Jump to the type of the word under your cursor.
-    -- Useful when you're not sure what type a variable is and you want to see
-    -- the definition of its *type*, not where it was *defined*.
-    vim.keymap.set('n', 'grt', builtin.lsp_type_definitions, { buffer = buf, desc = '[G]oto [T]ype Definition' })
-  end,
+		-- Jump to the type of the word under your cursor.
+		-- Useful when you're not sure what type a variable is and you want to see
+		-- the definition of its *type*, not where it was *defined*.
+		vim.keymap.set("n", "grt", builtin.lsp_type_definitions, { buffer = buf, desc = "[G]oto [T]ype Definition" })
+	end,
 })
 
 -- Override default behavior and theme when searching
-vim.keymap.set('n', '<leader>/', function()
-  -- You can pass additional configuration to Telescope to change the theme, layout, etc.
-  builtin.current_buffer_fuzzy_find(require('telescope.themes').get_dropdown {
-    winblend = 0,
-    previewer = false,
-  })
-end, { desc = '[/] Fuzzily search in current buffer' })
+vim.keymap.set("n", "<leader>/", function()
+	-- You can pass additional configuration to Telescope to change the theme, layout, etc.
+	builtin.current_buffer_fuzzy_find(require("telescope.themes").get_dropdown({
+		previewer = false,
+	}))
+end, { desc = "[/] Fuzzily search in current buffer" })
 
 -- It's also possible to pass additional configuration options.
 --  See `:help telescope.builtin.live_grep()` for information about particular keys
-vim.keymap.set(
-  'n',
-  '<leader>s/',
-  function()
-    builtin.live_grep {
-      grep_open_files = true,
-      prompt_title = 'Live Grep in Open Files',
-    }
-  end,
-  { desc = '[S]earch [/] in Open Files' }
-)
+vim.keymap.set("n", "<leader>s/", function()
+	builtin.live_grep({
+		grep_open_files = true,
+		prompt_title = "Live Grep in Open Files",
+	})
+end, { desc = "[S]earch [/] in Open Files" })
 
 -- Shortcut for searching your Neovim configuration files
-vim.keymap.set('n', '<leader>sn', function() builtin.find_files { cwd = vim.fn.stdpath 'config', follow = true } end, { desc = '[S]earch [N]eovim files' })
+vim.keymap.set("n", "<leader>sn", function()
+	builtin.find_files({ cwd = vim.fn.stdpath("config"), follow = true })
+end, { desc = "[S]earch [N]eovim files" })
 
 -- vim: ts=2 sts=2 sw=2 et
