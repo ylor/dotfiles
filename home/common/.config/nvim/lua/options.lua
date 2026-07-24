@@ -28,9 +28,30 @@ vim.opt.mouse = "a"
 -- Don't show the mode, since it's already in the status line
 vim.opt.showmode = false
 
--- Show the current buffer in the terminal title.
+-- Show the current buffer in the terminal title. Before a file is opened
+-- (e.g. `nvim some/dir` or `nvim some/dir/file.txt`, which start with that
+-- file/dir's buffer not yet focused), %t is empty, so fall back to the tail
+-- of the file/dir passed on the command line -- not `getcwd()`, which stays
+-- at the shell's cwd and never follows a directory argument.
+-- `:h` on a directory (whose `:p` form has a trailing slash) just strips
+-- that slash rather than ascending a level, so `:p:h:t` alone -- with no
+-- `isdirectory` branch -- gives the right tail for a directory or a file.
+-- `nvim` with no argument at all has nothing to fall back to, so leave
+-- `startup_fallback` empty and let `NvimTitleName` show a bare "nvim".
+local startup_fallback = vim.fn.argc() > 0 and ("[" .. vim.fn.fnamemodify(vim.fn.argv(0), ":p:h:t") .. "]") or ""
+
+-- Dash-prefix a focused file name (e.g. `nvim - init.lua`); otherwise fall
+-- back to the bracketed startup arg, or nothing for a bare `nvim`.
+function _G.NvimTitleName()
+	local name = vim.fn.expand("%:t")
+	if name ~= "" then
+		return "- " .. name
+	end
+	return startup_fallback
+end
+
 vim.opt.title = true
-vim.opt.titlestring = "nvim - %t"
+vim.opt.titlestring = "nvim %{v:lua.NvimTitleName()}"
 
 -- Don't show Neovim's built-in intro screen on startup.
 vim.opt.shortmess:append("I")
