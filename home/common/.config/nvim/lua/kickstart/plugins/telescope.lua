@@ -46,9 +46,13 @@ require('telescope').setup {
     -- `pickers.new` wrap. `results_title` is the one Telescope actually
     -- applies from here.
     results_title = false,
+    prompt_prefix = '  ',
+    selection_caret = '❯ ',
+    entry_prefix = '  ',
+    multi_icon = '●',
     -- `find_files`'s `hidden = true` below only skips fd/rg's default dotfile
     -- skip; it doesn't stop .git/ from being walked, so exclude it here.
-    file_ignore_patterns = { '^%.git/' },
+    file_ignore_patterns = { '^%.git/', '%.DS_Store$' },
     -- mappings = {
     --   i = { ['<c-enter>'] = 'to_fuzzy_refine' },
     -- },
@@ -57,12 +61,8 @@ require('telescope').setup {
     find_files = {
       -- Show dotfiles too; .gitignore'd paths (e.g. .git/) are still excluded.
       hidden = true,
-      -- With an empty prompt, entries display in whatever order the finder
-      -- emits them; the sorter only kicks in once you actually type. When rg
-      -- is available (Telescope's own first choice too), `--sort path` makes
-      -- that empty-prompt order alphabetical instead of rg's traversal order.
-      -- Leave unset otherwise so Telescope's own fd/find/where fallback runs.
-      find_command = vim.fn.executable 'rg' == 1 and { 'rg', '--files', '--color', 'never', '--sort', 'path' } or nil,
+      -- Include files reached through symbolic links.
+      follow = true,
     },
   },
   extensions = {
@@ -91,6 +91,22 @@ pcall(require('telescope').load_extension, 'ui-select')
 
 -- See `:help telescope.builtin`
 local builtin = require 'telescope.builtin'
+
+-- Treat a directory passed at startup as the root of a file picker instead of
+-- leaving Neovim on an unmanaged directory buffer (`nvim path/to/project`).
+vim.api.nvim_create_autocmd('VimEnter', {
+  desc = 'Open Telescope when Neovim starts with a directory',
+  once = true,
+  callback = function()
+    local buf = vim.api.nvim_get_current_buf()
+    local directory = vim.api.nvim_buf_get_name(buf)
+    if directory == '' or vim.fn.isdirectory(directory) == 0 then return end
+
+    vim.api.nvim_buf_delete(buf, { force = true })
+    vim.schedule(function() builtin.find_files { cwd = directory } end)
+  end,
+})
+
 vim.keymap.set('n', '<leader>sh', builtin.help_tags, { desc = '[S]earch [H]elp' })
 vim.keymap.set('n', '<leader>sk', builtin.keymaps, { desc = '[S]earch [K]eymaps' })
 vim.keymap.set('n', '<leader>sf', builtin.find_files, { desc = '[S]earch [F]iles' })

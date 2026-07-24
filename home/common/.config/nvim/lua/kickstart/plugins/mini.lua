@@ -51,7 +51,7 @@ require("mini.pairs").setup()
 -- Command-line tweaks: debounced autocomplete popup, as-you-type
 -- autocorrection of commands/options, and a floating autopeek window that
 -- previews the target lines of a `:range` (e.g. while typing `:10,20d`).
-require("mini.cmdline").setup()
+-- require("mini.cmdline").setup()
 
 -- File explorer: mini.files was considered here but oil.nvim
 -- (kickstart.plugins.oil) is used instead.
@@ -116,6 +116,7 @@ statusline.section_location = function()
 	return "%2l:%-2v"
 end
 
+--[[
 -- Start screen shown when opening Neovim with no file argument.
 --  Replaces the built-in `netrw`-adjacent blank splash with a small
 --  greeting, recently opened files, and a few common actions.
@@ -211,6 +212,7 @@ vim.api.nvim_create_autocmd("VimEnter", {
 		end
 	end,
 })
+--]]
 
 -- ... and there is more!
 --  Check out: https://github.com/nvim-mini/mini.nvim

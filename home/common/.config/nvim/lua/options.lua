@@ -27,13 +27,17 @@ vim.o.mouse = 'a'
 -- Don't show the mode, since it's already in the status line
 vim.o.showmode = false
 
--- Hide the command line when not in use, to reclaim the line beneath the
--- status line. Trade-off: messages triggered from non-keypress contexts
--- (autocmds, background jobs) have no reserved row to render in and can pop
--- a blocking "Press ENTER" prompt instead of a transient one-line message;
--- 'showcmdloc' can't route around it either, since mini.statusline's custom
--- content has no %S item for it to land in.
-vim.o.cmdheight = 0
+-- Show the current buffer in the terminal title.
+vim.o.title = true
+vim.o.titlestring = 'nvim - %t'
+
+-- Don't show Neovim's built-in intro screen on startup.
+vim.opt.shortmess:append 'I'
+
+-- Keep the command row at Neovim's startup-default height. Changing this to
+-- zero during initialization resizes the editing grid and causes a visible
+-- one-row layout jump in some terminals.
+vim.o.cmdheight = 1
 
 -- Sync clipboard between OS and Neovim.
 --  Schedule the setting after `UiEnter` because it can increase startup-time.
@@ -60,7 +64,7 @@ vim.o.signcolumn = 'yes'
 vim.o.updatetime = 250
 
 -- Decrease mapped sequence wait time
-vim.o.timeoutlen = 300
+vim.o.timeoutlen = 500
 
 -- Configure how new splits should be opened
 vim.o.splitright = true

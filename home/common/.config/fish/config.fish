@@ -13,8 +13,8 @@ if status is-interactive
     set -p fish_function_path "$DOTFILES/src"
     set -l os (uname)
     set -x KERNEL (uname | string lower)
-    set -x EDITOR vim
-    set -x VISUAL vim
+    set -x EDITOR nvim
+    set -x VISUAL nvim
     set -x XDG_CACHE_HOME "$HOME/.cache"
     set -x XDG_CONFIG_HOME "$HOME/.config"
     set -x XDG_DATA_HOME "$HOME/.local/share"
