@@ -37,8 +37,8 @@ if command -q git; and status --is-interactive
             case lol
                 command git rev-parse --is-inside-work-tree >/dev/null 2>&1; or return 67
                 command git add -A
-                command git commit -m (curl -sf https://whatthecommit.com/index.txt)
-                command git push
+                command git commit --quiet -m (curl -sf https://whatthecommit.com/index.txt)
+                command git push --quiet
 
             case p
                 command git pull
