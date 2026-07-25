@@ -8,7 +8,7 @@ vim.g.mapleader = " "
 vim.g.maplocalleader = " "
 
 -- Set to true if you have a Nerd Font installed and selected in the terminal
-vim.g.have_nerd_font = true
+-- vim.g.have_nerd_font = true
 
 -- [[ Setting options ]]
 --  See `:help vim.o`
@@ -30,36 +30,77 @@ vim.opt.showmode = false
 
 -- Show the current buffer in the terminal title. Before a file is opened
 -- (e.g. `nvim some/dir` or `nvim some/dir/file.txt`, which start with that
--- file/dir's buffer not yet focused), %t is empty, so fall back to the tail
--- of the file/dir passed on the command line -- not `getcwd()`, which stays
--- at the shell's cwd and never follows a directory argument.
--- `:h` on a directory (whose `:p` form has a trailing slash) just strips
--- that slash rather than ascending a level, so `:p:h:t` alone -- with no
--- `isdirectory` branch -- gives the right tail for a directory or a file.
--- `nvim` with no argument at all has nothing to fall back to, so leave
--- `startup_fallback` empty and let `NvimTitleName` show a bare "nvim".
-local startup_fallback = vim.fn.argc() > 0 and ("[" .. vim.fn.fnamemodify(vim.fn.argv(0), ":p:h:t") .. "]") or ""
+-- file/dir's buffer not yet focused), there's no normal-buffer name yet, so
+-- fall back to the tail of the file/dir passed on the command line -- not
+-- `getcwd()`, which stays at the shell's cwd and never follows a directory
+-- argument. `:h` on a directory (whose `:p` form has a trailing slash) just
+-- strips that slash rather than ascending a level, so `:p:h:t` alone -- with
+-- no `isdirectory` branch -- gives the right tail for a directory or a file.
+-- `nvim` with no argument at all has nothing to fall back to, so
+-- `startup_fallback` stays empty and `NvimTitleName` shows a bare "nvim".
+local startup_fallback = vim.fn.argc() > 0 and (" [" .. vim.fn.fnamemodify(vim.fn.argv(0), ":p:h:t") .. "]") or ""
+
+-- The name of the current tabpage's normal (buftype == "") buffer, checking
+-- the focused window first and falling back to the other windows in the
+-- tabpage. Floating scratch windows -- e.g. Telescope's prompt/results/
+-- preview, which sit over the tabpage rather than splitting it -- have a
+-- non-"" buftype, so a Telescope window being focused falls through to the
+-- normal file window underneath instead of returning its own (blank) name.
+-- Computed fresh on every call rather than cached, so there's no listener to
+-- keep in sync with buffer/window changes.
+local function focused_file_name()
+	local function normal_buf_name(win)
+		local buf = vim.api.nvim_win_get_buf(win)
+		if vim.bo[buf].buftype == "" then
+			local name = vim.api.nvim_buf_get_name(buf)
+			if name ~= "" then
+				return vim.fn.fnamemodify(name, ":t")
+			end
+		end
+		return nil
+	end
+
+	local name = normal_buf_name(vim.api.nvim_get_current_win())
+	if name then
+		return name
+	end
+	for _, win in ipairs(vim.api.nvim_tabpage_list_wins(0)) do
+		name = normal_buf_name(win)
+		if name then
+			return name
+		end
+	end
+	return nil
+end
 
 -- Dash-prefix a focused file name (e.g. `nvim - init.lua`); otherwise fall
--- back to the bracketed startup arg, or nothing for a bare `nvim`.
+-- back to the bracketed startup arg, or nothing for a bare `nvim`. The
+-- leading space lives in here (not in `titlestring` below) so a bare `nvim`
+-- renders as exactly "nvim" with no trailing space -- a static space in
+-- `titlestring` would still be there when this returns "", and terminals
+-- that center tab titles visibly shift the text for an invisible trailing
+-- character.
 function _G.NvimTitleName()
-	local name = vim.fn.expand("%:t")
-	if name ~= "" then
-		return "- " .. name
+	local name = focused_file_name()
+	if name then
+		return " - " .. name
 	end
 	return startup_fallback
 end
 
 vim.opt.title = true
-vim.opt.titlestring = "nvim %{v:lua.NvimTitleName()}"
+vim.opt.titlestring = "nvim%{v:lua.NvimTitleName()}"
 
 -- Don't show Neovim's built-in intro screen on startup.
 vim.opt.shortmess:append("I")
 
--- Keep the command row at Neovim's startup-default height. Changing this to
--- zero during initialization resizes the editing grid and causes a visible
--- one-row layout jump in some terminals.
-vim.opt.cmdheight = 1
+-- Hide the command line when it isn't in use, showing it only while a
+-- command/search is being entered or a message needs to be displayed.
+vim.opt.cmdheight = 0
+
+-- Command-line/search completion (live popup as you type, <Tab>/<S-Tab> to
+-- cycle matches, <Up>/<Down> for history) is handled by blink.cmp's cmdline
+-- mode -- see `cmdline` in lua/kickstart/plugins/blink-cmp.lua.
 
 -- Sync clipboard between OS and Neovim.
 --  Schedule the setting after `UiEnter` because it can increase startup-time.
@@ -88,7 +129,7 @@ vim.opt.signcolumn = "yes"
 vim.opt.updatetime = 250
 
 -- Decrease mapped sequence wait time
-vim.opt.timeoutlen = 500
+-- vim.opt.timeoutlen = 500
 
 -- Configure how new splits should be opened
 vim.opt.splitright = true
@@ -127,9 +168,12 @@ vim.opt.autoread = true
 -- Remove the "How-to disable mouse" entry (and its separator) that Nvim adds
 -- to the default right-click popup menu. See `:h vim_diff.txt` for this exact
 -- recipe.
-pcall(vim.cmd, [[
+pcall(
+	vim.cmd,
+	[[
   aunmenu PopUp.How-to\ disable\ mouse
   aunmenu PopUp.-2-
-]])
+]]
+)
 
 -- vim: ts=2 sts=2 sw=2 et

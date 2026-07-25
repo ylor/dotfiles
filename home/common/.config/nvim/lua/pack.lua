@@ -58,4 +58,6 @@ vim.api.nvim_create_autocmd('PackChanged', {
   end,
 })
 
+vim.keymap.set('n', '<leader>pu', function() vim.pack.update() end, { desc = '[P]ack [U]pdate' })
+
 -- vim: ts=2 sts=2 sw=2 et

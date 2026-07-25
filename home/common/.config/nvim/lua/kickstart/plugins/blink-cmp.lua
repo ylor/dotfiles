@@ -59,6 +59,25 @@ require('blink.cmp').setup {
     default = { 'lsp', 'path', 'snippets' },
   },
 
+  -- Cmdline (`:`, `/`, `?`) completion. `keymap.preset` defaults to
+  -- 'cmdline' already (<Tab>/<S-Tab> cycle matches, <C-n>/<C-p> too, <C-y>
+  -- accepts, <C-e> cancels -- see `:help blink-cmp` cmdline docs), so it's
+  -- only spelled out here for clarity. `auto_show` replaces the old
+  -- `CmdlineChanged` -> `wildtrigger()` autocmd that used to drive Neovim's
+  -- native wildmenu popup live as you type; that native setup (and the
+  -- `wildmode`/`wildoptions`/<Up>/<Down> overrides that went with it, see
+  -- options.lua) has been removed since it opened its own popup independent
+  -- of blink's, which made blink's <Tab> handler find nothing to act on.
+  cmdline = {
+    keymap = { preset = 'cmdline' },
+    completion = {
+      menu = { auto_show = true },
+      -- Don't highlight/select the first match just because the menu is
+      -- showing -- only select one once <Tab>/<C-n>/etc. is pressed.
+      list = { selection = { preselect = false } },
+    },
+  },
+
   snippets = { preset = 'luasnip' },
 
   -- Blink.cmp includes an optional, recommended rust fuzzy matcher,

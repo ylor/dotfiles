@@ -23,12 +23,12 @@ if status is-interactive
     # abbreviations
     abbr d docker
     abbr g git
-
     abbr s sudo
+
     if test "$os" = Darwin
-        abbr b --position anywhere brew
+        abbr b brew
     else if test "$os" = Linux
-        abbr pc --position anywhere pacman
+        abbr pc pacman
     end
 
     if test "$os" = Darwin

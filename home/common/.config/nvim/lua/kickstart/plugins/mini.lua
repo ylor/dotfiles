@@ -18,7 +18,7 @@ require("mini.basics").setup({
 -- Load the icons module for file-type icons in various plugins (Oil,
 -- Telescope, ...). Falls back to plain ASCII icons without a Nerd Font
 -- instead of glyphs that would render as tofu boxes.
-require("mini.icons").setup({ style = vim.g.have_nerd_font and "glyph" or "ascii" })
+require("mini.icons").setup({ style = "glyph" })
 -- Used for backwards compatibility with plugins that require `nvim-web-devicons` (e.g. telescope.nvim, oil.nvim)
 MiniIcons.mock_nvim_web_devicons()
 
@@ -34,7 +34,7 @@ require("mini.ai").setup({
 		around_next = "aa",
 		inside_next = "ii",
 	},
-  n_lines = 500,
+	n_lines = 500,
 })
 
 -- Add/delete/replace surroundings (brackets, quotes, etc.)
@@ -71,7 +71,7 @@ local hex_short_len = { [3] = true, [4] = true }
 -- Filetypes where a leading `#` is far more likely to be a reference (a
 -- git-style short SHA, a markdown/issue anchor) than a color literal.
 local hex_excluded_filetypes = {
-	markdown = true,
+	-- markdown = true,
 	gitcommit = true,
 	gitrebase = true,
 	help = true,
@@ -106,16 +106,16 @@ hipatterns.setup({
 --  and try some other statusline plugin
 local statusline = require("mini.statusline")
 -- Set `use_icons` to true if you have a Nerd Font
-statusline.setup({ use_icons = vim.g.have_nerd_font })
+statusline.setup({ use_icons = true })
 
 -- You can configure sections in the statusline by overriding their
 -- default behavior. For example, here we set the section for
 -- cursor location to LINE:COLUMN
 ---@diagnostic disable-next-line: duplicate-set-field
-statusline.section_location = function()
-	return "%2l:%-2v"
-end
-
+-- statusline.section_location = function()
+-- 	return "%2l:%-2v"
+-- end
+--
 --[[
 -- Start screen shown when opening Neovim with no file argument.
 --  Replaces the built-in `netrw`-adjacent blank splash with a small

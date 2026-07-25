@@ -22,23 +22,48 @@
 --
 vim.pack.add({ "https://github.com/ember-theme/nvim" })
 require("ember").setup({
-  variant = "ember", -- "ember", "ember-soft", "ember-light", "ember-auto"
-  -- styles = {
-  --   comments  = { italic = true },
-  --   keywords  = { bold = true },
-  --   functions = {},
-  --   types     = { bold = true },
-  -- },
-  transparent        = true, -- transparent editor background
-  transparent_floats = false,   -- follows `transparent` by default; set explicitly to override
-  on_colors     = nil, -- function(palette) - modify palette before theme builds
-  on_highlights = function(highlights, theme)
-    -- Match the Telescope prompt box to the same background as every other
-    -- float instead of the theme's default (slightly different) shade.
-    highlights.TelescopePromptNormal.bg = theme.ui.float_bg
-    highlights.TelescopePromptBorder.bg = theme.ui.float_bg
-    highlights.TelescopePromptTitle.bg = theme.ui.float_bg
-  end,
+	variant = "ember", -- "ember", "ember-soft", "ember-light", "ember-auto"
+	-- styles = {
+	--   comments  = { italic = true },
+	--   keywords  = { bold = true },
+	--   functions = {},
+	--   types     = { bold = true },
+	-- },
+	transparent = true, -- transparent editor background
+	transparent_floats = false, -- follows `transparent` by default; set explicitly to override
+	on_colors = nil, -- function(palette) - modify palette before theme builds
+	on_highlights = function(highlights, theme)
+		-- Match the Telescope prompt box to the same background as every other
+		-- float instead of the theme's default (slightly different) shade.
+		highlights.TelescopePromptNormal.bg = theme.ui.float_bg
+		highlights.TelescopePromptBorder.bg = theme.ui.float_bg
+		highlights.TelescopePromptTitle.bg = theme.ui.float_bg
+
+		-- Upstream bug (ember-theme/nvim): these "dark text on a bright accent
+		-- chip" groups set `fg = theme.ui.bg`, but with `transparent = true`
+		-- above, `theme.ui.bg` is the *string* "NONE" -- Neovim treats that as
+		-- "no fg override", so the chip falls back to the default light
+		-- foreground on a mid-tone background (unreadably low contrast). Force
+		-- a real dark fg instead, pulled from `theme.term[0]` (ANSI black --
+		-- always a real hex, never gated by `transparent`).
+		local dark_fg = theme.term[0]
+		for _, group in ipairs({
+			"MiniStatuslineModeNormal",
+			"MiniStatuslineModeInsert",
+			"MiniStatuslineModeVisual",
+			"MiniStatuslineModeReplace",
+			"MiniStatuslineModeCommand",
+			"MiniStatuslineModeOther",
+			"LazyH1",
+			"SnacksPickerTitle",
+			"SnacksPickerPreviewTitle",
+			"NoiceFormatProgressDone",
+		}) do
+			if highlights[group] then
+				highlights[group].fg = dark_fg
+			end
+		end
+	end,
 })
 vim.cmd.colorscheme("ember")
 
