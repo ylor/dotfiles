@@ -1,12 +1,3 @@
-if [[ $(uname) == "Linux" ]]; then
-    if [[ $(lspci | grep 'NVIDIA') ]]; then
-        export __GLX_VENDOR_LIBRARY_NAME=nvidia
-        export LIBVA_DRIVER_NAME=nvidia
-        export NVD_BACKEND=direct
-    fi
-
-    if [[ -z "$WAYLAND_DISPLAY" ]] && [[ "$(tty)" == "/dev/tty1" ]]; then
-        type hyprland && pidof hyprland || exec start-hyprland
-        # logout
-    fi
+if [[ "$(tty)" == "/dev/tty1" ]]; then
+    command -v hyprland && exec start-hyprland
 fi

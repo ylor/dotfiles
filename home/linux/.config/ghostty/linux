@@ -1,10 +1,11 @@
 # form
 
 # function
-#gtk-custom-css = style.css
-#gtk-single-instance = desktop
+gtk-custom-css = style.css
+gtk-single-instance = desktop
+gtk-titlebar-style = tabs
 keybind = global:control+escape=toggle_quick_terminal
 keybind = global:control+`=toggle_quick_terminal
 keybind = performable:ctrl+c=copy_to_clipboard
-# keybind = control+t=new_tab
-# keybind = control+w=close_surface
+keybind = control+t=new_tab
+keybind = control+w=close_surface

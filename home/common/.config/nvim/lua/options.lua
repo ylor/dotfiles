@@ -98,6 +98,9 @@ vim.opt.shortmess:append("I")
 -- command/search is being entered or a message needs to be displayed.
 vim.opt.cmdheight = 0
 
+-- Keep floating windows fully opaque.
+vim.opt.winblend = 0
+
 -- Command-line/search completion (live popup as you type, <Tab>/<S-Tab> to
 -- cycle matches, <Up>/<Down> for history) is handled by blink.cmp's cmdline
 -- mode -- see `cmdline` in lua/kickstart/plugins/blink-cmp.lua.

@@ -2,26 +2,28 @@
 debug: env GTK_DEBUG=interactive ghostty
 https://docs.gtk.org/gtk4/css-overview.html
 https://docs.gtk.org/gtk4/css-properties.html
-*/
+*/ 
 
 tabbar,
 tabbox {
-    background-color: #000;
+    /* background-color: #000; */
     min-height: 1px;
 }
 
 tab {
-    color: #9ca3af;
-    font-size: 13px;
+    /* color: #9ca3af; */
+    /* font-size: 13px; */
     padding: 0;
+    border: solid 1px #FFFFFF33;
 }
 
 tab:hover {
-    background-color: #111;
+    /* background-color: #111; */
 }
 
 tab:selected {
-    background-color: #161616;
-    font-weight: bold;
-    color: #ffffff;
+    /* background-color: #161616; */
+    /* font-weight: bold; */
+    /* color: #ffffff; */
+    border: solid 2px #FFFFFF33
 }

@@ -1,5 +1,6 @@
 # drop into fish for interactive shells
-# adapted from https://wiki.archlinux.org/title/Fish
-if [[ $(command -v fish) && "$(ps -p "$PPID" -o comm=)" != "fish" && -z ${ZSH_EXECUTION_STRING} ]]; then
-   	exec fish
-fi
+# ada ted from https://wiki.archlinux.org/title/Fish
+[[ $SHLVL -le 2 ]] || return
+command -v fish >/dev/null || return
+[[ $(ps -p "$PPID" -o comm=) != fish ]] || return
+[[ -o login ]] && exec fish --login || exec fish
