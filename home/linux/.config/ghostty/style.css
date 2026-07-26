@@ -3,6 +3,7 @@ debug: env GTK_DEBUG=interactive ghostty
 https://docs.gtk.org/gtk4/css-overview.html
 https://docs.gtk.org/gtk4/css-properties.html
 */ 
+@import url("/home/roly/.config/gtk-4.0/noctalia.css");
 
 tabbar,
 tabbox {
@@ -15,6 +16,7 @@ tab {
     /* font-size: 13px; */
     padding: 0;
     border: solid 1px #FFFFFF33;
+    border: solid 1px alpha(@accent_color, 0.2);
 }
 
 tab:hover {
@@ -25,5 +27,6 @@ tab:selected {
     /* background-color: #161616; */
     /* font-weight: bold; */
     /* color: #ffffff; */
-    border: solid 2px #FFFFFF33
+    border: solid 2px #FFFFFF33;
+    border: solid 2px alpha(@accent_color, 0.2);
 }

@@ -5,6 +5,11 @@ require("env")
 require("animations")
 
 local noctalia = "noctalia msg "
+local noctalia_theme = require("noctalia")
+
+local function with_alpha(rgb, alpha)
+	return "rgba(" .. rgb:match("%x%x%x%x%x%x") .. alpha .. ")"
+end
 
 ------------------
 ---- MONITORS ----
@@ -50,15 +55,12 @@ local menu = "noctalia msg panel-toggle launcher"
 -- Or execute your favorite apps at launch like this:
 --
 hl.on("hyprland.start", function()
-	hl.exec_cmd("noctalia")
-	hl.exec_cmd("1password --silent")
+	hl.exec_cmd("noctalia && noctalia msg session lock")
+	-- hl.exec_cmd("noctalia msg session lock")
 	hl.exec_cmd(browser, { workspace = "1 silent" })
 	hl.exec_cmd(terminal, { workspace = "2 silent" })
-	hl.exec_cmd("steam -steamos3", { workspace = "3 silent" })
-	hl.exec_cmd("noctalia msg session lock")
-	--hl.exec_cmd(terminal)
-	--hl.exec_cmd("nm-applet")
-	--hl.exec_cmd("waybar & hyprpaper & firefox")
+	hl.exec_cmd("steam -steamos3 -silent")
+	hl.exec_cmd("1password --silent")
 end)
 
 hl.exec_cmd('gsettings set org.gnome.desktop.interface color-scheme "prefer-dark"')
@@ -113,9 +115,9 @@ hl.config({
 hl.config({
 	general = {
 		gaps_in = 4,
-		gaps_out = 0,
+		gaps_out = 4,
 
-		border_size = 1,
+		border_size = 3,
 
 		col = {
 			active_border = { colors = { "rgba(33ccffee)", "rgba(00ff99ee)" }, angle = 45 },
@@ -175,14 +177,16 @@ hl.config({
 hl.window_rule({
 	name = "no-gaps-wtv1",
 	match = { float = false, workspace = "w[tv1]" },
-	-- border_size = 0,
+	border_size = 1,
 	-- rounding    = 0,
+	border_color = with_alpha(noctalia_theme.colors.primary, "40"),
 })
 hl.window_rule({
 	name = "no-gaps-f1",
 	match = { float = false, workspace = "f[1]" },
-	-- border_size = 0,
+	border_size = 1,
 	-- rounding    = 0,
+	border_color = with_alpha(noctalia_theme.colors.primary, "40"),
 })
 
 -- See https://wiki.hypr.land/Configuring/Layouts/Dwindle-Layout/ for more
@@ -505,4 +509,4 @@ hl.window_rule({
 })
 
 -- For Noctalia Color templates
-require("noctalia").apply_theme()
+noctalia_theme.apply_theme()
