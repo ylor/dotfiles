@@ -16,17 +16,20 @@ tab {
     /* font-size: 13px; */
     padding: 0;
     border: solid 1px #FFFFFF33;
-    border: solid 1px alpha(@accent_color, 0.2);
+    border: solid 1px alpha(@accent_color, 0.3);
 }
 
-tab:hover {
+tabbar tab:hover {
     /* background-color: #111; */
+    background-color: alpha(@accent_color, 0.6);
+    color: @accent_fg_color;
 }
 
 tab:selected {
-    /* background-color: #161616; */
+    /* background-color: #000; */
     /* font-weight: bold; */
     /* color: #ffffff; */
+    background-color: alpha(@accent_color, 0.1);
     border: solid 2px #FFFFFF33;
-    border: solid 2px alpha(@accent_color, 0.2);
+    border: solid 2px alpha(@accent_color, 0.6);
 }
