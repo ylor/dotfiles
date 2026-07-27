@@ -2,7 +2,7 @@
 # Greyscale base with heat sources bleeding red
 
 palette = 0=#181818
-palette = 1=#C03838
+palette = 1=#C17B71
 palette = 2=#909090
 palette = 3=#909090
 palette = 4=#909090
