@@ -1,2 +1,0 @@
-#!/usr/bin/env sh
-paru -S --needed --skipreview steam lact mangohud gamemode umu-launcher faugus-launcher sunshine-beta-bin

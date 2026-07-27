@@ -1,20 +1,30 @@
 [bar.default]
+center = [ "active_window" ]
+concave_edge_corners = false
+end = [ "media", "tray", "volume", "brightness", "battery", "network", "launcher", "notifications", "clock" ]
 margin_edge = 0
 margin_ends = 4
 radius = 12
+start = [ "control-center", "workspaces" ]
 thickness = 32
 
     [bar.default.dead_zone.actions]
     scroll_down = "volume-down"
     scroll_up = "volume-up"
 
+[brightness]
+enable_ddcutil = true
+
+[desktop_widgets]
+enabled = false
+
 [dock]
 auto_hide = false
 enabled = false
 smart_auto_hide = true
 
-[lockscreen]
-tint_intensity = 0.24999999441206455
+[location]
+address = "Miami, FL"
 
 [lockscreen_widgets]
 enabled = true
@@ -72,6 +82,10 @@ widget_order = [ "lockscreen-login-box@WAYLAND-1", "lockscreen-login-box@DP-1" ]
         show_password_hint = true
         show_session_buttons = true
 
+[nightlight]
+enabled = true
+temperature_night = 5000
+
 [plugins]
 enabled = []
 
@@ -82,10 +96,59 @@ time_format = "{:%-l:%M %p}"
     [shell.animation]
     speed = 4.0
 
+    [shell.launcher]
+    categories = false
+    compact = true
+    sort_by_usage = false
+
+    [shell.panel]
+    open_near_click_control_center = true
+    transparency_mode = "solid"
+
+    [[shell.session.actions]]
+    action = "lock"
+    countdown_seconds = 0.0
+    enabled = true
+    shortcut = "l"
+    variant = "default"
+
+    [[shell.session.actions]]
+    action = "logout"
+    command = "hyprshutdown || noctalia msg session lock"
+    countdown_seconds = 0.0
+    enabled = true
+    shortcut = "o"
+    variant = "default"
+
+    [[shell.session.actions]]
+    action = "lock_and_suspend"
+    countdown_seconds = 0.0
+    enabled = true
+    label = "Suspend"
+    shortcut = "s"
+    variant = "default"
+
+    [[shell.session.actions]]
+    action = "reboot"
+    command = "hyprshutdown --post-cmd systemctl restart"
+    countdown_seconds = 0.0
+    enabled = true
+    shortcut = "r"
+    variant = "default"
+
+    [[shell.session.actions]]
+    action = "shutdown"
+    command = "hyprshutdown --post-cmd systemctl poweroff"
+    countdown_seconds = 0.0
+    enabled = true
+    shortcut = "u"
+    variant = "destructive"
+
 [theme]
 community_palette = "Rosey AMOLED"
 custom_palette = "mfd-amber"
 pure_black_dark = false
+source = "custom"
 
     [theme.templates]
     builtin_ids = [ "gtk3", "gtk4", "hyprland", "kcolorscheme", "qt" ]
@@ -103,3 +166,31 @@ fill_mode = "center"
 
 [weather]
 unit = "imperial"
+
+[widget.active_window]
+max_length = 800
+
+[widget.brightness]
+show_label = false
+
+[widget.control-center]
+glyph = "hyprland"
+
+[widget.media]
+hide_when_no_media = true
+
+[widget.network]
+show_label = false
+
+[widget.taskbar]
+only_active_workspace = true
+show_window_title = true
+
+[widget.tray]
+drawer = true
+
+[widget.volume]
+show_label = false
+
+[widget.workspaces]
+display = "none"
