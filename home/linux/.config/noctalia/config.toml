@@ -1,163 +1,105 @@
 [bar.default]
-border_width = 1.0
-center = [ "workspaces" ]
-concave_edge_corners = false
-end = [
-    "tray",
-    "cat",
-    "clipboard",
-    "network",
-    "bluetooth",
-    "brightness",
-    "volume",
-    "battery",
-    "launcher",
-    "notifications",
-    "clock"
-]
 margin_edge = 0
-margin_ends = 8
-panel_overlap = 0
-radius = 10
-start = [ "control-center" ]
-thickness = 26
+margin_ends = 4
+radius = 12
+thickness = 32
 
     [bar.default.dead_zone.actions]
     scroll_down = "volume-down"
     scroll_up = "volume-up"
 
-[brightness]
-enable_ddcutil = true
-
-[control_center]
-sidebar = "full"
-sidebar_section = "full"
-
-[desktop_widgets]
-enabled = false
-
 [dock]
+auto_hide = false
 enabled = false
-
-[location]
-address = "Miami, FL"
+smart_auto_hide = true
 
 [lockscreen]
-blurred_desktop = true
+tint_intensity = 0.24999999441206455
 
 [lockscreen_widgets]
 enabled = true
+schema_version = 2
+widget_order = [ "lockscreen-login-box@WAYLAND-1", "lockscreen-login-box@DP-1" ]
 
-[nightlight]
-enabled = true
+    [lockscreen_widgets.grid]
+    cell_size = 16
+    major_interval = 4
+    visible = true
+
+    [lockscreen_widgets.widget."lockscreen-login-box@DP-1"]
+    box_height = 96.0
+    box_width = 400.0
+    cx = 1152.0
+    cy = 648.0
+    output = "DP-1"
+    rotation = 0.0
+    type = "login_box"
+
+        [lockscreen_widgets.widget."lockscreen-login-box@DP-1".settings]
+        background_color = "surface_variant"
+        background_opacity = 0.88
+        background_radius = 12.0
+        center_password_text = false
+        input_opacity = 1.0
+        input_radius = 6.0
+        layout = "compact"
+        show_caps_lock = true
+        show_keyboard_layout = true
+        show_login_button = true
+        show_password_hint = true
+        show_session_buttons = true
+
+    [lockscreen_widgets.widget."lockscreen-login-box@WAYLAND-1"]
+    box_height = 201.0
+    box_width = 720.0
+    cx = 287.0
+    cy = 528.0
+    output = "WAYLAND-1"
+    rotation = 0.0
+    type = "login_box"
+
+        [lockscreen_widgets.widget."lockscreen-login-box@WAYLAND-1".settings]
+        background_color = "surface_variant"
+        background_opacity = 0.88
+        background_radius = 12.0
+        center_password_text = false
+        input_opacity = 1.0
+        input_radius = 6.0
+        layout = "regular"
+        show_caps_lock = true
+        show_keyboard_layout = true
+        show_login_button = true
+        show_password_hint = true
+        show_session_buttons = true
+
+[plugins]
+enabled = []
 
 [shell]
 font_family = "Iosevka Aile"
-polkit_agent = true
-telemetry_enabled = true
 time_format = "{:%-l:%M %p}"
 
     [shell.animation]
     speed = 4.0
 
-    [shell.launcher]
-    categories = false
-    compact = true
-    sort_by_usage = false
-
-    [shell.panel]
-    control_center_placement = "floating"
-    open_near_click_control_center = true
-    transparency_mode = "glass"
-
-    [[shell.session.actions]]
-    action = "lock"
-    countdown_seconds = 5.0
-    enabled = true
-    shortcut = "l"
-    variant = "default"
-
-    [[shell.session.actions]]
-    action = "logout"
-    command = "hyprshutdown -t \"Logging out…\""
-    countdown_seconds = 5.0
-    enabled = true
-    shortcut = "i"
-    variant = "default"
-
-    [[shell.session.actions]]
-    action = "lock_and_suspend"
-    countdown_seconds = 5.0
-    enabled = true
-    label = "Suspend"
-    shortcut = "s"
-    variant = "default"
-
-    [[shell.session.actions]]
-    action = "reboot"
-    command = "hyprshutdown -t \"Restarting…\" --post-cmd \"reboot\""
-    countdown_seconds = 5.0
-    enabled = true
-    shortcut = "r"
-    variant = "default"
-
-    [[shell.session.actions]]
-    action = "shutdown"
-    command = "hyprshutdown -t \"Shutting down...\" --post-cmd \"shutdown -P 0\""
-    countdown_seconds = 10.0
-    enabled = true
-    shortcut = "u"
-    variant = "destructive"
-
 [theme]
+community_palette = "Rosey AMOLED"
 custom_palette = "mfd-amber"
-source = "custom"
+pure_black_dark = false
 
     [theme.templates]
     builtin_ids = [ "gtk3", "gtk4", "hyprland", "kcolorscheme", "qt" ]
-    community_ids = [ "hyprtoolkit" ]
 
 [wallpaper]
 enabled = false
 fill_color = "#000000"
 fill_mode = "center"
 
+    [wallpaper.default]
+    path = "/usr/share/noctalia/assets/noctalia-wallpaper.png"
+
+    [wallpaper.last]
+    path = "/usr/share/noctalia/assets/noctalia-wallpaper.png"
+
 [weather]
 unit = "imperial"
-
-[widget.bluetooth]
-enabled = false
-
-[widget.brightness]
-show_label = false
-
-[widget.clipboard]
-enabled = false
-
-[widget.clock]
-format = "{:%-l:%M %p}"
-tooltip_format = "{:%a %b %e}  "
-
-[widget.control-center]
-glyph = "hyprland"
-
-[widget.launcher]
-enabled = true
-
-[widget.media]
-hide_when_no_media = true
-title_scroll = "on_hover"
-
-[widget.network]
-enabled = false
-show_label = false
-
-[widget.tray]
-drawer = true
-
-[widget.volume]
-show_label = false
-
-[widget.workspaces]
-display = "none"
-focused_color = "secondary"
