@@ -23,6 +23,24 @@ auto_hide = false
 enabled = false
 smart_auto_hide = true
 
+[idle]
+behavior_order = [ "lock", "screen-off", "lock-and-suspend" ]
+
+    [idle.behavior.lock]
+    action = "lock"
+    enabled = true
+    timeout = 600.0
+
+    [idle.behavior.lock-and-suspend]
+    action = "lock_and_suspend"
+    enabled = true
+    timeout = 900.0
+
+    [idle.behavior.screen-off]
+    action = "screen_off"
+    enabled = true
+    timeout = 660.0
+
 [location]
 address = "Miami, FL"
 
@@ -91,7 +109,6 @@ enabled = []
 
 [shell]
 font_family = "Iosevka Aile"
-time_format = "{:%-l:%M %p}"
 
     [shell.animation]
     speed = 4.0
@@ -168,10 +185,16 @@ fill_mode = "center"
 unit = "imperial"
 
 [widget.active_window]
+capsule_foreground = "on_tertiary"
+display = "text_only"
 max_length = 800
+title_scroll = "on_hover"
 
 [widget.brightness]
 show_label = false
+
+[widget.clock]
+format = "{:%-l:%M %p}"
 
 [widget.control-center]
 glyph = "hyprland"
@@ -193,4 +216,6 @@ drawer = true
 show_label = false
 
 [widget.workspaces]
-display = "none"
+capsule_fill = "tertiary"
+display = "name"
+style = "minimal"
