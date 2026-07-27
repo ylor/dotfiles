@@ -7,7 +7,7 @@ cursor-text = #505050
 selection-background = #ACACAC
 selection-foreground = #505050
 palette = 0=#383838
-palette = 1=#421E1E
+palette = 1=#421A1A
 palette = 2=#424242
 palette = 3=#4C4C4C
 palette = 4=#565656
@@ -15,7 +15,7 @@ palette = 5=#616161
 palette = 6=#6B6B6B
 palette = 7=#757575
 palette = 8=#7F7F7F
-palette = 9=#893E3E
+palette = 9=#893737
 palette = 10=#898989
 palette = 11=#939393
 palette = 12=#9E9E9E
