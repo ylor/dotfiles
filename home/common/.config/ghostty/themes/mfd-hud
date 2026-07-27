@@ -1,23 +1,19 @@
-# MFD HUD: Heads-Up Display symbology
-# Vivid green projected on combiner glass - brighter than CRT
-
 palette = 0=#060C06
-palette = 1=#F97062
+palette = 1=#C03838
 palette = 2=#55BB55
 palette = 3=#55BB55
 palette = 4=#55BB55
 palette = 5=#55BB55
 palette = 6=#55BB55
 palette = 7=#55BB55
-palette = 8=#081008
-palette = 9=#FF9282
+palette = 8=#1A3018
+palette = 9=#C03838
 palette = 10=#77DD77
 palette = 11=#77DD77
 palette = 12=#77DD77
 palette = 13=#77DD77
 palette = 14=#77DD77
 palette = 15=#77DD77
-
 background = #060C06
 foreground = #55BB55
 cursor-color = #55BB55

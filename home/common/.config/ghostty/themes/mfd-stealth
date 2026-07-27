@@ -1,23 +1,19 @@
-# MFD Stealth: Classic military CRT phosphor green
-# Near-black background with bright phosphor green text
-
 palette = 0=#0D1410
-palette = 1=#C17B71
+palette = 1=#C03838
 palette = 2=#7A9A7A
 palette = 3=#7A9A7A
 palette = 4=#7A9A7A
 palette = 5=#7A9A7A
 palette = 6=#7A9A7A
 palette = 7=#7A9A7A
-palette = 8=#101810
-palette = 9=#E49B91
+palette = 8=#253828
+palette = 9=#C03838
 palette = 10=#9ABB9A
 palette = 11=#9ABB9A
 palette = 12=#9ABB9A
 palette = 13=#9ABB9A
 palette = 14=#9ABB9A
 palette = 15=#9ABB9A
-
 background = #0D1410
 foreground = #7A9A7A
 cursor-color = #7A9A7A

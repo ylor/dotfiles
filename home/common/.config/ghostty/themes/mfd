@@ -1,23 +1,19 @@
-# MFD: Military Flight Display theme
-# Monotone olive/sage with text decoration for syntax
-
 palette = 0=#7A8B69
-palette = 1=#4C100C
+palette = 1=#C03838
 palette = 2=#1E2D1E
 palette = 3=#1E2D1E
 palette = 4=#1E2D1E
 palette = 5=#1E2D1E
 palette = 6=#1E2D1E
 palette = 7=#1E2D1E
-palette = 8=#5A6B4A
-palette = 9=#380000
+palette = 8=#5A6B49
+palette = 9=#C03838
 palette = 10=#0D1D0D
 palette = 11=#0D1D0D
 palette = 12=#0D1D0D
 palette = 13=#0D1D0D
 palette = 14=#0D1D0D
 palette = 15=#0D1D0D
-
 background = #7A8B69
 foreground = #1E2D1E
 cursor-color = #1E2D1E

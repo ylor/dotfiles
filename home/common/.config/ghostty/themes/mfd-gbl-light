@@ -1,23 +1,19 @@
-# MFD GBL-Light: Game Boy Light electroluminescence
-# Light variant
-
 palette = 0=#02B582
-palette = 1=#6A2C26
+palette = 1=#C03838
 palette = 2=#004F3A
 palette = 3=#004F3A
 palette = 4=#004F3A
 palette = 5=#004F3A
 palette = 6=#004F3A
 palette = 7=#004F3A
-palette = 8=#02B582
-palette = 9=#864139
+palette = 8=#009A70
+palette = 9=#C03838
 palette = 10=#01694A
 palette = 11=#01694A
 palette = 12=#01694A
 palette = 13=#01694A
 palette = 14=#01694A
 palette = 15=#01694A
-
 background = #02B582
 foreground = #004F3A
 cursor-color = #004F3A

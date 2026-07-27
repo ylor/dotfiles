@@ -1,23 +1,19 @@
-# MFD NERV: Evangelion NERV terminal display
-# Hot orange phosphor with warm bleed - inspired by NERV HQ interfaces
-
 palette = 0=#1A0A02
-palette = 1=#FA786A
+palette = 1=#C03838
 palette = 2=#EE8822
 palette = 3=#EE8822
 palette = 4=#EE8822
 palette = 5=#EE8822
 palette = 6=#EE8822
 palette = 7=#EE8822
-palette = 8=#180A02
-palette = 9=#FF9687
+palette = 8=#6B3510
+palette = 9=#C03838
 palette = 10=#FFAA44
 palette = 11=#FFAA44
 palette = 12=#FFAA44
 palette = 13=#FFAA44
 palette = 14=#FFAA44
 palette = 15=#FFAA44
-
 background = #1A0A02
 foreground = #EE8822
 cursor-color = #EE8822
