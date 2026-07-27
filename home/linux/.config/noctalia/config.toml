@@ -1,11 +1,13 @@
 [bar.default]
-center = [ "active_window" ]
+background_opacity = 0.0
+border_width = 1.0
+center = [ "workspaces" ]
 concave_edge_corners = false
 end = [ "media", "tray", "volume", "brightness", "battery", "network", "launcher", "notifications", "clock" ]
 margin_edge = 0
 margin_ends = 4
 radius = 12
-start = [ "control-center", "workspaces" ]
+start = [ "control-center", "active_window" ]
 thickness = 32
 
     [bar.default.dead_zone.actions]
@@ -101,7 +103,7 @@ widget_order = [ "lockscreen-login-box@WAYLAND-1", "lockscreen-login-box@DP-1" ]
         show_session_buttons = true
 
 [nightlight]
-enabled = true
+enabled = false
 temperature_night = 5000
 
 [plugins]
@@ -120,6 +122,7 @@ font_family = "Iosevka Aile"
 
     [shell.panel]
     open_near_click_control_center = true
+    session_placement = "floating"
     transparency_mode = "solid"
 
     [[shell.session.actions]]
@@ -188,6 +191,7 @@ unit = "imperial"
 capsule_foreground = "on_tertiary"
 display = "text_only"
 max_length = 800
+min_length = 0
 title_scroll = "on_hover"
 
 [widget.brightness]
