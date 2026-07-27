@@ -293,6 +293,9 @@ set -g net_client_ip (echo $net_client_ip | tr -d '()')
 
 # Store as a Fish list - each nameserver becomes one element
 set -g net_dns_ip (grep '^nameserver [0-9.]' /etc/resolv.conf | cut -d' ' -f2)
+# Pre-join into a single string so PRINT_DATA always gets a real (possibly
+# empty) second argument, even when net_dns_ip is an empty list.
+set -g net_dns_str (string join ", " $net_dns_ip)
 
 debug "COLLECTING CPU INFO"
 # CPU Information
@@ -549,7 +552,7 @@ function tr100
     # PRINT_DATA CORES "$cpu_cores_per_socket"
     # PRINT_DATA "SESSION" (set -q SSH_TTY && $net_client_ip || echo "Local")
     PRINT_DATA IP $net_machine_ip
-    PRINT_DATA DNS (string join ", " $net_dns_ip)
+    PRINT_DATA DNS "$net_dns_str"
     PRINT_DIVIDER
     PRINT_DATA UPTIME $sys_uptime
     PRINT_BAR "LOAD  1m" $cpu_1min_bar_graph
