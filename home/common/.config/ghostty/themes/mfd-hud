@@ -1,23 +1,27 @@
 # MFD HUD
-palette = 0=#060C06
-palette = 1=#903838
-palette = 2=#55BB55
-palette = 3=#77DD77
-palette = 4=#1A3018
-palette = 5=#55BB55
-palette = 6=#77DD77
-palette = 7=#55BB55
-palette = 8=#1A2A18
-palette = 9=#C03838
-palette = 10=#77DD77
-palette = 11=#77DD77
-palette = 12=#55BB55
-palette = 13=#77DD77
-palette = 14=#77DD77
-palette = 15=#77DD77
-background = #060C06
-foreground = #55BB55
-cursor-color = #77DD77
-cursor-text = #060C06
-selection-background = #0A1A0A
-selection-foreground = #55BB55
+# Adapted from kungfusheep/mfd.nvim
+# Original project licensed under Apache-2.0
+
+palette = 0=#060c06
+palette = 1=#55bb55
+palette = 2=#55bb55
+palette = 3=#55bb55
+palette = 4=#55bb55
+palette = 5=#55bb55
+palette = 6=#55bb55
+palette = 7=#55bb55
+palette = 8=#1a3018
+palette = 9=#77dd77
+palette = 10=#77dd77
+palette = 11=#55bb55
+palette = 12=#55bb55
+palette = 13=#55bb55
+palette = 14=#55bb55
+palette = 15=#77dd77
+
+background = #060c06
+foreground = #55bb55
+cursor-color = #77dd77
+cursor-text = #060c06
+selection-background = #0a1a0a
+selection-foreground = #55bb55

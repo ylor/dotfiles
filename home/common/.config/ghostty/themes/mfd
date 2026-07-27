@@ -1,23 +1,27 @@
-# MFD BASE
-palette = 0=#7A8B69
-palette = 1=#903838
-palette = 2=#1E2D1E
-palette = 3=#0D1D0D
-palette = 4=#5A6B49
-palette = 5=#1E2D1E
-palette = 6=#0D1D0D
-palette = 7=#1E2D1E
-palette = 8=#687858
-palette = 9=#C03838
-palette = 10=#0D1D0D
-palette = 11=#0D1D0D
-palette = 12=#1E2D1E
-palette = 13=#0D1D0D
-palette = 14=#0D1D0D
-palette = 15=#0D1D0D
-background = #7A8B69
-foreground = #1E2D1E
-cursor-color = #0D1D0D
-cursor-text = #7A8B69
-selection-background = #6A7B59
-selection-foreground = #1E2D1E
+# MFD
+# Adapted from kungfusheep/mfd.nvim
+# Original project licensed under Apache-2.0
+
+palette = 0=#1e2d1e
+palette = 1=#1e2d1e
+palette = 2=#1e2d1e
+palette = 3=#1e2d1e
+palette = 4=#1e2d1e
+palette = 5=#1e2d1e
+palette = 6=#1e2d1e
+palette = 7=#687858
+palette = 8=#5a6b49
+palette = 9=#1e2d1e
+palette = 10=#1e2d1e
+palette = 11=#1e2d1e
+palette = 12=#1e2d1e
+palette = 13=#1e2d1e
+palette = 14=#1e2d1e
+palette = 15=#7a8b69
+
+background = #7a8b69
+foreground = #1e2d1e
+cursor-color = #0d1d0d
+cursor-text = #7a8b69
+selection-background = #6a7b59
+selection-foreground = #1e2d1e

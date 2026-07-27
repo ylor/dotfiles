@@ -1,23 +1,27 @@
 # MFD FLIR BH
-palette = 0=#B8B8B8
-palette = 1=#903838
+# Adapted from kungfusheep/mfd.nvim
+# Original project licensed under Apache-2.0
+
+palette = 0=#505050
+palette = 1=#505050
 palette = 2=#505050
-palette = 3=#383838
-palette = 4=#909090
+palette = 3=#505050
+palette = 4=#505050
 palette = 5=#505050
-palette = 6=#383838
-palette = 7=#505050
-palette = 8=#A8A8A8
-palette = 9=#C03838
-palette = 10=#383838
-palette = 11=#383838
+palette = 6=#505050
+palette = 7=#a8a8a8
+palette = 8=#909090
+palette = 9=#505050
+palette = 10=#505050
+palette = 11=#505050
 palette = 12=#505050
-palette = 13=#383838
-palette = 14=#383838
-palette = 15=#383838
-background = #B8B8B8
+palette = 13=#505050
+palette = 14=#505050
+palette = 15=#b8b8b8
+
+background = #b8b8b8
 foreground = #505050
 cursor-color = #383838
-cursor-text = #B8B8B8
-selection-background = #ACACAC
+cursor-text = #b8b8b8
+selection-background = #acacac
 selection-foreground = #505050
