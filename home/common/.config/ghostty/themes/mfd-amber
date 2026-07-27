@@ -1,24 +1,29 @@
-# mfd-amber — generated from mfd.nvim colors/mfd-amber.lua
-# palette 1/9 (red): no red in source theme; derived pure-red hue at matching ramp lightness
+# MFD Amber
+# Classic monochrome amber phosphor terminal
+
+palette = 0=#0F0C08
+palette = 1=#DD7744
+palette = 2=#CC9944
+palette = 3=#FFBB55
+palette = 4=#AA7733
+palette = 5=#CC9944
+palette = 6=#FFD070
+palette = 7=#CC9944
+
+palette = 8=#382818
+palette = 9=#DD7744
+palette = 10=#FFBB55
+palette = 11=#FFD070
+palette = 12=#CC9944
+palette = 13=#FFBB55
+palette = 14=#FFD070
+palette = 15=#FFD070
+
 background = #0F0C08
 foreground = #CC9944
-cursor-color = #CC9944
+
+cursor-color = #FFBB55
 cursor-text = #0F0C08
+
 selection-background = #2A1C10
-selection-foreground = #CC9944
-palette = 0=#0F0C08
-palette = 1=#210D0D
-palette = 2=#211A0F
-palette = 3=#342817
-palette = 4=#463620
-palette = 5=#594428
-palette = 6=#6B5230
-palette = 7=#7E6039
-palette = 8=#906E41
-palette = 9=#A34141
-palette = 10=#A37C49
-palette = 11=#B58A52
-palette = 12=#C8995A
-palette = 13=#DAA762
-palette = 14=#EDB56A
-palette = 15=#FFBB55
+selection-foreground = #FFD070

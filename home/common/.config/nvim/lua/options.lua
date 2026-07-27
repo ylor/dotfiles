@@ -113,8 +113,14 @@ vim.schedule(function()
 	vim.opt.clipboard = "unnamedplus"
 end)
 
--- Enable break indent
+-- Wrap long lines at word boundaries and indent wrapped lines to match the
+-- start of the line, so wrapped text stays visually aligned.
+vim.opt.wrap = true
+vim.opt.linebreak = true
 vim.opt.breakindent = true
+
+-- Mark column 80 as a visual guide.
+vim.opt.colorcolumn = "80"
 
 -- Enable undo/redo changes even after closing and reopening a file
 -- vim.cmd("packadd nvim.undotree")

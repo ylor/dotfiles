@@ -33,6 +33,10 @@ require("ember").setup({
 	transparent_floats = false, -- follows `transparent` by default; set explicitly to override
 	on_colors = nil, -- function(palette) - modify palette before theme builds
 	on_highlights = function(highlights, theme)
+		-- Drop the cursorline's background fill; keep only its underline/other
+		-- styling (if any) so the current line isn't shaded.
+		highlights.CursorLine.bg = "NONE"
+
 		-- Match the Telescope prompt box to the same background as every other
 		-- float instead of the theme's default (slightly different) shade.
 		highlights.TelescopePromptNormal.bg = theme.ui.float_bg
