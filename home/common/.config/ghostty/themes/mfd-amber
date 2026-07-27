@@ -20,10 +20,10 @@ palette = 14=#FFD070
 palette = 15=#FFD070
 
 background = #0F0C08
-foreground = #CC9944
+foreground = #FFBB55
 
 cursor-color = #FFBB55
 cursor-text = #0F0C08
 
-selection-background = #2A1C10
-selection-foreground = #FFD070
+selection-background = #FFBB55
+selection-foreground = #0F0C08

@@ -59,7 +59,7 @@ if command -q git; and status --is-interactive
     abbr gco git checkout
     abbr gf git fetch
     abbr gm git merge
-    abbr gpl git pull
+    abbr gp git pull
     abbr gpu git push
     abbr gst git status
 end
