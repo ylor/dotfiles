@@ -1,27 +1,24 @@
-# MFD AMBER
-# Adapted from kungfusheep/mfd.nvim
-# Original project licensed under Apache-2.0
-
-palette = 0=#0f0c08
-palette = 1=#cc9944
-palette = 2=#cc9944
-palette = 3=#cc9944
-palette = 4=#cc9944
-palette = 5=#cc9944
-palette = 6=#cc9944
-palette = 7=#cc9944
-palette = 8=#382818
-palette = 9=#ffbb55
-palette = 10=#ffbb55
-palette = 11=#cc9944
-palette = 12=#cc9944
-palette = 13=#cc9944
-palette = 14=#cc9944
-palette = 15=#ffbb55
-
-background = #0f0c08
-foreground = #cc9944
-cursor-color = #ffbb55
-cursor-text = #0f0c08
-selection-background = #2a1c10
-selection-foreground = #cc9944
+# mfd-amber — generated from mfd.nvim colors/mfd-amber.lua
+# palette 1/9 (red): no red in source theme; derived pure-red hue at matching ramp lightness
+background = #0F0C08
+foreground = #CC9944
+cursor-color = #CC9944
+cursor-text = #0F0C08
+selection-background = #2A1C10
+selection-foreground = #CC9944
+palette = 0=#0F0C08
+palette = 1=#210B0B
+palette = 2=#21190B
+palette = 3=#342711
+palette = 4=#463517
+palette = 5=#59431E
+palette = 6=#6B5024
+palette = 7=#7E5E2A
+palette = 8=#906C30
+palette = 9=#A33636
+palette = 10=#A37A36
+palette = 11=#B5883C
+palette = 12=#C89643
+palette = 13=#DAA449
+palette = 14=#EDB14F
+palette = 15=#FFBB55

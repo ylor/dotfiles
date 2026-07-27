@@ -1,27 +1,24 @@
-# MFD NVG
-# Adapted from kungfusheep/mfd.nvim
-# Original project licensed under Apache-2.0
-
-palette = 0=#162014
-palette = 1=#78b858
-palette = 2=#78b858
-palette = 3=#78b858
-palette = 4=#78b858
-palette = 5=#78b858
-palette = 6=#78b858
-palette = 7=#78b858
-palette = 8=#4a7a3a
-palette = 9=#90d868
-palette = 10=#90d868
-palette = 11=#78b858
-palette = 12=#78b858
-palette = 13=#78b858
-palette = 14=#78b858
-palette = 15=#90d868
-
+# mfd-nvg — generated from mfd.nvim colors/mfd-nvg.lua
+# palette 1/9 (red): no red in source theme; derived pure-red hue at matching ramp lightness
 background = #162014
-foreground = #78b858
-cursor-color = #90d868
+foreground = #78B858
+cursor-color = #78B858
 cursor-text = #162014
-selection-background = #1e3018
-selection-foreground = #78b858
+selection-background = #1E3018
+selection-foreground = #78B858
+palette = 0=#162014
+palette = 1=#2E1515
+palette = 2=#1E2E16
+palette = 3=#273C1D
+palette = 4=#314A24
+palette = 5=#3A592A
+palette = 6=#436731
+palette = 7=#4C7538
+palette = 8=#55833F
+palette = 9=#914141
+palette = 10=#5F9145
+palette = 11=#689F4C
+palette = 12=#71AE53
+palette = 13=#7ABC5A
+palette = 14=#84CA61
+palette = 15=#90D868

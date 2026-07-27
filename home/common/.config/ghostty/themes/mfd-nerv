@@ -1,27 +1,24 @@
-# MFD NERV
-# Adapted from kungfusheep/mfd.nvim
-# Original project licensed under Apache-2.0
-
-palette = 0=#1a0a02
-palette = 1=#ee8822
-palette = 2=#ee8822
-palette = 3=#ee8822
-palette = 4=#ee8822
-palette = 5=#ee8822
-palette = 6=#ee8822
-palette = 7=#ee8822
-palette = 8=#6b3510
-palette = 9=#ffaa44
-palette = 10=#ffaa44
-palette = 11=#ee8822
-palette = 12=#ee8822
-palette = 13=#ee8822
-palette = 14=#ee8822
-palette = 15=#ffaa44
-
-background = #1a0a02
-foreground = #ee8822
-cursor-color = #ffaa44
-cursor-text = #1a0a02
-selection-background = #2a1208
-selection-foreground = #ee8822
+# mfd-nerv — generated from mfd.nvim colors/mfd-nerv.lua
+# palette 1/9 (red): theme's own accent red, used directly
+background = #1A0A02
+foreground = #EE8822
+cursor-color = #EE8822
+cursor-text = #1A0A02
+selection-background = #2A1208
+selection-foreground = #EE8822
+palette = 0=#180A02
+palette = 1=#8A2E18
+palette = 2=#2A1806
+palette = 3=#3C2209
+palette = 4=#4D2C0B
+palette = 5=#5F360E
+palette = 6=#714010
+palette = 7=#834B13
+palette = 8=#945515
+palette = 9=#FF6644
+palette = 10=#A65F18
+palette = 11=#B8691A
+palette = 12=#CA731D
+palette = 13=#DB7D1F
+palette = 14=#ED8822
+palette = 15=#FFAA44

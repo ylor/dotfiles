@@ -1,27 +1,24 @@
-# MFD FLIR FUSION
-# Adapted from kungfusheep/mfd.nvim
-# Original project licensed under Apache-2.0
-
-palette = 0=#1a0a20
-palette = 1=#c08840
-palette = 2=#c08840
-palette = 3=#c08840
-palette = 4=#c08840
-palette = 5=#c08840
-palette = 6=#c08840
-palette = 7=#c08840
-palette = 8=#503060
-palette = 9=#e8c050
-palette = 10=#e8c050
-palette = 11=#c08840
-palette = 12=#c08840
-palette = 13=#c08840
-palette = 14=#c08840
-palette = 15=#e8c050
-
-background = #1a0a20
-foreground = #c08840
-cursor-color = #e8c050
-cursor-text = #1a0a20
+# mfd-flir-fusion — generated from mfd.nvim colors/mfd-flir-fusion.lua
+# palette 1/9 (red): no red in source theme; derived pure-red hue at matching ramp lightness
+background = #1A0A20
+foreground = #C08840
+cursor-color = #E8C050
+cursor-text = #1A0A20
 selection-background = #241430
-selection-foreground = #c08840
+selection-foreground = #C08840
+palette = 0=#1A0A20
+palette = 1=#2F1010
+palette = 2=#2F2210
+palette = 3=#3F2C15
+palette = 4=#4E371A
+palette = 5=#5E421F
+palette = 6=#6D4D24
+palette = 7=#7C5829
+palette = 8=#8C632F
+palette = 9=#9B3434
+palette = 10=#9B6E34
+palette = 11=#AA7939
+palette = 12=#BA843E
+palette = 13=#C98F43
+palette = 14=#D99948
+palette = 15=#E8C050

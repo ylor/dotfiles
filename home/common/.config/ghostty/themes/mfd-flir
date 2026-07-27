@@ -1,27 +1,24 @@
-# MFD FLIR
-# Adapted from kungfusheep/mfd.nvim
-# Original project licensed under Apache-2.0
-
-palette = 0=#181818
-palette = 1=#909090
-palette = 2=#909090
-palette = 3=#909090
-palette = 4=#909090
-palette = 5=#909090
-palette = 6=#909090
-palette = 7=#909090
-palette = 8=#404040
-palette = 9=#a8a8a8
-palette = 10=#a8a8a8
-palette = 11=#909090
-palette = 12=#909090
-palette = 13=#909090
-palette = 14=#909090
-palette = 15=#a8a8a8
-
+# mfd-flir — generated from mfd.nvim colors/mfd-flir.lua
+# palette 1/9 (red): no red in source theme; derived pure-red hue at matching ramp lightness
 background = #181818
 foreground = #909090
-cursor-color = #c0c0c0
+cursor-color = #C0C0C0
 cursor-text = #181818
 selection-background = #242424
 selection-foreground = #909090
+palette = 0=#181818
+palette = 1=#231010
+palette = 2=#232323
+palette = 3=#2E2E2E
+palette = 4=#393939
+palette = 5=#444444
+palette = 6=#4F4F4F
+palette = 7=#5A5A5A
+palette = 8=#666666
+palette = 9=#713333
+palette = 10=#717171
+palette = 11=#7C7C7C
+palette = 12=#878787
+palette = 13=#929292
+palette = 14=#9D9D9D
+palette = 15=#A8A8A8

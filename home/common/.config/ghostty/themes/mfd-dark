@@ -1,27 +1,24 @@
-# MFD DARK
-# Adapted from kungfusheep/mfd.nvim
-# Original project licensed under Apache-2.0
-
-palette = 0=#1e2d1e
-palette = 1=#8a9b70
-palette = 2=#8a9b70
-palette = 3=#8a9b70
-palette = 4=#8a9b70
-palette = 5=#8a9b70
-palette = 6=#8a9b70
-palette = 7=#8a9b70
-palette = 8=#3a4a3a
-palette = 9=#8a9b70
-palette = 10=#8a9b70
-palette = 11=#8a9b70
-palette = 12=#8a9b70
-palette = 13=#8a9b70
-palette = 14=#8a9b70
-palette = 15=#a0b180
-
-background = #1e2d1e
-foreground = #8a9b70
-cursor-color = #a0b180
-cursor-text = #1e2d1e
-selection-background = #2a3d2a
-selection-foreground = #8a9b70
+# mfd-dark — generated from mfd.nvim colors/mfd-dark.lua
+# palette 1/9 (red): no red in source theme; derived pure-red hue at matching ramp lightness
+background = #1E2D1E
+foreground = #8A9B70
+cursor-color = #A0B180
+cursor-text = #1E2D1E
+selection-background = #2A3D2A
+selection-foreground = #8A9B70
+palette = 0=#1E2D1E
+palette = 1=#371919
+palette = 2=#313728
+palette = 3=#3A412F
+palette = 4=#434B37
+palette = 5=#4C563E
+palette = 6=#556045
+palette = 7=#5E6A4D
+palette = 8=#677454
+palette = 9=#7E3939
+palette = 10=#707E5B
+palette = 11=#798863
+palette = 12=#82936A
+palette = 13=#8C9D71
+palette = 14=#95A779
+palette = 15=#A0B180

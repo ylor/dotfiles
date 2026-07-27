@@ -1,27 +1,24 @@
-# MFD LUMON
-# Adapted from kungfusheep/mfd.nvim
-# Original project licensed under Apache-2.0
-
-palette = 0=#5ac8d8
-palette = 1=#dd8899
-palette = 2=#66dd88
-palette = 3=#e0bb55
-palette = 4=#66ccee
-palette = 5=#dd8899
-palette = 6=#5ac8d8
-palette = 7=#143040
-palette = 8=#1a3848
-palette = 9=#ffaacc
-palette = 10=#88ffaa
-palette = 11=#f0dd77
-palette = 12=#88eeff
-palette = 13=#ffaacc
-palette = 14=#5ac8d8
-palette = 15=#0a1520
-
-background = #0a1520
-foreground = #5ac8d8
-cursor-color = #a0f0ff
-cursor-text = #0a1520
+# mfd-lumon — generated from mfd.nvim colors/mfd-lumon.lua
+# palette 1/9 (red): no red in source theme; derived pure-red hue at matching ramp lightness
+background = #0A1520
+foreground = #5AC8D8
+cursor-color = #5AC8D8
+cursor-text = #0A1520
 selection-background = #122838
-selection-foreground = #5ac8d8
+selection-foreground = #5AC8D8
+palette = 0=#0A1520
+palette = 1=#311414
+palette = 2=#142E31
+palette = 3=#1C3D42
+palette = 4=#234D53
+palette = 5=#2A5D65
+palette = 6=#316D76
+palette = 7=#387D87
+palette = 8=#3F8D98
+palette = 9=#A94747
+palette = 10=#479DA9
+palette = 11=#4EADBA
+palette = 12=#55BCCC
+palette = 13=#5CCCDD
+palette = 14=#63DCEE
+palette = 15=#A0F0FF

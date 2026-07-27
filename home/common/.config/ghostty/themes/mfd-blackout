@@ -1,27 +1,24 @@
-# MFD BLACKOUT
-# Adapted from kungfusheep/mfd.nvim
-# Original project licensed under Apache-2.0
-
-palette = 0=#000000
-palette = 1=#24282c
-palette = 2=#24282c
-palette = 3=#24282c
-palette = 4=#24282c
-palette = 5=#24282c
-palette = 6=#24282c
-palette = 7=#24282c
-palette = 8=#181c20
-palette = 9=#24282c
-palette = 10=#24282c
-palette = 11=#24282c
-palette = 12=#24282c
-palette = 13=#24282c
-palette = 14=#24282c
-palette = 15=#24282c
-
+# mfd-blackout — generated from mfd.nvim colors/mfd-blackout.lua
+# palette 1/9 (red): no red in source theme; derived pure-red hue at matching ramp lightness
 background = #000000
-foreground = #24282c
-cursor-color = #24282c
+foreground = #24282C
+cursor-color = #3A3A3A
 cursor-text = #000000
-selection-background = #0c0e10
-selection-foreground = #24282c
+selection-background = #0C0E10
+selection-foreground = #24282C
+palette = 0=#000000
+palette = 1=#030202
+palette = 2=#030303
+palette = 3=#060607
+palette = 4=#08090A
+palette = 5=#0B0C0E
+palette = 6=#0E0F11
+palette = 7=#111214
+palette = 8=#131618
+palette = 9=#1B0C0C
+palette = 10=#16191B
+palette = 11=#191C1E
+palette = 12=#1C1F22
+palette = 13=#1E2225
+palette = 14=#212529
+palette = 15=#24282C

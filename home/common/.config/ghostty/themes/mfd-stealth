@@ -1,27 +1,24 @@
-# MFD STEALTH
-# Adapted from kungfusheep/mfd.nvim
-# Original project licensed under Apache-2.0
-
-palette = 0=#0d1410
-palette = 1=#7a9a7a
-palette = 2=#7a9a7a
-palette = 3=#7a9a7a
-palette = 4=#7a9a7a
-palette = 5=#7a9a7a
-palette = 6=#7a9a7a
-palette = 7=#7a9a7a
-palette = 8=#253828
-palette = 9=#9abb9a
-palette = 10=#9abb9a
-palette = 11=#7a9a7a
-palette = 12=#7a9a7a
-palette = 13=#7a9a7a
-palette = 14=#7a9a7a
-palette = 15=#9abb9a
-
-background = #0d1410
-foreground = #7a9a7a
-cursor-color = #9abb9a
-cursor-text = #0d1410
-selection-background = #1a2a1a
-selection-foreground = #7a9a7a
+# mfd-stealth — generated from mfd.nvim colors/mfd-stealth.lua
+# palette 1/9 (red): no red in source theme; derived pure-red hue at matching ramp lightness
+background = #0D1410
+foreground = #7A9A7A
+cursor-color = #7A9A7A
+cursor-text = #0D1410
+selection-background = #1A2A1A
+selection-foreground = #7A9A7A
+palette = 0=#0D1410
+palette = 1=#210F0F
+palette = 2=#1A211A
+palette = 3=#242E24
+palette = 4=#2E3B2E
+palette = 5=#394739
+palette = 6=#435443
+palette = 7=#4D614D
+palette = 8=#576E57
+palette = 9=#7B3737
+palette = 10=#617B61
+palette = 11=#6B886B
+palette = 12=#769476
+palette = 13=#80A180
+palette = 14=#8AAE8A
+palette = 15=#9ABB9A

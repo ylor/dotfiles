@@ -1,27 +1,24 @@
-# MFD SCARLET
-# Adapted from kungfusheep/mfd.nvim
-# Original project licensed under Apache-2.0
-
-palette = 0=#0c0404
-palette = 1=#cc5545
-palette = 2=#cc5545
-palette = 3=#cc5545
-palette = 4=#cc5545
-palette = 5=#cc5545
-palette = 6=#cc5545
-palette = 7=#cc5545
-palette = 8=#3a1812
-palette = 9=#dd6655
-palette = 10=#dd6655
-palette = 11=#cc5545
-palette = 12=#cc5545
-palette = 13=#cc5545
-palette = 14=#cc5545
-palette = 15=#dd6655
-
-background = #0c0404
-foreground = #cc5545
-cursor-color = #dd6655
-cursor-text = #0c0404
-selection-background = #1a0808
-selection-foreground = #cc5545
+# mfd-scarlet — generated from mfd.nvim colors/mfd-scarlet.lua
+# palette 1/9 (red): theme's own accent red, used directly
+background = #0C0404
+foreground = #CC5545
+cursor-color = #CC5545
+cursor-text = #0C0404
+selection-background = #1A0808
+selection-foreground = #CC5545
+palette = 0=#0C0404
+palette = 1=#8A3A2E
+palette = 2=#1C0C09
+palette = 3=#2C120F
+palette = 4=#3C1914
+palette = 5=#4C201A
+palette = 6=#5C261F
+palette = 7=#6C2D25
+palette = 8=#7D342A
+palette = 9=#EE7766
+palette = 10=#8D3B30
+palette = 11=#9D4135
+palette = 12=#AD483A
+palette = 13=#BD4F40
+palette = 14=#CD5545
+palette = 15=#DD6655

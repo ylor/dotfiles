@@ -1,27 +1,24 @@
-# MFD MONO
-# Adapted from kungfusheep/mfd.nvim
-# Original project licensed under Apache-2.0
-
-palette = 0=#08080c
-palette = 1=#d0d0d8
-palette = 2=#d0d0d8
-palette = 3=#d0d0d8
-palette = 4=#d0d0d8
-palette = 5=#d0d0d8
-palette = 6=#d0d0d8
-palette = 7=#d0d0d8
-palette = 8=#282830
-palette = 9=#f0f0ff
-palette = 10=#f0f0ff
-palette = 11=#d0d0d8
-palette = 12=#d0d0d8
-palette = 13=#d0d0d8
-palette = 14=#d0d0d8
-palette = 15=#f0f0ff
-
-background = #08080c
-foreground = #d0d0d8
-cursor-color = #f0f0ff
-cursor-text = #08080c
-selection-background = #1a1a22
-selection-foreground = #d0d0d8
+# mfd-mono — generated from mfd.nvim colors/mfd-mono.lua
+# palette 1/9 (red): no red in source theme; derived pure-red hue at matching ramp lightness
+background = #08080C
+foreground = #D0D0D8
+cursor-color = #D0D0D8
+cursor-text = #08080C
+selection-background = #1A1A22
+selection-foreground = #D0D0D8
+palette = 0=#08080C
+palette = 1=#1F0E0E
+palette = 2=#1D1D1F
+palette = 3=#2E2E31
+palette = 4=#404044
+palette = 5=#525257
+palette = 6=#636369
+palette = 7=#75757C
+palette = 8=#86868F
+palette = 9=#A24949
+palette = 10=#9898A2
+palette = 11=#AAAAB4
+palette = 12=#BBBBC7
+palette = 13=#CDCDDA
+palette = 14=#DEDEEC
+palette = 15=#F0F0FF
