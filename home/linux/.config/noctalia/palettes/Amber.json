@@ -4,7 +4,7 @@
     "mOnPrimary": "#000000",
     "mSecondary": "#FA9B00",
     "mOnSecondary": "#000000",
-    "mTertiary": "#FFBF00",
+    "mTertiary": "#FFB000",
     "mOnTertiary": "#000000",
     "mError": "#FF0000",
     "mOnError": "#000000",
@@ -15,7 +15,7 @@
     "mOutline": "#5C3A00",
     "mShadow": "#000000",
     "mHover": "#2A1A00",
-    "mOnHover": "#FFBF00",
+    "mOnHover": "#FFB000",
     "terminal": {
       "background": "#000000",
       "foreground": "#FFB000",
@@ -36,12 +36,12 @@
       "bright": {
         "black": "#403000",
         "red": "#FF0000",
-        "green": "#FFBF00",
-        "yellow": "#FFBF00",
-        "blue": "#FFBF00",
-        "magenta": "#FFBF00",
-        "cyan": "#FFBF00",
-        "white": "#FFBF00"
+        "green": "#FFB000",
+        "yellow": "#FFB000",
+        "blue": "#FFB000",
+        "magenta": "#FFB000",
+        "cyan": "#FFB000",
+        "white": "#FFB000"
       }
     }
   }

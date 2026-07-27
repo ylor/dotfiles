@@ -1,0 +1,23 @@
+# MFD AMBER SIGNAL
+palette = 0=#0F0C08
+palette = 1=#DD5555
+palette = 2=#FFB000
+palette = 3=#FA9B00
+palette = 4=#382818
+palette = 5=#FFB000
+palette = 6=#FA9B00
+palette = 7=#FFB000
+palette = 8=#4A3820
+palette = 9=#FF6644
+palette = 10=#FA9B00
+palette = 11=#FA9B00
+palette = 12=#FFB000
+palette = 13=#FA9B00
+palette = 14=#FA9B00
+palette = 15=#FA9B00
+background = #0F0C08
+foreground = #FFB000
+cursor-color = #FA9B00
+cursor-text = #0F0C08
+selection-background = #2A1C10
+selection-foreground = #FFB000

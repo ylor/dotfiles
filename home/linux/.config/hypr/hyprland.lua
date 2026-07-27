@@ -5,7 +5,6 @@ require("env")
 require("animations")
 
 local noctalia = "noctalia msg "
-local noctalia_theme = require("noctalia")
 
 local function with_alpha(rgb, alpha)
 	return "rgba(" .. rgb:match("%x%x%x%x%x%x") .. alpha .. ")"
@@ -55,8 +54,8 @@ local menu = "noctalia msg panel-toggle launcher"
 -- Or execute your favorite apps at launch like this:
 --
 hl.on("hyprland.start", function()
-	hl.exec_cmd("noctalia && noctalia msg session lock")
-	-- hl.exec_cmd("noctalia msg session lock")
+	hl.exec_cmd("noctalia")
+	hl.exec_cmd("noctalia msg session lock")
 	hl.exec_cmd(browser, { workspace = "1 silent" })
 	hl.exec_cmd(terminal, { workspace = "2 silent" })
 	hl.exec_cmd("steam -steamos3 -silent")
@@ -102,7 +101,7 @@ hl.config({
 	},
 })
 
--- hl.permission("/usr/bin/noctalia", "screencopy", "allow")
+hl.permission("/usr/bin/noctalia", "screencopy", "allow")
 -- hl.permission("/usr/(bin|local/bin)/grim", "screencopy", "allow")
 -- hl.permission("/usr/(lib|libexec|lib64)/xdg-desktop-portal-hyprland", "screencopy", "allow")
 -- hl.permission("/usr/(bin|local/bin)/hyprpm", "plugin", "allow")
@@ -174,19 +173,22 @@ hl.config({
 -- uncomment all if you wish to use that.
 -- hl.workspace_rule({ workspace = "w[tv1]", gaps_out = 2, gaps_in = 0 })
 -- hl.workspace_rule({ workspace = "f[1]",   gaps_out = 2, gaps_in = 0 })
+local loaded, noctalia_theme = pcall(require, "noctalia")
+noctalia_theme = loaded and noctalia_theme or nil
+
 hl.window_rule({
 	name = "no-gaps-wtv1",
 	match = { float = false, workspace = "w[tv1]" },
 	border_size = 1,
 	-- rounding    = 0,
-	border_color = with_alpha(noctalia_theme.colors.primary, "40"),
+	border_color = with_alpha(noctalia_theme and noctalia_theme.colors.primary or "rgb(33ccff)", "40"),
 })
 hl.window_rule({
 	name = "no-gaps-f1",
 	match = { float = false, workspace = "f[1]" },
 	border_size = 1,
 	-- rounding    = 0,
-	border_color = with_alpha(noctalia_theme.colors.primary, "40"),
+	border_color = with_alpha(noctalia_theme and noctalia_theme.colors.primary or "rgb(33ccff)", "40"),
 })
 
 -- See https://wiki.hypr.land/Configuring/Layouts/Dwindle-Layout/ for more
@@ -510,3 +512,6 @@ hl.window_rule({
 
 -- For Noctalia Color templates
 noctalia_theme.apply_theme()
+
+-- For Noctalia Color templates
+require("noctalia").apply_theme()
