@@ -1,29 +1,26 @@
-# MFD Amber
-# Classic monochrome amber phosphor terminal
+# MFD Amber: Classic amber phosphor CRT terminal
+# Dark background with warm glowing amber text
 
 palette = 0=#0F0C08
-palette = 1=#DD7744
+palette = 1=#CC5244
 palette = 2=#CC9944
-palette = 3=#FFBB55
-palette = 4=#AA7733
+palette = 3=#CC9944
+palette = 4=#CC9944
 palette = 5=#CC9944
-palette = 6=#FFD070
+palette = 6=#CC9944
 palette = 7=#CC9944
-
-palette = 8=#382818
-palette = 9=#DD7744
+palette = 8=#141008
+palette = 9=#CC5244
 palette = 10=#FFBB55
-palette = 11=#FFD070
-palette = 12=#CC9944
+palette = 11=#FFBB55
+palette = 12=#FFBB55
 palette = 13=#FFBB55
-palette = 14=#FFD070
-palette = 15=#FFD070
+palette = 14=#FFBB55
+palette = 15=#FFBB55
 
 background = #0F0C08
-foreground = #FFBB55
-
-cursor-color = #FFBB55
+foreground = #CC9944
+cursor-color = #CC9944
 cursor-text = #0F0C08
-
-selection-background = #FFBB55
+selection-background = #CC9944
 selection-foreground = #0F0C08

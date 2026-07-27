@@ -1,0 +1,26 @@
+# MFD GBL-Dark: Game Boy Light electroluminescence
+# Dark variant
+
+palette = 0=#004F3A
+palette = 1=#B51402
+palette = 2=#02B582
+palette = 3=#02B582
+palette = 4=#02B582
+palette = 5=#02B582
+palette = 6=#02B582
+palette = 7=#02B582
+palette = 8=#004F3A
+palette = 9=#B51402
+palette = 10=#009A70
+palette = 11=#009A70
+palette = 12=#009A70
+palette = 13=#009A70
+palette = 14=#009A70
+palette = 15=#009A70
+
+background = #004F3A
+foreground = #02B582
+cursor-color = #02B582
+cursor-text = #004F3A
+selection-background = #02B582
+selection-foreground = #004F3A

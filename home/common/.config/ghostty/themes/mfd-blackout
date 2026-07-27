@@ -1,0 +1,26 @@
+# MFD Blackout: Ultra-low contrast, black on black
+# Emergency lighting mode - just enough to see
+
+palette = 0=#000000
+palette = 1=#381B18
+palette = 2=#24282C
+palette = 3=#24282C
+palette = 4=#24282C
+palette = 5=#24282C
+palette = 6=#24282C
+palette = 7=#24282C
+palette = 8=#060808
+palette = 9=#381B18
+palette = 10=#24282C
+palette = 11=#24282C
+palette = 12=#24282C
+palette = 13=#24282C
+palette = 14=#24282C
+palette = 15=#24282C
+
+background = #000000
+foreground = #24282C
+cursor-color = #24282C
+cursor-text = #000000
+selection-background = #24282C
+selection-foreground = #000000

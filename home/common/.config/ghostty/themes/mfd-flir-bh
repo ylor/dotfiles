@@ -1,0 +1,26 @@
+# MFD FLIR-BH: Black-hot thermal imaging
+# Light background, soft dark greys - low contrast inverted
+
+palette = 0=#B8B8B8
+palette = 1=#703630
+palette = 2=#505050
+palette = 3=#505050
+palette = 4=#505050
+palette = 5=#505050
+palette = 6=#505050
+palette = 7=#505050
+palette = 8=#BCBCBC
+palette = 9=#703630
+palette = 10=#383838
+palette = 11=#383838
+palette = 12=#383838
+palette = 13=#383838
+palette = 14=#383838
+palette = 15=#383838
+
+background = #B8B8B8
+foreground = #505050
+cursor-color = #505050
+cursor-text = #B8B8B8
+selection-background = #505050
+selection-foreground = #B8B8B8

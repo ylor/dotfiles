@@ -1,0 +1,26 @@
+# MFD FLIR-Fusion: Thermal fusion imaging
+# Deep purple base, orange/amber heat signatures
+
+palette = 0=#1A0A20
+palette = 1=#C04D40
+palette = 2=#C08840
+palette = 3=#C08840
+palette = 4=#C08840
+palette = 5=#C08840
+palette = 6=#C08840
+palette = 7=#C08840
+palette = 8=#1C0C22
+palette = 9=#C04D40
+palette = 10=#E8C050
+palette = 11=#E8C050
+palette = 12=#E8C050
+palette = 13=#E8C050
+palette = 14=#E8C050
+palette = 15=#E8C050
+
+background = #1A0A20
+foreground = #C08840
+cursor-color = #C08840
+cursor-text = #1A0A20
+selection-background = #C08840
+selection-foreground = #1A0A20

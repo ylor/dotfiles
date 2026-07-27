@@ -1,0 +1,26 @@
+# MFD NVG: Gen III Night Vision Goggles
+# P43 phosphor green - compressed range, lifted blacks, bloom
+
+palette = 0=#162014
+palette = 1=#B86258
+palette = 2=#78B858
+palette = 3=#78B858
+palette = 4=#78B858
+palette = 5=#78B858
+palette = 6=#78B858
+palette = 7=#78B858
+palette = 8=#182416
+palette = 9=#B86258
+palette = 10=#90D868
+palette = 11=#90D868
+palette = 12=#90D868
+palette = 13=#90D868
+palette = 14=#90D868
+palette = 15=#90D868
+
+background = #162014
+foreground = #78B858
+cursor-color = #78B858
+cursor-text = #162014
+selection-background = #78B858
+selection-foreground = #162014
