@@ -2,7 +2,7 @@
 # Cold cyan CRT
 
 palette = 0=#0A1520
-palette = 1=#D8675A
+palette = 1=#F09C91
 palette = 2=#5AC8D8
 palette = 3=#5AC8D8
 palette = 4=#5AC8D8
@@ -10,7 +10,7 @@ palette = 5=#5AC8D8
 palette = 6=#5AC8D8
 palette = 7=#5AC8D8
 palette = 8=#0C1822
-palette = 9=#D8675A
+palette = 9=#F09C91
 palette = 10=#A0F0FF
 palette = 11=#A0F0FF
 palette = 12=#A0F0FF

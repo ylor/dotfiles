@@ -2,7 +2,7 @@
 # Vivid green projected on combiner glass - brighter than CRT
 
 palette = 0=#060C06
-palette = 1=#BB5F55
+palette = 1=#F97062
 palette = 2=#55BB55
 palette = 3=#55BB55
 palette = 4=#55BB55
@@ -10,7 +10,7 @@ palette = 5=#55BB55
 palette = 6=#55BB55
 palette = 7=#55BB55
 palette = 8=#081008
-palette = 9=#BB5F55
+palette = 9=#F97062
 palette = 10=#77DD77
 palette = 11=#77DD77
 palette = 12=#77DD77

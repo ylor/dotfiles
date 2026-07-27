@@ -2,7 +2,7 @@
 # Dark background with warm glowing amber text
 
 palette = 0=#0F0C08
-palette = 1=#CC5244
+palette = 1=#E48579
 palette = 2=#CC9944
 palette = 3=#CC9944
 palette = 4=#CC9944
@@ -10,7 +10,7 @@ palette = 5=#CC9944
 palette = 6=#CC9944
 palette = 7=#CC9944
 palette = 8=#141008
-palette = 9=#CC5244
+palette = 9=#E48579
 palette = 10=#FFBB55
 palette = 11=#FFBB55
 palette = 12=#FFBB55

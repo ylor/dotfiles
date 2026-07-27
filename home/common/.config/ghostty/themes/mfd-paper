@@ -2,7 +2,7 @@
 # Cream background with dark green text - vintage military equipment
 
 palette = 0=#BBC5B7
-palette = 1=#260400
+palette = 1=#3F0303
 palette = 2=#002611
 palette = 3=#002611
 palette = 4=#002611
@@ -10,7 +10,7 @@ palette = 5=#002611
 palette = 6=#002611
 palette = 7=#002611
 palette = 8=#C5CFC2
-palette = 9=#260400
+palette = 9=#3F0303
 palette = 10=#001008
 palette = 11=#001008
 palette = 12=#001008

@@ -2,7 +2,7 @@
 # Monotone olive/sage with text decoration for syntax
 
 palette = 0=#7A8B69
-palette = 1=#341A17
+palette = 1=#4C100C
 palette = 2=#1E2D1E
 palette = 3=#1E2D1E
 palette = 4=#1E2D1E
@@ -10,7 +10,7 @@ palette = 5=#1E2D1E
 palette = 6=#1E2D1E
 palette = 7=#1E2D1E
 palette = 8=#5A6B4A
-palette = 9=#341A17
+palette = 9=#4C100C
 palette = 10=#0D1D0D
 palette = 11=#0D1D0D
 palette = 12=#0D1D0D

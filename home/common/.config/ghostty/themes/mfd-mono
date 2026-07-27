@@ -2,7 +2,7 @@
 # Dark background with cool blue-white text (9300K)
 
 palette = 0=#08080C
-palette = 1=#E5C6C3
+palette = 1=#FFBBB0
 palette = 2=#D0D0D8
 palette = 3=#D0D0D8
 palette = 4=#D0D0D8
@@ -10,7 +10,7 @@ palette = 5=#D0D0D8
 palette = 6=#D0D0D8
 palette = 7=#D0D0D8
 palette = 8=#0C0C10
-palette = 9=#E5C6C3
+palette = 9=#FFBBB0
 palette = 10=#F0F0FF
 palette = 11=#F0F0FF
 palette = 12=#F0F0FF

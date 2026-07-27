@@ -2,7 +2,7 @@
 # Emergency lighting mode - just enough to see
 
 palette = 0=#000000
-palette = 1=#381B18
+palette = 1=#4A0F0B
 palette = 2=#24282C
 palette = 3=#24282C
 palette = 4=#24282C
@@ -10,7 +10,7 @@ palette = 5=#24282C
 palette = 6=#24282C
 palette = 7=#24282C
 palette = 8=#060808
-palette = 9=#381B18
+palette = 9=#4A0F0B
 palette = 10=#24282C
 palette = 11=#24282C
 palette = 12=#24282C
