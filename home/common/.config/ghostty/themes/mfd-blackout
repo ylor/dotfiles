@@ -1,5 +1,7 @@
+# MFD Blackout: ultra-low contrast covert lighting
+
 palette = 0=#000000
-palette = 1=#C03838
+palette = 1=#903838
 palette = 2=#24282C
 palette = 3=#24282C
 palette = 4=#24282C
@@ -14,9 +16,10 @@ palette = 12=#24282C
 palette = 13=#24282C
 palette = 14=#24282C
 palette = 15=#24282C
+
 background = #000000
 foreground = #24282C
-cursor-color = #24282C
+cursor-color = #3A3A3A
 cursor-text = #000000
-selection-background = #24282C
-selection-foreground = #000000
+selection-background = #0C0E10
+selection-foreground = #24282C

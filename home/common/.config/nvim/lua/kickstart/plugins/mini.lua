@@ -67,7 +67,6 @@ require("mini.pairs").setup()
 -- configured here.
 local hipatterns = require("mini.hipatterns")
 local hex_valid_len = { [3] = true, [4] = true, [6] = true, [8] = true }
-local hex_short_len = { [3] = true, [4] = true }
 -- Filetypes where a leading `#` is far more likely to be a reference (a
 -- git-style short SHA, a markdown/issue anchor) than a color literal.
 local hex_excluded_filetypes = {
@@ -90,7 +89,7 @@ hipatterns.setup({
 				if not hex_valid_len[#hex] then
 					return nil
 				end
-				if hex_short_len[#hex] then
+				if #hex < 6 then
 					hex = hex:sub(1, 3):gsub(".", "%0%0")
 				end
 				-- Oklab-based contrast pick + colorscheme-reset cache handled by

@@ -20,62 +20,73 @@
 -- any other, such as 'tokyonight-storm', 'tokyonight-moon', or 'tokyonight-day'.
 -- vim.cmd.colorscheme 'tokyonight-night'
 --
-vim.pack.add({ "https://github.com/ember-theme/nvim" })
-require("ember").setup({
-	variant = "ember", -- "ember", "ember-soft", "ember-light", "ember-auto"
-	-- styles = {
-	--   comments  = { italic = true },
-	--   keywords  = { bold = true },
-	--   functions = {},
-	--   types     = { bold = true },
-	-- },
-	transparent = true, -- transparent editor background
-	transparent_floats = false, -- follows `transparent` by default; set explicitly to override
-	on_colors = nil, -- function(palette) - modify palette before theme builds
-	on_highlights = function(highlights, theme)
-		-- Drop the cursorline's background fill; keep only its underline/other
-		-- styling (if any) so the current line isn't shaded.
-		highlights.CursorLine.bg = "NONE"
+-- vim.pack.add({ "https://github.com/ember-theme/nvim" })
+-- require("ember").setup({
+-- 	variant = "ember", -- "ember", "ember-soft", "ember-light", "ember-auto"
+-- 	-- styles = {
+-- 	--   comments  = { italic = true },
+-- 	--   keywords  = { bold = true },
+-- 	--   functions = {},
+-- 	--   types     = { bold = true },
+-- 	-- },
+-- 	transparent = true, -- transparent editor background
+-- 	transparent_floats = false, -- follows `transparent` by default; set explicitly to override
+-- 	on_colors = nil, -- function(palette) - modify palette before theme builds
+-- 	on_highlights = function(highlights, theme)
+-- 		-- Drop the cursorline's background fill; keep only its underline/other
+-- 		-- styling (if any) so the current line isn't shaded.
+-- 		highlights.CursorLine.bg = "NONE"
+--
+-- 		-- Match the Telescope prompt box to the same background as every other
+-- 		-- float instead of the theme's default (slightly different) shade.
+-- 		highlights.TelescopePromptNormal.bg = theme.ui.float_bg
+-- 		highlights.TelescopePromptBorder.bg = theme.ui.float_bg
+-- 		highlights.TelescopePromptTitle.bg = theme.ui.float_bg
+--
+-- 		-- Upstream bug (ember-theme/nvim): these "dark text on a bright accent
+-- 		-- chip" groups set `fg = theme.ui.bg`, but with `transparent = true`
+-- 		-- above, `theme.ui.bg` is the *string* "NONE" -- Neovim treats that as
+-- 		-- "no fg override", so the chip falls back to the default light
+-- 		-- foreground on a mid-tone background (unreadably low contrast). Force
+-- 		-- a real dark fg instead, pulled from `theme.term[0]` (ANSI black --
+-- 		-- always a real hex, never gated by `transparent`).
+-- 		local dark_fg = theme.term[0]
+-- 		for _, group in ipairs({
+-- 			"MiniStatuslineModeNormal",
+-- 			"MiniStatuslineModeInsert",
+-- 			"MiniStatuslineModeVisual",
+-- 			"MiniStatuslineModeReplace",
+-- 			"MiniStatuslineModeCommand",
+-- 			"MiniStatuslineModeOther",
+-- 			"LazyH1",
+-- 			"SnacksPickerTitle",
+-- 			"SnacksPickerPreviewTitle",
+-- 			"NoiceFormatProgressDone",
+-- 		}) do
+-- 			if highlights[group] then
+-- 				highlights[group].fg = dark_fg
+-- 			end
+-- 		end
+-- 	end,
+-- })
+-- vim.cmd.colorscheme("ember")
 
-		-- Match the Telescope prompt box to the same background as every other
-		-- float instead of the theme's default (slightly different) shade.
-		highlights.TelescopePromptNormal.bg = theme.ui.float_bg
-		highlights.TelescopePromptBorder.bg = theme.ui.float_bg
-		highlights.TelescopePromptTitle.bg = theme.ui.float_bg
+vim.pack.add({ "https://github.com/kungfusheep/mfd.nvim" })
+require("mfd").setup({ accessibility_contrast = 4 })
+vim.cmd.colorscheme("mfd-amber")
+vim.api.nvim_set_hl(0, "ColorColumn", { link = "CursorLine" })
 
-		-- Upstream bug (ember-theme/nvim): these "dark text on a bright accent
-		-- chip" groups set `fg = theme.ui.bg`, but with `transparent = true`
-		-- above, `theme.ui.bg` is the *string* "NONE" -- Neovim treats that as
-		-- "no fg override", so the chip falls back to the default light
-		-- foreground on a mid-tone background (unreadably low contrast). Force
-		-- a real dark fg instead, pulled from `theme.term[0]` (ANSI black --
-		-- always a real hex, never gated by `transparent`).
-		local dark_fg = theme.term[0]
-		for _, group in ipairs({
-			"MiniStatuslineModeNormal",
-			"MiniStatuslineModeInsert",
-			"MiniStatuslineModeVisual",
-			"MiniStatuslineModeReplace",
-			"MiniStatuslineModeCommand",
-			"MiniStatuslineModeOther",
-			"LazyH1",
-			"SnacksPickerTitle",
-			"SnacksPickerPreviewTitle",
-			"NoiceFormatProgressDone",
-		}) do
-			if highlights[group] then
-				highlights[group].fg = dark_fg
-			end
-		end
-	end,
-})
-vim.cmd.colorscheme("ember")
+-- Use the terminal's background for regular editor windows. NormalFloat is
+-- deliberately excluded so hover, completion, and other floats stay readable.
+for _, group in ipairs({ "Normal", "NormalNC", "SignColumn", "LineNr", "EndOfBuffer" }) do
+	vim.api.nvim_set_hl(0, group, { bg = "none" })
+end
 
--- Belt-and-suspenders: clear background on the groups most likely to still
--- paint one over the terminal's, even with `transparent = true`.
--- NormalFloat is deliberately excluded so floating windows (hover, completion, etc.) keep their own background.
--- for _, group in ipairs { 'Normal', 'NormalNC', 'SignColumn', 'LineNr', 'EndOfBuffer' } do
---   vim.api.nvim_set_hl(0, group, { bg = 'none' })
--- end
+-- Keep Telescope's windows consistent with other floating windows instead of
+-- using mfd-amber's darker selection color as their background.
+vim.api.nvim_set_hl(0, "TelescopeNormal", { link = "NormalFloat" })
+vim.api.nvim_set_hl(0, "TelescopeBorder", { link = "FloatBorder" })
+vim.api.nvim_set_hl(0, "TelescopePromptNormal", { link = "NormalFloat" })
+vim.api.nvim_set_hl(0, "TelescopePromptBorder", { link = "FloatBorder" })
 
 -- vim: ts=2 sts=2 sw=2 et

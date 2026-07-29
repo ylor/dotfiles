@@ -1,5 +1,7 @@
+# MFD Scarlet: night-vision cockpit red
+
 palette = 0=#0C0404
-palette = 1=#CC5545
+palette = 1=#DD5555
 palette = 2=#CC5545
 palette = 3=#CC5545
 palette = 4=#CC5545
@@ -9,14 +11,15 @@ palette = 7=#CC5545
 palette = 8=#3A1812
 palette = 9=#DD6655
 palette = 10=#DD6655
-palette = 11=#DD6655
-palette = 12=#DD6655
-palette = 13=#DD6655
-palette = 14=#DD6655
+palette = 11=#CC5545
+palette = 12=#CC5545
+palette = 13=#CC5545
+palette = 14=#CC5545
 palette = 15=#DD6655
+
 background = #0C0404
 foreground = #CC5545
 cursor-color = #CC5545
 cursor-text = #0C0404
-selection-background = #CC5545
-selection-foreground = #0C0404
+selection-background = #1A0808
+selection-foreground = #CC5545

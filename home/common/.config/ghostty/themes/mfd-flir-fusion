@@ -1,5 +1,7 @@
+# MFD FLIR Fusion: thermal fusion imaging
+
 palette = 0=#1A0A20
-palette = 1=#C03838
+palette = 1=#DD5555
 palette = 2=#C08840
 palette = 3=#C08840
 palette = 4=#C08840
@@ -7,16 +9,17 @@ palette = 5=#C08840
 palette = 6=#C08840
 palette = 7=#C08840
 palette = 8=#503060
-palette = 9=#C03838
+palette = 9=#DD6655
 palette = 10=#E8C050
-palette = 11=#E8C050
-palette = 12=#E8C050
-palette = 13=#E8C050
-palette = 14=#E8C050
+palette = 11=#C08840
+palette = 12=#C08840
+palette = 13=#C08840
+palette = 14=#C08840
 palette = 15=#E8C050
+
 background = #1A0A20
 foreground = #C08840
-cursor-color = #C08840
+cursor-color = #E8C050
 cursor-text = #1A0A20
-selection-background = #C08840
-selection-foreground = #1A0A20
+selection-background = #241430
+selection-foreground = #C08840

@@ -40,7 +40,7 @@ vim.api.nvim_create_autocmd('LspAttach', {
     --
     -- In this case, we create a function that lets us more easily define mappings specific
     -- for LSP related items. It sets the mode, buffer and description for us each time.
-    local map = function(keys, func, desc, mode)
+    local function map(keys, func, desc, mode)
       mode = mode or 'n'
       vim.keymap.set(mode, keys, func, { buffer = event.buf, desc = 'LSP: ' .. desc })
     end
@@ -166,8 +166,7 @@ require('mason').setup {}
 --    :Mason
 --
 -- You can press `g?` for help in this menu.
-local ensure_installed = vim.tbl_keys(servers or {})
-vim.list_extend(ensure_installed, {
+local ensure_installed = vim.list_extend(vim.tbl_keys(servers), {
   -- You can add other tools here that you want Mason to install
 })
 

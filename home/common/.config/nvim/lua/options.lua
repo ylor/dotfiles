@@ -51,13 +51,11 @@ local startup_fallback = vim.fn.argc() > 0 and (" [" .. vim.fn.fnamemodify(vim.f
 local function focused_file_name()
 	local function normal_buf_name(win)
 		local buf = vim.api.nvim_win_get_buf(win)
-		if vim.bo[buf].buftype == "" then
-			local name = vim.api.nvim_buf_get_name(buf)
-			if name ~= "" then
-				return vim.fn.fnamemodify(name, ":t")
-			end
+		if vim.bo[buf].buftype ~= "" then
+			return nil
 		end
-		return nil
+		local name = vim.api.nvim_buf_get_name(buf)
+		return name ~= "" and vim.fn.fnamemodify(name, ":t") or nil
 	end
 
 	local name = normal_buf_name(vim.api.nvim_get_current_win())
@@ -82,10 +80,7 @@ end
 -- character.
 function _G.NvimTitleName()
 	local name = focused_file_name()
-	if name then
-		return " - " .. name
-	end
-	return startup_fallback
+	return name and " - " .. name or startup_fallback
 end
 
 vim.opt.title = true
@@ -119,8 +114,8 @@ vim.opt.wrap = true
 vim.opt.linebreak = true
 vim.opt.breakindent = true
 
--- Mark column 80 as a visual guide.
-vim.opt.colorcolumn = "80"
+-- Mark column 100 as a visual guide.
+vim.opt.colorcolumn = "100"
 
 -- Enable undo/redo changes even after closing and reopening a file
 -- vim.cmd("packadd nvim.undotree")

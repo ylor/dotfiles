@@ -1,22 +1,25 @@
-palette = 0=#7A8B69
-palette = 1=#C03838
+# MFD: olive military flight display
+
+palette = 0=#1E2D1E
+palette = 1=#903838
 palette = 2=#1E2D1E
 palette = 3=#1E2D1E
 palette = 4=#1E2D1E
 palette = 5=#1E2D1E
 palette = 6=#1E2D1E
-palette = 7=#1E2D1E
+palette = 7=#687858
 palette = 8=#5A6B49
 palette = 9=#C03838
-palette = 10=#0D1D0D
-palette = 11=#0D1D0D
-palette = 12=#0D1D0D
-palette = 13=#0D1D0D
-palette = 14=#0D1D0D
-palette = 15=#0D1D0D
+palette = 10=#1E2D1E
+palette = 11=#1E2D1E
+palette = 12=#1E2D1E
+palette = 13=#1E2D1E
+palette = 14=#1E2D1E
+palette = 15=#7A8B69
+
 background = #7A8B69
 foreground = #1E2D1E
-cursor-color = #1E2D1E
+cursor-color = #5A6B49
 cursor-text = #7A8B69
-selection-background = #1E2D1E
-selection-foreground = #7A8B69
+selection-background = #6A7B59
+selection-foreground = #1E2D1E

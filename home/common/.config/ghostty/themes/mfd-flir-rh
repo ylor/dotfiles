@@ -1,5 +1,7 @@
+# MFD FLIR-RH: red-hot thermal imaging
+
 palette = 0=#181818
-palette = 1=#C03838
+palette = 1=#903838
 palette = 2=#909090
 palette = 3=#909090
 palette = 4=#909090
@@ -9,14 +11,15 @@ palette = 7=#909090
 palette = 8=#404040
 palette = 9=#C03838
 palette = 10=#C03838
-palette = 11=#C03838
-palette = 12=#C03838
-palette = 13=#C03838
-palette = 14=#C03838
+palette = 11=#909090
+palette = 12=#909090
+palette = 13=#909090
+palette = 14=#909090
 palette = 15=#C03838
+
 background = #181818
 foreground = #909090
-cursor-color = #909090
+cursor-color = #C0C0C0
 cursor-text = #181818
-selection-background = #909090
-selection-foreground = #181818
+selection-background = #242424
+selection-foreground = #909090

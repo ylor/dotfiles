@@ -1,5 +1,7 @@
+# MFD Dark: dark olive military flight display
+
 palette = 0=#1E2D1E
-palette = 1=#C03838
+palette = 1=#903838
 palette = 2=#8A9B70
 palette = 3=#8A9B70
 palette = 4=#8A9B70
@@ -8,15 +10,16 @@ palette = 6=#8A9B70
 palette = 7=#8A9B70
 palette = 8=#3A4A3A
 palette = 9=#C03838
-palette = 10=#A0B180
-palette = 11=#A0B180
-palette = 12=#A0B180
-palette = 13=#A0B180
-palette = 14=#A0B180
+palette = 10=#8A9B70
+palette = 11=#8A9B70
+palette = 12=#8A9B70
+palette = 13=#8A9B70
+palette = 14=#8A9B70
 palette = 15=#A0B180
+
 background = #1E2D1E
 foreground = #8A9B70
-cursor-color = #8A9B70
+cursor-color = #A0B180
 cursor-text = #1E2D1E
-selection-background = #8A9B70
-selection-foreground = #1E2D1E
+selection-background = #2A3D2A
+selection-foreground = #8A9B70

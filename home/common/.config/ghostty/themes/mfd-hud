@@ -1,5 +1,7 @@
+# MFD HUD: heads-up display phosphor
+
 palette = 0=#060C06
-palette = 1=#C03838
+palette = 1=#DD5555
 palette = 2=#55BB55
 palette = 3=#55BB55
 palette = 4=#55BB55
@@ -7,16 +9,17 @@ palette = 5=#55BB55
 palette = 6=#55BB55
 palette = 7=#55BB55
 palette = 8=#1A3018
-palette = 9=#C03838
+palette = 9=#DD6655
 palette = 10=#77DD77
-palette = 11=#77DD77
-palette = 12=#77DD77
-palette = 13=#77DD77
-palette = 14=#77DD77
+palette = 11=#55BB55
+palette = 12=#55BB55
+palette = 13=#55BB55
+palette = 14=#55BB55
 palette = 15=#77DD77
+
 background = #060C06
 foreground = #55BB55
 cursor-color = #55BB55
 cursor-text = #060C06
-selection-background = #55BB55
-selection-foreground = #060C06
+selection-background = #0A1A0A
+selection-foreground = #55BB55

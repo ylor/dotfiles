@@ -7,9 +7,11 @@ brew "fd"
 brew "fish"
 brew "fzf"
 brew "git"
+brew "git-delta"
 brew "gum"
 brew "mise"
 brew "ripgrep"
+brew "yazi"
 brew "zoxide"
 
 mode = ENV.fetch("DOTFILES_PROFILE", "full")
