@@ -8,7 +8,7 @@ focus-follows-mouse = true
 window-save-state = always
 
 # form
-theme = mfd-amber
+theme = mfd-amber-p3
 background = #000000
 #background-blur = macos-glass-regular
 background-blur = true

@@ -1,0 +1,25 @@
+# MFD Amber: classic amber phosphor CRT terminal
+
+palette = 0=#100600
+palette = 1=#FF0000 
+palette = 2=#FF6B08
+palette = 3=#FF6B08
+palette = 4=#FF6B08
+palette = 5=#FF6B08
+palette = 6=#FF6B08
+palette = 7=#FF6B08
+palette = 8=#5B2500
+palette = 9=#FF0000
+palette = 10=#FFA86D
+palette = 11=#FFA86D
+palette = 12=#FFA86D
+palette = 13=#FFA86D
+palette = 14=#FFA86D
+palette = 15=#FFA86D
+
+background = #100600
+foreground = #FF6B08
+cursor-color = #FF6B08
+cursor-text = #0F0C08
+selection-background = #5B2500
+selection-foreground = #FF6B08
