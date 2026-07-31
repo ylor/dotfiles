@@ -180,37 +180,6 @@ vim.api.nvim_create_autocmd("User", {
 	end,
 })
 
--- mini.starter only autoopens when Neovim is given no arguments at all (see
--- its `autoopen` check), so `nvim some_dir` falls through instead of
--- showing it. Since Oil no longer claims directory buffers either (see
--- kickstart.plugins.oil), that would otherwise sit there as an empty,
--- unmanaged buffer. Redirect to the start screen in that case, then
--- straight on into Telescope's file finder (`<Esc>` from it lands back on
--- the starter buffer underneath).
---
--- Only the window that's current at VimEnter gets this treatment; any other
--- window that was also given a directory arg (e.g. `nvim -o dir1 dir2`)
--- keeps its raw directory buffer until it's focused, at which point the
--- BufEnter autocmd in kickstart.plugins.oil picks it up. Running the
--- starter+Telescope flow more than once at startup doesn't make sense.
-vim.api.nvim_create_autocmd("VimEnter", {
-	once = true,
-	callback = function()
-		local buf = vim.api.nvim_get_current_buf()
-		local name = vim.api.nvim_buf_get_name(buf)
-		if name ~= "" and vim.fn.isdirectory(name) == 1 then
-			-- Window-local cd (not global) so Telescope (and the starter items
-			-- below: Files, Recent, Grep) search the directory that was passed
-			-- on the command line, without changing cwd for any other window/tab.
-			vim.cmd.lcd(name)
-			starter.open()
-			vim.api.nvim_buf_delete(buf, { force = true })
-			vim.schedule(function()
-				vim.cmd.Telescope("find_files")
-			end)
-		end
-	end,
-})
 --]]
 
 -- ... and there is more!

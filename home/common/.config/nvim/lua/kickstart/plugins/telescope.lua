@@ -101,28 +101,12 @@ pcall(telescope.load_extension, "ui-select")
 -- See `:help telescope.builtin`
 local builtin = require("telescope.builtin")
 
--- Treat a directory passed at startup as the root of a file picker instead of
--- leaving Neovim on an unmanaged directory buffer (`nvim path/to/project`).
-vim.api.nvim_create_autocmd("VimEnter", {
-	desc = "Open Telescope when Neovim starts with a directory",
-	once = true,
-	callback = function()
-		local buf = vim.api.nvim_get_current_buf()
-		local directory = vim.api.nvim_buf_get_name(buf)
-		if directory == "" or vim.fn.isdirectory(directory) == 0 then
-			return
-		end
-
-		vim.api.nvim_buf_delete(buf, { force = true })
-		vim.schedule(function()
-			builtin.find_files({ cwd = directory })
-		end)
-	end,
-})
-
 vim.keymap.set("n", "<leader>sh", builtin.help_tags, { desc = "[S]earch [H]elp" })
 vim.keymap.set("n", "<leader>sk", builtin.keymaps, { desc = "[S]earch [K]eymaps" })
-vim.keymap.set("n", "<leader>sf", builtin.find_files, { desc = "[S]earch [F]iles" })
+-- `cwd` is nil outside an Oil buffer, which is find_files' normal behavior.
+vim.keymap.set("n", "<leader>sf", function()
+	builtin.find_files({ cwd = require("oil").get_current_dir() })
+end, { desc = "[S]earch [F]iles" })
 vim.keymap.set("n", "<leader>ss", builtin.builtin, { desc = "[S]earch [S]elect Telescope" })
 vim.keymap.set({ "n", "v" }, "<leader>sw", builtin.grep_string, { desc = "[S]earch current [W]ord" })
 vim.keymap.set("n", "<leader>sg", builtin.live_grep, { desc = "[S]earch by [G]rep" })

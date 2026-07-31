@@ -73,7 +73,7 @@
 
 vim.pack.add({ "https://github.com/kungfusheep/mfd.nvim" })
 require("mfd").setup({ accessibility_contrast = 4 })
-vim.cmd.colorscheme("mfd-amber")
+vim.cmd.colorscheme("mfd-nerv")
 vim.api.nvim_set_hl(0, "ColorColumn", { link = "CursorLine" })
 
 -- Use the terminal's background for regular editor windows. NormalFloat is
