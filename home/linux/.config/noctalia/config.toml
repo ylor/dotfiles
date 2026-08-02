@@ -145,10 +145,9 @@ polkit_agent = true
 
     [[shell.session.actions]]
     action = "logout"
-    command = "hyprshutdown || noctalia msg session lock"
-    countdown_seconds = 0.0
+    command = "hyprshutdown || noctalia msg session logout"
+    countdown_seconds = 5.0
     enabled = true
-    shortcut = "o"
     variant = "default"
 
     [[shell.session.actions]]
@@ -161,7 +160,7 @@ polkit_agent = true
 
     [[shell.session.actions]]
     action = "reboot"
-    command = "hyprshutdown --post-cmd reboot"
+    command = "hyprshutdown --post-cmd \"systemctl reboot\""
     countdown_seconds = 5.0
     enabled = true
     shortcut = "r"
@@ -169,7 +168,7 @@ polkit_agent = true
 
     [[shell.session.actions]]
     action = "shutdown"
-    command = "hyprshutdown --post-cmd systemctl poweroff"
+    command = "hyprshutdown --post-cmd \"systemctl poweroff\""
     countdown_seconds = 0.0
     enabled = true
     shortcut = "u"
@@ -178,7 +177,7 @@ polkit_agent = true
 [theme]
 community_palette = "Rosey AMOLED"
 custom_palette = "mfd-nerv"
-pure_black_dark = true
+pure_black_dark = false
 source = "custom"
 
     [theme.templates]
