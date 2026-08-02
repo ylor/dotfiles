@@ -27,6 +27,7 @@ unfocused-split-opacity = 0.9
 custom-shader = shaders/cursor_warp.glsl
 custom-shader = shaders/tft.glsl
 custom-shader = shaders/bloom.glsl
+alpha-blending = linear-corrected
 # custom-shader = shaders/amber.glsl
 
 # keybinds

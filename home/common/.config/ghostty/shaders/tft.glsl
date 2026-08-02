@@ -14,6 +14,7 @@ void mainImage(out vec4 fragColor, in vec2 fragCoord)
 {
     vec2 uv = fragCoord / iResolution.xy;
     vec3 color = texture(iChannel0, uv).rgb;
+    vec4 src = texture(iChannel0, uv);
 
-    fragColor = vec4(color * tftMask(fragCoord), 1.0);
+    fragColor = vec4(color * tftMask(fragCoord), src.a);
 }
