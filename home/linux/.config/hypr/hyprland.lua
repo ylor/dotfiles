@@ -439,13 +439,25 @@ hl.window_rule({
 })
 
 hl.window_rule({
-	name = "focus-1password-authentication",
+	name = "lock-focus-noctalia-polkit",
 	match = {
-		class = "(?i)1password",
-		title = "(?i)1password.*authentication",
+		class = "^dev\\.noctalia\\.Noctalia$",
+		modal = true,
 	},
 
 	stay_focused = true,
+	focus_on_activate = true,
+})
+
+hl.window_rule({
+	name = "lock-focus-1password-authentication",
+	match = {
+		class = "(?i)^1password$",
+		modal = true,
+	},
+
+	stay_focused = true,
+	focus_on_activate = true,
 })
 
 -- Layer rules also return a handle.
