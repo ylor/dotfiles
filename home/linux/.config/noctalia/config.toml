@@ -1,5 +1,4 @@
 [bar.default]
-background_opacity = 0.0
 border_width = 1.0
 center = [ "workspaces" ]
 concave_edge_corners = false
@@ -133,8 +132,9 @@ polkit_agent = true
 
     [shell.panel]
     open_near_click_control_center = true
+    open_near_click_wallpaper = true
     session_placement = "floating"
-    transparency_mode = "solid"
+    transparency_mode = "glass"
 
     [[shell.session.actions]]
     action = "lock"
