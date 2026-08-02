@@ -113,6 +113,9 @@ widget_order = [ "lockscreen-login-box@WAYLAND-1", "lockscreen-login-box@DP-1" ]
 enabled = true
 temperature_night = 3400
 
+[osd.kinds]
+media = false
+
 [plugins]
 enabled = []
 
@@ -130,6 +133,8 @@ polkit_agent = true
 
     [shell.panel]
     open_near_click_control_center = true
+    session_placement = "floating"
+    transparency_mode = "solid"
 
     [[shell.session.actions]]
     action = "lock"
@@ -172,7 +177,8 @@ polkit_agent = true
 
 [theme]
 community_palette = "Rosey AMOLED"
-custom_palette = "MFD-Amber"
+custom_palette = "mfd-nerv"
+pure_black_dark = true
 source = "custom"
 
     [theme.templates]
@@ -209,7 +215,11 @@ format = "{:%-l:%M %p}"
 glyph = "hyprland"
 
 [widget.media]
+hide_album_art = true
+hide_artist = true
 hide_when_no_media = true
+max_length = 400
+title_scroll = "on_hover"
 
 [widget.network]
 show_label = false
