@@ -15,6 +15,7 @@ end
 
 -- Keep Telescope's windows consistent with other floating windows instead of
 -- using mfd-amber's darker selection color as their background.
+vim.api.nvim_set_hl(0, "NormalFloat", { link = "Normal" })
 vim.api.nvim_set_hl(0, "TelescopeNormal", { link = "Normal" })
 vim.api.nvim_set_hl(0, "TelescopeBorder", { link = "FloaBorder" })
 vim.api.nvim_set_hl(0, "TelescopePromptNormal", { link = "Normal" })
