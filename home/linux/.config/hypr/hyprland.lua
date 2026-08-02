@@ -444,8 +444,9 @@ hl.window_rule({
 hl.window_rule({
 	name = "lock-focus-1password-authentication",
 	match = {
-		class = "(?i).*1password.*",
-		title = "(?i).*(authenticat(e|ion)|password required|unlock|sign in).*",
+		class = "(?i)^1password$",
+		title = "(?i)^1password$",
+		float = true,
 	},
 
 	stay_focused = true,
