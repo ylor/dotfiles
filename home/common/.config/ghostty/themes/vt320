@@ -1,0 +1,27 @@
+# VT320 Amber – warm amber-on-dark terminal with subtle copper/golden tones
+
+palette = 0=#1a0f00
+palette = 1=#b35c2e
+palette = 2=#a0872e
+palette = 3=#d99a3d
+palette = 4=#996633
+palette = 5=#bf7444
+palette = 6=#c28a54
+palette = 7=#e6b879
+palette = 8=#403020
+palette = 9=#d47a43
+palette = 10=#c3a449
+palette = 11=#ffb347
+palette = 12=#b67a4a
+palette = 13=#e08c5c
+palette = 14=#d5a269
+palette = 15=#ffe0a8
+
+background = #1a0f00
+foreground = #ffa347
+
+cursor-color = #ffa347
+cursor-text = #1a0f00
+
+selection-background = #403020
+selection-foreground = #ffe0a8

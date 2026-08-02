@@ -24,6 +24,7 @@ vim.o.statuscolumn = "%{v:relnum == 0 ? v:lnum : v:relnum + 1}%="
 
 -- Enable mouse mode, can be useful for resizing splits for example!
 vim.opt.mouse = "a"
+vim.opt.mousefocus = true
 
 -- Don't show the mode, since it's already in the status line
 vim.opt.showmode = false

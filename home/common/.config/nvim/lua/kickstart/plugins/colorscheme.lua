@@ -2,75 +2,6 @@
 -- You can easily change to a different colorscheme.
 -- Change the name of the colorscheme plugin below, and then
 -- change the command under that to load whatever the name of that colorscheme is.
---
--- If you want to see what colorschemes are already installed, you can use `:Telescope colorscheme`.
--- vim.pack.add { 'https://github.com/folke/tokyonight.nvim' }
--- ---@diagnostic disable-next-line: missing-fields
--- require('tokyonight').setup {
---   styles = {
---     comments = { italic = false }, -- Disable italics in comments
---   },
---   -- Use the terminal's background instead of drawing an opaque one,
---   -- so Neovim inherits whatever transparency/color the terminal has set.
---   transparent = true,
--- }
-
--- Load the colorscheme here.
--- Like many other themes, this one has different styles, and you could load
--- any other, such as 'tokyonight-storm', 'tokyonight-moon', or 'tokyonight-day'.
--- vim.cmd.colorscheme 'tokyonight-night'
---
--- vim.pack.add({ "https://github.com/ember-theme/nvim" })
--- require("ember").setup({
--- 	variant = "ember", -- "ember", "ember-soft", "ember-light", "ember-auto"
--- 	-- styles = {
--- 	--   comments  = { italic = true },
--- 	--   keywords  = { bold = true },
--- 	--   functions = {},
--- 	--   types     = { bold = true },
--- 	-- },
--- 	transparent = true, -- transparent editor background
--- 	transparent_floats = false, -- follows `transparent` by default; set explicitly to override
--- 	on_colors = nil, -- function(palette) - modify palette before theme builds
--- 	on_highlights = function(highlights, theme)
--- 		-- Drop the cursorline's background fill; keep only its underline/other
--- 		-- styling (if any) so the current line isn't shaded.
--- 		highlights.CursorLine.bg = "NONE"
---
--- 		-- Match the Telescope prompt box to the same background as every other
--- 		-- float instead of the theme's default (slightly different) shade.
--- 		highlights.TelescopePromptNormal.bg = theme.ui.float_bg
--- 		highlights.TelescopePromptBorder.bg = theme.ui.float_bg
--- 		highlights.TelescopePromptTitle.bg = theme.ui.float_bg
---
--- 		-- Upstream bug (ember-theme/nvim): these "dark text on a bright accent
--- 		-- chip" groups set `fg = theme.ui.bg`, but with `transparent = true`
--- 		-- above, `theme.ui.bg` is the *string* "NONE" -- Neovim treats that as
--- 		-- "no fg override", so the chip falls back to the default light
--- 		-- foreground on a mid-tone background (unreadably low contrast). Force
--- 		-- a real dark fg instead, pulled from `theme.term[0]` (ANSI black --
--- 		-- always a real hex, never gated by `transparent`).
--- 		local dark_fg = theme.term[0]
--- 		for _, group in ipairs({
--- 			"MiniStatuslineModeNormal",
--- 			"MiniStatuslineModeInsert",
--- 			"MiniStatuslineModeVisual",
--- 			"MiniStatuslineModeReplace",
--- 			"MiniStatuslineModeCommand",
--- 			"MiniStatuslineModeOther",
--- 			"LazyH1",
--- 			"SnacksPickerTitle",
--- 			"SnacksPickerPreviewTitle",
--- 			"NoiceFormatProgressDone",
--- 		}) do
--- 			if highlights[group] then
--- 				highlights[group].fg = dark_fg
--- 			end
--- 		end
--- 	end,
--- })
--- vim.cmd.colorscheme("ember")
-
 vim.pack.add({ "https://github.com/kungfusheep/mfd.nvim" })
 require("mfd").setup({ accessibility_contrast = 4 })
 vim.cmd.colorscheme("mfd-nerv")
@@ -84,9 +15,9 @@ end
 
 -- Keep Telescope's windows consistent with other floating windows instead of
 -- using mfd-amber's darker selection color as their background.
-vim.api.nvim_set_hl(0, "TelescopeNormal", { link = "NormalFloat" })
-vim.api.nvim_set_hl(0, "TelescopeBorder", { link = "FloatBorder" })
-vim.api.nvim_set_hl(0, "TelescopePromptNormal", { link = "NormalFloat" })
-vim.api.nvim_set_hl(0, "TelescopePromptBorder", { link = "FloatBorder" })
+vim.api.nvim_set_hl(0, "TelescopeNormal", { link = "Normal" })
+vim.api.nvim_set_hl(0, "TelescopeBorder", { link = "FloaBorder" })
+vim.api.nvim_set_hl(0, "TelescopePromptNormal", { link = "Normal" })
+vim.api.nvim_set_hl(0, "TelescopePromptBorder", { link = "Normal" })
 
 -- vim: ts=2 sts=2 sw=2 et

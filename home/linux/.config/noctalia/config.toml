@@ -110,7 +110,7 @@ widget_order = [ "lockscreen-login-box@WAYLAND-1", "lockscreen-login-box@DP-1" ]
         show_weather = true
 
 [nightlight]
-enabled = false
+enabled = true
 temperature_night = 3400
 
 [plugins]
@@ -130,8 +130,6 @@ polkit_agent = true
 
     [shell.panel]
     open_near_click_control_center = true
-    session_placement = "floating"
-    transparency_mode = "glass"
 
     [[shell.session.actions]]
     action = "lock"
@@ -158,8 +156,8 @@ polkit_agent = true
 
     [[shell.session.actions]]
     action = "reboot"
-    command = "hyprshutdown --post-cmd systemctl restart"
-    countdown_seconds = 0.0
+    command = "hyprshutdown --post-cmd reboot"
+    countdown_seconds = 5.0
     enabled = true
     shortcut = "r"
     variant = "default"
@@ -174,7 +172,7 @@ polkit_agent = true
 
 [theme]
 community_palette = "Rosey AMOLED"
-custom_palette = "AmberConsole-Neon"
+custom_palette = "MFD-Amber"
 source = "custom"
 
     [theme.templates]

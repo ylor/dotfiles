@@ -14,10 +14,10 @@ local function reload_config()
 		end
 	end
 	vim.cmd("source $MYVIMRC")
-	vim.notify("Config reloaded", vim.log.levels.INFO)
+	vim.notify("asdfadf")
 end
 
 vim.api.nvim_create_user_command("ReloadConfig", reload_config, { desc = "Reload the Neovim configuration" })
--- vim.keymap.set('n', '<leader>rc', reload_config, { desc = '[R]eload [C]onfig' })
+vim.keymap.set("n", "<leader>rc", reload_config, { desc = "[R]eload [C]onfig" })
 
 -- vim: ts=2 sts=2 sw=2 et

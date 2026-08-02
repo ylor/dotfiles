@@ -438,6 +438,16 @@ hl.window_rule({
 	no_focus = true,
 })
 
+hl.window_rule({
+	name = "focus-1password-authentication",
+	match = {
+		class = "(?i)1password",
+		title = "(?i)1password.*authentication",
+	},
+
+	stay_focused = true,
+})
+
 -- Layer rules also return a handle.
 -- local overlayLayerRule = hl.layer_rule({
 --     name  = "no-anim-overlay",

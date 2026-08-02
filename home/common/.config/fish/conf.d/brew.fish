@@ -45,7 +45,9 @@ if command -q brew; and status --is-interactive
     end
 
     abbr b brew
-    alias up="brew up"
+    abbr bs brew search
+    abbr brm brew rm
+    # alias up="brew up"
     # alias bi="brew i"
     # alias bls="brew ls"
     # alias brm="brew rm"

@@ -113,6 +113,7 @@ local servers = {
   -- ts_ls = {},
 
   stylua = {}, -- Used to format Lua code
+  glsl_analyzer = {},
 
   -- Special Lua Config, as recommended by neovim help docs
   lua_ls = {

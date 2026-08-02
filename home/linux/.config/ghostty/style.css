@@ -3,33 +3,38 @@ debug: env GTK_DEBUG=interactive ghostty
 https://docs.gtk.org/gtk4/css-overview.html
 https://docs.gtk.org/gtk4/css-properties.html
 */ 
-@import url("/home/roly/.config/gtk-4.0/noctalia.css");
+@import url("noctalia.css");
+
+@import url("noctalia.css");
+
+tab,
+tab:hover,
+tab:selected,
+tab:active {
+    transition: none;
+    animation: none;
+}
 
 tabbar,
 tabbox {
-    background-color: #000;
-    min-height: 1px;
+    background-color: #000; /* fake transparency */
+    min-height: 0px;
 }
 
 tab {
-    /* color: #9ca3af; */
-    /* font-size: 13px; */
     padding: 0;
-    border: solid 1px #FFFFFF33;
-    border: solid 1px alpha(@accent_color, 0.3);
+    background-color: #000;
+    border: solid 1px alpha(@accent_color, 0.2);
+    color: alpha(@accent_color, 0.4);
 }
 
-tabbar tab:hover {
-    /* background-color: #111; */
-    background-color: alpha(@accent_color, 0.6);
-    color: @accent_fg_color;
-}
-
+tab:hover,
 tab:selected {
-    /* background-color: #000; */
-    /* font-weight: bold; */
-    /* color: #ffffff; */
-    background-color: alpha(@accent_color, 0.1);
-    border: solid 2px #FFFFFF33;
-    border: solid 2px alpha(@accent_color, 0.6);
+    border: solid 2px alpha(@accent_color, 0.4);
+    background-color: #000;
+    color: alpha(@accent_color, 0.8);
 }
+
+/* tab:active { */
+/*     background-color: alpha(@accent_color, 0.1) */
+/* } */
