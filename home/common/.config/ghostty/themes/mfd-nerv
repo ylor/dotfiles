@@ -8,8 +8,8 @@ palette = 4=#EE8822
 palette = 5=#EE8822
 palette = 6=#EE8822
 palette = 7=#EE8822
-palette = 8=#6B3510 
-palette = 9=#FF6644
+palette = 8=#4A2008 
+palette = 9=#FF5533
 palette = 10=#FFAA44
 palette = 11=#EE8822
 palette = 12=#EE8822
@@ -19,7 +19,7 @@ palette = 15=#FFAA44
 
 background = #1A0A02
 foreground = #EE8822
-cursor-color = #EE8822
+cursor-color = #FFAA44
 cursor-text = #1A0A02
-selection-background = #2A1208
-selection-foreground = #EE8822
+selection-background = #EE8822
+selection-foreground = #1A0A02

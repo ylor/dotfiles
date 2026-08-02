@@ -24,14 +24,10 @@ window-padding-x = 8
 unfocused-split-opacity = 0.9
 
 # shaders
-# custom-shader = shaders/vt320-amber.glsl
-# custom-shader = shaders/crt.glsl
 custom-shader = shaders/cursor_warp.glsl
 custom-shader = shaders/tft.glsl
 custom-shader = shaders/bloom.glsl
 # custom-shader = shaders/amber.glsl
-# custom-shader = shaders/retro-terminal2.glsl
-# custom-shader-animation = false
 
 # keybinds
 keybind = ctrl+-=new_split:down

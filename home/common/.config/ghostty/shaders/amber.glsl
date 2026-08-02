@@ -1,9 +1,8 @@
-// Near-monochrome teal/green phosphor grading for Ghostty.
-
 const vec3 LUMA_WEIGHTS = vec3(0.2126, 0.7152, 0.0722);
-// const vec3 PHOSPHOR_COLOR = vec3(0.10, 1.00, 0.62); // green
-// const vec3 PHOSPHOR_COLOR = vec3(0.0, 1.0, 0.0); // GREEN
-const vec3 PHOSPHOR_COLOR = vec3(1.0, 0.4, 0.0); // amber
+
+// const vec3 PHOSPHOR_COLOR = vec3(0.10, 1.00, 0.62); // Green
+// const vec3 PHOSPHOR_COLOR = vec3(0.0, 1.0, 0.0);    // Green
+const vec3 PHOSPHOR_COLOR = vec3(1.0, 0.3, 0.0); // Amber
 
 // Amount of original color retained for saturated colors.
 const float COLOR_PRESERVATION = 0.10;
@@ -21,7 +20,6 @@ void mainImage(out vec4 fragColor, in vec2 fragCoord)
     float highest = max(src.r, max(src.g, src.b));
     float lowest = min(src.r, min(src.g, src.b));
     float chroma = highest - lowest;
-
     float luminance = dot(src.rgb, LUMA_WEIGHTS);
 
     // Prevent saturated terminal colors—especially blue—from becoming
