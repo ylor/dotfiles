@@ -161,6 +161,9 @@ hl.config({
 
 	misc = {
 		focus_on_activate = true,
+		-- Keep keyboard-interactive layer surfaces (including Noctalia's
+		-- polkit prompt) focused until the surface is dismissed.
+		layers_hog_keyboard_focus = true,
 	},
 
 	xwayland = {
@@ -439,21 +442,10 @@ hl.window_rule({
 })
 
 hl.window_rule({
-	name = "lock-focus-noctalia-polkit",
-	match = {
-		class = "^dev\\.noctalia\\.Noctalia$",
-		modal = true,
-	},
-
-	stay_focused = true,
-	focus_on_activate = true,
-})
-
-hl.window_rule({
 	name = "lock-focus-1password-authentication",
 	match = {
-		class = "(?i)^1password$",
-		modal = true,
+		class = "(?i).*1password.*",
+		title = "(?i).*(authenticat(e|ion)|password required|unlock|sign in).*",
 	},
 
 	stay_focused = true,
