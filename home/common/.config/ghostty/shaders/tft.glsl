@@ -1,8 +1,8 @@
 /** Simulated TFT pixel pitch, in screen pixels. */
-const float PIXEL_SIZE = 4.0;
+const float PIXEL_SIZE = 5.0;
 
 /** Darkening amount, from 0.0 to 1.0. */
-const float STRENGTH = 0.333;
+const float STRENGTH = 0.5;
 
 float tftMask(vec2 fragCoord)
 {

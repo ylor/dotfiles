@@ -44,6 +44,13 @@ telescope.setup({
 	--  All the info you're looking for is in `:help telescope.setup()`
 	--
 	defaults = {
+		layout_strategy = "horizontal",
+		layout_config = {
+			horizontal = {
+				preview_width = 0.5, -- 50% of Telescope's width
+				preview_cutoff = 100, -- Hide preview below 100 editor columns
+			},
+		},
 		-- Hide the "Find Files" / "Live Grep" / etc border titles on each window.
 		-- `prompt_title`/`preview_title` are deliberately NOT set here: builtin
 		-- pickers hardcode their own `prompt_title`, and `preview_title` never
