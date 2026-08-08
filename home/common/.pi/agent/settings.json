@@ -1,0 +1,19 @@
+{
+  "lastChangelogVersion": "0.84.1",
+  "theme": "dark",
+  "defaultProvider": "openai-codex",
+  "defaultModel": "gpt-5.6-luna",
+  "defaultThinkingLevel": "xhigh",
+  "enableInstallTelemetry": false,
+  "quietStartup": false,
+  "tuiMode": "fullscreen",
+  "enabledModels": [
+    "openai-codex/gpt-5.6-luna:xhigh",
+    "openai-codex/gpt-5.6-sol:medium",
+    "openrouter/deepseek/deepseek-v4-flash-0731:high"
+  ],
+  "showCacheMissNotices": true,
+  "images": {
+    "blockImages": true
+  }
+}
