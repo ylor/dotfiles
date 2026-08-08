@@ -1,0 +1,4 @@
+[settings]
+minimum_release_age = "0"
+[settings.ruby]
+compile = true
