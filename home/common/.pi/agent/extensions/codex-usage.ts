@@ -1,167 +1,218 @@
-import type { ExtensionAPI } from "@earendil-works/pi-coding-agent";
+import type { ExtensionAPI, ExtensionContext } from "@earendil-works/pi-coding-agent";
 import { spawn } from "node:child_process";
-import { createInterface } from "node:readline";
+
+const PROVIDER = "openai-codex";
+const COMMAND = "usage";
+const TIMEOUT_MS = 15_000;
 
 type RateLimitWindow = {
-	usedPercent?: number | null;
-	windowDurationMins?: number | null;
-	resetsAt?: number | null;
+	usedPercent?: number;
+	resetsAt?: number;
 };
 
-type RateLimitSnapshot = {
-	limitId?: string | null;
-	limitName?: string | null;
-	planType?: string | null;
-	primary?: RateLimitWindow | null;
-	secondary?: RateLimitWindow | null;
+type RateLimit = {
+	limitId?: string;
+	limitName?: string;
+	primary?: RateLimitWindow;
+	secondary?: RateLimitWindow;
 };
 
 type UsageResponse = {
-	rateLimits?: RateLimitSnapshot | null;
-	rateLimitsByLimitId?: Record<string, RateLimitSnapshot> | null;
+	rateLimits?: RateLimit;
+	rateLimitsByLimitId?: Record<string, RateLimit>;
 };
 
-type AppServerMessage = {
+type RpcMessage = {
 	id?: number;
-	result?: UsageResponse;
-	error?: { message?: string } | string;
+	result?: unknown;
+	error?: string | { message?: string };
 };
 
-async function fetchCodexUsage(): Promise<UsageResponse> {
-	const child = spawn("codex", ["app-server", "--stdio"], {
-		stdio: ["pipe", "pipe", "pipe"],
-	});
+function rpcError(error: RpcMessage["error"]): Error {
+	if (typeof error === "string") return new Error(error);
+	return new Error(error?.message ?? JSON.stringify(error));
+}
 
-	let stderr = "";
-	let processError: Error | undefined;
-	child.stderr.setEncoding("utf8");
-	child.stderr.on("data", (chunk: string) => {
-		stderr += chunk;
-	});
-	child.once("error", (error) => {
-		processError = error;
-	});
+function fetchUsage(): Promise<UsageResponse> {
+	return new Promise((resolve, reject) => {
+		const child = spawn("codex", ["app-server", "--stdio"], {
+			stdio: ["pipe", "pipe", "pipe"],
+		});
+		let stdout = "";
+		let stderr = "";
+		let done = false;
 
-	const lines = createInterface({ input: child.stdout });
-	const iterator = lines[Symbol.asyncIterator]();
+		const timer = setTimeout(() => finish(new Error("Codex App Server timed out")), TIMEOUT_MS);
 
-	const send = (message: unknown) => {
-		if (!child.stdin.writable) {
-			throw processError ?? new Error("Codex App Server stdin is closed");
+		function send(message: unknown): void {
+			child.stdin.write(`${JSON.stringify(message)}\n`);
 		}
-		child.stdin.write(`${JSON.stringify(message)}\n`);
-	};
 
-	const receive = async (id: number): Promise<AppServerMessage["result"]> => {
-		while (true) {
-			const { value, done } = await iterator.next();
-			if (done) {
-				throw processError ?? new Error(stderr.trim() || "Codex App Server exited unexpectedly");
-			}
-
-			let message: AppServerMessage;
-			try {
-				message = JSON.parse(value) as AppServerMessage;
-			} catch {
-				continue;
-			}
-
-			// Notifications do not have the request id we are waiting for.
-			if (message.id !== id) continue;
-			if (message.error !== undefined) {
-				const error = message.error;
-				throw new Error(typeof error === "string" ? error : error.message ?? JSON.stringify(error));
-			}
-			return message.result;
+		function finish(error?: Error, usage: UsageResponse = {}): void {
+			if (done) return;
+			done = true;
+			clearTimeout(timer);
+			child.kill();
+			error ? reject(error) : resolve(usage);
 		}
-	};
 
-	const run = async (): Promise<UsageResponse> => {
+		child.stderr.setEncoding("utf8");
+		child.stderr.on("data", (chunk: string) => {
+			stderr += chunk;
+		});
+		child.once("error", finish);
+		child.once("close", () => {
+			if (!done) finish(new Error(stderr.trim() || "Codex App Server exited unexpectedly"));
+		});
+
+		child.stdout.setEncoding("utf8");
+		child.stdout.on("data", (chunk: string) => {
+			stdout += chunk;
+			const lines = stdout.split("\n");
+			stdout = lines.pop() ?? "";
+
+			for (const line of lines) {
+				let message: RpcMessage;
+				try {
+					message = JSON.parse(line) as RpcMessage;
+				} catch {
+					continue;
+				}
+
+				if (message.id === 2) {
+					if (message.error !== undefined) return finish(rpcError(message.error));
+					return finish(undefined, (message.result as UsageResponse) ?? {});
+				}
+				if (message.id === 1) {
+					if (message.error !== undefined) return finish(rpcError(message.error));
+					send({ method: "initialized" });
+					send({ id: 2, method: "account/rateLimits/read" });
+				}
+			}
+		});
+
 		send({
 			id: 1,
 			method: "initialize",
 			params: {
-				clientInfo: {
-					name: "pi-codex-usage",
-					version: "1.0.0",
-				},
-				capabilities: {
-					experimentalApi: true,
-				},
+				clientInfo: { name: "pi-codex-usage", version: "1.0.0" },
+				capabilities: { experimentalApi: true },
 			},
 		});
-		await receive(1);
+	});
+}
 
-		send({ method: "initialized" });
-		send({ id: 2, method: "account/rateLimits/read" });
-		return (await receive(2)) ?? {};
-	};
+function formatWindow(limit: RateLimitWindow): string {
+	let text = `${limit.usedPercent ?? 0}% used`;
+	if (limit.resetsAt) {
+		text += ` · resets ${new Date(limit.resetsAt * 1000).toLocaleString(undefined, {
+			dateStyle: "short",
+			timeStyle: "short",
+		})}`;
+	}
+	return text;
+}
 
-	let timeoutHandle: ReturnType<typeof setTimeout> | undefined;
-	const timeout = new Promise<never>((_, reject) => {
-		timeoutHandle = setTimeout(() => reject(new Error("Codex App Server timed out")), 15_000);
+function formatUsage(usage: UsageResponse): string {
+	const byId = usage.rateLimitsByLimitId;
+	const single = usage.rateLimits;
+
+	let limits: Array<[string, RateLimit]>;
+	if (byId && Object.keys(byId).length > 0) {
+		limits = Object.entries(byId);
+	} else if (single) {
+		limits = [[single.limitId ?? "codex", single]];
+	} else {
+		return "No Codex usage data returned.";
+	}
+
+	const lines: string[] = [];
+	for (const [id, limit] of limits) {
+		const label = limits.length > 1 ? `${limit.limitName ?? id}: ` : "";
+		if (limit.primary) lines.push(label + formatWindow(limit.primary));
+		if (limit.secondary) lines.push(label + formatWindow(limit.secondary));
+	}
+
+	return lines.join("\n") || "No Codex usage data returned.";
+}
+
+type UsageHandler = (pi: ExtensionAPI, ctx: ExtensionContext) => Promise<void>;
+
+type UsageRegistry = {
+	handlers: Map<string, UsageHandler>;
+	commandRegistered: boolean;
+	autocompleteRegistered: boolean;
+};
+
+const USAGE_REGISTRY_KEY = Symbol.for("pi.usage-registry");
+const usageRegistry = (((globalThis as Record<PropertyKey, unknown>)[USAGE_REGISTRY_KEY] ??= {
+	handlers: new Map<string, UsageHandler>(),
+	commandRegistered: false,
+	autocompleteRegistered: false,
+}) as UsageRegistry);
+
+export function registerUsageHandler(pi: ExtensionAPI, provider: string, handler: UsageHandler): void {
+	usageRegistry.handlers.set(provider, handler);
+	if (usageRegistry.commandRegistered) return;
+	usageRegistry.commandRegistered = true;
+
+	pi.on("session_start", (_event, ctx) => {
+		if (usageRegistry.autocompleteRegistered) return;
+		usageRegistry.autocompleteRegistered = true;
+		ctx.ui.addAutocompleteProvider((current) => ({
+			...current,
+			async getSuggestions(lines, line, column, options) {
+				const suggestions = await current.getSuggestions(lines, line, column, options);
+				if (!suggestions) return suggestions;
+				if (usageRegistry.handlers.has(ctx.model?.provider ?? "")) return suggestions;
+
+				return {
+					...suggestions,
+					items: suggestions.items.filter(
+						(item) => item.value.replace(/^\/+/, "") !== COMMAND && item.label.replace(/^\/+/, "") !== COMMAND,
+					),
+				};
+			},
+			applyCompletion(lines, line, column, item, prefix) {
+				return current.applyCompletion(lines, line, column, item, prefix);
+			},
+			shouldTriggerFileCompletion(lines, line, column) {
+				return current.shouldTriggerFileCompletion?.(lines, line, column) ?? true;
+			},
+		}));
 	});
 
-	try {
-		return await Promise.race([run(), timeout]);
-	} finally {
-		if (timeoutHandle) clearTimeout(timeoutHandle);
-		lines.close();
-		child.kill();
-	}
-}
-
-function formatWindow(window: RateLimitWindow): string {
-	const used = window.usedPercent ?? 0;
-	const reset = window.resetsAt
-		? ` · resets ${new Date(window.resetsAt * 1000).toLocaleString(undefined, {
-				dateStyle: "short",
-				timeStyle: "short",
-			})}`
-		: "";
-
-	return `${used}% used${reset}`;
-}
-
-function formatUsage(result: UsageResponse): string[] {
-	const limits = result.rateLimitsByLimitId && Object.keys(result.rateLimitsByLimitId).length > 0
-		? Object.entries(result.rateLimitsByLimitId)
-		: result.rateLimits
-			? [[result.rateLimits.limitId ?? "codex", result.rateLimits] as const]
-			: [];
-
-	if (limits.length === 0) return ["No Codex usage data returned."];
-
-	const output: string[] = [];
-	for (const [id, snapshot] of limits) {
-		const label = limits.length > 1 ? `${snapshot.limitName ?? id}: ` : "";
-		if (snapshot.primary) output.push(`${label}${formatWindow(snapshot.primary)}`);
-		if (snapshot.secondary) output.push(`${label}${formatWindow(snapshot.secondary)}`);
-	}
-	return output;
-}
-
-export default function (pi: ExtensionAPI) {
-	pi.registerCommand("codex-usage", {
-		description: "Show ChatGPT Codex subscription usage as a message",
-		handler: async (_args, ctx) => {
-			ctx.ui.setStatus("codex-usage-loading", "Checking Codex usage…");
-			try {
-				const usage = await fetchCodexUsage();
-				pi.sendMessage(
-					{
-						customType: "codex-usage",
-						content: formatUsage(usage).join("\n"),
-						display: true,
-					},
-					{ triggerTurn: false },
-				);
-			} catch (error) {
-				const message = error instanceof Error ? error.message : String(error);
-				ctx.ui.notify(`Could not read Codex usage: ${message}`, "error");
-			} finally {
-				ctx.ui.setStatus("codex-usage-loading", undefined);
+	pi.registerCommand(COMMAND, {
+		description: "Show usage for the active provider as a message",
+		async handler(_args, ctx) {
+			const handler = usageRegistry.handlers.get(ctx.model?.provider ?? "");
+			if (!handler) {
+				ctx.ui.notify("/usage is only available with OpenAI Codex or OpenRouter models.", "error");
+				return;
 			}
+			await handler(pi, ctx);
 		},
+	});
+}
+
+export default function (pi: ExtensionAPI): void {
+	registerUsageHandler(pi, PROVIDER, async (extensionPi, ctx) => {
+		ctx.ui.setStatus("codex-usage-loading", "Checking Codex usage…");
+		try {
+			const usage = await fetchUsage();
+			extensionPi.sendMessage(
+				{
+					customType: "codex-usage",
+					content: formatUsage(usage),
+					display: true,
+				},
+				{ triggerTurn: false },
+			);
+		} catch (error) {
+			const message = error instanceof Error ? error.message : String(error);
+			ctx.ui.notify(`Could not read Codex usage: ${message}`, "error");
+		} finally {
+			ctx.ui.setStatus("codex-usage-loading", undefined);
+		}
 	});
 }

@@ -1,8 +1,8 @@
 
 const float BLOOM_RADIUS_PX = sqrt(2.0); // spacing between samples; outer halo is ~4.9x this
-const float BLOOM_SOFT_KNEE = 0.50; // amount added back to the terminal image
-const float BLOOM_STRENGTH = 0.25; // smoothness around threshold
-const float BLOOM_THRESHOLD = 0.02; // luminance at which bloom begins
+const float BLOOM_SOFT_KNEE = 0.50; // smoothness around threshold
+const float BLOOM_STRENGTH = 0.25; // amount added to the terminal image
+const float BLOOM_THRESHOLD = 0.02; // hard threshold; soft knee begins below this
 
 const vec3 LUMA = vec3(0.2126, 0.7152, 0.0722);
 

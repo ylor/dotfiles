@@ -164,7 +164,7 @@ class ModalEditor extends CustomEditor {
 		const label = this.mode === "normal" ? " NORMAL " : " INSERT ";
 		const last = lines.length - 1;
 		if (visibleWidth(lines[last]!) >= label.length) {
-			lines[last] = truncateToWidth(lines[last]!, width - label.length, "") + label;
+			lines[last] = truncateToWidth(lines[last]!, width - label.length, "") + this.borderColor(label);
 		}
 		return lines;
 	}
