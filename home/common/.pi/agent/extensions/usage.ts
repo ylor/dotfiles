@@ -1,9 +1,12 @@
 import type { ExtensionAPI, ExtensionContext } from "@earendil-works/pi-coding-agent";
 import { spawn } from "node:child_process";
 
-const PROVIDER = "openai-codex";
 const COMMAND = "usage";
+const CODEX_PROVIDER = "openai-codex";
+const OPENROUTER_PROVIDER = "openrouter";
+const SUPPORTED_PROVIDERS = new Set([CODEX_PROVIDER, OPENROUTER_PROVIDER]);
 const TIMEOUT_MS = 15_000;
+const CREDITS_URL = "https://openrouter.ai/api/v1/credits";
 
 type RateLimitWindow = {
 	usedPercent?: number;
@@ -17,7 +20,7 @@ type RateLimit = {
 	secondary?: RateLimitWindow;
 };
 
-type UsageResponse = {
+type CodexUsageResponse = {
 	rateLimits?: RateLimit;
 	rateLimitsByLimitId?: Record<string, RateLimit>;
 };
@@ -28,12 +31,21 @@ type RpcMessage = {
 	error?: string | { message?: string };
 };
 
+type CreditsResponse = {
+	data?: {
+		total_credits?: number;
+		total_usage?: number;
+	};
+};
+
+type UsageHandler = (pi: ExtensionAPI, ctx: ExtensionContext) => Promise<void>;
+
 function rpcError(error: RpcMessage["error"]): Error {
 	if (typeof error === "string") return new Error(error);
 	return new Error(error?.message ?? JSON.stringify(error));
 }
 
-function fetchUsage(): Promise<UsageResponse> {
+function fetchCodexUsage(): Promise<CodexUsageResponse> {
 	return new Promise((resolve, reject) => {
 		const child = spawn("codex", ["app-server", "--stdio"], {
 			stdio: ["pipe", "pipe", "pipe"],
@@ -48,7 +60,7 @@ function fetchUsage(): Promise<UsageResponse> {
 			child.stdin.write(`${JSON.stringify(message)}\n`);
 		}
 
-		function finish(error?: Error, usage: UsageResponse = {}): void {
+		function finish(error?: Error, usage: CodexUsageResponse = {}): void {
 			if (done) return;
 			done = true;
 			clearTimeout(timer);
@@ -81,7 +93,7 @@ function fetchUsage(): Promise<UsageResponse> {
 
 				if (message.id === 2) {
 					if (message.error !== undefined) return finish(rpcError(message.error));
-					return finish(undefined, (message.result as UsageResponse) ?? {});
+					return finish(undefined, (message.result as CodexUsageResponse) ?? {});
 				}
 				if (message.id === 1) {
 					if (message.error !== undefined) return finish(rpcError(message.error));
@@ -102,6 +114,27 @@ function fetchUsage(): Promise<UsageResponse> {
 	});
 }
 
+async function fetchOpenRouterUsage(apiKey: string): Promise<CreditsResponse> {
+	const response = await fetch(CREDITS_URL, {
+		headers: { Authorization: `Bearer ${apiKey}` },
+	});
+
+	let body: CreditsResponse & { error?: string | { message?: string } } = {};
+	try {
+		body = (await response.json()) as CreditsResponse & { error?: string | { message?: string } };
+	} catch {
+		// Use the HTTP status below when the response is not JSON.
+	}
+
+	if (!response.ok) {
+		const error = body.error;
+		const message = typeof error === "string" ? error : error?.message;
+		throw new Error(message ?? `OpenRouter returned HTTP ${response.status}`);
+	}
+
+	return body;
+}
+
 function formatWindow(limit: RateLimitWindow): string {
 	let text = `${limit.usedPercent ?? 0}% used`;
 	if (limit.resetsAt) {
@@ -113,7 +146,7 @@ function formatWindow(limit: RateLimitWindow): string {
 	return text;
 }
 
-function formatUsage(usage: UsageResponse): string {
+function formatCodexUsage(usage: CodexUsageResponse): string {
 	const byId = usage.rateLimitsByLimitId;
 	const single = usage.rateLimits;
 
@@ -136,35 +169,85 @@ function formatUsage(usage: UsageResponse): string {
 	return lines.join("\n") || "No Codex usage data returned.";
 }
 
-type UsageHandler = (pi: ExtensionAPI, ctx: ExtensionContext) => Promise<void>;
+function formatCredits(value: number): string {
+	return `$${value.toFixed(2)}`;
+}
 
-type UsageRegistry = {
-	handlers: Map<string, UsageHandler>;
-	commandRegistered: boolean;
-	autocompleteRegistered: boolean;
-};
+function formatOpenRouterUsage(usage: CreditsResponse): string {
+	const total = usage.data?.total_credits;
+	const used = usage.data?.total_usage;
 
-const USAGE_REGISTRY_KEY = Symbol.for("pi.usage-registry");
-const usageRegistry = (((globalThis as Record<PropertyKey, unknown>)[USAGE_REGISTRY_KEY] ??= {
-	handlers: new Map<string, UsageHandler>(),
-	commandRegistered: false,
-	autocompleteRegistered: false,
-}) as UsageRegistry);
+	if (total == null || used == null) {
+		return "No OpenRouter usage data returned.";
+	}
 
-export function registerUsageHandler(pi: ExtensionAPI, provider: string, handler: UsageHandler): void {
-	usageRegistry.handlers.set(provider, handler);
-	if (usageRegistry.commandRegistered) return;
-	usageRegistry.commandRegistered = true;
+	return [
+		`${formatCredits(used)} used of ${formatCredits(total)}`,
+		`${formatCredits(Math.max(0, total - used))} remaining`,
+	].join("\n");
+}
+
+function isSupportedProvider(provider: string | undefined): boolean {
+	return provider !== undefined && SUPPORTED_PROVIDERS.has(provider);
+}
+
+export default function (pi: ExtensionAPI): void {
+	const handlers = new Map<string, UsageHandler>([
+		[
+			CODEX_PROVIDER,
+			async (extensionPi, ctx) => {
+				ctx.ui.setStatus("codex-usage-loading", "Checking Codex usage…");
+				try {
+					const usage = await fetchCodexUsage();
+					extensionPi.sendMessage(
+						{
+							customType: "codex-usage",
+							content: formatCodexUsage(usage),
+							display: true,
+						},
+						{ triggerTurn: false },
+					);
+				} catch (error) {
+						const message = error instanceof Error ? error.message : String(error);
+						ctx.ui.notify(`Could not read Codex usage: ${message}`, "error");
+				} finally {
+					ctx.ui.setStatus("codex-usage-loading", undefined);
+				}
+			},
+		],
+		[
+			OPENROUTER_PROVIDER,
+			async (extensionPi, ctx) => {
+				ctx.ui.setStatus("openrouter-usage-loading", "Checking OpenRouter usage…");
+				try {
+					const apiKey = await ctx.modelRegistry.getApiKeyForProvider(OPENROUTER_PROVIDER);
+					if (!apiKey) throw new Error("No OpenRouter API key configured.");
+
+					const usage = await fetchOpenRouterUsage(apiKey);
+					extensionPi.sendMessage(
+						{
+							customType: "openrouter-usage",
+							content: formatOpenRouterUsage(usage),
+							display: true,
+						},
+						{ triggerTurn: false },
+					);
+				} catch (error) {
+						const message = error instanceof Error ? error.message : String(error);
+						ctx.ui.notify(`Could not read OpenRouter usage: ${message}`, "error");
+				} finally {
+					ctx.ui.setStatus("openrouter-usage-loading", undefined);
+				}
+			},
+		],
+	]);
 
 	pi.on("session_start", (_event, ctx) => {
-		if (usageRegistry.autocompleteRegistered) return;
-		usageRegistry.autocompleteRegistered = true;
 		ctx.ui.addAutocompleteProvider((current) => ({
 			...current,
 			async getSuggestions(lines, line, column, options) {
 				const suggestions = await current.getSuggestions(lines, line, column, options);
-				if (!suggestions) return suggestions;
-				if (usageRegistry.handlers.has(ctx.model?.provider ?? "")) return suggestions;
+				if (!suggestions || isSupportedProvider(ctx.model?.provider)) return suggestions;
 
 				return {
 					...suggestions,
@@ -185,34 +268,12 @@ export function registerUsageHandler(pi: ExtensionAPI, provider: string, handler
 	pi.registerCommand(COMMAND, {
 		description: "Show usage for the active provider as a message",
 		async handler(_args, ctx) {
-			const handler = usageRegistry.handlers.get(ctx.model?.provider ?? "");
+			const handler = handlers.get(ctx.model?.provider ?? "");
 			if (!handler) {
 				ctx.ui.notify("/usage is only available with OpenAI Codex or OpenRouter models.", "error");
 				return;
 			}
 			await handler(pi, ctx);
 		},
-	});
-}
-
-export default function (pi: ExtensionAPI): void {
-	registerUsageHandler(pi, PROVIDER, async (extensionPi, ctx) => {
-		ctx.ui.setStatus("codex-usage-loading", "Checking Codex usage…");
-		try {
-			const usage = await fetchUsage();
-			extensionPi.sendMessage(
-				{
-					customType: "codex-usage",
-					content: formatUsage(usage),
-					display: true,
-				},
-				{ triggerTurn: false },
-			);
-		} catch (error) {
-			const message = error instanceof Error ? error.message : String(error);
-			ctx.ui.notify(`Could not read Codex usage: ${message}`, "error");
-		} finally {
-			ctx.ui.setStatus("codex-usage-loading", undefined);
-		}
 	});
 }

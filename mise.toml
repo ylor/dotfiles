@@ -1,4 +1,5 @@
 [tools]
+node = "latest"
 pi = "latest"
 # mise config files are hierarchical. mise will find all of the config files
 # in all parent directories and merge them together.

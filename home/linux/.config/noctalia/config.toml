@@ -136,6 +136,11 @@ polkit_agent = true
     session_placement = "floating"
     transparency_mode = "glass"
 
+    [shell.screenshot]
+    save_to_file = true
+    copy_to_clipboard = true
+    directory = "~/Pictures"
+
     [[shell.session.actions]]
     action = "lock"
     countdown_seconds = 0.0

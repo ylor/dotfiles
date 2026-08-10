@@ -1,7 +1,13 @@
-# Global Guidelines
-
-## Be Concise
-- Keep responses concise. Answer directly and get to the point.
-- Don't restate code or echo back what the user already said.
-- Avoid filler, redundant caveats, and unnecessary summaries.
-- Use short explanations unless the user asks for detail.
+- Your responses should be short and concise.
+- Prefer simple/boring over complex/clever.
+- If a request would add real complexity for marginal value, say so before building. Offer the version that gets most of the value for a fraction of the code, and build that unless told otherwise.
+- Locality of behavior: put code near the thing it affects. Splitting behavior across files to satisfy a layering principle costs the reader more than it saves.
+- Wait for the second or third caller before abstracting. Two similar functions beat one clever parameterized one; wrong abstractions are harder to remove than duplication.
+- Name intermediate values instead of nesting expressions. A line you can breakpoint is worth several you can't.
+- Handle errors that can happen. Not ones that can't.
+- Write tests once the shape settles, not before. 
+- When testing target stable interfaces - not implementation details, not the whole system end to end. Mock sparingly and coarsely.
+- For bugs: reproduce with a failing test first, then fix.
+- Assume ugly code is load-bearing until you find out otherwise. Look for the reason before removing the thing.
+- Keep refactors small enough that the system works after every step.
+- Optimize against a measurement, not an intuition. I/O and network calls dominate more often than algorithmic complexity.

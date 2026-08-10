@@ -1,20 +1,23 @@
 {
   "lastChangelogVersion": "0.84.1",
-  "theme": "dark",
+  "defaultModel": "gpt-5.6-luna",
   "defaultProvider": "openai-codex",
-  "defaultModel": "gpt-5.6-sol",
-  "defaultThinkingLevel": "medium",
+  "defaultThinkingLevel": "xhigh",
   "enableInstallTelemetry": false,
-  "quietStartup": false,
+  "hideThinkingBlock": true,
+  "showCacheMissNotices": true,
+  "theme": "dark",
   "tuiMode": "fullscreen",
   "enabledModels": [
     "openai-codex/gpt-5.6-luna:xhigh",
     "openai-codex/gpt-5.6-sol:medium",
     "openrouter/deepseek/deepseek-v4-flash-0731:high"
   ],
-  "showCacheMissNotices": true,
-  "images": {
-    "blockImages": true
-  },
-  "hideThinkingBlock": true
+  "packages": [
+    "npm:@dietrichgebert/ponytail",
+    "npm:@juicesharp/rpiv-ask-user-question",
+    "npm:@narumitw/pi-lsp",
+    "npm:pi-mcp-adapter",
+    "npm:pi-web-search"
+  ]
 }

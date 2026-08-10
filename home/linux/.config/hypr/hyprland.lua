@@ -4,8 +4,6 @@
 require("env")
 require("animations")
 
-local noctalia = "noctalia msg "
-
 local function with_alpha(rgb, alpha)
 	return "rgba(" .. rgb:match("%x%x%x%x%x%x") .. alpha .. ")"
 end
@@ -39,7 +37,7 @@ hl.monitor({
 
 -- Set programs that you use
 local terminal = "ghostty"
-local fileManager = "dolphin"
+local fileManager = "nautilus"
 -- local menu        = "hyprlauncher"
 local browser = "helium-browser"
 local menu = "noctalia msg panel-toggle launcher"
@@ -63,6 +61,7 @@ hl.on("hyprland.start", function()
 end)
 
 hl.exec_cmd('gsettings set org.gnome.desktop.interface color-scheme "prefer-dark"')
+hl.exec_cmd("gsettings set org.gnome.desktop.interface icon-theme 'Yaru-yellow'")
 hl.exec_cmd('gsettings set org.gnome.desktop.interface gtk-theme "adw-gtk3-dark"')
 hl.exec_cmd("gsettings set org.gnome.desktop.wm.preferences button-layout :")
 
@@ -296,6 +295,8 @@ hl.bind(mod.hypr .. " + S", function()
 	})
 end)
 hl.bind(mod.main .. " + Return", hl.dsp.exec_cmd(terminal))
+hl.bind("CTRL + SHIFT + 4", hl.dsp.exec_cmd("noctalia msg screenshot-region"))
+hl.bind("CTRL + ALT + SHIFT + 4", hl.dsp.exec_cmd("noctalia msg screenshot-region"))
 hl.bind(mod.hypr .. " + COMMA", hl.dsp.exec_cmd("noctalia msg settings-toggle"))
 hl.bind(mod.hypr .. " + L", hl.dsp.exec_cmd("noctalia msg session lock"))
 -- hl.bind(mod.main .. " + X", hl.dsp.submap("session_menu"))
@@ -418,15 +419,13 @@ hl.bind("XF86AudioPrev", hl.dsp.exec_cmd("playerctl previous"), { locked = true 
 
 -- Example window rules that are useful
 
-local suppressMaximizeRule = hl.window_rule({
+hl.window_rule({
 	-- Ignore maximize requests from all apps. You'll probably like this.
 	name = "suppress-maximize-events",
 	match = { class = ".*" },
 
 	suppress_event = "maximize",
 })
--- suppressMaximizeRule:set_enabled(false)
-
 hl.window_rule({
 	-- Fix some dragging issues with XWayland
 	name = "fix-xwayland-drags",
@@ -506,8 +505,8 @@ hl.window_rule({
 	float = true,
 	pin = true,
 	-- size = { 600, 338 },
-	-- keep_aspect_ratio = true,
-	-- border_size = 0,
+	keep_aspect_ratio = true,
+	border_size = 0,
 	opacity = "1 1",
 	persistent_size = true,
 	move = {
@@ -516,18 +515,15 @@ hl.window_rule({
 	},
 })
 
-hl.window_rule({
-	match = {
-		tag = "pip",
-		title = "(Picture.?in.?[Pp]icture)|(^Meet - .+)",
-		workspace = "w[v1]",
-	},
-	no_focus = true,
-	-- border_size = 0,
-})
-
--- For Noctalia Color templates
-noctalia_theme.apply_theme()
+-- hl.window_rule({
+-- 	match = {
+-- 		tag = "pip",
+-- 		title = "(Picture.?in.?[Pp]icture)|(^Meet - .+)",
+-- 		workspace = "w[v1]",
+-- 	},
+-- 	-- no_focus = true,
+-- 	border_size = 0,
+-- })
 
 -- For Noctalia Color templates
 require("noctalia").apply_theme()
