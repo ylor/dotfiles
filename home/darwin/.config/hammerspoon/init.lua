@@ -1,16 +1,16 @@
 ---@diagnostic disable-next-line: undefined-global
-local hs                    = hs
+local hs = hs
 hs.window.animationDuration = 0.1
 
-Mod                         = {}
-Mod.main                    = { "option" }
+Mod = {}
+Mod.main = { "option" }
 -- Mod.main.shift = { "option", "shift" }
-Mod.hyper                   = { "control", "option", "command" }
+Mod.hyper = { "control", "option", "command" }
 -- Mod.hyper.shift = { "control", "option", "command", "shift" }
 -- Mod.win = { "control" }
 -- Mod.win.shift  = { "control", "shift" }
 
-Work                        = string.find(hs.host.localizedName(), "^PAPA")
+Work = string.find(hs.host.localizedName(), "^PAPA")
 
 require("lib.apps")
 require("lib.spaces")
@@ -24,12 +24,13 @@ require("lib.quitter")
 require("lib.tabber")
 
 hs.hotkey.bind(Mod.main, ".", App("1Password"))
-hs.hotkey.bind(Mod.main, "\\", App("Zed"))
+-- hs.hotkey.bind(Mod.main, "\\", App("Zed"))
 hs.hotkey.bind(Mod.main, "E", App("Finder"))
 hs.hotkey.bind(Mod.main, "G", App("Moonlight"))
-hs.hotkey.bind(Mod.main, "I", function()
-    AppCycler(AppRunning("Safari") and "Safari" or "Dia")
-end)
+hs.hotkey.bind(Mod.main, "I", App("Google Chrome"))
+-- hs.hotkey.bind(Mod.main, "I", function()
+-- 	AppCycler(AppRunning("Safari") and "Safari" or "Dia")
+-- end)
 -- hs.hotkey.bind(Mod.main, "O", App("Helium"))
 hs.hotkey.bind(Mod.main, "P", App("1Password"))
 hs.hotkey.bind(Mod.main, "Return", App("Ghostty"))
@@ -37,9 +38,9 @@ hs.hotkey.bind(Mod.main, "Return", App("Ghostty"))
 hs.hotkey.bind(Mod.hyper, ",", App("System Settings"))
 
 if AppExists("/Applications/Claude.app") then
-    hs.hotkey.bind(Mod.main, "A", App("Claude"))
+	hs.hotkey.bind(Mod.main, "A", App("Claude"))
 else
-    hs.hotkey.bind(Mod.main, "A", Web("https://claude.ai"))
+	hs.hotkey.bind(Mod.main, "A", Web("https://claude.ai"))
 end
 
 hs.hotkey.bind(Mod.main, "R", App("Screen Sharing"))
@@ -57,39 +58,44 @@ hs.hotkey.bind(Mod.hyper, "down", WindowMini)
 hs.hotkey.bind(Mod.hyper, "left", MoveWindowLeftScreen)
 hs.hotkey.bind(Mod.hyper, "right", MoveWindowRightScreen)
 
-_G.WindowEventTapper = hs.eventtap.new({ hs.eventtap.event.types.keyDown }, WindowArrowKeyHandler({
-    [hs.keycodes.map.left]  = WindowLeft,
-    [hs.keycodes.map.right] = WindowRight,
-    [hs.keycodes.map.up]    = WindowFill,
-    [hs.keycodes.map.down]  = WindowCenter,
-})):start()
+_G.WindowEventTapper = hs.eventtap
+	.new(
+		{ hs.eventtap.event.types.keyDown },
+		WindowArrowKeyHandler({
+			[hs.keycodes.map.left] = WindowLeft,
+			[hs.keycodes.map.right] = WindowRight,
+			[hs.keycodes.map.up] = WindowFill,
+			[hs.keycodes.map.down] = WindowCenter,
+		})
+	)
+	:start()
 
 ChromeModal:bind({ "cmd", "shift" }, "c", CopyChromeTabURL)
 FinderModal:bind({ "cmd" }, "l", FinderJumpToFolder)
 HeliumModal:bind(Mod.main, "k", HeliumSelectAll)
 
 for i = 1, 5 do
-    hs.hotkey.bind({ "ctrl", "shift" }, tostring(i), function()
-        MoveWindowToSpaceByDrag(i)
-    end)
+	hs.hotkey.bind({ "ctrl", "shift" }, tostring(i), function()
+		MoveWindowToSpaceByDrag(i)
+	end)
 end
 
 if Work then
-    -- hs.hotkey.bind(Mod.main, "I", App("Google Chrome Dev"))
-    -- hs.hotkey.bind(Mod.main, "O", App("Helium"))
-    hs.hotkey.bind(Mod.main, "M", App("Mail"))
-    hs.hotkey.bind(Mod.main, "S", App("Slack"))
-    hs.hotkey.bind(Mod.hyper, "I", App("Island"))
-    if AppExists("/Applications/Gemini.app") then
-        hs.hotkey.bind(Mod.hyper, "A", App("Gemini"))
-    else
-        hs.hotkey.bind(Mod.hyper, "A", Web("https://gemini.google.com"))
-    end
+	-- hs.hotkey.bind(Mod.main, "I", App("Google Chrome Dev"))
+	-- hs.hotkey.bind(Mod.main, "O", App("Helium"))
+	hs.hotkey.bind(Mod.main, "M", App("Mail"))
+	hs.hotkey.bind(Mod.main, "S", App("Slack"))
+	hs.hotkey.bind(Mod.hyper, "I", App("Island"))
+	if AppExists("/Applications/Gemini.app") then
+		hs.hotkey.bind(Mod.hyper, "A", App("Gemini"))
+	else
+		hs.hotkey.bind(Mod.hyper, "A", Web("https://gemini.google.com"))
+	end
 end
 
 if not Work then
-    hs.hotkey.bind(Mod.main, "M", App("Messages"))
-    hs.hotkey.bind(Mod.hyper, "M", App("Mail"))
+	hs.hotkey.bind(Mod.main, "M", App("Messages"))
+	hs.hotkey.bind(Mod.hyper, "M", App("Mail"))
 end
 
 hs.hotkey.bind(Mod.hyper, "\\", hs.reload)
