@@ -14,9 +14,7 @@
     "openrouter/deepseek/deepseek-v4-flash-0731:high"
   ],
   "packages": [
-    "npm:@dietrichgebert/ponytail",
     "npm:@juicesharp/rpiv-ask-user-question",
-    "npm:@narumitw/pi-lsp",
     "npm:pi-mcp-adapter",
     "npm:pi-web-search"
   ]

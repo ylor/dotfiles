@@ -3,7 +3,7 @@ function dfs-link
 
     set kernel (string lower (uname))
     set dirs (path filter -d $DOTFILES/home/{common,$kernel})
-    set files (fd . $dirs --hidden --absolute-path --type file)
+    set files (fd . $dirs --hidden --absolute-path --type file --type symlink)
     set links (string replace -r "^$DOTFILES/home/(common|$kernel)" "$HOME" $files)
 
     # link

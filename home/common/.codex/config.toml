@@ -5,8 +5,11 @@ approvals_reviewer = "auto_review"
 [tui]
 terminal_title = ["activity", "project-name", "app-name"]
 
+[tui.model_availability_nux]
+"gpt-5.6-sol" = 1
+
 [marketplaces.ponytail]
-last_updated = "2026-08-10T04:25:39Z"
+last_updated = "2026-08-12T17:06:02Z"
 last_revision = "2ed6c52c9d7e5e56942508591085fd45dea277d3"
 source_type = "git"
 source = "https://github.com/DietrichGebert/ponytail.git"
@@ -15,6 +18,9 @@ source = "https://github.com/DietrichGebert/ponytail.git"
 enabled = true
 
 [projects."/home/roly/.local/share/dotfiles"]
+trust_level = "trusted"
+
+[projects."/Users/roly/.local/share/dotfiles"]
 trust_level = "trusted"
 
 [hooks.state]
