@@ -1,5 +1,5 @@
 model = "gpt-5.6-sol"
-model_reasoning_effort = "low"
+model_reasoning_effort = "xhigh"
 approvals_reviewer = "auto_review"
 
 [tui]
@@ -21,6 +21,9 @@ enabled = true
 trust_level = "trusted"
 
 [projects."/Users/roly/.local/share/dotfiles"]
+trust_level = "trusted"
+
+[projects."/Users/roly/Developer/Hacker"]
 trust_level = "trusted"
 
 [hooks.state]
