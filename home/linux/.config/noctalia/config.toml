@@ -3,9 +3,7 @@ border_width = 1.0
 center = [ "workspaces" ]
 concave_edge_corners = false
 end = [ "media", "tray", "volume", "brightness", "battery", "network", "launcher", "notifications", "clock" ]
-margin_edge = 0
 margin_ends = 4
-radius = 12
 start = [ "control-center", "active_window" ]
 thickness = 32
 
@@ -20,27 +18,18 @@ enable_ddcutil = true
 enabled = false
 
 [dock]
-auto_hide = false
-enabled = false
 smart_auto_hide = true
 
 [idle]
-behavior_order = [ "lock", "screen-off", "lock-and-suspend" ]
 
     [idle.behavior.lock]
-    action = "lock"
     enabled = true
-    timeout = 600.0
 
     [idle.behavior.lock-and-suspend]
-    action = "lock_and_suspend"
     enabled = true
-    timeout = 900.0
 
     [idle.behavior.screen-off]
-    action = "screen_off"
     enabled = true
-    timeout = 660.0
 
 [location]
 address = "Miami, FL"
@@ -50,13 +39,7 @@ blurred_desktop = true
 
 [lockscreen_widgets]
 enabled = true
-schema_version = 2
 widget_order = [ "lockscreen-login-box@WAYLAND-1", "lockscreen-login-box@DP-1" ]
-
-    [lockscreen_widgets.grid]
-    cell_size = 16
-    major_interval = 4
-    visible = true
 
     [lockscreen_widgets.widget."lockscreen-login-box@DP-1"]
     box_height = 70.0
@@ -115,9 +98,6 @@ temperature_night = 3400
 [osd.kinds]
 media = false
 
-[plugins]
-enabled = []
-
 [shell]
 font_family = "Iosevka Aile"
 polkit_agent = true
@@ -137,8 +117,6 @@ polkit_agent = true
     transparency_mode = "glass"
 
     [shell.screenshot]
-    save_to_file = true
-    copy_to_clipboard = true
     directory = "~/Pictures"
 
     [[shell.session.actions]]
@@ -182,22 +160,20 @@ polkit_agent = true
 [theme]
 community_palette = "Rosey AMOLED"
 custom_palette = "mfd-nerv"
-pure_black_dark = false
 source = "custom"
 
     [theme.templates]
     builtin_ids = [ "gtk3", "gtk4", "hyprland", "kcolorscheme", "qt" ]
 
 [wallpaper]
-enabled = false
 fill_color = "#000000"
 fill_mode = "center"
 
     [wallpaper.default]
-    path = "/usr/share/noctalia/assets/noctalia-wallpaper.png"
+    path = "color:#000000"
 
     [wallpaper.last]
-    path = "/usr/share/noctalia/assets/noctalia-wallpaper.png"
+    path = "color:#000000"
 
 [weather]
 unit = "imperial"
@@ -241,5 +217,5 @@ show_label = false
 [widget.workspaces]
 capsule_fill = "primary"
 change_color_on_hover = false
-display = "name"
+label_source = "name"
 style = "minimal"
