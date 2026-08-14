@@ -1,4 +1,4 @@
-model = "gpt-5.6-sol"
+model = "gpt-5.6-luna"
 model_reasoning_effort = "xhigh"
 approvals_reviewer = "auto_review"
 
@@ -15,7 +15,7 @@ source_type = "git"
 source = "https://github.com/DietrichGebert/ponytail.git"
 
 [plugins."ponytail@ponytail"]
-enabled = true
+enabled = false
 
 [projects."/home/roly/.local/share/dotfiles"]
 trust_level = "trusted"
