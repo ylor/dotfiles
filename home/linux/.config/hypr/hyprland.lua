@@ -54,9 +54,6 @@ local menu = "noctalia msg panel-toggle launcher"
 hl.on("hyprland.start", function()
 	hl.exec_cmd("noctalia")
 	hl.exec_cmd("noctalia msg session lock")
-	hl.exec_cmd(browser, { workspace = "1 silent" })
-	hl.exec_cmd(terminal, { workspace = "2 silent" })
-	hl.exec_cmd("steam -steamos3 -silent")
 	hl.exec_cmd("1password --silent")
 end)
 
@@ -132,7 +129,7 @@ hl.config({
 	},
 
 	decoration = {
-		rounding = 16,
+		rounding = 12,
 		rounding_power = 4,
 
 		-- Change transparency of focused and unfocused windows
@@ -294,7 +291,36 @@ hl.bind(mod.hypr .. " + S", function()
 		scale = m.scale == 2 and 1.67 or 2,
 	})
 end)
+local function bind_scratch_terminal(key, name, program)
+	local class = "com.mitchellh.ghostty." .. name
+	local workspace = "special:" .. name
+	local command = terminal .. " --gtk-single-instance=false --class=" .. class
+	if program then
+		command = command .. " -e " .. program
+	end
+
+	hl.bind(key, function()
+		local scratch_terminal = hl.get_window("class:^(" .. class .. ")$")
+		if scratch_terminal then
+			hl.dispatch(hl.dsp.workspace.toggle_special(name))
+		else
+			local rules = {
+				workspace = workspace,
+				float = true,
+				center = true,
+				size = {
+					"monitor_w * 0.5",
+					"monitor_w * 0.5 * 2 / 3",
+				},
+			}
+			hl.dispatch(hl.dsp.exec_cmd(command, rules))
+		end
+	end)
+end
+
 hl.bind(mod.main .. " + Return", hl.dsp.exec_cmd(terminal))
+bind_scratch_terminal(mod.main .. " + grave", "scratch-terminal")
+bind_scratch_terminal(mod.main .. " + A", "agent-scratch-terminal", "/usr/bin/mise exec -- pi")
 hl.bind("CTRL + SHIFT + 4", hl.dsp.exec_cmd("noctalia msg screenshot-region"))
 hl.bind("CTRL + ALT + SHIFT + 4", hl.dsp.exec_cmd("noctalia msg screenshot-region"))
 hl.bind(mod.hypr .. " + COMMA", hl.dsp.exec_cmd("noctalia msg settings-toggle"))

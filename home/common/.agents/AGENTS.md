@@ -1,65 +1,171 @@
 - Speak in ASD-STE100 Simplified Technical English.
-- Keep your responses short.
+- Keep your responses concise.
 - Do not use emoji or em-dashes.
 
-# Coding
+# Instructions for Software Agents
 
-Apply these rules when you write, review, or refactor code.
+Reject complexity. Prefer simple, clear, working code.
 
-## Priority
+## Complexity
 
-1. Combat complexity: prefer the boring solution over the clever one.
-2. Deliver functionality: a partial solution that works is better than a complete solution that does not exist.
-3. All other concerns are lower priority than 1 and 2.
+Before you add code, ask:
 
-## Structure
+1. Is it necessary?
+2. Is there a simpler solution?
+3. Does the current design support it?
+4. Can another developer understand it?
 
-- Locality of behavior: put the code near the thing it operates on. Do not spread one behavior across many files.
-- If the full request is complex, propose the 80/20 solution first: 80 percent of the value with 20 percent of the code. State what you left out.
-- Do not add abstractions that have one caller.
-- Do not add layers, interfaces, or patterns until there are at least two real users of them.
-- Do not add a network hop to solve a code organization problem.
-- Put a boundary only where the interface is narrow. A boundary that exposes internal detail is not a boundary.
+### Say No
 
-## Code style
+- Reject work that adds more cost than value.
+- Do not add features for possible future needs.
+- Explain the reason and propose a smaller solution.
 
-- Be idiomatic to the language you are writing in.
-- Assign each part of a compound condition to a named variable. Optimize for debug, not for line count.
-- Repeat simple, clear code instead of building a complex mechanism to remove the repetition.
-- Use closures and generics only in small quantities. Generics are for containers.
-- Use simple concurrency models: stateless handlers, independent queue jobs. Do not invent shared mutable state.
-- Do not add error handling for conditions that cannot occur.
+### Say Yes Carefully
 
-## Tests
+- For a complex request, propose the 80/20 solution first.
+- State what the smaller solution excludes.
+- Add more only when users show a real need.
 
-- Write tests after the design is stable, not before.
-- Prefer integration tests. Add unit tests only where the logic is complex and stable. Keep the end-to-end suite small.
-- Use mocks only at system boundaries, and only if there is no alternative.
-- For a defect: first write a test that reproduces it, then correct it.
+### Factor Code
 
-## Change to code that exists
+- Do not create abstractions before you understand the problem.
+- Extract an abstraction only when at least two real uses show that it reduces complexity.
+- Use stable boundaries with narrow interfaces.
+- Do not add layers for possible future use.
 
-- Assume code that works has a reason. Find the reason before you remove it.
-- Keep each refactor small. The system must build and pass tests after each step.
+## Testing
+
+- Test stable behavior, not implementation details.
+- Prefer integration tests at system boundaries.
+- Use unit tests for complex, stable logic.
+- Keep the end-to-end suite small.
+- Mock only at system boundaries when a real dependency is not practical.
+
+For a defect:
+
+1. Add a test that reproduces it.
+2. Correct it.
+3. Run the relevant tests.
+
+## Agile
+
+- Use process only when it helps delivery.
+- Prefer working software, clear communication, good tools, and short feedback cycles.
+
+## Refactoring
+
+- Refactor in small steps.
+- Keep the system working after each step.
 - Do not combine a refactor with a behavior change.
 
-## Performance
+## Chesterton's Fence
 
-- Do not optimize without a measurement that shows the problem.
-- Count network calls and I/O before you count CPU operations.
+Before you remove code:
 
-## APIs
+1. Find why it exists.
+2. Check its history, callers, tests, and constraints.
+3. Remove it only after you understand the problem that it solves.
 
-- Design from the caller side, not from the implementation.
-- Make the common case a single call. Make the rare case possible through a second, larger API.
+## Microservices
+
+- Add a network boundary only when a separate process or machine is necessary.
+- Account for latency, failure, deployment, and operational cost.
+
+## Type Systems
+
+- Use types for discovery, navigation, and clear error prevention.
+- Avoid complex type-level code when direct runtime code is clearer.
+- Use generics mainly for containers and clear reusable structures.
+
+## Expression Complexity
+
+- Optimize for reading and debugging, not line count.
+- Split complex expressions into named intermediate values.
+- Make important state easy to inspect.
+
+## DRY
+
+- Remove repetition when it represents one shared rule.
+- Keep simple repetition when an abstraction adds difficult control flow or configuration.
+- Do not combine code only because it looks similar.
+
+## Locality of behavior
+
+- Keep related code near the behavior that it controls.
+- Do not spread one behavior across many files by technical category.
+
+## Closures
+
+- Use closures only for small, local operations that stay clear.
+- Avoid long callback chains and hidden captured state.
+- Prefer named functions or direct control flow when they are easier to debug.
 
 ## Logging
 
-- Log the important branches.
-- Include a correlation ID for work that crosses processes.
-- Make the log level configurable at run time.
+- Log important decisions and failures.
+- Do not log every operation.
+- Propagate a correlation ID across processes.
+- Make log levels configurable at run time.
+- Do not log secrets or unnecessary personal data.
 
-## Communication
+## Concurrency
 
-- If a design or a request is too complex, say so directly. Do not hide behind confident output.
-- State your assumptions. Ask for clarification when the request is not clear.
+- Avoid shared mutable state.
+- Prefer stateless handlers, independent jobs, immutable data, and standard concurrent structures.
+- Use the simplest concurrency model that meets the requirement.
+
+## Optimization
+
+- Do not optimize without measurements.
+- Measure real workloads.
+- Count network, file, and database operations before CPU operations.
+- Keep clear code unless evidence requires complexity.
+- Measure again after the change.
+
+## APIs
+
+- Design from the caller's point of view.
+- Make the common case one simple call.
+- Do not expose implementation details.
+- Provide a separate advanced API for rare cases.
+- Use clear names and predictable outputs.
+
+## Parsing
+
+- Prefer a small handwritten parser that follows the input grammar.
+- Use a parser generator only when requirements justify its complexity.
+
+## Visitor Pattern
+
+- Do not use Visitor by default.
+- Prefer direct functions or methods.
+- Use Visitor only when several real operations become simpler.
+
+## Front-End Development
+
+- Use server-rendered HTML when it meets requirements.
+- Add a client framework only for necessary complex client state or interaction.
+- Do not split front-end and back-end systems without a clear need.
+- Minimize JavaScript, build steps, state layers, and data transformations.
+
+## Fads
+
+- Evaluate tools and patterns by practical value, not popularity.
+- Check maintenance cost, operational cost, failure modes, and project fit.
+
+## Fear of Looking Uninformed
+
+- Say when code or a proposal is difficult to understand.
+- Ask simple questions when a request is not clear.
+- Do not approve complexity because others appear to understand it.
+- If the team cannot explain a design clearly, simplify it.
+
+## Impostor Syndrome
+
+- Treat uncertainty as normal.
+- Do not hide uncertainty with confident claims or abstractions.
+- State assumptions and unknowns.
+- Verify important claims with code, tests, documentation, or measurements.
+- Ask for help when necessary.
+

@@ -1,10 +1,12 @@
 [bar.default]
-border_width = 1.0
-center = [ "workspaces" ]
+background_opacity = 0.0
+border_width = 0.0
 concave_edge_corners = false
-end = [ "media", "tray", "volume", "brightness", "battery", "network", "launcher", "notifications", "clock" ]
+font_family = "Berkeley Mono Retina"
+margin_edge = 0
 margin_ends = 4
-start = [ "control-center", "active_window" ]
+radius = 12
+start = [ "control-center", "workspaces", "active_window" ]
 thickness = 32
 
     [bar.default.dead_zone.actions]
@@ -18,28 +20,43 @@ enable_ddcutil = true
 enabled = false
 
 [dock]
+auto_hide = false
+enabled = false
 smart_auto_hide = true
 
 [idle]
+behavior_order = [ "lock", "screen-off", "lock-and-suspend" ]
 
     [idle.behavior.lock]
+    action = "lock"
     enabled = true
+    timeout = 600.0
 
     [idle.behavior.lock-and-suspend]
+    action = "lock_and_suspend"
     enabled = true
+    timeout = 3600.0
 
     [idle.behavior.screen-off]
+    action = "screen_off"
     enabled = true
+    timeout = 660.0
 
 [location]
 address = "Miami, FL"
 
 [lockscreen]
-blurred_desktop = true
+blurred_desktop = false
 
 [lockscreen_widgets]
 enabled = true
+schema_version = 2
 widget_order = [ "lockscreen-login-box@WAYLAND-1", "lockscreen-login-box@DP-1" ]
+
+    [lockscreen_widgets.grid]
+    cell_size = 16
+    major_interval = 4
+    visible = true
 
     [lockscreen_widgets.widget."lockscreen-login-box@DP-1"]
     box_height = 70.0
@@ -93,17 +110,24 @@ widget_order = [ "lockscreen-login-box@WAYLAND-1", "lockscreen-login-box@DP-1" ]
 
 [nightlight]
 enabled = true
-temperature_night = 3400
 
 [osd.kinds]
 media = false
 
+[plugins]
+enabled = []
+
 [shell]
-font_family = "Iosevka Aile"
+corner_radius_scale = 0.5000000074505806
+font_family = "Berkeley Mono"
 polkit_agent = true
 
     [shell.animation]
+    enabled = false
     speed = 4.0
+
+    [shell.greeter_sync]
+    auto_sync = false
 
     [shell.launcher]
     categories = false
@@ -111,13 +135,12 @@ polkit_agent = true
     sort_by_usage = false
 
     [shell.panel]
+    control_center_placement = "floating"
     open_near_click_control_center = true
     open_near_click_wallpaper = true
     session_placement = "floating"
     transparency_mode = "glass"
-
-    [shell.screenshot]
-    directory = "~/Pictures"
+    wallpaper_placement = "floating"
 
     [[shell.session.actions]]
     action = "lock"
@@ -131,6 +154,7 @@ polkit_agent = true
     command = "hyprshutdown || noctalia msg session logout"
     countdown_seconds = 5.0
     enabled = true
+    shortcut = "o"
     variant = "default"
 
     [[shell.session.actions]]
@@ -162,10 +186,8 @@ community_palette = "Rosey AMOLED"
 custom_palette = "mfd-nerv"
 source = "custom"
 
-    [theme.templates]
-    builtin_ids = [ "gtk3", "gtk4", "hyprland", "kcolorscheme", "qt" ]
-
 [wallpaper]
+enabled = true
 fill_color = "#000000"
 fill_mode = "center"
 
@@ -189,7 +211,8 @@ title_scroll = "on_hover"
 show_label = false
 
 [widget.clock]
-format = "{:%-l:%M %p}"
+format = "{:%a %-l:%M %p}"
+tooltip_format = "{:%B %-d, %Y}"
 
 [widget.control-center]
 glyph = "hyprland"

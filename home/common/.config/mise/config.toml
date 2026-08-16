@@ -1,2 +1,6 @@
 [settings.ruby]
 compile = true
+
+[tools]
+herdr = "latest"
+pi = "latest"
