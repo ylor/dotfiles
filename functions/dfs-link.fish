@@ -2,9 +2,9 @@ function dfs-link
     set -q DOTFILES; or dfs
 
     set kernel (string lower (uname))
-    set dirs (path filter -d $DOTFILES/{base,$kernel}/home)
+    set dirs (path filter -d $DOTFILES/{,$kernel/}home)
     set files (fd . $dirs --hidden --absolute-path --type file --type symlink)
-    set links (string replace -r "^$DOTFILES/(base|$kernel)/home" "$HOME" $files)
+    set links (string replace -r "^$DOTFILES/($kernel/)?home" "$HOME" $files)
 
     # link
     mkdir -p (path dirname $links | sort -u)

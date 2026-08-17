@@ -1,4 +1,4 @@
-set font_directory $DOTFILES/assets/fonts
+set font_directory $DOTFILES/home/.local/share/fonts
 set destination_directory $HOME/Library/Fonts
 
 mkdir -p $destination_directory

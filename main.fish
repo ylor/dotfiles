@@ -4,7 +4,7 @@ if set -q _flag_reset
 end
 
 set -Ux DOTFILES (path resolve (status dirname))
-set --prepend fish_function_path "$DOTFILES/base/home/.config/fish/functions"
+set --prepend fish_function_path "$DOTFILES/home/.config/fish/functions" "$DOTFILES/functions"
 
 source $DOTFILES/.env
 clear && command cat $DOTFILES/art.txt

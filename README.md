@@ -11,7 +11,6 @@ An (mostly) unattended system to idempotently configure Arch Linux or macOS.
 - good question
 - fish
 
-
 ## Acknowledgements
 - Linux
 - Homebrew
