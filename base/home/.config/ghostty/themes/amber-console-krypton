@@ -1,0 +1,24 @@
+# Amber Console KRYPTON
+background = #0b080b
+foreground = #bf86c0
+cursor-color = #eaa5eb
+cursor-text = #1b141b
+selection-background = #7f587f
+selection-foreground = #eaa5eb
+
+palette = 0=#050405
+palette = 1=#FF6644
+palette = 2=#a372a3
+palette = 3=#bf86c0
+palette = 4=#a372a3
+palette = 5=#a372a3
+palette = 6=#a372a3
+palette = 7=#eaa5eb
+palette = 8=#442e45
+palette = 9=#FF3000
+palette = 10=#bf86c0
+palette = 11=#eaa5eb
+palette = 12=#bf86c0
+palette = 13=#bf86c0
+palette = 14=#bf86c0
+palette = 15=#eaa5eb

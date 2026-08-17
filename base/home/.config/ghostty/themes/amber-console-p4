@@ -1,0 +1,24 @@
+# Amber Console P4
+background = #08090b
+foreground = #7f9db0
+cursor-color = #9dc1d8
+cursor-text = #121618
+selection-background = #536874
+selection-foreground = #9dc1d8
+
+palette = 0=#040405
+palette = 1=#FF6644
+palette = 2=#6c8696
+palette = 3=#7f9db0
+palette = 4=#6c8696
+palette = 5=#6c8696
+palette = 6=#6c8696
+palette = 7=#9dc1d8
+palette = 8=#2b373e
+palette = 9=#FF3000
+palette = 10=#7f9db0
+palette = 11=#9dc1d8
+palette = 12=#7f9db0
+palette = 13=#7f9db0
+palette = 14=#7f9db0
+palette = 15=#9dc1d8

@@ -1,0 +1,54 @@
+/*
+debug: env GTK_DEBUG=interactive ghostty
+https://docs.gtk.org/gtk4/css-overview.html
+https://docs.gtk.org/gtk4/css-properties.html
+*/
+
+@define-color bg transparent;
+@define-color fg #EE8822;
+
+@define-color headerbar_backdrop_color @bg;
+@define-color headerbar_bg_color @bg;
+@define-color theme_unfocused_base_color @bg;
+@define-color theme_unfocused_bg_color @bg;
+@define-color view_bg_color @bg;
+@define-color window_bg_color @bg;
+
+tabbar,
+tabbox,
+tab {
+    background: @bg; /* Clear the theme image and preserve the inactive color. */
+    font-family: "TX-02-Variable";
+    font-stretch: condensed;
+}
+
+tabbar,
+tabbox {
+    min-height: 0;
+}
+
+tabboxchild,
+tab,
+tab * {
+    border-radius: 2px;
+}
+
+tab {
+    padding: 0;
+    border: none;
+    box-shadow: inset 0 0 0 1px alpha(@fg, 0.2);
+    color: alpha(@fg, 0.4);
+    transition: none;
+    animation: none;
+}
+
+tab:hover,
+tab:selected {
+    box-shadow: inset 0 0 0 2px alpha(@fg, 0.4);
+    color: alpha(@fg, 0.8);
+}
+
+tab:selected {
+    font-size: 16px;
+    font-weight: bold;
+}

@@ -1,0 +1,11 @@
+# form
+
+# function
+gtk-custom-css = style.css
+gtk-single-instance = desktop
+gtk-titlebar-style = native
+confirm-close-surface = false
+keybind = performable:ctrl+c=copy_to_clipboard
+keybind = ctrl+v=paste_from_clipboard
+keybind = control+t=new_tab
+keybind = control+w=close_surface

@@ -1,0 +1,2 @@
+ASD-STE100=https://github.com/AminBlg/SimpleEnglish
+GRUG=https://github.com/nickperkins/grug-brain

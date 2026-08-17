@@ -1,0 +1,24 @@
+# Amber Console HELIUM
+background = #0e0809
+foreground = #dc7d96
+cursor-color = #ffa2b9
+cursor-text = #201216
+selection-background = #925163
+selection-foreground = #ffa2b9
+
+palette = 0=#060404
+palette = 1=#FF6644
+palette = 2=#bc6a80
+palette = 3=#dc7d96
+palette = 4=#bc6a80
+palette = 5=#bc6a80
+palette = 6=#bc6a80
+palette = 7=#ffa2b9
+palette = 8=#502a34
+palette = 9=#FF3000
+palette = 10=#dc7d96
+palette = 11=#ffa2b9
+palette = 12=#dc7d96
+palette = 13=#dc7d96
+palette = 14=#dc7d96
+palette = 15=#ffa2b9

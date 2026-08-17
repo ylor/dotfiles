@@ -1,0 +1,24 @@
+# Amber Console P3
+background = #0d0700
+foreground = #ffae1e
+cursor-color = #ffd052
+cursor-text = #1a0e00
+selection-background = #8d5b10
+selection-foreground = #ffd052
+
+palette = 0=#060200
+palette = 1=#FF6644
+palette = 2=#cd8817
+palette = 3=#ffae1e
+palette = 4=#cd8817
+palette = 5=#cd8817
+palette = 6=#cd8817
+palette = 7=#ffd052
+palette = 8=#4a2f08
+palette = 9=#FF3000
+palette = 10=#ffae1e
+palette = 11=#ffd052
+palette = 12=#ffae1e
+palette = 13=#ffae1e
+palette = 14=#ffae1e
+palette = 15=#ffd052

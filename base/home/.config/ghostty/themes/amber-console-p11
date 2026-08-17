@@ -1,0 +1,24 @@
+# Amber Console P11
+background = #040a11
+foreground = #00a0fb
+cursor-color = #8bc0ff
+cursor-text = #03182a
+selection-background = #0069a8
+selection-foreground = #8bc0ff
+
+palette = 0=#020409
+palette = 1=#FF6644
+palette = 2=#0088d7
+palette = 3=#00a0fb
+palette = 4=#0088d7
+palette = 5=#0088d7
+palette = 6=#0088d7
+palette = 7=#8bc0ff
+palette = 8=#00385d
+palette = 9=#FF3000
+palette = 10=#00a0fb
+palette = 11=#8bc0ff
+palette = 12=#00a0fb
+palette = 13=#00a0fb
+palette = 14=#00a0fb
+palette = 15=#8bc0ff

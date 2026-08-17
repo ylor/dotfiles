@@ -1,0 +1,24 @@
+# Amber Console NEON
+background = #100600
+foreground = #ff6b08
+cursor-color = #ffa86d
+cursor-text = #1e0c00
+selection-background = #ab4500
+selection-foreground = #ffa86d
+
+palette = 0=#060200
+palette = 1=#FF6644
+palette = 2=#dd5800
+palette = 3=#ff6b08
+palette = 4=#dd5800
+palette = 5=#dd5800
+palette = 6=#dd5800
+palette = 7=#ffa86d
+palette = 8=#5b2500
+palette = 9=#FF3000
+palette = 10=#ff6b08
+palette = 11=#ffa86d
+palette = 12=#ff6b08
+palette = 13=#ff6b08
+palette = 14=#ff6b08
+palette = 15=#ffa86d

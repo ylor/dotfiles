@@ -33,14 +33,14 @@ if [ "$(uname)" = "Darwin" ]; then
 		NONINTERACTIVE=1 bash -c "$(curl -fsSL https://raw.githubusercontent.com/Homebrew/install/HEAD/install.sh)"
 	fi
 	eval "$(/opt/homebrew/bin/brew shellenv)"
-	brew install --yes fd fish git gum
+	brew install --yes age fd fish git gum
 fi
 
 if [ "$(uname)" = "Linux" ] && exist pacman; then
-   	sudo pacman -Syu --noconfirm --needed fd fish git gum # Arch
+   	sudo pacman -Syu --noconfirm --needed age fd fish git gum # Arch
 fi
 
-if missing fd fish git gum; then
+if missing age fd fish git gum; then
     echo
     echo "$(tput setaf 1)ERROR$(tput sgr0) Missing dependencies"
     echo "Retry by running: 'fish $HOME/.local/share/dotfiles/main.fish'"

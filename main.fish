@@ -4,7 +4,7 @@ if set -q _flag_reset
 end
 
 set -Ux DOTFILES (path resolve (status dirname))
-set --prepend fish_function_path "$DOTFILES/src"
+set --prepend fish_function_path "$DOTFILES/base/home/.config/fish/functions"
 
 source $DOTFILES/.env
 clear && command cat $DOTFILES/art.txt
@@ -19,7 +19,7 @@ end
 
 set -x KERNEL (uname | string lower)
 if test "$DOTFILES_PROFILE" = full
-    for script in $DOTFILES/src/$KERNEL/*.fish
+    for script in $DOTFILES/$KERNEL/setup/*.fish
         source $script
     end
 end

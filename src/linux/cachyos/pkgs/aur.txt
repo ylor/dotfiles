@@ -1,3 +1,0 @@
-1password
-qt6ct-kde
-yaru-icon-theme
