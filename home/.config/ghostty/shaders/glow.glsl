@@ -1,9 +1,17 @@
+// Halation with a phosphor falloff: tight bright core plus a wide faint tail.
+// Derived from bloom.glsl by https://github.com/qwerasd205
 // source: https://gist.github.com/qwerasd205/c3da6c610c8ffe17d6d2d3cc7068f17f
-// credits: https://github.com/qwerasd205
+//
+// No phosphor tint: the halo keeps the source color.
+// No persistence: Ghostty runs one pass over the current frame, with no history.
 
-const float BLOOM_STRENGTH = 0.05; // Controls the intensity of the added glow.
-const float BLOOM_THRESHOLD = 0.1; // Sets the luminance at the center of the bloom transition.
-const float BLOOM_SOFT_KNEE = 0.00; // Sets the transition width on each side of the threshold. Capped at the threshold so black stays black.
+const float GLOW_STRENGTH = 0.12; // Halo brightness, relative to the source.
+const float CORE_RADIUS = 6.0;    // Extent of the inner ring, in pixels.
+const float TAIL_RADIUS = 28.0;   // Extent of the outer ring, in pixels.
+const float TAIL_SHARE = 0.45;    // Fraction of the halo carried by the tail.
+
+// Largest |xy| in samples[]. Radius constants above are outermost-tap distances.
+const float SAMPLE_EXTENT = 4.3404;
 
 // Golden spiral samples, [x, y, weight] weight is inverse of distance.
 const vec3[24] samples = {
@@ -33,29 +41,25 @@ const vec3[24] samples = {
                 vec3(-2.8769733643574344, 3.9652268864187157, 0.20412414523193154)
         };
 
-float lum(vec3 c) {
-        return 0.299 * c.r + 0.587 * c.g + 0.114 * c.b;
-}
-
 void mainImage(out vec4 fragColor, in vec2 fragCoord) {
         vec2 uv = fragCoord.xy / iResolution.xy;
-
         vec4 source = texture(iChannel0, uv);
-        vec3 color = source.rgb;
 
-        vec2 step = vec2(sqrt(2.0)) / iResolution.xy;
+        vec2 coreStep = vec2(CORE_RADIUS / SAMPLE_EXTENT) / iResolution.xy;
+        vec2 tailStep = vec2(TAIL_RADIUS / SAMPLE_EXTENT) / iResolution.xy;
+
+        // No threshold and no luminance factor: emission stays linear in beam
+        // energy, so dim glyphs glow in proportion to how dim they are.
+        vec3 halo = vec3(0.0);
+        float weightSum = 0.0;
 
         for (int i = 0; i < 24; i++) {
                 vec3 s = samples[i];
-                vec3 c = texture(iChannel0, uv + s.xy * step).rgb;
-                float l = lum(c);
-                float threshold = smoothstep(
-                                BLOOM_THRESHOLD - BLOOM_SOFT_KNEE,
-                                BLOOM_THRESHOLD + BLOOM_SOFT_KNEE,
-                                l
-                        );
-                color += threshold * l * s.z * c * BLOOM_STRENGTH;
+                vec3 core = texture(iChannel0, uv + s.xy * coreStep).rgb;
+                vec3 tail = texture(iChannel0, uv + s.xy * tailStep).rgb;
+                halo += s.z * mix(core, tail, TAIL_SHARE);
+                weightSum += s.z;
         }
 
-        fragColor = vec4(color, source.a);
+        fragColor = vec4(source.rgb + GLOW_STRENGTH * halo / weightSum, source.a);
 }

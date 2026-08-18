@@ -19,7 +19,7 @@ end
 
 set -x KERNEL (uname | string lower)
 if test "$DOTFILES_PROFILE" = full
-    for script in $DOTFILES/$KERNEL/setup/*.fish
+    for script in $DOTFILES/overlay/$KERNEL/setup/*.fish
         source $script
     end
 end
