@@ -259,7 +259,7 @@ else
     end
 end
 
-set -g os_kernel "$(uname) $(uname -r)-$(uname -m)"
+set -g os_kernel "$(uname) $(uname -r)" #-$(uname -m)
 if test (uname) = Darwin
     set -g os_kernel "$(uname) $(uname -r)"
 end
@@ -375,9 +375,8 @@ set -g mem_used (math $mem_total - $mem_available)
 
 set -g mem_percent (awk -v used=$mem_used -v total=$mem_total 'BEGIN { printf "%.0f", (used / total) * 100 }')
 set -g mem_percent (printf "%.0f" $mem_percent)
-set -g mem_total_gb (echo $mem_total | awk '{ printf "%.0f", $1 / (1024 * 1024) }') # (From Ki to Gi units)
-# set -g mem_available_gb (echo $mem_available | awk '{ printf "%.0f", $1 / (1024 * 1024) }') # (From Ki to Gi units) Not used currently
-set -g mem_used_gb (echo $mem_used | awk '{ printf "%.0f", $1 / (1024 * 1024) }')
+set -g mem_total_gb (awk -v total=$mem_total 'BEGIN { printf "%.0f", total / (1024 * 1024) }') # KiB to GiB
+set -g mem_used_gb (awk -v used=$mem_used 'BEGIN { printf "%.0f", used / (1024 * 1024) }')
 
 debug "COLLECTING DISK INFO"
 # Disk Information
@@ -390,8 +389,8 @@ if command -v zfs >/dev/null 2>&1; and test (zpool list -H | wc -l | string trim
     end
     set -g zfs_available (zfs get -o value -Hp available $zfs_filesystem)
     set -g zfs_used (zfs get -o value -Hp used $zfs_filesystem)
-    set -g zfs_available_gb (echo $zfs_available | awk '{ printf "%.0f", $1 / (1024 * 1024 * 1024) }') # (To G units)
-    set -g zfs_used_gb (echo $zfs_used | awk '{ printf "%.0f", $1 / (1024 * 1024 * 1024) }') # (To G units)
+    set -g zfs_available_gb (awk -v available=$zfs_available 'BEGIN { printf "%.0f", available / 1000000000 }') # Bytes to decimal GB
+    set -g zfs_used_gb (awk -v used=$zfs_used 'BEGIN { printf "%.0f", used / 1000000000 }') # Bytes to decimal GB
     set -g disk_percent (awk -v used=$zfs_used -v available=$zfs_available 'BEGIN { printf "%.0f", (used / available) * 100 }')
 else if test (uname) = Darwin
     set root_partition /System/Volumes/Data
@@ -410,8 +409,8 @@ else
     set -g df_output (df -Pm $root_partition | awk 'NR==2')
     set -g root_used (echo $df_output | awk '{print $3}')
     set -g root_total (echo $df_output | awk '{print $2}')
-    set -g root_total_gb (awk -v total=$root_total 'BEGIN { printf "%.0f", total / 1024 }')
-    set -g root_used_gb (awk -v used=$root_used   'BEGIN { printf "%.0f", used  / 1024 }')
+    set -g root_total_gb (awk -v total=$root_total 'BEGIN { printf "%.0f", total * 1024 * 1024 / 1000000000 }')
+    set -g root_used_gb (awk -v used=$root_used 'BEGIN { printf "%.0f", used * 1024 * 1024 / 1000000000 }')
     set -g disk_percent (awk -v used=$root_used -v total=$root_total 'BEGIN { printf "%.0f", (used / total) * 100 }')
 end
 
@@ -570,7 +569,7 @@ function tr100
         PRINT_BAR USAGE $disk_bar_graph
     end
     PRINT_DIVIDER
-    PRINT_DATA MEMORY "$mem_used_gb/$mem_total_gb GB [$mem_percent%]"
+    PRINT_DATA MEMORY "$mem_used_gb/$mem_total_gb GiB [$mem_percent%]"
     PRINT_BAR USAGE $mem_bar_graph
     PRINT_DIVIDER end
 
