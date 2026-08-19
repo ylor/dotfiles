@@ -17,7 +17,9 @@
       }
     }
   },
+  "effortLevel": "high",
   "tui": "fullscreen",
   "theme": "auto",
-  "agentPushNotifEnabled": true
+  "agentPushNotifEnabled": true,
+  "model": "opus[1m]"
 }

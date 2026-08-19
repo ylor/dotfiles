@@ -26,4 +26,4 @@ end
 
 dfs-link
 echo "SEE YOU SPACE COWBOY"
-exec fish
+exec fish --command 'function fish_greeting; end'
