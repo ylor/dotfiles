@@ -65,6 +65,8 @@ hl.on("hyprland.start", function()
 	hl.exec_cmd("noctalia")
 	hl.exec_cmd("noctalia msg session lock")
 	hl.exec_cmd("1password --silent")
+	hl.exec_cmd("helium-browser", { workspace = "1 silent", no_initial_focus = true })
+	hl.exec_cmd(terminal, { workspace = "2 silent", no_initial_focus = true })
 end)
 
 hl.exec_cmd('gsettings set org.gnome.desktop.interface color-scheme "prefer-dark"')
