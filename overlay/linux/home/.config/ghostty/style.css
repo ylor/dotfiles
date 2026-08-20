@@ -4,7 +4,8 @@ https://docs.gtk.org/gtk4/css-overview.html
 https://docs.gtk.org/gtk4/css-properties.html
 */
 
-@define-color bg transparent;
+/* @define-color bg transparent; */
+@define-color bg #000000;
 @define-color fg #EE8822;
 
 @define-color headerbar_backdrop_color @bg;

@@ -5,4 +5,5 @@ compile = true
 aws = { version = "latest", symlink_bins = "true" }
 herdr = "latest"
 hunk = "latest"
+node = "latest"
 pi = "latest"

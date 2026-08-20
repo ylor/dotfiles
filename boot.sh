@@ -43,12 +43,12 @@ fi
 if missing age fd fish git gum; then
     echo
     echo "$(tput setaf 1)ERROR$(tput sgr0) Missing dependencies"
-    echo "Retry by running: 'fish $HOME/.local/share/dotfiles/main.fish'"
+    echo "Retry by running: 'fish $HOME/.dotfiles/main.fish'"
     echo "$(tput sitm)✈ YOU'RE GONNA CARRY THAT WEIGHT.$(tput ritm)"
     exit 67
 fi
 
-export DOTFILES="$HOME/.local/share/dotfiles"
+export DOTFILES="$HOME/.dotfiles"
 rm -rf "$DOTFILES"
 git clone https://github.com/ylor/dotfiles "$DOTFILES"
 fish "$DOTFILES/main.fish"
