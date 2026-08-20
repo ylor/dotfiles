@@ -110,7 +110,7 @@ widget_order = [ "lockscreen-login-box@WAYLAND-1", "lockscreen-login-box@DP-1" ]
 
 [nightlight]
 enabled = true
-temperature_night = 3400
+temperature_night = 3000
 
 [osd.kinds]
 media = false
@@ -119,8 +119,8 @@ media = false
 enabled = []
 
 [shell]
-font_family = "Berkeley Mono SemiCondensed"
-corner_radius_scale = 0.10000000149011612
+corner_radius_scale = 0.2500000037252903
+font_family = "Berkeley Mono Variable"
 polkit_agent = true
 
     [shell.animation]

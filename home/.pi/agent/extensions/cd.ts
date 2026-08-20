@@ -129,7 +129,7 @@ async function completeDirectories(prefix: string): Promise<AutocompleteItem[] |
 	const baseDir = scopedQuery?.baseDir ?? process.cwd();
 	const query = scopedQuery?.query ?? prefix;
 	const displayBase = scopedQuery?.displayBase ?? "";
-	const includeHidden = query.startsWith(".");
+	const includeHidden = true;
 	const fdPaths = await searchWithFd(baseDir, query, includeHidden);
 	const paths = fdPaths ?? listDirectories(baseDir, includeHidden);
 

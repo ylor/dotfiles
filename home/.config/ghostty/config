@@ -37,6 +37,7 @@ unfocused-split-opacity = 0.9
 custom-shader = shaders/bloom.glsl
 
 # keybinds
+keybind = ctrl+k=clear_screen
 keybind = ctrl+-=new_split:down
 keybind = ctrl+==new_split:right
 keybind = ctrl+\=new_split:right

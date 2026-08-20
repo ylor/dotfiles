@@ -293,6 +293,7 @@ local function app(class, command)
 end
 
 hl.bind(mod.main .. " + I", app("helium", "helium-browser"))
+hl.bind(mod.main .. " + G", app("steam", "steam"))
 hl.bind(mod.hypr .. " + S", function()
 	local m = hl.get_active_monitor()
 	if not m then

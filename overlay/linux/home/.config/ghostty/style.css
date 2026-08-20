@@ -4,8 +4,7 @@ https://docs.gtk.org/gtk4/css-overview.html
 https://docs.gtk.org/gtk4/css-properties.html
 */
 
-/* @define-color bg transparent; */
-@define-color bg #000000;
+@define-color bg alpha(#000000, 0.70);
 @define-color fg #EE8822;
 
 @define-color headerbar_backdrop_color @bg;
@@ -15,17 +14,18 @@ https://docs.gtk.org/gtk4/css-properties.html
 @define-color view_bg_color @bg;
 @define-color window_bg_color @bg;
 
-tabbar,
-tabbox,
-tab {
-    background: @bg; /* Clear the theme image and preserve the inactive color. */
-    font-family: "TX-02-Variable";
-    font-stretch: condensed;
-}
-
+/* The Ghostty window supplies the configured opacity. */
 tabbar,
 tabbox {
     min-height: 0;
+    background: transparent;
+    /* border: none; */
+    /* box-shadow: none; */
+}
+
+tab,
+tab * {
+    background: transparent;
 }
 
 tabboxchild,
@@ -38,18 +38,23 @@ tab {
     padding: 0;
     border: none;
     box-shadow: inset 0 0 0 1px alpha(@fg, 0.2);
-    color: alpha(@fg, 0.4);
-    transition: none;
-    animation: none;
+    color: alpha(@fg, 0.6);
+    font-family: "Berkeley Mono Variable", "Berkeley Mono", monospace;
+    font-stretch: condensed;
+    transition: color 150ms ease, box-shadow 150ms ease;
 }
 
-tab:hover,
-tab:selected {
-    box-shadow: inset 0 0 0 2px alpha(@fg, 0.4);
-    color: alpha(@fg, 0.8);
+tab:hover {
+    box-shadow: inset 0 0 0 1px alpha(@fg, 0.4);
+    color: alpha(@fg, 0.7);
 }
 
 tab:selected {
-    font-size: 16px;
-    font-weight: bold;
+    box-shadow: inset 0 0 0 2px alpha(@fg, 0.6);
+    color: @fg;
+}
+
+tab:focus-visible {
+    outline: 2px solid alpha(@fg, 0.9);
+    outline-offset: -2px;
 }
