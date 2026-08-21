@@ -60,6 +60,8 @@ if command -q git; and status --is-interactive
     abbr gcm git commit
     abbr gco git checkout
     abbr gf git fetch
+    abbr gl git lol
+    abbr gq git lol
     abbr gm git merge
     abbr gp git pull
     abbr gpu git push
