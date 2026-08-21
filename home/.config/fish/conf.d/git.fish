@@ -56,6 +56,7 @@ if command -q git; and status --is-interactive
     abbr ga git add
     abbr gb git branch
     abbr gc git clone
+    abbr gd git diff
     abbr gcm git commit
     abbr gco git checkout
     abbr gf git fetch

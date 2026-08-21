@@ -306,6 +306,7 @@ switch (uname)
         set -g cpu_cores_per_socket (sysctl -n machdep.cpu.core_count)
         set -g cpu_sockets (sysctl -n hw.physicalcpu)
         set -g cpu_cores (sysctl -n hw.ncpu)
+        set -g cpu_hypervisor (scutil --get ComputerName)
     case '*'
         if not command -v lscpu >/dev/null 2>&1
             printf "ERROR: `lscpu` utility is not found"
@@ -546,7 +547,7 @@ function tr100
     # PRINT_DIVIDER
     # PRINT_DATA MACHINE $net_hostname
     PRINT_DIVIDER
-    PRINT_DATA HOST "MacBook Pro"
+    PRINT_DATA HOST $cpu_hypervisor
     PRINT_DATA CPU $cpu_model
     # PRINT_DATA CORES "$cpu_cores_per_socket"
     # PRINT_DATA "SESSION" (set -q SSH_TTY && $net_client_ip || echo "Local")

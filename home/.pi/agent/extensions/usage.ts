@@ -38,8 +38,6 @@ type CreditsResponse = {
 	};
 };
 
-type UsageHandler = (pi: ExtensionAPI, ctx: ExtensionContext) => Promise<void>;
-
 function rpcError(error: RpcMessage["error"]): Error {
 	if (typeof error === "string") return new Error(error);
 	return new Error(error?.message ?? JSON.stringify(error));
@@ -187,61 +185,43 @@ function formatOpenRouterUsage(usage: CreditsResponse): string {
 	].join("\n");
 }
 
-function isSupportedProvider(provider: string | undefined): boolean {
+function isSupportedProvider(provider: string | undefined): provider is typeof CODEX_PROVIDER | typeof OPENROUTER_PROVIDER {
 	return provider !== undefined && SUPPORTED_PROVIDERS.has(provider);
 }
 
+async function loadUsage(provider: string, ctx: ExtensionContext): Promise<{ customType: string; content: string }> {
+	if (provider === CODEX_PROVIDER) {
+		return { customType: "codex-usage", content: formatCodexUsage(await fetchCodexUsage()) };
+	}
+
+	const apiKey = await ctx.modelRegistry.getApiKeyForProvider(OPENROUTER_PROVIDER);
+	if (!apiKey) throw new Error("No OpenRouter API key configured.");
+	return { customType: "openrouter-usage", content: formatOpenRouterUsage(await fetchOpenRouterUsage(apiKey)) };
+}
+
+async function showUsage(pi: ExtensionAPI, ctx: ExtensionContext): Promise<void> {
+	const provider = ctx.model?.provider;
+	if (!isSupportedProvider(provider)) {
+		ctx.ui.notify("/usage is only available with OpenAI Codex or OpenRouter models.", "error");
+		return;
+	}
+
+	const providerName = provider === CODEX_PROVIDER ? "Codex" : "OpenRouter";
+	ctx.ui.setWorkingMessage(`Checking ${providerName} usage…`);
+	ctx.ui.setWorkingVisible(true);
+
+	try {
+		const usage = await loadUsage(provider, ctx);
+		pi.sendMessage({ ...usage, display: true }, { triggerTurn: false });
+	} catch (error) {
+		const message = error instanceof Error ? error.message : String(error);
+		ctx.ui.notify(`Could not read ${providerName} usage: ${message}`, "error");
+	} finally {
+		ctx.ui.setWorkingMessage();
+	}
+}
+
 export default function (pi: ExtensionAPI): void {
-	const handlers = new Map<string, UsageHandler>([
-		[
-			CODEX_PROVIDER,
-			async (extensionPi, ctx) => {
-				ctx.ui.setStatus("codex-usage-loading", "Checking Codex usage…");
-				try {
-					const usage = await fetchCodexUsage();
-					extensionPi.sendMessage(
-						{
-							customType: "codex-usage",
-							content: formatCodexUsage(usage),
-							display: true,
-						},
-						{ triggerTurn: false },
-					);
-				} catch (error) {
-						const message = error instanceof Error ? error.message : String(error);
-						ctx.ui.notify(`Could not read Codex usage: ${message}`, "error");
-				} finally {
-					ctx.ui.setStatus("codex-usage-loading", undefined);
-				}
-			},
-		],
-		[
-			OPENROUTER_PROVIDER,
-			async (extensionPi, ctx) => {
-				ctx.ui.setStatus("openrouter-usage-loading", "Checking OpenRouter usage…");
-				try {
-					const apiKey = await ctx.modelRegistry.getApiKeyForProvider(OPENROUTER_PROVIDER);
-					if (!apiKey) throw new Error("No OpenRouter API key configured.");
-
-					const usage = await fetchOpenRouterUsage(apiKey);
-					extensionPi.sendMessage(
-						{
-							customType: "openrouter-usage",
-							content: formatOpenRouterUsage(usage),
-							display: true,
-						},
-						{ triggerTurn: false },
-					);
-				} catch (error) {
-						const message = error instanceof Error ? error.message : String(error);
-						ctx.ui.notify(`Could not read OpenRouter usage: ${message}`, "error");
-				} finally {
-					ctx.ui.setStatus("openrouter-usage-loading", undefined);
-				}
-			},
-		],
-	]);
-
 	pi.on("session_start", (_event, ctx) => {
 		ctx.ui.addAutocompleteProvider((current) => ({
 			...current,
@@ -267,13 +247,6 @@ export default function (pi: ExtensionAPI): void {
 
 	pi.registerCommand(COMMAND, {
 		description: "Show usage for the active provider as a message",
-		async handler(_args, ctx) {
-			const handler = handlers.get(ctx.model?.provider ?? "");
-			if (!handler) {
-				ctx.ui.notify("/usage is only available with OpenAI Codex or OpenRouter models.", "error");
-				return;
-			}
-			await handler(pi, ctx);
-		},
+		handler: (_args, ctx) => showUsage(pi, ctx),
 	});
 }

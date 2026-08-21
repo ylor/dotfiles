@@ -34,7 +34,7 @@ hl.monitor({
 	output = "desc:LG",
 	mode = "preferred",
 	position = "auto",
-	scale = "1.67",
+	scale = "2",
 	bitdepth = 10,
 	cm = "srgb",
 	-- sdr_eotf = "gamma22",
@@ -294,7 +294,7 @@ end
 
 hl.bind(mod.main .. " + I", app("helium", "helium-browser"))
 hl.bind(mod.main .. " + G", app("steam", "steam"))
-hl.bind(mod.hypr .. " + S", function()
+hl.bind("CTRL + ALT + SHIFT + S", function()
 	local m = hl.get_active_monitor()
 	if not m then
 		return
@@ -336,8 +336,7 @@ end
 hl.bind(mod.main .. " + Return", hl.dsp.exec_cmd(terminal))
 bind_scratch_terminal(mod.main .. " + grave", "scratch-terminal")
 bind_scratch_terminal(mod.main .. " + A", "agent-scratch-terminal", "/usr/bin/mise exec -- pi")
-hl.bind("CTRL + SHIFT + 4", hl.dsp.exec_cmd("noctalia msg screenshot-region"))
-hl.bind("CTRL + ALT + SHIFT + 4", hl.dsp.exec_cmd("noctalia msg screenshot-region"))
+hl.bind(mod.main .. " + SHIFT + S", hl.dsp.exec_cmd("noctalia msg screenshot-region"))
 hl.bind(mod.hypr .. " + COMMA", hl.dsp.exec_cmd("noctalia msg settings-toggle"))
 hl.bind(mod.hypr .. " + L", hl.dsp.exec_cmd("noctalia msg session lock"))
 -- hl.bind(mod.main .. " + X", hl.dsp.submap("session_menu"))
@@ -414,8 +413,8 @@ for i = 1, 9 do
 end
 
 -- Example special workspace (scratchpad)
-hl.bind(mod.main .. " + S", hl.dsp.workspace.toggle_special("magic"))
-hl.bind(mod.main .. " + SHIFT + S", hl.dsp.window.move({ workspace = "special:magic" }))
+hl.bind(mod.hypr .. " + S", hl.dsp.workspace.toggle_special("magic"))
+hl.bind(mod.hypr .. " + SHIFT + S", hl.dsp.window.move({ workspace = "special:magic" }))
 
 -- Scroll through existing workspaces with mainMod + scroll
 hl.bind(mod.main .. " + mouse_down", hl.dsp.focus({ workspace = "e+1" }))

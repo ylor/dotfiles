@@ -21,6 +21,26 @@ function colorText(text: string, hex: string, dim: boolean): string {
 	return `${faint}\x1b[38;2;${rgb.join(";")}m${text}\x1b[39m${resetFaint}`;
 }
 
+function patchEditorColors(editor: BorderEditor, ctx: ExtensionContext): void {
+	const originalRender = (editor as BorderEditor & { render: (width: number) => string[] }).render;
+
+	(editor as BorderEditor & { render: (width: number) => string[] }).render = (width) => {
+		const model = ctx.model;
+		const color = model && MODEL_COLORS[`${model.provider}/${model.id}`];
+		const lines = originalRender.call(editor, width);
+		if (!color) return lines;
+
+		const rgb = [1, 3, 5].map((index) => Number.parseInt(color.slice(index, index + 2), 16));
+		const foreground = `\x1b[38;2;${rgb.join(";")}m`;
+		const cursor = `\x1b[48;2;${rgb.join(";")}m\x1b[38;2;0;0;0m`;
+		const terminalCursor = `\x1b]12;${color}\x07`;
+		return lines.map((line, index) => {
+			const prefix = index === 0 ? terminalCursor : "";
+			return `${prefix}${foreground}${line.replaceAll("\x1b[7m", cursor)}`;
+		});
+	};
+}
+
 function patchBorder(editor: BorderEditor, ctx: ExtensionContext): void {
 	let fallback = editor.borderColor;
 
@@ -50,6 +70,7 @@ function install(ctx: ExtensionContext): void {
 	ctx.ui.setEditorComponent((tui, theme, keybindings) => {
 		const editor = previous?.(tui, theme, keybindings) ?? new CustomEditor(tui, theme, keybindings);
 		patchBorder(editor as BorderEditor, ctx);
+		patchEditorColors(editor as BorderEditor, ctx);
 		return editor;
 	});
 }
