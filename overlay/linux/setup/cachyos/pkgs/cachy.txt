@@ -8,11 +8,13 @@ firefox
 fish
 fzf
 ghostty
+inter-font
 git
 gum
 helium-browser-bin
 hyprland
 hyprlauncher
+hyprpicker
 hyprshutdown
 lact
 mise

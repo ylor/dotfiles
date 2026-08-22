@@ -4,7 +4,7 @@ https://docs.gtk.org/gtk4/css-overview.html
 https://docs.gtk.org/gtk4/css-properties.html
 */
 
-@define-color bg alpha(#000000, 0.70);
+@define-color bg alpha(#000000, 0.80);
 @define-color fg #EE8822;
 
 @define-color headerbar_backdrop_color @bg;
@@ -37,7 +37,7 @@ tab {
     border: none;
     box-shadow: inset 0 0 0 1px alpha(@fg, 0.2);
     color: alpha(@fg, 0.6);
-    font-family: "Berkeley Mono Variable", "Berkeley Mono", monospace;
+    /* font-family: "Berkeley Mono Variable", "Berkeley Mono", monospace; */
     font-stretch: condensed;
     transition: color 150ms ease, box-shadow 150ms ease;
 }

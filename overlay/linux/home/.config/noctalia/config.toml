@@ -1,12 +1,28 @@
+[accessibility]
+ui_scale = 1.0000000074505806
+
 [bar.default]
 background_opacity = 0.0
-border_width = 0.0
 concave_edge_corners = false
+end = [
+    "media",
+    "tray",
+    "clipboard",
+    "bluetooth",
+    "network",
+    "volume",
+    "brightness",
+    "notifications",
+    "battery",
+    "session"
+]
 margin_edge = 0
-margin_ends = 4
-radius = 12
+margin_ends = 2
+padding = 4
+radius = 2
 start = [ "control-center", "workspaces", "active_window" ]
-thickness = 32
+thickness = 24
+widget_spacing = 8
 
     [bar.default.dead_zone.actions]
     scroll_down = "volume-down"
@@ -61,19 +77,21 @@ widget_order = [ "lockscreen-login-box@WAYLAND-1", "lockscreen-login-box@DP-1" ]
     [lockscreen_widgets.widget."lockscreen-login-box@DP-1"]
     box_height = 70.0
     box_width = 400.0
-    cx = 1152.0
-    cy = 648.0
+    cx = 960.0
+    cy = 540.0
     output = "DP-1"
+    placement_height = 1080.0
+    placement_width = 1920.0
     rotation = 0.0
     type = "login_box"
 
         [lockscreen_widgets.widget."lockscreen-login-box@DP-1".settings]
         background_color = "surface_variant"
         background_opacity = 0.88
-        background_radius = 12.0
+        background_radius = 6.0
         center_password_text = false
         input_opacity = 1.0
-        input_radius = 6.0
+        input_radius = 3.0
         layout = "compact"
         show_caps_lock = true
         show_keyboard_layout = true
@@ -89,6 +107,8 @@ widget_order = [ "lockscreen-login-box@WAYLAND-1", "lockscreen-login-box@DP-1" ]
     cx = 287.0
     cy = 528.0
     output = "WAYLAND-1"
+    placement_height = 0.0
+    placement_width = 0.0
     rotation = 0.0
     type = "login_box"
 
@@ -140,7 +160,6 @@ polkit_agent = true
     open_near_click_control_center = true
     open_near_click_wallpaper = true
     session_placement = "floating"
-    transparency_mode = "glass"
     wallpaper_placement = "floating"
 
     [[shell.session.actions]]
@@ -194,14 +213,14 @@ source = "custom"
 
 [wallpaper]
 enabled = true
-fill_color = "#000000"
+fill_color = "#100600"
 fill_mode = "center"
 
     [wallpaper.default]
-    path = "color:#000000"
+    path = "color:#1a0a00"
 
     [wallpaper.last]
-    path = "color:#000000"
+    path = "color:#100600"
 
 [weather]
 unit = "imperial"
@@ -209,6 +228,7 @@ unit = "imperial"
 [widget.active_window]
 capsule_foreground = "on_tertiary"
 display = "text_only"
+enabled = false
 max_length = 800
 min_length = 0
 title_scroll = "on_hover"
@@ -217,12 +237,15 @@ title_scroll = "on_hover"
 show_label = false
 
 [widget.clock]
+font_weight = 600
 format = "{:%a %-l:%M %p}"
+scale = 0.90000000000000002
 
 [widget.control-center]
 glyph = "hyprland"
 
 [widget.media]
+enabled = false
 hide_album_art = true
 hide_artist = true
 hide_when_no_media = true

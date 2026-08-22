@@ -70,6 +70,8 @@ hl.on("hyprland.start", function()
 end)
 
 hl.exec_cmd('gsettings set org.gnome.desktop.interface color-scheme "prefer-dark"')
+hl.exec_cmd("gsettings set org.gnome.desktop.interface font-name 'Berkeley Mono Variable Condensed 11'")
+hl.exec_cmd("gsettings set org.gnome.desktop.interface monospace-font-name 'Berkeley Mono Variable 11'")
 hl.exec_cmd("gsettings set org.gnome.desktop.interface icon-theme 'Yaru-yellow'")
 -- hl.exec_cmd('gsettings set org.gnome.desktop.interface gtk-theme "adw-gtk3-dark"')
 hl.exec_cmd("gsettings set org.gnome.desktop.wm.preferences button-layout :")
@@ -121,8 +123,8 @@ hl.config({
 -- Refer to https://wiki.hypr.land/Configuring/Basics/Variables/
 hl.config({
 	general = {
-		gaps_in = 4,
-		gaps_out = 4,
+		gaps_in = 2,
+		gaps_out = 2,
 
 		border_size = 2,
 
@@ -279,6 +281,8 @@ local mod = {
 	hypr = "CTRL + ALT + SUPER",
 }
 
+local keybind_menu = require("keybind_menu")
+
 local function app(class, command)
 	return function()
 		local special_workspace = hl.get_active_special_workspace()
@@ -292,9 +296,9 @@ local function app(class, command)
 	end
 end
 
-hl.bind(mod.main .. " + I", app("helium", "helium-browser"))
-hl.bind(mod.main .. " + G", app("steam", "steam"))
-hl.bind("CTRL + ALT + SHIFT + S", function()
+hl.bind(mod.main .. " + I", app("helium", "helium-browser"), { description = "Helium" })
+hl.bind(mod.main .. " + G", app("steam", "steam"), { description = "Steam" })
+hl.bind("CTRL + ALT + S", function()
 	local m = hl.get_active_monitor()
 	if not m then
 		return
@@ -305,8 +309,8 @@ hl.bind("CTRL + ALT + SHIFT + S", function()
 		mode = "preferred",
 		scale = m.scale == 2 and 1.67 or 2,
 	})
-end)
-local function bind_scratch_terminal(key, name, program)
+end, { description = "Monitor scale" })
+local function bind_scratch_terminal(key, name, program, description)
 	local class = "com.mitchellh.ghostty." .. name
 	local workspace = "special:" .. name
 	local command = terminal .. " --gtk-single-instance=false --class=" .. class
@@ -330,28 +334,39 @@ local function bind_scratch_terminal(key, name, program)
 			}
 			hl.dispatch(hl.dsp.exec_cmd(command, rules))
 		end
-	end)
+	end, { description = description })
 end
 
-hl.bind(mod.main .. " + Return", hl.dsp.exec_cmd(terminal))
-bind_scratch_terminal(mod.main .. " + grave", "scratch-terminal")
-bind_scratch_terminal(mod.main .. " + A", "agent-scratch-terminal", "/usr/bin/mise exec -- pi")
-hl.bind(mod.main .. " + SHIFT + S", hl.dsp.exec_cmd("noctalia msg screenshot-region"))
-hl.bind(mod.hypr .. " + COMMA", hl.dsp.exec_cmd("noctalia msg settings-toggle"))
-hl.bind(mod.hypr .. " + L", hl.dsp.exec_cmd("noctalia msg session lock"))
+hl.bind(mod.main .. " + Return", hl.dsp.exec_cmd(terminal), { description = "Ghostty" })
+hl.bind(mod.main .. " + K", keybind_menu, { description = "Keybinds" })
+bind_scratch_terminal(mod.main .. " + grave", "scratch-terminal", nil, "Toggle scratch terminal")
+bind_scratch_terminal(
+	mod.main .. " + A",
+	"agent-scratch-terminal",
+	[[sh -c 'cd "$HOME/.dotfiles" 2>/dev/null || cd "$HOME"; exec /usr/bin/mise exec -- pi']],
+	"Toggle agent terminal"
+)
+hl.bind(
+	mod.main .. " + SHIFT + S",
+	hl.dsp.exec_cmd("noctalia msg screenshot-region"),
+	{ description = "Screenshot region" }
+)
+hl.bind(mod.main .. " + SHIFT + C", hl.dsp.exec_cmd("hyprpicker -a"), { description = "Color picker" })
+hl.bind(mod.hypr .. " + COMMA", hl.dsp.exec_cmd("noctalia msg settings-toggle"), { description = "Settings" })
+hl.bind(mod.hypr .. " + L", hl.dsp.exec_cmd("noctalia msg session lock"), { description = "Lock session" })
 -- hl.bind(mod.main .. " + X", hl.dsp.submap("session_menu"))
-hl.bind(mod.main .. " + Q", hl.dsp.window.close())
-hl.bind(mod.win .. " + Q", hl.dsp.window.close())
-hl.bind(mod.main .. " + E", hl.dsp.exec_cmd(fileManager))
-hl.bind(mod.main .. " + F", hl.dsp.window.fullscreen())
-hl.bind(mod.main .. " + T", hl.dsp.window.float({ action = "toggle" }))
-hl.bind(mod.main .. " + SPACE", hl.dsp.exec_cmd(menu))
-hl.bind(mod.alt .. " + SPACE", hl.dsp.exec_cmd(menu))
-hl.bind(mod.main .. " + P", hl.dsp.window.pseudo())
-hl.bind(mod.main .. " + J", hl.dsp.layout("togglesplit")) -- dwindle only
-hl.bind(mod.main .. " + V", hl.dsp.exec_cmd("noctalia msg panel-open clipboard"))
-hl.bind(mod.alt .. " + Tab", hl.dsp.window.cycle_next())
-hl.bind(mod.main .. " + Tab", hl.dsp.focus({ workspace = "previous" }))
+hl.bind(mod.main .. " + Q", hl.dsp.window.close(), { description = "Close window" })
+hl.bind(mod.win .. " + Q", hl.dsp.window.close(), { description = "Close window" })
+hl.bind(mod.main .. " + E", hl.dsp.exec_cmd(fileManager), { description = "Files" })
+hl.bind(mod.main .. " + F", hl.dsp.window.fullscreen(), { description = "Fullscreen" })
+hl.bind(mod.main .. " + T", hl.dsp.window.float({ action = "toggle" }), { description = "Floating" })
+hl.bind(mod.main .. " + SPACE", hl.dsp.exec_cmd(menu), { description = "Launcher" })
+hl.bind(mod.alt .. " + SPACE", hl.dsp.exec_cmd(menu), { description = "Launcher" })
+hl.bind(mod.main .. " + P", hl.dsp.window.pseudo(), { description = "Pseudotiling" })
+hl.bind(mod.main .. " + J", hl.dsp.layout("togglesplit"), { description = "Split direction" })
+hl.bind(mod.main .. " + V", hl.dsp.exec_cmd("noctalia msg panel-open clipboard"), { description = "Clipboard" })
+hl.bind(mod.alt .. " + Tab", hl.dsp.window.cycle_next(), { description = "Next window" })
+hl.bind(mod.main .. " + Tab", hl.dsp.focus({ workspace = "previous" }), { description = "Previous workspace" })
 hl.bind(mod.main .. " + M", function()
 	if hl.get_workspace("special:minimized") then
 		hl.dispatch(hl.dsp.window.move({ workspace = hl.get_active_workspace(), window = "tag:minimized" }))
@@ -360,16 +375,16 @@ hl.bind(mod.main .. " + M", function()
 		hl.dispatch(hl.dsp.window.tag({ tag = "minimized", window = hl.get_active_window() }))
 		hl.dispatch(hl.dsp.window.move({ workspace = "special:minimized", follow = false }))
 	end
-end)
+end, { description = "Minimize or restore" })
 
 -- Move focus with mainMod + arrow keys
-hl.bind(mod.main .. " + left", hl.dsp.focus({ direction = "left" }))
-hl.bind(mod.main .. " + right", hl.dsp.focus({ direction = "right" }))
-hl.bind(mod.main .. " + up", hl.dsp.focus({ direction = "up" }))
-hl.bind(mod.main .. " + down", hl.dsp.focus({ direction = "down" }))
+hl.bind(mod.main .. " + left", hl.dsp.focus({ direction = "left" }), { description = "Focus left" })
+hl.bind(mod.main .. " + right", hl.dsp.focus({ direction = "right" }), { description = "Focus right" })
+hl.bind(mod.main .. " + up", hl.dsp.focus({ direction = "up" }), { description = "Focus up" })
+hl.bind(mod.main .. " + down", hl.dsp.focus({ direction = "down" }), { description = "Focus down" })
 
-hl.bind(mod.hypr .. " + up", hl.dsp.exec_cmd("noctalia msg brightness-up"))
-hl.bind(mod.hypr .. " + down", hl.dsp.exec_cmd("noctalia msg brightness-down"))
+hl.bind(mod.hypr .. " + up", hl.dsp.exec_cmd("noctalia msg brightness-up"), { description = "Brightness up" })
+hl.bind(mod.hypr .. " + down", hl.dsp.exec_cmd("noctalia msg brightness-down"), { description = "Brightness down" })
 
 -- Session menu submap (muscle memory)
 do
@@ -382,9 +397,9 @@ do
 		hl.bind("U", function()
 			hl.dispatch(hl.dsp.exec_cmd("noctalia msg panel-toggle session"))
 			exit_menu()
-		end)
+		end, { description = "Open session panel" })
 
-		hl.bind("catchall", exit_menu)
+		hl.bind("catchall", exit_menu, { description = "Close session menu" })
 	end)
 
 	hl.bind(mod.main .. " + X", function()
@@ -394,7 +409,7 @@ do
         ]]))
 
 		hl.dispatch(hl.dsp.submap("session_menu"))
-	end)
+	end, { description = "Open session menu" })
 end
 
 -- Workspaces
@@ -408,51 +423,67 @@ hl.workspace_rule({ workspace = "5", persistent = true })
 -- Move active window to a workspace with mainMod + SHIFT + [0-9]
 for i = 1, 9 do
 	local key = i -- 10 maps to key 0
-	hl.bind(mod.win .. " + " .. key, hl.dsp.focus({ workspace = i }))
-	hl.bind(mod.win .. " + SHIFT + " .. key, hl.dsp.window.move({ workspace = i }))
+	hl.bind(mod.win .. " + " .. key, hl.dsp.focus({ workspace = i }), { description = "Workspace " .. i })
+	hl.bind(
+		mod.win .. " + SHIFT + " .. key,
+		hl.dsp.window.move({ workspace = i }),
+		{ description = "Move to workspace " .. i }
+	)
 end
 
 -- Example special workspace (scratchpad)
-hl.bind(mod.hypr .. " + S", hl.dsp.workspace.toggle_special("magic"))
-hl.bind(mod.hypr .. " + SHIFT + S", hl.dsp.window.move({ workspace = "special:magic" }))
+hl.bind(mod.hypr .. " + S", hl.dsp.workspace.toggle_special("magic"), { description = "Scratch workspace" })
+hl.bind(
+	mod.hypr .. " + SHIFT + S",
+	hl.dsp.window.move({ workspace = "special:magic" }),
+	{ description = "Move to scratch workspace" }
+)
 
 -- Scroll through existing workspaces with mainMod + scroll
-hl.bind(mod.main .. " + mouse_down", hl.dsp.focus({ workspace = "e+1" }))
-hl.bind(mod.main .. " + mouse_up", hl.dsp.focus({ workspace = "e-1" }))
+hl.bind(mod.main .. " + mouse_down", hl.dsp.focus({ workspace = "e+1" }), { description = "Next workspace" })
+hl.bind(mod.main .. " + mouse_up", hl.dsp.focus({ workspace = "e-1" }), { description = "Previous workspace" })
 
 -- Move/resize windows with mainMod + LMB/RMB and dragging
-hl.bind(mod.main .. " + mouse:272", hl.dsp.window.drag(), { mouse = true })
-hl.bind(mod.main .. " + mouse:273", hl.dsp.window.resize(), { mouse = true })
+hl.bind(mod.main .. " + mouse:272", hl.dsp.window.drag(), { mouse = true, description = "Move window" })
+hl.bind(mod.main .. " + mouse:273", hl.dsp.window.resize(), { mouse = true, description = "Resize window" })
 
 -- Laptop multimedia keys for volume and LCD brightness
 hl.bind(
 	"XF86AudioRaiseVolume",
 	hl.dsp.exec_cmd("wpctl set-volume -l 1 @DEFAULT_AUDIO_SINK@ 5%+"),
-	{ locked = true, repeating = true }
+	{ locked = true, repeating = true, description = "Volume up" }
 )
 hl.bind(
 	"XF86AudioLowerVolume",
 	hl.dsp.exec_cmd("wpctl set-volume @DEFAULT_AUDIO_SINK@ 5%-"),
-	{ locked = true, repeating = true }
+	{ locked = true, repeating = true, description = "Volume down" }
 )
 hl.bind(
 	"XF86AudioMute",
 	hl.dsp.exec_cmd("wpctl set-mute @DEFAULT_AUDIO_SINK@ toggle"),
-	{ locked = true, repeating = true }
+	{ locked = true, repeating = true, description = "Toggle mute" }
 )
 hl.bind(
 	"XF86AudioMicMute",
 	hl.dsp.exec_cmd("wpctl set-mute @DEFAULT_AUDIO_SOURCE@ toggle"),
-	{ locked = true, repeating = true }
+	{ locked = true, repeating = true, description = "Toggle microphone" }
 )
-hl.bind("XF86MonBrightnessUp", hl.dsp.exec_cmd("brightnessctl -e4 -n2 set 5%+"), { locked = true, repeating = true })
-hl.bind("XF86MonBrightnessDown", hl.dsp.exec_cmd("brightnessctl -e4 -n2 set 5%-"), { locked = true, repeating = true })
+hl.bind(
+	"XF86MonBrightnessUp",
+	hl.dsp.exec_cmd("brightnessctl -e4 -n2 set 5%+"),
+	{ locked = true, repeating = true, description = "Brightness up" }
+)
+hl.bind(
+	"XF86MonBrightnessDown",
+	hl.dsp.exec_cmd("brightnessctl -e4 -n2 set 5%-"),
+	{ locked = true, repeating = true, description = "Brightness down" }
+)
 
 -- Requires playerctl
-hl.bind("XF86AudioNext", hl.dsp.exec_cmd("playerctl next"), { locked = true })
-hl.bind("XF86AudioPause", hl.dsp.exec_cmd("playerctl play-pause"), { locked = true })
-hl.bind("XF86AudioPlay", hl.dsp.exec_cmd("playerctl play-pause"), { locked = true })
-hl.bind("XF86AudioPrev", hl.dsp.exec_cmd("playerctl previous"), { locked = true })
+hl.bind("XF86AudioNext", hl.dsp.exec_cmd("playerctl next"), { locked = true, description = "Next track" })
+hl.bind("XF86AudioPause", hl.dsp.exec_cmd("playerctl play-pause"), { locked = true, description = "Play or pause" })
+hl.bind("XF86AudioPlay", hl.dsp.exec_cmd("playerctl play-pause"), { locked = true, description = "Play or pause" })
+hl.bind("XF86AudioPrev", hl.dsp.exec_cmd("playerctl previous"), { locked = true, description = "Previous track" })
 
 --------------------------------
 ---- WINDOWS AND WORKSPACES ----
@@ -495,6 +526,7 @@ hl.window_rule({
 
 	stay_focused = true,
 	focus_on_activate = true,
+	no_screen_share = true,
 })
 
 -- Layer rules also return a handle.
@@ -523,6 +555,18 @@ hl.window_rule({
 
 	move = "20 monitor_h-120",
 	float = true,
+})
+
+-- Float Nautilus file-picker dialogs, but keep the main file manager tiled.
+hl.window_rule({
+	name = "float-file-picker-dialogs",
+	match = {
+		class = "(sublime_text|DesktopEditors|org.gnome.Nautilus)",
+		title = "^(Open.*Files?|Open [F|f]older.*|Save.*Files?|Save.*As|Save|All Files|.*wants to [open|save].*|[C|c]hoose.*)",
+	},
+	float = true,
+	center = true,
+	size = { 875, 600 },
 })
 
 -- Noctalia Settings

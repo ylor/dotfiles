@@ -420,7 +420,7 @@ class ModalEditor extends CustomEditor {
 		const last = lines.length - 1;
 		if (visibleWidth(lines[last]!) >= label.length) {
 			const dimLabel = `\x1b[2m${this.borderColor(label)}\x1b[22m`;
-			lines[last] = dimLabel + truncateToWidth(lines[last]!, width - label.length, "");
+			lines[last] = truncateToWidth(lines[last]!, width - label.length, "") + dimLabel;
 		}
 		return lines;
 	}
