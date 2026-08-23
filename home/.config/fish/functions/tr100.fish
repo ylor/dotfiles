@@ -31,6 +31,10 @@ function debug
     printf ""
 end
 
+function set_report_width
+    set -g CURRENT_LEN (max_length $argv)
+end
+
 function max_length
     set max_len $MIN_DATA_LEN
     set len 0
@@ -218,11 +222,10 @@ function PRINT_DATA
 
     # Truncate or pad data
     set data_len (string length -- $data)
-    if test $data_len -gt $MAX_DATA_LEN; or test $data_len -eq (math $MAX_DATA_LEN - 1)
-        set cut_end (math $MAX_DATA_LEN - 1)
-        set data (echo $data | cut -c 1-$cut_end)…
+    if test $data_len -gt $max_data_len
+        set cut_end (math $max_data_len - 1)
+        set data (string sub --length $cut_end -- $data)…
     else
-        # TODO: stupid Debian `dash` cannot into UTF-8 and might trim strings earlier
         set data (printf "%-"$max_data_len"s" $data)
     end
 
@@ -366,6 +369,24 @@ switch (uname)
         set -g mem_available (math -s 0 "$mem_total - $mem_used")
     case Linux
         set -g mem_total (grep 'MemTotal' /proc/meminfo | awk '{print $2}')
+        if test -d /sys/firmware/memmap
+            set system_ram_bytes 0
+            for type_file in /sys/firmware/memmap/*/type
+                read -l memory_type < $type_file
+                if test "$memory_type" != "System RAM"
+                    continue
+                end
+
+                set range_dir (string replace /type "" $type_file)
+                read -l range_start < $range_dir/start
+                read -l range_end < $range_dir/end
+                set system_ram_bytes (math "$system_ram_bytes + $range_end - $range_start + 1")
+            end
+
+            if test $system_ram_bytes -gt 0
+                set -g mem_total (math -s 0 "$system_ram_bytes / 1024")
+            end
+        end
         set -g mem_available (grep 'MemAvailable' /proc/meminfo | awk '{print $2}')
     case '*'
         set -g mem_total "???"
@@ -376,8 +397,8 @@ set -g mem_used (math $mem_total - $mem_available)
 
 set -g mem_percent (awk -v used=$mem_used -v total=$mem_total 'BEGIN { printf "%.0f", (used / total) * 100 }')
 set -g mem_percent (printf "%.0f" $mem_percent)
-set -g mem_total_gb (awk -v total=$mem_total 'BEGIN { printf "%.0f", total / (1024 * 1024) }') # KiB to GiB
-set -g mem_used_gb (awk -v used=$mem_used 'BEGIN { printf "%.0f", used / (1024 * 1024) }')
+set -g mem_total_gb (awk -v total=$mem_total 'BEGIN { printf "%.0f", total / (1024 * 1024) }')
+set -g mem_used_gb (awk -v used=$mem_used 'BEGIN { printf "%.2f", used / (1024 * 1024) }')
 
 debug "COLLECTING DISK INFO"
 # Disk Information
@@ -500,33 +521,32 @@ switch (uname)
         set -g sys_uptime (uptime -p | string replace 'up ' '')
 end
 
-# ─── Graphs + width ──────────────────────────────────────────────────────────
-
-debug "PREPARING GRAPHS"
-# Set current length before graphs get calculated
-
-debug "PREPARING GRAPHS - CPU"
-# Create graphs
-debug "PREPARING GRAPHS - CPU 1 MIN LOAD: $load_avg_1min, $cpu_cores"
-set -g cpu_1min_bar_graph (bar_graph $load_avg_1min $cpu_cores)
-debug "PREPARING GRAPHS - CPU 5 MIN LOAD"
-set -g cpu_5min_bar_graph (bar_graph $load_avg_5min $cpu_cores)
-debug "PREPARING GRAPHS - CPU 15 MIN LOAD"
-set -g cpu_15min_bar_graph (bar_graph $load_avg_15min $cpu_cores)
-
-debug "PREPARING GRAPHS - MEMORY"
-set -g mem_bar_graph (bar_graph $mem_used $mem_total)
-
-debug "PREPARING GRAPHS - DISK"
-if test $zfs_present -eq 1
-    debug "PREPARING GRAPHS - DISK ZFS: $zfs_used"
-    set -g disk_bar_graph (bar_graph $zfs_used $zfs_available)
-else
-    debug "PREPARING GRAPHS - DISK REGULAR"
-    set -g disk_bar_graph (bar_graph $root_used $root_total)
-end
-
 function tr100
+    set_report_width \
+        "$os_name" \
+        "$os_kernel" \
+        "$cpu_hypervisor" \
+        "$cpu_model" \
+        "$net_machine_ip" \
+        "$net_dns_str" \
+        "$sys_uptime" \
+        "$last_login_time" \
+        "$last_login_ip" \
+        "$USER @ $(prompt_hostname)" \
+        "$zfs_health" \
+        "$zfs_used_gb / $zfs_available_gb GB [$disk_percent%]" \
+        "$root_used_gb/$root_total_gb GB [$disk_percent%]" \
+        "$mem_used_gb/$mem_total_gb GB [$mem_percent%]"
+
+    set cpu_1min_bar_graph (bar_graph $load_avg_1min $cpu_cores)
+    set cpu_5min_bar_graph (bar_graph $load_avg_5min $cpu_cores)
+    set cpu_15min_bar_graph (bar_graph $load_avg_15min $cpu_cores)
+    set mem_bar_graph (bar_graph $mem_used $mem_total)
+    if test $zfs_present -eq 1
+        set disk_bar_graph (bar_graph $zfs_used $zfs_available)
+    else
+        set disk_bar_graph (bar_graph $root_used $root_total)
+    end
     # ─── Report ──────────────────────────────────────────────────────────────────
 
     # Machine Report
@@ -570,7 +590,7 @@ function tr100
         PRINT_BAR USAGE $disk_bar_graph
     end
     PRINT_DIVIDER
-    PRINT_DATA MEMORY "$mem_used_gb/$mem_total_gb GiB [$mem_percent%]"
+    PRINT_DATA MEMORY "$mem_used_gb/$mem_total_gb GB [$mem_percent%]"
     PRINT_BAR USAGE $mem_bar_graph
     PRINT_DIVIDER end
 

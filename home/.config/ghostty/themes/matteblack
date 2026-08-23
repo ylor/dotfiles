@@ -1,0 +1,25 @@
+# Matte Black
+
+palette = 0=#121212
+palette = 1=#D35F5F
+palette = 2=#129B70
+palette = 3=#F59E0B
+palette = 4=#325DCA
+palette = 5=#8D20B2
+palette = 6=#1EA7A0
+palette = 7=#BEBEBE
+palette = 8=#8A8A8D
+palette = 9=#E62222
+palette = 10=#22C55E
+palette = 11=#F1CB42
+palette = 12=#3C71F6
+palette = 13=#B027DE
+palette = 14=#
+palette = 15=#BEBEBE
+
+background = #121212
+foreground = #BEBEBE
+cursor-color = #F59E0B
+cursor-text = #121212
+selection-background = #262626
+selection-foreground = #FFFFFF

@@ -1,7 +1,20 @@
 set pkgs_dir (status dirname)/pkgs
 set installed_pkgs (pacman -Qq)
+set remove_pkgs
 set cachy_pkgs
 set aur_pkgs
+
+for pkg in (awk 'NF && $1 !~ /^#/ {print $1}' $pkgs_dir/remove.txt)
+    if contains -- $pkg $installed_pkgs
+        set -a remove_pkgs $pkg
+    end
+end
+
+if set -q remove_pkgs[1]
+    sudo pacman -Rns --noconfirm $remove_pkgs
+end
+
+set installed_pkgs (pacman -Qq)
 
 for pkg in (awk 'NF && $1 !~ /^#/ {print $1}' $pkgs_dir/cachy.txt)
     if not contains -- $pkg $installed_pkgs
@@ -47,5 +60,8 @@ end
 # end
 
 if command -vq lact
+    if lspci | string match -q '*GeForce RTX 5070 Ti*'
+        sudo install -Dm644 (status dirname)/lact.yaml /etc/lact/config.yaml
+    end
     sudo systemctl enable --now lactd
 end

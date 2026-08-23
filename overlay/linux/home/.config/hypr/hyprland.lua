@@ -145,7 +145,7 @@ hl.config({
 	decoration = {
 		rounding = 2,
 		rounding_power = 4,
-		dim_special = 0,
+		dim_special = 0.3,
 
 		-- Change transparency of focused and unfocused windows
 		-- active_opacity   = 1.0,
@@ -160,8 +160,8 @@ hl.config({
 
 		blur = {
 			enabled = true,
-			size = 10,
-			passes = 5,
+			size = 2,
+			passes = 3,
 			vibrancy = 0.1696,
 			special = true,
 		},
@@ -182,6 +182,21 @@ hl.config({
 		force_zero_scaling = true,
 	},
 })
+
+-- hl.animation({
+-- 	leaf = "global",
+-- 	enabled = false,
+-- 	speed = 2,
+-- 	bezier = "default",
+-- })
+
+-- hl.animation({
+-- 	leaf = "specialWorkspace",
+-- 	enabled = false,
+-- 	speed = 2,
+-- 	bezier = "default",
+-- 	style = "slidefadevert",
+-- })
 
 -- Ref https://wiki.hypr.land/Configuring/Basics/Workspace-Rules/
 -- "Smart gaps" / "No gaps when only"
@@ -217,6 +232,7 @@ hl.config({
 -- See https://wiki.hypr.land/Configuring/Layouts/Scrolling-Layout/ for more
 hl.config({
 	scrolling = {
+		column_width = 0.49,
 		fullscreen_on_one_column = true,
 	},
 })
@@ -282,17 +298,19 @@ local mod = {
 }
 
 local keybind_menu = require("keybind_menu")
+local scratch_terminal = require("scratch")
 
 local function app(class, command)
 	return function()
 		local special_workspace = hl.get_active_special_workspace()
 		local window = hl.get_window("class:^(" .. class .. ")$")
 
-		if special_workspace then
+		if special_workspace and not scratch_terminal.dismiss_active() then
 			hl.dispatch(hl.dsp.exec_raw(command))
-		else
-			hl.dispatch(window and hl.dsp.focus({ window = window }) or hl.dsp.exec_raw(command))
+			return
 		end
+
+		hl.dispatch(window and hl.dsp.focus({ window = window }) or hl.dsp.exec_raw(command))
 	end
 end
 
@@ -310,42 +328,23 @@ hl.bind("CTRL + ALT + S", function()
 		scale = m.scale == 2 and 1.67 or 2,
 	})
 end, { description = "Monitor scale" })
-local function bind_scratch_terminal(key, name, program, description)
-	local class = "com.mitchellh.ghostty." .. name
-	local workspace = "special:" .. name
-	local command = terminal .. " --gtk-single-instance=false --class=" .. class
-	if program then
-		command = command .. " -e " .. program
-	end
-
-	hl.bind(key, function()
-		local scratch_terminal = hl.get_window("class:^(" .. class .. ")$")
-		if scratch_terminal then
-			hl.dispatch(hl.dsp.workspace.toggle_special(name))
-		else
-			local rules = {
-				workspace = workspace,
-				float = true,
-				center = true,
-				size = {
-					"monitor_w * 0.5",
-					"monitor_w * 0.5 * 2 / 3",
-				},
-			}
-			hl.dispatch(hl.dsp.exec_cmd(command, rules))
-		end
-	end, { description = description })
-end
-
 hl.bind(mod.main .. " + Return", hl.dsp.exec_cmd(terminal), { description = "Ghostty" })
 hl.bind(mod.main .. " + K", keybind_menu, { description = "Keybinds" })
-bind_scratch_terminal(mod.main .. " + grave", "scratch-terminal", nil, "Toggle scratch terminal")
-bind_scratch_terminal(
-	mod.main .. " + A",
-	"agent-scratch-terminal",
-	[[sh -c 'cd "$HOME/.dotfiles" 2>/dev/null || cd "$HOME"; exec /usr/bin/mise exec -- pi']],
-	"Toggle agent terminal"
+hl.bind(
+	mod.main .. " + grave",
+	scratch_terminal.action("scratch-terminal", terminal),
+	{ description = "Toggle scratch terminal" }
 )
+hl.bind(
+	mod.main .. " + A",
+	scratch_terminal.action(
+		"agent-scratch-terminal",
+		terminal,
+		[[sh -c 'cd "$HOME/.dotfiles" 2>/dev/null || cd "$HOME"; exec /usr/bin/mise exec -- pi']]
+	),
+	{ description = "Toggle agent terminal" }
+)
+
 hl.bind(
 	mod.main .. " + SHIFT + S",
 	hl.dsp.exec_cmd("noctalia msg screenshot-region"),
@@ -353,7 +352,13 @@ hl.bind(
 )
 hl.bind(mod.main .. " + SHIFT + C", hl.dsp.exec_cmd("hyprpicker -a"), { description = "Color picker" })
 hl.bind(mod.hypr .. " + COMMA", hl.dsp.exec_cmd("noctalia msg settings-toggle"), { description = "Settings" })
-hl.bind(mod.hypr .. " + L", hl.dsp.exec_cmd("noctalia msg session lock"), { description = "Lock session" })
+hl.bind(mod.hypr .. " + P", hl.dsp.exec_cmd(terminal .. " -e btop"), { description = "btop" })
+-- local layout = "dwindle"
+-- hl.bind(mod.hypr .. " + L", function()
+-- 	layout = layout == "dwindle" and "scrolling" or "dwindle"
+-- 	hl.config({ general = { layout = layout } })
+-- end, { description = "Toggle layout" })
+hl.bind(mod.hypr .. " + L", hl.dsp.exec_cmd("noctalia msg session lock"), { description = "Lock" })
 -- hl.bind(mod.main .. " + X", hl.dsp.submap("session_menu"))
 hl.bind(mod.main .. " + Q", hl.dsp.window.close(), { description = "Close window" })
 hl.bind(mod.win .. " + Q", hl.dsp.window.close(), { description = "Close window" })
@@ -362,11 +367,12 @@ hl.bind(mod.main .. " + F", hl.dsp.window.fullscreen(), { description = "Fullscr
 hl.bind(mod.main .. " + T", hl.dsp.window.float({ action = "toggle" }), { description = "Floating" })
 hl.bind(mod.main .. " + SPACE", hl.dsp.exec_cmd(menu), { description = "Launcher" })
 hl.bind(mod.alt .. " + SPACE", hl.dsp.exec_cmd(menu), { description = "Launcher" })
+hl.bind(mod.main .. " + ESCAPE", hl.dsp.exec_cmd("noctalia msg panel-toggle session"), { description = "Session menu" })
 hl.bind(mod.main .. " + P", hl.dsp.window.pseudo(), { description = "Pseudotiling" })
 hl.bind(mod.main .. " + J", hl.dsp.layout("togglesplit"), { description = "Split direction" })
 hl.bind(mod.main .. " + V", hl.dsp.exec_cmd("noctalia msg panel-open clipboard"), { description = "Clipboard" })
 hl.bind(mod.alt .. " + Tab", hl.dsp.window.cycle_next(), { description = "Next window" })
-hl.bind(mod.main .. " + Tab", hl.dsp.focus({ workspace = "previous" }), { description = "Previous workspace" })
+hl.bind(mod.main .. " + Tab", scratch_terminal.focus_workspace("previous"), { description = "Previous workspace" })
 hl.bind(mod.main .. " + M", function()
 	if hl.get_workspace("special:minimized") then
 		hl.dispatch(hl.dsp.window.move({ workspace = hl.get_active_workspace(), window = "tag:minimized" }))
@@ -423,7 +429,7 @@ hl.workspace_rule({ workspace = "5", persistent = true })
 -- Move active window to a workspace with mainMod + SHIFT + [0-9]
 for i = 1, 9 do
 	local key = i -- 10 maps to key 0
-	hl.bind(mod.win .. " + " .. key, hl.dsp.focus({ workspace = i }), { description = "Workspace " .. i })
+	hl.bind(mod.win .. " + " .. key, scratch_terminal.focus_workspace(i), { description = "Workspace " .. i })
 	hl.bind(
 		mod.win .. " + SHIFT + " .. key,
 		hl.dsp.window.move({ workspace = i }),
@@ -432,16 +438,16 @@ for i = 1, 9 do
 end
 
 -- Example special workspace (scratchpad)
-hl.bind(mod.hypr .. " + S", hl.dsp.workspace.toggle_special("magic"), { description = "Scratch workspace" })
+hl.bind(mod.hypr .. " + S", hl.dsp.workspace.toggle_special("default"), { description = "Scratch workspace" })
 hl.bind(
 	mod.hypr .. " + SHIFT + S",
-	hl.dsp.window.move({ workspace = "special:magic" }),
+	hl.dsp.window.move({ workspace = "special:default" }),
 	{ description = "Move to scratch workspace" }
 )
 
 -- Scroll through existing workspaces with mainMod + scroll
-hl.bind(mod.main .. " + mouse_down", hl.dsp.focus({ workspace = "e+1" }), { description = "Next workspace" })
-hl.bind(mod.main .. " + mouse_up", hl.dsp.focus({ workspace = "e-1" }), { description = "Previous workspace" })
+hl.bind(mod.main .. " + mouse_down", scratch_terminal.focus_workspace("e+1"), { description = "Next workspace" })
+hl.bind(mod.main .. " + mouse_up", scratch_terminal.focus_workspace("e-1"), { description = "Previous workspace" })
 
 -- Move/resize windows with mainMod + LMB/RMB and dragging
 hl.bind(mod.main .. " + mouse:272", hl.dsp.window.drag(), { mouse = true, description = "Move window" })

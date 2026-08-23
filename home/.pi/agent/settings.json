@@ -1,6 +1,6 @@
 {
   "lastChangelogVersion": "0.84.2",
-  "defaultModel": "gpt-5.6-luna",
+  "defaultModel": "gpt-5.6-sol",
   "defaultProvider": "openai-codex",
   "defaultThinkingLevel": "high",
   "enableInstallTelemetry": false,
@@ -9,12 +9,11 @@
   "theme": "dark",
   "tuiMode": "fullscreen",
   "enabledModels": [
-    "openai-codex/gpt-5.6-luna:low",
+    "openai-codex/gpt-5.6-luna:medium",
     "openai-codex/gpt-5.6-sol:low"
   ],
   "packages": [
     "npm:pi-mcp-adapter",
-    "npm:pi-web-search",
-    "npm:@bacnh85/pi-plan"
+    "npm:pi-web-search"
   ]
 }

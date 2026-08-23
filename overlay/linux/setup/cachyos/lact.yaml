@@ -1,0 +1,401 @@
+version: 6
+daemon:
+  log_level: info
+  admin_group: wheel
+  disable_clocks_cleanup: false
+apply_settings_timer: 5
+gpus:
+  10DE:2C05-1043:89F7-0000:01:00.0:
+    fan_control_enabled: false
+    power_mizer_mode: Auto
+    power_cap: 300.0
+    min_core_clock: 180
+    max_core_clock: 3090
+    gpu_clock_offsets:
+      0: 445
+    mem_clock_offsets:
+      0: 2000
+    gpu_vf_curve:
+      0:
+        voltage: 450
+        clockspeed: 592
+      1:
+        voltage: 460
+        clockspeed: 592
+      2:
+        voltage: 465
+        clockspeed: 592
+      3:
+        voltage: 470
+        clockspeed: 592
+      4:
+        voltage: 475
+        clockspeed: 592
+      5:
+        voltage: 485
+        clockspeed: 592
+      6:
+        voltage: 490
+        clockspeed: 592
+      7:
+        voltage: 495
+        clockspeed: 592
+      8:
+        voltage: 500
+        clockspeed: 592
+      9:
+        voltage: 510
+        clockspeed: 592
+      10:
+        voltage: 515
+        clockspeed: 592
+      11:
+        voltage: 520
+        clockspeed: 592
+      12:
+        voltage: 525
+        clockspeed: 592
+      13:
+        voltage: 535
+        clockspeed: 592
+      14:
+        voltage: 540
+        clockspeed: 592
+      15:
+        voltage: 545
+        clockspeed: 592
+      16:
+        voltage: 550
+        clockspeed: 592
+      17:
+        voltage: 560
+        clockspeed: 592
+      18:
+        voltage: 565
+        clockspeed: 592
+      19:
+        voltage: 570
+        clockspeed: 592
+      20:
+        voltage: 575
+        clockspeed: 592
+      21:
+        voltage: 585
+        clockspeed: 592
+      22:
+        voltage: 590
+        clockspeed: 592
+      23:
+        voltage: 595
+        clockspeed: 592
+      24:
+        voltage: 600
+        clockspeed: 592
+      25:
+        voltage: 610
+        clockspeed: 592
+      26:
+        voltage: 615
+        clockspeed: 592
+      27:
+        voltage: 620
+        clockspeed: 592
+      28:
+        voltage: 625
+        clockspeed: 592
+      29:
+        voltage: 635
+        clockspeed: 592
+      30:
+        voltage: 640
+        clockspeed: 592
+      31:
+        voltage: 645
+        clockspeed: 592
+      32:
+        voltage: 650
+        clockspeed: 592
+      33:
+        voltage: 660
+        clockspeed: 592
+      34:
+        voltage: 665
+        clockspeed: 592
+      35:
+        voltage: 670
+        clockspeed: 592
+      36:
+        voltage: 675
+        clockspeed: 592
+      37:
+        voltage: 685
+        clockspeed: 592
+      38:
+        voltage: 690
+        clockspeed: 592
+      39:
+        voltage: 695
+        clockspeed: 592
+      40:
+        voltage: 700
+        clockspeed: 592
+      41:
+        voltage: 710
+        clockspeed: 592
+      42:
+        voltage: 715
+        clockspeed: 592
+      43:
+        voltage: 720
+        clockspeed: 592
+      44:
+        voltage: 725
+        clockspeed: 607
+      45:
+        voltage: 735
+        clockspeed: 742
+      46:
+        voltage: 740
+        clockspeed: 892
+      47:
+        voltage: 745
+        clockspeed: 1027
+      48:
+        voltage: 750
+        clockspeed: 1162
+      49:
+        voltage: 760
+        clockspeed: 1297
+      50:
+        voltage: 765
+        clockspeed: 1447
+      51:
+        voltage: 770
+        clockspeed: 1582
+      52:
+        voltage: 775
+        clockspeed: 1717
+      53:
+        voltage: 785
+        clockspeed: 1867
+      54:
+        voltage: 790
+        clockspeed: 2002
+      55:
+        voltage: 795
+        clockspeed: 2137
+      56:
+        voltage: 800
+        clockspeed: 2287
+      57:
+        voltage: 810
+        clockspeed: 2422
+      58:
+        voltage: 815
+        clockspeed: 2572
+      59:
+        voltage: 820
+        clockspeed: 2602
+      60:
+        voltage: 825
+        clockspeed: 2632
+      61:
+        voltage: 835
+        clockspeed: 2662
+      62:
+        voltage: 840
+        clockspeed: 2677
+      63:
+        voltage: 845
+        clockspeed: 2707
+      64:
+        voltage: 850
+        clockspeed: 2737
+      65:
+        voltage: 860
+        clockspeed: 2767
+      66:
+        voltage: 865
+        clockspeed: 2782
+      67:
+        voltage: 870
+        clockspeed: 2812
+      68:
+        voltage: 875
+        clockspeed: 2842
+      69:
+        voltage: 885
+        clockspeed: 2857
+      70:
+        voltage: 890
+        clockspeed: 2887
+      71:
+        voltage: 895
+        clockspeed: 2902
+      72:
+        voltage: 900
+        clockspeed: 2932
+      73:
+        voltage: 910
+        clockspeed: 2947
+      74:
+        voltage: 915
+        clockspeed: 2977
+      75:
+        voltage: 920
+        clockspeed: 2992
+      76:
+        voltage: 925
+        clockspeed: 3007
+      77:
+        voltage: 935
+        clockspeed: 3037
+      78:
+        voltage: 940
+        clockspeed: 3052
+      79:
+        voltage: 945
+        clockspeed: 3067
+      80:
+        voltage: 950
+        clockspeed: 3097
+      81:
+        voltage: 960
+        clockspeed: 3112
+      82:
+        voltage: 965
+        clockspeed: 3127
+      83:
+        voltage: 970
+        clockspeed: 3142
+      84:
+        voltage: 975
+        clockspeed: 3157
+      85:
+        voltage: 985
+        clockspeed: 3187
+      86:
+        voltage: 990
+        clockspeed: 3202
+      87:
+        voltage: 995
+        clockspeed: 3217
+      88:
+        voltage: 1000
+        clockspeed: 3262
+      89:
+        voltage: 1010
+        clockspeed: 3277
+      90:
+        voltage: 1015
+        clockspeed: 3292
+      91:
+        voltage: 1020
+        clockspeed: 3307
+      92:
+        voltage: 1025
+        clockspeed: 3307
+      93:
+        voltage: 1035
+        clockspeed: 3322
+      94:
+        voltage: 1040
+        clockspeed: 3337
+      95:
+        voltage: 1045
+        clockspeed: 3352
+      96:
+        voltage: 1050
+        clockspeed: 3367
+      97:
+        voltage: 1060
+        clockspeed: 3367
+      98:
+        voltage: 1065
+        clockspeed: 3382
+      99:
+        voltage: 1070
+        clockspeed: 3397
+      100:
+        voltage: 1075
+        clockspeed: 3412
+      101:
+        voltage: 1085
+        clockspeed: 3427
+      102:
+        voltage: 1090
+        clockspeed: 3427
+      103:
+        voltage: 1095
+        clockspeed: 3442
+      104:
+        voltage: 1100
+        clockspeed: 3457
+      105:
+        voltage: 1110
+        clockspeed: 3472
+      106:
+        voltage: 1115
+        clockspeed: 3472
+      107:
+        voltage: 1120
+        clockspeed: 3487
+      108:
+        voltage: 1125
+        clockspeed: 3502
+      109:
+        voltage: 1135
+        clockspeed: 3502
+      110:
+        voltage: 1140
+        clockspeed: 3517
+      111:
+        voltage: 1145
+        clockspeed: 3532
+      112:
+        voltage: 1150
+        clockspeed: 3532
+      113:
+        voltage: 1160
+        clockspeed: 3547
+      114:
+        voltage: 1165
+        clockspeed: 3562
+      115:
+        voltage: 1170
+        clockspeed: 3562
+      116:
+        voltage: 1175
+        clockspeed: 3577
+      117:
+        voltage: 1185
+        clockspeed: 3577
+      118:
+        voltage: 1190
+        clockspeed: 3592
+      119:
+        voltage: 1195
+        clockspeed: 3607
+      120:
+        voltage: 1200
+        clockspeed: 3607
+      121:
+        voltage: 1210
+        clockspeed: 3622
+      122:
+        voltage: 1215
+        clockspeed: 3622
+      123:
+        voltage: 1220
+        clockspeed: 3637
+      124:
+        voltage: 1225
+        clockspeed: 3652
+      125:
+        voltage: 1235
+        clockspeed: 3652
+      126:
+        voltage: 1240
+        clockspeed: 3667
+current_profile: null
+auto_switch_profiles: false
