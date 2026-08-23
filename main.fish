@@ -17,13 +17,22 @@ if test -z "$DOTFILES_PROFILE"
     end
 end
 
-set -x KERNEL (uname | string lower)
-if test "$DOTFILES_PROFILE" = full
-    for script in $DOTFILES/overlay/$KERNEL/setup/*.fish
-        source $script
+dfs-link
+
+set os (uname -s | string lower)
+set host (hostname -s | string lower)
+set layers $DOTFILES $DOTFILES/$os $DOTFILES/$os/hosts/$host
+
+for layer in $layers
+    test -d $layer; or continue
+
+    set setup $layer/setup
+    if test -d $setup
+        for script in $setup/*.fish
+            source $script
+        end
     end
 end
 
-dfs-link
 echo "SEE YOU SPACE COWBOY"
 exec fish --command 'function fish_greeting; end'

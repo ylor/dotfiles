@@ -28,14 +28,12 @@ for pkg in (awk 'NF && $1 !~ /^#/ {print $1}' $pkgs_dir/aur.txt)
     end
 end
 
-shelly sync standard --no-confirm
 if set -q cachy_pkgs[1]
     shelly install standard --no-confirm $cachy_pkgs
 end
 if set -q aur_pkgs[1]
     shelly install aur --no-confirm $aur_pkgs
 end
-shelly purify standard --cache 3 --no-confirm
 
 # DESKTOP
 # if command -vq nvidia-smi
@@ -44,10 +42,14 @@ shelly purify standard --cache 3 --no-confirm
 
 # AUTOLOGIN
 if command -vq hyprland niri
-    sudo mkdir -p "/etc/systemd/system/getty@tty1.service.d"
-    echo "[Service]
+    set autologin /etc/systemd/system/getty@tty1.service.d/autologin.conf
+    set autologin_content "[Service]
      ExecStart=
-     ExecStart=-/usr/bin/agetty --autologin $(whoami) --noclear %I \$TERM" | sudo tee "/etc/systemd/system/getty@tty1.service.d/autologin.conf" >/dev/null
+     ExecStart=-/usr/bin/agetty --autologin $(whoami) --noclear %I \$TERM"
+
+    if not test -f $autologin; or test "$autologin_content" != (string collect <$autologin)
+        printf '%s\n' "$autologin_content" | sudo install -Dm644 /dev/stdin $autologin
+    end
 end
 
 # if command -vq hyprland niri
@@ -60,8 +62,13 @@ end
 # end
 
 if command -vq lact
-    if lspci | string match -q '*GeForce RTX 5070 Ti*'
-        sudo install -Dm644 (status dirname)/lact.yaml /etc/lact/config.yaml
+    set lact_source (status dirname)/lact.yaml
+    set lact_config /etc/lact/config.yaml
+
+    if lspci | string match -q '*GeForce RTX 5070 Ti*'; and not cmp --silent $lact_source $lact_config
+        sudo install -Dm644 $lact_source $lact_config
     end
-    sudo systemctl enable --now lactd
+
+    systemctl is-enabled --quiet lactd; or sudo systemctl enable lactd
+    systemctl is-active --quiet lactd; or sudo systemctl start lactd
 end

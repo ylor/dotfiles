@@ -9,9 +9,10 @@ for font in $font_directory/*.age
 
     if not test -f $destination
         age -d -o $destination $font
+        set fonts_added true
     end
 end
 
-if command -vq fc-cache
+if set -q fonts_added; and command -vq fc-cache
     fc-cache -f $destination_directory
 end
