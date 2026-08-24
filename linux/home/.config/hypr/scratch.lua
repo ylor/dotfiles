@@ -72,6 +72,11 @@ hl.on("window.active", function(window)
 		return
 	end
 
+	local window_class = window and window.class
+	if window_class and window_class:lower() == "1password" then
+		return
+	end
+
 	local window_workspace = window and window.workspace
 	if window_workspace and window_workspace.name == special_workspace.name then
 		return
