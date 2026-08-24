@@ -55,6 +55,7 @@ behavior_order = [ "lock", "screen-off", "lock-and-suspend" ]
     [idle.behavior.screen-off]
     action = "screen_off"
     enabled = true
+    resume_command = "hyprctl dispatch dpms on"
     timeout = 660.0
 
 [location]

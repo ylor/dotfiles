@@ -11,3 +11,5 @@ for font in $font_directory/*.age
         age -d -o $destination $font
     end
 end
+
+dfs-success "system / fonts"

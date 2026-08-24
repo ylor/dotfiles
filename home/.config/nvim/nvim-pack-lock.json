@@ -50,6 +50,10 @@
       "rev": "2a6940af80375532e5e9e7c1f2fc6319a1b7a69d",
       "src": "https://github.com/mason-org/mason.nvim"
     },
+    "matteblack.nvim": {
+      "rev": "a8a039f5d6189b28d76fa0221e64965efec7e996",
+      "src": "https://github.com/tahayvr/matteblack.nvim"
+    },
     "mfd.nvim": {
       "rev": "72ae627792960a7e490cb5242a78c570d02ba775",
       "src": "https://github.com/kungfusheep/mfd.nvim"
@@ -86,6 +90,10 @@
     "oil.nvim": {
       "rev": "b73018b75affd13fa38e2fc94ef753b465f770d7",
       "src": "https://github.com/stevearc/oil.nvim"
+    },
+    "osc-colors.nvim": {
+      "rev": "6539d790354b280e039915ffee9f96c2bf950a81",
+      "src": "https://github.com/GooseRooster/osc-colors.nvim"
     },
     "pixel.nvim": {
       "rev": "fd06541f7c790e22ad18f0ee5873b246de5b4a87",

@@ -1,7 +1,3 @@
-# SETUP
-set distro (cat /etc/os-release | grep '^ID=' | cut -d= -f2)
-source (status dirname)/$distro/*.fish
-
 # POWER MANAGEMENT
 if upower --enumerate | grep -q BAT
     set power_profile balance
@@ -98,3 +94,8 @@ end
 # TODO
 ## TODO: set firefox fonts, userjs, extensions
 ## VNC server/client
+
+dfs-success "system / Linux"
+
+set distro (cat /etc/os-release | grep '^ID=' | cut -d= -f2)
+source (status dirname)/$distro/*.fish

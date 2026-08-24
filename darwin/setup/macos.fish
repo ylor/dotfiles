@@ -5,7 +5,7 @@ if defaults read com.apple.Dock | grep -q "com.apple.apps.launcher"
 end
 
 # Set hostname
-if scutil --get ComputerName | grep -q "’s"; and gum confirm "Change hostname? (Current: '$hostname')"
+if scutil --get ComputerName | grep -q "’s"; and gum confirm "REVISE SYSTEM HOSTNAME? CURRENT / $hostname"
     set gum_hostname (gum input --placeholder $hostname)
     if test -n "$gum_hostname"
         sudo scutil --set ComputerName "$gum_hostname"
@@ -15,12 +15,12 @@ if scutil --get ComputerName | grep -q "’s"; and gum confirm "Change hostname?
 end
 
 # Enable FileVault
-if not fdesetup isactive >/dev/null 2>&1; and gum confirm "Enable FileVault?"
+if not fdesetup isactive >/dev/null 2>&1; and gum confirm "ENABLE DISK ENCRYPTION / FILEVAULT?"
     sudo fdesetup enable -user "$USER"
 end
 
 # Enable Firewall
-if /usr/libexec/ApplicationFirewall/socketfilterfw --getglobalstate | grep -q disabled; and gum confirm "Enable Firewall?"
+if /usr/libexec/ApplicationFirewall/socketfilterfw --getglobalstate | grep -q disabled; and gum confirm "ENABLE APPLICATION FIREWALL?"
     sudo /usr/libexec/ApplicationFirewall/socketfilterfw --setglobalstate on
 end
 
@@ -34,3 +34,5 @@ end
 # if test ! -e /etc/pam.d/sudo_local && gum confirm "Use TouchID for sudo?"
 #     sed -e 's/^#auth/auth/' /etc/pam.d/sudo_local.template | sudo tee /etc/pam.d/sudo_local >/dev/null
 # end
+
+dfs-success "system / macOS"

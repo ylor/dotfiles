@@ -9,7 +9,7 @@ confirm-close-surface = false
 window-save-state = always
 
 # form
-theme = mfd-nerv
+theme = Phosphor
 alpha-blending = linear-corrected
 background = #000000
 #background-blur = macos-glass-regular

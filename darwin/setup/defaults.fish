@@ -132,4 +132,4 @@ defaults write org.hammerspoon.Hammerspoon MJShowMenuIconKey -int 0
 defaults write com.apple.loginwindow TALLogoutSavesState -bool false
 
 # killall Finder Dock
-# dfs-success "defaults set"
+dfs-success "system / defaults"

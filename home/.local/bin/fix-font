@@ -1,12 +1,31 @@
 #!/bin/bash
 
-# Convert to ttx
-uvx --from fonttools ttx ./*.otf
+set -euo pipefail
 
-# set isFixedPitch to 1
-sed -i '' -e 's/isFixedPitch value="0"/isFixedPitch value="1"/g' ./*.ttx
+shopt -s nullglob
+fonts=(./*.otf)
 
-# Convert back to otf
-mkdir fixed
-uvx --from fonttools ttx -d fixed/ ./*.ttx
-rm *.ttx
+if (( ${#fonts[@]} == 0 )); then
+  echo "fix-font: no OTF files found" >&2
+  exit 1
+fi
+
+mkdir -p fixed
+work_dir=$(mktemp -d)
+trap 'rm -rf "$work_dir"' EXIT
+
+uvx --from fonttools ttx -d "$work_dir" "${fonts[@]}"
+
+for ttx_file in "$work_dir"/*.ttx; do
+  python3 - "$ttx_file" <<'PY'
+from pathlib import Path
+import sys
+
+path = Path(sys.argv[1])
+text = path.read_text()
+path.write_text(text.replace('isFixedPitch value="0"', 'isFixedPitch value="1"'))
+PY
+
+done
+
+uvx --from fonttools ttx -d fixed "$work_dir"/*.ttx

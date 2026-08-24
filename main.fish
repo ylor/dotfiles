@@ -1,4 +1,16 @@
-argparse r/reset -- $argv; or return
+argparse r/reset h/help -- $argv; or exit 2
+if set -q _flag_help
+    printf '%s\n' \
+        'DFS / SYSTEM CONFIGURATION EXECUTIVE' \
+        '' \
+        'USAGE / fish main.fish [--reset]' \
+        '' \
+        'OPTIONS' \
+        '  -r, --reset    Clear operator selections.' \
+        '  -h, --help     Display command reference.'
+    exit 0
+end
+
 if set -q _flag_reset
     set --erase DOTFILES_HOMEBREW DOTFILES_FULL DOTFILES_MODE DOTFILES_INTERACTIVE DOTFILES_PROFILE
 end
@@ -10,14 +22,12 @@ source $DOTFILES/.env
 clear && command cat $DOTFILES/art.txt
 
 if test -z "$DOTFILES_PROFILE"
-    if gum confirm "interactive?" --timeout=10s --affirmative=yes --negative=no --default=false
+    if gum confirm "SELECT FULL CONFIGURATION PROFILE?" --timeout=10s --affirmative=yes --negative=no --default=false
         set -Ux DOTFILES_PROFILE full
     else
         set -Ux DOTFILES_PROFILE default
     end
 end
-
-dfs-link
 
 set os (uname -s | string lower)
 set host (hostname -s | string lower)
@@ -28,11 +38,27 @@ for layer in $layers
 
     set setup $layer/setup
     if test -d $setup
-        for script in $setup/*.fish
-            source $script
+        set scripts $setup/*.fish
+        if test -f $setup/setup.fish
+            set scripts $setup/setup.fish
+            for script in $setup/*.fish
+                test $script = $setup/setup.fish; or set --append scripts $script
+            end
+        end
+
+        for script in $scripts
+            if not source $script
+                dfs-failure "system / setup failed"
+                exit 1
+            end
         end
     end
 end
 
-echo "SEE YOU SPACE COWBOY"
+if not dfs-link
+    dfs-failure "dotfiles / link failed"
+    exit 1
+end
+
+printf '█ %sSEE YOU SPACE COWBOY%s\n\n' (set_color --bold --italics) (set_color normal)
 exec fish --command 'function fish_greeting; end'

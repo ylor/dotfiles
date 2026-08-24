@@ -1,5 +1,9 @@
 function dfs-link
-    set -q DOTFILES; or dfs
+    argparse q/quiet -- $argv; or return 2
+    if not set -q DOTFILES
+        dfs apply
+        return $status
+    end
 
     set os (uname -s | string lower)
     set host (hostname -s | string lower)
@@ -14,7 +18,7 @@ function dfs-link
             mkdir -p (path dirname $link)
             ln -sf $file $link
             set --append links $link
-            dfs-success $link
+            # dfs-success $link
         end
     end
 
@@ -31,7 +35,8 @@ function dfs-link
         echo "✗ $link"
     end
 
-    test -n "$removed"; and echo "✗ $(count $removed) files removed"
-    string join \n $old $links | sort -u >$manifest
-    dfs-success "$(count $links) files linked"
+    string join \n $links | sort -u >$manifest
+    if not set -q _flag_quiet
+        dfs-success "dotfiles / linked ($(count $links))"
+    end
 end

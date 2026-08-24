@@ -72,3 +72,5 @@ if command -vq lact
     systemctl is-enabled --quiet lactd; or sudo systemctl enable lactd
     systemctl is-active --quiet lactd; or sudo systemctl start lactd
 end
+
+dfs-success "system / CachyOS"

@@ -351,7 +351,7 @@ hl.bind(
 	{ description = "Screenshot region" }
 )
 hl.bind(mod.main .. " + SHIFT + C", hl.dsp.exec_cmd("hyprpicker -a"), { description = "Color picker" })
-hl.bind(mod.hypr .. " + COMMA", hl.dsp.exec_cmd("noctalia msg settings-toggle"), { description = "Settings" })
+hl.bind(mod.hypr .. " + COMMA", hl.dsp.exec_cmd("noctalia msg settings-open"), { description = "Settings" })
 hl.bind(mod.hypr .. " + P", hl.dsp.exec_cmd(terminal .. " -e btop"), { description = "btop" })
 -- local layout = "dwindle"
 -- hl.bind(mod.hypr .. " + L", function()

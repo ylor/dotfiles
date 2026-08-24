@@ -1,40 +1,34 @@
 -- [[ Colorscheme ]]
--- Use ANSI colors from the active terminal palette.
-vim.opt.termguicolors = false
+-- Read the active terminal palette through OSC and use it as true-color values.
+-- vim.opt.termguicolors = true
+-- vim.pack.add({ "https://github.com/GooseRooster/osc-colors.nvim" })
+--
+-- require("osc-colors").setup({
+-- 	capabilities = {
+-- 		truecolor = true,
+-- 		terminal_colors = true,
+-- 	},
+-- 	ui = {
+-- 		transparent = true,
+-- 	},
+-- 	highlights = {
+-- 		overrides = function(palette)
+-- 			return {
+-- 				ColorColumn = { link = "CursorLine" },
+-- 				StatusLine = { fg = palette.base06, bg = "none", bold = true },
+-- 				StatusLineNC = { fg = palette.base03, bg = "none" },
+-- 				EndOfBuffer = { bg = "none" },
+-- 			}
+-- 		end,
+-- 	},
+-- })
 
-vim.pack.add({ "https://github.com/bjarneo/pixel.nvim" })
-require("pixel").setup({
-	disable_italics = false,
-})
-vim.cmd.colorscheme("pixel")
+-- vim.opt.termguicolors = true
+vim.pack.add({ "https://github.com/tahayvr/matteblack.nvim" })
+vim.cmd.colorscheme("matteblack")
 
-vim.api.nvim_set_hl(0, "StatusLine", {
-	ctermfg = 7,
-	bg = "none",
-	bold = true,
-})
-vim.api.nvim_set_hl(0, "StatusLineNC", {
-	ctermfg = 8,
-	bg = "none",
-})
-
-for _, group in ipairs({ "Normal", "NormalNC", "SignColumn", "LineNr", "EndOfBuffer" }) do
-	vim.api.nvim_set_hl(0, group, { bg = "none" })
+for _, group in ipairs({ "Normal", "NormalNC" }) do
+	vim.api.nvim_set_hl(0, group, { fg = "none", bg = "none" })
 end
-
--- Previous colorscheme configuration.
--- vim.pack.add({ "https://github.com/kungfusheep/mfd.nvim" })
--- require("mfd").setup({ accessibility_contrast = 4 })
--- vim.cmd.colorscheme("mfd-nerv")
--- vim.api.nvim_set_hl(0, "ColorColumn", { link = "CursorLine" })
---
--- for _, group in ipairs({ "Normal", "NormalNC", "SignColumn", "LineNr", "EndOfBuffer" }) do
--- 	vim.api.nvim_set_hl(0, group, { bg = "none" })
--- end
---
--- vim.api.nvim_set_hl(0, "TelescopeNormal", { link = "Normal" })
--- vim.api.nvim_set_hl(0, "TelescopeBorder", { link = "FloaBorder" })
--- vim.api.nvim_set_hl(0, "TelescopePromptNormal", { link = "Normal" })
--- vim.api.nvim_set_hl(0, "TelescopePromptBorder", { link = "Normal" })
 
 -- vim: ts=2 sts=2 sw=2 et
