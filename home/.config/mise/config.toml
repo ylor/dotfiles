@@ -2,4 +2,5 @@
 compile = true
 
 [tools]
+node = "latest"
 pi = "latest"
