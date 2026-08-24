@@ -32,7 +32,7 @@ function dfs-link
         string match -q "$DOTFILES/*" (readlink $link); or continue
         rm $link
         set --append removed $link
-        echo "✗ $link"
+        # echo "✗ $link"
     end
 
     string join \n $links | sort -u >$manifest

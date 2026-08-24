@@ -1,7 +1,6 @@
 brew "bat"
 brew "btop"
 brew "cloudflared"
-brew "evil-helix"
 brew "eza"
 brew "fd"
 brew "fish"
@@ -16,13 +15,12 @@ brew "zoxide"
 
 mode = ENV.fetch("DOTFILES_PROFILE", "full")
 if mode == "full"
-  brew "dockutil"
   cask "1password"
   cask "appcleaner"
   cask "betterdisplay"
+  brew "dockutil"
   cask "ghostty"
   cask "hammerspoon"
   cask "trex"
   cask "virtualbuddy"
-  cask "zed"
 end
