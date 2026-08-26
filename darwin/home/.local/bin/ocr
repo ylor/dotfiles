@@ -1,2 +1,2 @@
 #!/bin/sh
-/Applications/TRex.app/Contents/MacOS/cli/trex
+exec /Applications/TRex.app/Contents/MacOS/cli/trex "$@"

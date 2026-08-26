@@ -1,2 +1,2 @@
 #!/bin/sh
-sudo killall -HUP mDNSResponder
+exec sudo killall -HUP mDNSResponder

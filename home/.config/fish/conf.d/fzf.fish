@@ -1,6 +1,11 @@
 if command -q fzf # https://github.com/junegunn/fzf
     fzf --fish | source
 
+    bind \ed fzf-cd-widget
+    bind -M insert \ed fzf-cd-widget
+    bind \ef fzf-file-widget
+    bind -M insert \ef fzf-file-widget
+
     set -x FZF_DEFAULT_OPTS "--bind change:first \
         --border rounded \
         --marker '›>' \

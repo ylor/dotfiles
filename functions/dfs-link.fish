@@ -37,6 +37,9 @@ function dfs-link
 
     string join \n $links | sort -u >$manifest
     if not set -q _flag_quiet
+        if test (count $removed) -gt 0
+            printf '▓ DOTFILES / REMOVED / %s\n' $removed
+        end
         dfs-success "dotfiles / linked ($(count $links))"
     end
 end

@@ -1,5 +1,5 @@
 # form
-background-opacity = 0.70
+background-opacity = 0.90
 
 # function
 gtk-custom-css = style.css

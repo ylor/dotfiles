@@ -113,6 +113,13 @@ local servers = {
   -- ts_ls = {},
 
   stylua = {}, -- Used to format Lua code
+  biome = {
+    root_dir = function(bufnr, on_dir)
+      local filename = vim.api.nvim_buf_get_name(bufnr)
+      local root = vim.fs.root(filename, { '.git' }) or vim.fs.dirname(filename)
+      on_dir(root)
+    end,
+  },
   glsl_analyzer = {},
 
   -- Special Lua Config, as recommended by neovim help docs

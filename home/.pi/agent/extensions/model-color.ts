@@ -4,74 +4,66 @@ import {
 	type ExtensionContext,
 } from "@earendil-works/pi-coding-agent";
 
-type BorderEditor = {
+type Editor = {
 	borderColor(text: string): string;
+	render(width: number): string[];
 };
 
 const MODEL_COLORS: Record<string, string> = {
 	"openrouter/deepseek/deepseek-v4-flash-0731": "#4D6BFE",
-	"openai-codex/gpt-5.6-sol": "#E8A33A",
-	"openai-codex/gpt-5.6-luna": "#8291B8",
+	"openai-codex/gpt-5.6-sol": "#FE9A00",
+	"openai-codex/gpt-5.6-luna": "#90A1B9",
 };
 
-function colorText(text: string, hex: string, dim: boolean): string {
-	const rgb = [1, 3, 5].map((index) => Number.parseInt(hex.slice(index, index + 2), 16));
-	const faint = dim ? "\x1b[2m" : "";
-	const resetFaint = dim ? "\x1b[22m" : "";
-	return `${faint}\x1b[38;2;${rgb.join(";")}m${text}\x1b[39m${resetFaint}`;
+function modelColor(ctx: ExtensionContext): string | undefined {
+	const model = ctx.model;
+	return model && MODEL_COLORS[`${model.provider}/${model.id}`];
 }
 
-function patchEditorColors(editor: BorderEditor, ctx: ExtensionContext): void {
-	const originalRender = (editor as BorderEditor & { render: (width: number) => string[] }).render;
+function rgbParameters(hex: string): string {
+	return [1, 3, 5]
+		.map((index) => Number.parseInt(hex.slice(index, index + 2), 16))
+		.join(";");
+}
 
-	(editor as BorderEditor & { render: (width: number) => string[] }).render = (width) => {
-		const model = ctx.model;
-		const color = model && MODEL_COLORS[`${model.provider}/${model.id}`];
-		const lines = originalRender.call(editor, width);
+function colorText(text: string, hex: string, dim: boolean): string {
+	const foreground = `\x1b[38;2;${rgbParameters(hex)}m`;
+	const styled = `${foreground}${text}\x1b[39m`;
+	return dim ? `\x1b[2m${styled}\x1b[22m` : styled;
+}
+
+function patchEditor(editor: Editor, ctx: ExtensionContext): void {
+	const originalRender = editor.render.bind(editor);
+	let fallbackBorderColor = editor.borderColor;
+
+	editor.render = (width) => {
+		const lines = originalRender(width);
+		const color = modelColor(ctx);
 		if (!color) return lines;
 
-		const rgb = [1, 3, 5].map((index) => Number.parseInt(color.slice(index, index + 2), 16));
-		const foreground = `\x1b[38;2;${rgb.join(";")}m`;
-		const cursor = `\x1b[48;2;${rgb.join(";")}m\x1b[38;2;0;0;0m`;
+		const colorRgb = rgbParameters(color);
+		const foreground = `\x1b[38;2;${colorRgb}m`;
+		const cursor = `\x1b[48;2;${colorRgb}m\x1b[38;2;0;0;0m`;
 		const terminalCursor = `\x1b]12;${color}\x07`;
+
 		return lines.map((line, index) => {
 			const prefix = index === 0 ? terminalCursor : "";
 			return `${prefix}${foreground}${line.replaceAll("\x1b[7m", cursor)}`;
 		});
 	};
-}
-
-function patchBorder(editor: BorderEditor, ctx: ExtensionContext): void {
-	let fallback = editor.borderColor;
 
 	const borderColor = (text: string) => {
-		const model = ctx.model;
-		if (!model) return fallback(text);
-
-		const color = MODEL_COLORS[`${model.provider}/${model.id}`];
-		if (!color) return fallback(text);
-
-		return colorText(text, color, ctx.thinkingLevel === "off");
+		const color = modelColor(ctx);
+		return color ? colorText(text, color, ctx.thinkingLevel === "off") : fallbackBorderColor(text);
 	};
 
-	// Pi keeps assigning borderColor. Save those assignments as the fallback.
+	// Pi replaces borderColor when its state changes. Keep each replacement as the fallback.
 	Object.defineProperty(editor, "borderColor", {
 		configurable: true,
 		get: () => borderColor,
-		set: (value: BorderEditor["borderColor"]) => {
-			fallback = value;
+		set: (value: Editor["borderColor"]) => {
+			fallbackBorderColor = value;
 		},
-	});
-}
-
-function install(ctx: ExtensionContext): void {
-	const previous = ctx.ui.getEditorComponent();
-
-	ctx.ui.setEditorComponent((tui, theme, keybindings) => {
-		const editor = previous?.(tui, theme, keybindings) ?? new CustomEditor(tui, theme, keybindings);
-		patchBorder(editor as BorderEditor, ctx);
-		patchEditorColors(editor as BorderEditor, ctx);
-		return editor;
 	});
 }
 
@@ -79,9 +71,11 @@ export default function (pi: ExtensionAPI) {
 	pi.on("session_start", (_event, ctx) => {
 		if (ctx.mode !== "tui") return;
 
-		const model = ctx.model;
-		if (!model || !MODEL_COLORS[`${model.provider}/${model.id}`]) return;
-
-		install(ctx);
+		const previous = ctx.ui.getEditorComponent();
+		ctx.ui.setEditorComponent((tui, theme, keybindings) => {
+			const editor = previous?.(tui, theme, keybindings) ?? new CustomEditor(tui, theme, keybindings);
+			patchEditor(editor as Editor, ctx);
+			return editor;
+		});
 	});
 }

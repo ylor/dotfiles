@@ -1,6 +1,10 @@
+[settings]
+minimum_release_age = "0s"
+
 [settings.ruby]
 compile = true
 
 [tools]
+codex = "latest"
 node = "latest"
 pi = "latest"

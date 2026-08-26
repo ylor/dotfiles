@@ -1,11 +1,10 @@
 import type { ExtensionAPI, ExtensionContext } from "@earendil-works/pi-coding-agent";
-import { spawn } from "node:child_process";
-
 const COMMAND = "usage";
 const CODEX_PROVIDER = "openai-codex";
 const OPENROUTER_PROVIDER = "openrouter";
 const SUPPORTED_PROVIDERS = new Set([CODEX_PROVIDER, OPENROUTER_PROVIDER]);
-const TIMEOUT_MS = 15_000;
+const CODEX_USAGE_URL = "https://chatgpt.com/backend-api/codex/usage";
+const OPENAI_AUTH_CLAIM = "https://api.openai.com/auth";
 const CREDITS_URL = "https://openrouter.ai/api/v1/credits";
 
 type RateLimitWindow = {
@@ -21,14 +20,14 @@ type RateLimit = {
 };
 
 type CodexUsageResponse = {
-	rateLimits?: RateLimit;
-	rateLimitsByLimitId?: Record<string, RateLimit>;
-};
-
-type RpcMessage = {
-	id?: number;
-	result?: unknown;
-	error?: string | { message?: string };
+	rate_limit?: {
+		primary_window?: { used_percent?: number; reset_at?: number };
+		secondary_window?: { used_percent?: number; reset_at?: number };
+	};
+	code_review_rate_limit?: {
+		primary_window?: { used_percent?: number; reset_at?: number };
+		secondary_window?: { used_percent?: number; reset_at?: number };
+	};
 };
 
 type CreditsResponse = {
@@ -38,78 +37,41 @@ type CreditsResponse = {
 	};
 };
 
-function rpcError(error: RpcMessage["error"]): Error {
-	if (typeof error === "string") return new Error(error);
-	return new Error(error?.message ?? JSON.stringify(error));
+function getCodexAccountId(token: string): string | undefined {
+	try {
+		const payload = JSON.parse(Buffer.from(token.split(".")[1] ?? "", "base64url").toString("utf8")) as {
+			[OPENAI_AUTH_CLAIM]?: { chatgpt_account_id?: string };
+		};
+		return payload[OPENAI_AUTH_CLAIM]?.chatgpt_account_id;
+	} catch {
+		return undefined;
+	}
 }
 
-function fetchCodexUsage(): Promise<CodexUsageResponse> {
-	return new Promise((resolve, reject) => {
-		const child = spawn("codex", ["app-server", "--stdio"], {
-			stdio: ["pipe", "pipe", "pipe"],
-		});
-		let stdout = "";
-		let stderr = "";
-		let done = false;
+async function fetchCodexUsage(ctx: ExtensionContext): Promise<CodexUsageResponse> {
+	const resolved = await ctx.modelRegistry.getProviderAuth(CODEX_PROVIDER);
+	const token = resolved?.auth.apiKey;
+	if (!token) throw new Error("No OpenAI Codex credentials configured.");
 
-		const timer = setTimeout(() => finish(new Error("Codex App Server timed out")), TIMEOUT_MS);
+	const accountId = getCodexAccountId(token);
+	if (!accountId) throw new Error("The OpenAI Codex credentials do not contain an account ID.");
 
-		function send(message: unknown): void {
-			child.stdin.write(`${JSON.stringify(message)}\n`);
-		}
-
-		function finish(error?: Error, usage: CodexUsageResponse = {}): void {
-			if (done) return;
-			done = true;
-			clearTimeout(timer);
-			child.kill();
-			error ? reject(error) : resolve(usage);
-		}
-
-		child.stderr.setEncoding("utf8");
-		child.stderr.on("data", (chunk: string) => {
-			stderr += chunk;
-		});
-		child.once("error", finish);
-		child.once("close", () => {
-			if (!done) finish(new Error(stderr.trim() || "Codex App Server exited unexpectedly"));
-		});
-
-		child.stdout.setEncoding("utf8");
-		child.stdout.on("data", (chunk: string) => {
-			stdout += chunk;
-			const lines = stdout.split("\n");
-			stdout = lines.pop() ?? "";
-
-			for (const line of lines) {
-				let message: RpcMessage;
-				try {
-					message = JSON.parse(line) as RpcMessage;
-				} catch {
-					continue;
-				}
-
-				if (message.id === 2) {
-					if (message.error !== undefined) return finish(rpcError(message.error));
-					return finish(undefined, (message.result as CodexUsageResponse) ?? {});
-				}
-				if (message.id === 1) {
-					if (message.error !== undefined) return finish(rpcError(message.error));
-					send({ method: "initialized" });
-					send({ id: 2, method: "account/rateLimits/read" });
-				}
-			}
-		});
-
-		send({
-			id: 1,
-			method: "initialize",
-			params: {
-				clientInfo: { name: "pi-codex-usage", version: "1.0.0" },
-				capabilities: { experimentalApi: true },
-			},
-		});
+	const response = await fetch(CODEX_USAGE_URL, {
+		headers: {
+			Authorization: `Bearer ${token}`,
+			"ChatGPT-Account-Id": accountId,
+		},
 	});
+
+	let body: CodexUsageResponse & { detail?: string } = {};
+	try {
+		body = (await response.json()) as CodexUsageResponse & { detail?: string };
+	} catch {
+		// Use the HTTP status below when the response is not JSON.
+	}
+
+	if (!response.ok) throw new Error(body.detail ?? `OpenAI returned HTTP ${response.status}`);
+	return body;
 }
 
 async function fetchOpenRouterUsage(apiKey: string): Promise<CreditsResponse> {
@@ -145,21 +107,35 @@ function formatWindow(limit: RateLimitWindow): string {
 }
 
 function formatCodexUsage(usage: CodexUsageResponse): string {
-	const byId = usage.rateLimitsByLimitId;
-	const single = usage.rateLimits;
-
-	let limits: Array<[string, RateLimit]>;
-	if (byId && Object.keys(byId).length > 0) {
-		limits = Object.entries(byId);
-	} else if (single) {
-		limits = [[single.limitId ?? "codex", single]];
-	} else {
-		return "No Codex usage data returned.";
+	const limits: Array<[string, RateLimit]> = [];
+	if (usage.rate_limit) {
+		limits.push(["Codex", {
+			primary: usage.rate_limit.primary_window && {
+				usedPercent: usage.rate_limit.primary_window.used_percent,
+				resetsAt: usage.rate_limit.primary_window.reset_at,
+			},
+			secondary: usage.rate_limit.secondary_window && {
+				usedPercent: usage.rate_limit.secondary_window.used_percent,
+				resetsAt: usage.rate_limit.secondary_window.reset_at,
+			},
+		}]);
+	}
+	if (usage.code_review_rate_limit) {
+		limits.push(["Code review", {
+			primary: usage.code_review_rate_limit.primary_window && {
+				usedPercent: usage.code_review_rate_limit.primary_window.used_percent,
+				resetsAt: usage.code_review_rate_limit.primary_window.reset_at,
+			},
+			secondary: usage.code_review_rate_limit.secondary_window && {
+				usedPercent: usage.code_review_rate_limit.secondary_window.used_percent,
+				resetsAt: usage.code_review_rate_limit.secondary_window.reset_at,
+			},
+		}]);
 	}
 
 	const lines: string[] = [];
-	for (const [id, limit] of limits) {
-		const label = limits.length > 1 ? `${limit.limitName ?? id}: ` : "";
+	for (const [name, limit] of limits) {
+		const label = limits.length > 1 ? `${name}: ` : "";
 		if (limit.primary) lines.push(label + formatWindow(limit.primary));
 		if (limit.secondary) lines.push(label + formatWindow(limit.secondary));
 	}
@@ -191,7 +167,7 @@ function isSupportedProvider(provider: string | undefined): provider is typeof C
 
 async function loadUsage(provider: string, ctx: ExtensionContext): Promise<{ customType: string; content: string }> {
 	if (provider === CODEX_PROVIDER) {
-		return { customType: "codex-usage", content: formatCodexUsage(await fetchCodexUsage()) };
+		return { customType: "codex-usage", content: formatCodexUsage(await fetchCodexUsage(ctx)) };
 	}
 
 	const apiKey = await ctx.modelRegistry.getApiKeyForProvider(OPENROUTER_PROVIDER);

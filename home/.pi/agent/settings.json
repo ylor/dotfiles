@@ -1,20 +1,15 @@
 {
-  "lastChangelogVersion": "0.84.2",
+  "lastChangelogVersion": "0.84.3",
   "defaultModel": "gpt-5.6-sol",
   "defaultProvider": "openai-codex",
-  "defaultThinkingLevel": "high",
+  "defaultThinkingLevel": "low",
   "enableInstallTelemetry": false,
-  "hideThinkingBlock": true,
   "showCacheMissNotices": true,
-  "theme": "dark",
+  "theme": "ansi",
   "tuiMode": "fullscreen",
   "enabledModels": [
     "openai-codex/gpt-5.6-luna:medium",
-    "openai-codex/gpt-5.6-sol:low"
+    "openai-codex/gpt-5.6-sol:medium"
   ],
-  "packages": [
-    "npm:pi-mcp-adapter",
-    "npm:pi-web-search",
-    "npm:@juicesharp/rpiv-ask-user-question"
-  ]
+  "packages": ["npm:pi-web-search"]
 }

@@ -12,7 +12,7 @@ if set -q _flag_help
 end
 
 if set -q _flag_reset
-    set --erase DOTFILES_HOMEBREW DOTFILES_FULL DOTFILES_MODE DOTFILES_INTERACTIVE DOTFILES_PROFILE
+    set --erase DOTFILES_PROFILE
 end
 
 set -Ux DOTFILES (path resolve (status dirname))
@@ -36,21 +36,15 @@ set layers $DOTFILES $DOTFILES/$os $DOTFILES/$os/hosts/$host
 for layer in $layers
     test -d $layer; or continue
 
-    set setup $layer/setup
-    if test -d $setup
-        set scripts $setup/*.fish
-        if test -f $setup/setup.fish
-            set scripts $setup/setup.fish
-            for script in $setup/*.fish
-                test $script = $setup/setup.fish; or set --append scripts $script
-            end
-        end
+    set scripts $layer/setup/*.fish
+    if test -f $layer/setup/setup.fish
+        set scripts $layer/setup/setup.fish (string match -v $layer/setup/setup.fish $scripts)
+    end
 
-        for script in $scripts
-            if not source $script
-                dfs-failure "system / setup failed"
-                exit 1
-            end
+    for script in $scripts
+        if not source $script
+            dfs-failure "system / setup failed"
+            exit 1
         end
     end
 end
