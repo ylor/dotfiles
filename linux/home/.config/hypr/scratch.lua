@@ -25,6 +25,30 @@ function M.dismiss_active()
 	return true
 end
 
+function M.dismiss_on_outside_click()
+	local name = active_name()
+	if not name then
+		return
+	end
+
+	local cursor = hl.get_cursor_pos()
+	local workspace_name = "special:" .. name
+
+	for _, window in ipairs(hl.get_windows()) do
+		local workspace = window.workspace
+		local at = window.at
+		local size = window.size
+		local inside_x = cursor.x >= at.x and cursor.x < at.x + size.x
+		local inside_y = cursor.y >= at.y and cursor.y < at.y + size.y
+
+		if workspace and workspace.name == workspace_name and inside_x and inside_y then
+			return
+		end
+	end
+
+	M.dismiss_active()
+end
+
 function M.focus_workspace(workspace)
 	return function()
 		M.dismiss_active()

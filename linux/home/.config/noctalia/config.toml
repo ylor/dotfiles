@@ -163,6 +163,10 @@ polkit_agent = true
     session_placement = "floating"
     wallpaper_placement = "floating"
 
+    [shell.screenshot]
+    clipboard = true
+    save_to_file = true
+
     [[shell.session.actions]]
     action = "lock"
     countdown_seconds = 0.0

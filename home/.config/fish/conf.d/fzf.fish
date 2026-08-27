@@ -8,7 +8,7 @@ if command -q fzf # https://github.com/junegunn/fzf
 
     set -x FZF_DEFAULT_OPTS "--bind change:first \
         --border rounded \
-        --marker '›>' \
+        --marker '›' \
         --no-color \
         --pointer '◆' \
         --popup \

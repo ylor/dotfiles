@@ -344,6 +344,7 @@ hl.bind(
 	),
 	{ description = "Toggle agent terminal" }
 )
+hl.bind("mouse:272", scratch_terminal.dismiss_on_outside_click, { non_consuming = true })
 
 hl.bind(
 	mod.main .. " + SHIFT + S",

@@ -136,7 +136,7 @@ function formatCodexUsage(usage: CodexUsageResponse): string {
 	const lines: string[] = [];
 	for (const [name, limit] of limits) {
 		const label = limits.length > 1 ? `${name}: ` : "";
-		if (limit.primary) lines.push(label + formatWindow(limit.primary));
+		if ((limit.primary?.usedPercent ?? 0) > 50) lines.push(label + formatWindow(limit.primary));
 		if (limit.secondary) lines.push(label + formatWindow(limit.secondary));
 	}
 
