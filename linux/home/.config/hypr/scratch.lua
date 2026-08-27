@@ -1,18 +1,44 @@
 local M = {}
-local classes = {}
+local scratch_classes = {}
 
-local function active_name()
-	local workspace = hl.get_active_special_workspace()
+local function contains(cursor, x, y, width, height)
+	local inside_x = cursor.x >= x and cursor.x < x + width
+	local inside_y = cursor.y >= y and cursor.y < y + height
+	return inside_x and inside_y
+end
+
+local function is_noctalia_ui_layer(layer)
+	local namespace = layer.namespace
+	return namespace ~= "noctalia-wallpaper" and namespace:match("^noctalia%-")
+end
+
+local function keeps_scratch_open(window)
+	if not window then
+		return false
+	end
+
+	local class = window.class and window.class:lower()
+	if class == "dev.noctalia.noctalia" then
+		return true
+	end
+
+	local title = window.title and window.title:lower()
+	return window.floating and class == "1password" and title == "1password"
+end
+
+local function scratch_name(workspace)
 	if not workspace then
 		return nil
 	end
 
 	local name = workspace.name:match("^special:(.+)$")
-	if not classes[name] then
-		return nil
+	if scratch_classes[name] then
+		return name
 	end
+end
 
-	return name
+local function active_name()
+	return scratch_name(hl.get_active_special_workspace())
 end
 
 function M.dismiss_active()
@@ -34,14 +60,17 @@ function M.dismiss_on_outside_click()
 	local cursor = hl.get_cursor_pos()
 	local workspace_name = "special:" .. name
 
+	for _, layer in ipairs(hl.get_layers()) do
+		local inside = contains(cursor, layer.x, layer.y, layer.w, layer.h)
+		if is_noctalia_ui_layer(layer) and inside then
+			return
+		end
+	end
+
 	for _, window in ipairs(hl.get_windows()) do
 		local workspace = window.workspace
-		local at = window.at
-		local size = window.size
-		local inside_x = cursor.x >= at.x and cursor.x < at.x + size.x
-		local inside_y = cursor.y >= at.y and cursor.y < at.y + size.y
-
-		if workspace and workspace.name == workspace_name and inside_x and inside_y then
+		local inside = contains(cursor, window.at.x, window.at.y, window.size.x, window.size.y)
+		if workspace and workspace.name == workspace_name and inside then
 			return
 		end
 	end
@@ -58,8 +87,7 @@ end
 
 function M.action(name, terminal, program)
 	local class = "com.mitchellh.ghostty." .. name
-	classes[name] = class
-	classes[class] = true
+	scratch_classes[name] = class
 
 	local command = terminal .. " --gtk-single-instance=false --class=" .. class
 	if program then
@@ -96,8 +124,7 @@ hl.on("window.active", function(window)
 		return
 	end
 
-	local window_class = window and window.class
-	if window_class and window_class:lower() == "1password" then
+	if keeps_scratch_open(window) then
 		return
 	end
 
@@ -110,12 +137,12 @@ hl.on("window.active", function(window)
 end)
 
 hl.on("window.open", function(window)
-	local workspace = window and window.workspace
-	if not workspace or not classes[workspace.name:match("^special:(.+)$")] then
+	if keeps_scratch_open(window) then
 		return
 	end
 
-	if classes[window.class] then
+	local name = scratch_name(window and window.workspace)
+	if not name or window.class == scratch_classes[name] then
 		return
 	end
 
