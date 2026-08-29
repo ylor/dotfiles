@@ -1,4 +1,4 @@
-# Phosphor P3
+# Phosphor
 
 palette = 0=#0c0a09
 palette = 1=#dc2626
@@ -8,7 +8,7 @@ palette = 4=#d97706
 palette = 5=#d97706
 palette = 6=#d97706
 palette = 7=#d97706
-palette = 8=#2a212c
+palette = 8=#
 palette = 9=#ef4444
 palette = 10=#10b981
 palette = 11=#f59e0b

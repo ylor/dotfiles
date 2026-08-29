@@ -24,7 +24,7 @@ npc() {
 
 clear
 curl -fsSL banner.roly.sh
-npc "AUTHORIZATION REQUIRED. ENTER ADMINISTRATOR PASSWORD. CTRL-C ABORTS."
+npc "AUTHORIZATION REQUIRED. CTRL-C ABORTS."
 sudo true
 while true; do sudo --non-interactive true; sleep 60; kill -0 "$$" || exit; done 2>/dev/null &
 
@@ -37,7 +37,12 @@ if [ "$(uname)" = "Darwin" ]; then
 fi
 
 if [ "$(uname)" = "Linux" ] && exist pacman; then
-   	sudo pacman -Syu --noconfirm --needed age fd fish git gum # Arch
+	if exist omarchy-update; then
+		omarchy-update
+		sudo pacman -S --noconfirm --needed age fd fish git gum # Omarchy
+	else
+		sudo pacman -Syu --noconfirm --needed age fd fish git gum # Arch
+	fi
 fi
 
 if missing age fd fish git gum; then

@@ -9,7 +9,7 @@ confirm-close-surface = false
 window-save-state = always
 
 # form
-theme = phosphor-p3
+theme = phosphor
 alpha-blending = linear-corrected
 background = #000000
 #background-blur = macos-glass-regular
