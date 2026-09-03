@@ -24,7 +24,7 @@ npc() {
 
 clear
 curl -fsSL banner.roly.sh
-npc "AUTHORIZATION REQUIRED. CTRL-C ABORTS."
+npc "PRIVILEGED ACCESS REQUIRED / CTRL-C TO ABORT"
 sudo true
 while true; do sudo --non-interactive true; sleep 60; kill -0 "$$" || exit; done 2>/dev/null &
 
@@ -47,9 +47,8 @@ fi
 
 if missing age fd fish git gum; then
     echo
-    echo "░ $(tput setaf 1)DEPENDENCY FAULT$(tput sgr0) / REQUIRED SOFTWARE ABSENT" >&2
-    echo "RECOVERY COMMAND / fish $HOME/.dotfiles/main.fish"
-    echo "$(tput sitm)INSTALLATION HALTED / YOU'RE GONNA CARRY THAT WEIGHT.$(tput ritm)"
+    echo "░ $(tput setaf 1)INSTALLATION FAILED$(tput sgr0) / REQUIRED COMMANDS UNAVAILABLE / age fd fish git gum" >&2
+    echo "RECOVERY / INSTALL THE MISSING COMMANDS, THEN RUN / fish $HOME/.dotfiles/main.fish"
     exit 67
 fi
 

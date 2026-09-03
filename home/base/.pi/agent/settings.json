@@ -1,0 +1,10 @@
+{
+  "lastChangelogVersion": "0.84.3",
+  "defaultModel": "gpt-5.6-sol",
+  "defaultProvider": "openai-codex",
+  "defaultThinkingLevel": "low",
+  "showCacheMissNotices": true,
+  "theme": "ansi",
+  "tuiMode": "fullscreen",
+  "packages": ["npm:pi-web-search"]
+}

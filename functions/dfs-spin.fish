@@ -1,5 +1,0 @@
-function dfs-spin
-    argparse 't/title=' -- $argv; or return
-    set title $_flag_title
-    gum spin --show-output --title=$title --spinner.foreground="fff" -- $argv
-end

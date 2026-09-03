@@ -1,0 +1,39 @@
+# Configure Dock
+if defaults read com.apple.Dock | grep -q "com.apple.apps.launcher"
+    command --query dockutil; or brew install --quiet dockutil
+    dockutil --remove all --add /Applications --add "$HOME/Downloads" >/dev/null
+end
+
+# Set hostname
+set hostname (scutil --get ComputerName)
+if string match -q "*’s*" $hostname; and gum confirm "SYSTEM HOSTNAME / REVISE DEFAULT NAME? CURRENT / $hostname"
+    set gum_hostname (gum input --placeholder $hostname)
+    if test -n "$gum_hostname"
+        sudo scutil --set ComputerName "$gum_hostname"
+        sudo scutil --set HostName "$gum_hostname"
+        sudo scutil --set LocalHostName "$gum_hostname"
+    end
+end
+
+# Enable FileVault
+if not fdesetup isactive >/dev/null 2>&1; and gum confirm "DISK ENCRYPTION / ENABLE FILEVAULT?"
+    sudo fdesetup enable -user "$USER"
+end
+
+# Enable Firewall
+if /usr/libexec/ApplicationFirewall/socketfilterfw --getglobalstate | grep -q disabled; and gum confirm "NETWORK SECURITY / ENABLE APPLICATION FIREWALL?"
+    sudo /usr/libexec/ApplicationFirewall/socketfilterfw --setglobalstate on
+end
+
+# Enable Screen Sharing
+# if not launchctl print system/com.apple.screensharing >/dev/null 2>&1; and gum confirm "Enable Screen Sharing?"
+#     sudo launchctl enable system/com.apple.screensharing
+#     sudo launchctl load -w /System/Library/LaunchDaemons/com.apple.screensharing.plist
+# end
+
+# Configure TouchID for sudo
+# if test ! -e /etc/pam.d/sudo_local && gum confirm "Use TouchID for sudo?"
+#     sed -e 's/^#auth/auth/' /etc/pam.d/sudo_local.template | sudo tee /etc/pam.d/sudo_local >/dev/null
+# end
+
+dfs-success "macOS / configured"

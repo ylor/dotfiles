@@ -1,16 +1,7 @@
 # dotfiles
 
-An (mostly) unattended system to idempotently configure Arch Linux or macOS.
+Idempotent and unattended computing.
 
 ## Usage
 
-`sh -c $(curl -fsSL boot.roly.sh)`
-
-## Why?
-
-- good question
-- fish
-
-## Acknowledgements
-- Linux
-- Homebrew
+`sh -c "$(curl -fsSL boot.roly.sh)"`

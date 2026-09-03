@@ -1,9 +1,0 @@
-model = "gpt-5.6-sol"
-model_reasoning_effort = "medium"
-approvals_reviewer = "auto_review"
-
-[tui]
-terminal_title = ["activity", "project-name", "app-name"]
-
-[projects."/home/roly/.dotfiles"]
-trust_level = "trusted"

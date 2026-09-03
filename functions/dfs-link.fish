@@ -5,41 +5,43 @@ function dfs-link
         return $status
     end
 
-    set os (uname -s | string lower)
-    set host (hostname -s | string lower)
-    set homes $DOTFILES/home $DOTFILES/$os/home $DOTFILES/$os/hosts/$host/home
+    set os (string lower (uname -s))
+    set homes $DOTFILES/home/base $DOTFILES/home/$os
+    if test "$os" = linux; and test -r /etc/os-release
+        set distro (string match --regex --groups-only '^ID="?([^" ]+)"?$' </etc/os-release)
+        test -n "$distro"; and set --append homes $DOTFILES/home/$os/$distro
+    end
+
     set links
 
     for home in $homes
         test -d $home; or continue
 
-        for file in (fd . $home --hidden --absolute-path --type file --type symlink)
-            set link $HOME/(string replace "$home/" "" $file)
+        for file in (fd --hidden --absolute-path --type file --type symlink . $home)
+            set link $HOME/(string replace -- "$home/" '' $file)
             mkdir -p (path dirname $link)
             ln -sf $file $link
             set --append links $link
-            # dfs-success $link
         end
     end
 
-    set manifest $DOTFILES/.manifest
-    set old (cat $manifest 2>/dev/null)
+    set manifest $DOTFILES/state/manifest
+    mkdir -p (path dirname $manifest)
     set removed
 
-    for link in $old
+    for link in (cat $manifest 2>/dev/null)
         contains -- $link $links; and continue
         test -L $link; or continue
         string match -q "$DOTFILES/*" (readlink $link); or continue
         rm $link
         set --append removed $link
-        # echo "✗ $link"
     end
 
     string join \n $links | sort -u >$manifest
     if not set -q _flag_quiet
         if test (count $removed) -gt 0
-            printf '▓ DOTFILES / REMOVED / %s\n' (count $removed)
+            printf '▓ MANAGED FILES / OBSOLETE LINKS REMOVED / %s\n' (count $removed)
         end
-        dfs-success "dotfiles / linked ($(count $links))"
+        dfs-success "managed files / links established / "(count $links)
     end
 end
