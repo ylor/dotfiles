@@ -4,7 +4,7 @@ set -gx HOMEBREW_NO_AUTO_UPDATE 1
 set -gx HOMEBREW_NO_ENV_HINTS 1
 
 for path in /opt/homebrew /home/linuxbrew/.linuxbrew
-    test -x $path/bin/brew; and $path/bin/brew shellenv | source; and break
+    test -x $path/bin/brew; and env SHELL=(status fish-path) $path/bin/brew shellenv | source; and break
 end
 
 if command -q brew; and status --is-interactive

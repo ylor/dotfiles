@@ -58,5 +58,5 @@ function dfs-apply
     end
 
     printf '█ %sCONFIGURATION COMPLETE%s\n\n' (set_color --bold) (set_color normal)
-    exec fish --command 'function fish_greeting; end'
+    exec fish
 end

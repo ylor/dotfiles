@@ -5,6 +5,11 @@ minimum_release_age = "0s"
 compile = true
 
 [tools]
+aube = "latest"
 codex = "latest"
 node = "latest"
 pi = "latest"
+
+[bootstrap.packages]
+"brew:git" = "latest"
+"brew:asdf" = "latest"

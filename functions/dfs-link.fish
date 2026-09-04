@@ -25,7 +25,9 @@ function dfs-link
         end
     end
 
-    set manifest $DOTFILES/state/manifest
+    set state_home $XDG_STATE_HOME
+    test -n "$state_home"; or set state_home $HOME/.local/state
+    set manifest $state_home/dotfiles/manifest
     mkdir -p (path dirname $manifest)
     set removed
 
