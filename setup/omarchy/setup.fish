@@ -1,5 +1,5 @@
-command -q 1password || omarchy install service 1password
-command -q ghostty || omarchy default terminal --install ghostty
+command -q 1password; or omarchy install service 1password; or return $status
+command -q ghostty; or omarchy default terminal --install ghostty; or return $status
 
 omarchy pkg drop foot && rm -f ~/.local/share/applications/foot.desktop
 omarchy pkg drop obsidian
@@ -12,3 +12,4 @@ omarchy pkg drop xournalpp
 
 omarchy webapp remove all >/dev/null
 
+dfs-success "Omarchy configured."

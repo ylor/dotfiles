@@ -1,28 +1,29 @@
 # Configure Dock
 if defaults read com.apple.Dock | grep -q "com.apple.apps.launcher"
-    command --query dockutil; or brew install --quiet dockutil
+    command --query dockutil; or brew install --quiet dockutil; or return $status
     dockutil --remove all --add /Applications --add "$HOME/Downloads" >/dev/null
 end
 
 # Set hostname
-set hostname (scutil --get ComputerName)
-if string match -q "*’s*" $hostname; and gum confirm "SYSTEM HOSTNAME / REVISE DEFAULT NAME? CURRENT / $hostname"
-    set gum_hostname (gum input --placeholder $hostname)
+set hostname (scutil --get ComputerName); or return $status
+if string match -q "*’s*" $hostname; and gum confirm "Revise the default hostname? Current: $hostname"
+    set gum_hostname (gum input --prompt "New hostname: " --placeholder $hostname); or return $status
     if test -n "$gum_hostname"
         sudo scutil --set ComputerName "$gum_hostname"
-        sudo scutil --set HostName "$gum_hostname"
-        sudo scutil --set LocalHostName "$gum_hostname"
+        and sudo scutil --set HostName "$gum_hostname"
+        and sudo scutil --set LocalHostName "$gum_hostname"
+        or return $status
     end
 end
 
 # Enable FileVault
-if not fdesetup isactive >/dev/null 2>&1; and gum confirm "DISK ENCRYPTION / ENABLE FILEVAULT?"
-    sudo fdesetup enable -user "$USER"
+if not fdesetup isactive >/dev/null 2>&1; and gum confirm "Enable FileVault disk encryption?"
+    sudo fdesetup enable -user "$USER"; or return $status
 end
 
 # Enable Firewall
-if /usr/libexec/ApplicationFirewall/socketfilterfw --getglobalstate | grep -q disabled; and gum confirm "NETWORK SECURITY / ENABLE APPLICATION FIREWALL?"
-    sudo /usr/libexec/ApplicationFirewall/socketfilterfw --setglobalstate on
+if /usr/libexec/ApplicationFirewall/socketfilterfw --getglobalstate | grep -q disabled; and gum confirm "Enable the application firewall?"
+    sudo /usr/libexec/ApplicationFirewall/socketfilterfw --setglobalstate on; or return $status
 end
 
 # Enable Screen Sharing
@@ -36,4 +37,4 @@ end
 #     sed -e 's/^#auth/auth/' /etc/pam.d/sudo_local.template | sudo tee /etc/pam.d/sudo_local >/dev/null
 # end
 
-dfs-success "macOS / configured"
+dfs-success "macOS configured."

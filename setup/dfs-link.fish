@@ -5,16 +5,10 @@ function dfs-link
         return $status
     end
 
-    set os (string lower (uname -s))
-    set homes $DOTFILES/home/base $DOTFILES/home/$os
-    if test "$os" = linux; and test -r /etc/os-release
-        set distro (string match --regex --groups-only '^ID="?([^" ]+)"?$' </etc/os-release)
-        test -n "$distro"; and set --append homes $DOTFILES/home/$os/$distro
-    end
-
     set links
 
-    for home in $homes
+    for name in (dfs-layers)
+        set home $DOTFILES/home/$name
         test -d $home; or continue
 
         for file in (fd --hidden --absolute-path --type file --type symlink . $home)
@@ -42,8 +36,8 @@ function dfs-link
     string join \n $links | sort -u >$manifest
     if not set -q _flag_quiet
         if test (count $removed) -gt 0
-            printf '▓ MANAGED FILES / OBSOLETE LINKS REMOVED / %s\n' (count $removed)
+            dfs-success (count $removed)" obsolete managed file links removed."
         end
-        dfs-success "managed files / links established / "(count $links)
+        dfs-success (count $links)" managed file links established."
     end
 end

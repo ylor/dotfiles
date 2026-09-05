@@ -7,7 +7,7 @@ function dfs-fonts --description "Install the managed typefaces"
         case Linux
             set destination_directory $HOME/.local/share/fonts
         case '*'
-            dfs-failure "fonts / unsupported platform / "(uname -s)
+            dfs-failure "Font installation is not available on "(uname -s)"."
             return 1
     end
 
@@ -28,5 +28,5 @@ function dfs-fonts --description "Install the managed typefaces"
         fc-cache -f $destination_directory; or return 1
     end
 
-    dfs-success "fonts / installed"
+    dfs-success "Fonts installed."
 end

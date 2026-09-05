@@ -24,7 +24,7 @@ npc() {
 
 clear
 curl -fsSL banner.roly.sh
-npc "PRIVILEGED ACCESS REQUIRED / CTRL-C TO ABORT"
+npc "Privileged access is required. Press Ctrl-C to abort."
 sudo true
 while true; do sudo --non-interactive true; sleep 60; kill -0 "$$" || exit; done 2>/dev/null &
 
@@ -46,9 +46,11 @@ if [ "$(uname)" = "Linux" ] && exist pacman; then
 fi
 
 if missing age fd fish git gum; then
-    echo
-    echo "░ $(tput setaf 1)INSTALLATION FAILED$(tput sgr0) / REQUIRED COMMANDS UNAVAILABLE / age fd fish git gum" >&2
-    echo "RECOVERY / INSTALL THE MISSING COMMANDS, THEN RUN / fish $HOME/.dotfiles/main.fish"
+    printf '\n%sBootstrap Error%s\n' "$(tput setaf 1)" "$(tput sgr0)" >&2
+    printf '%s\n' \
+        '~~~ Required Commands Unavailable ~~~' \
+        'ERROR MESSAGE: Install age, fd, fish, git, and gum.' \
+        "RECOVERY: Run fish $HOME/.dotfiles/main.fish after installation." >&2
     exit 67
 fi
 

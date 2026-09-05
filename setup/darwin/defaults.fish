@@ -132,4 +132,4 @@ defaults write org.hammerspoon.Hammerspoon MJShowMenuIconKey -int 0
 defaults write com.apple.loginwindow TALLogoutSavesState -bool false
 
 # killall Finder Dock
-dfs-success "system preferences / applied"
+dfs-success "System preferences applied."
