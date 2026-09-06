@@ -1,17 +1,17 @@
 -- Change the default Omarchy look'n'feel.
 
 -- https://wiki.hypr.land/Configuring/Basics/Variables/#general
--- hl.config({
---   general = {
---     -- No gaps between windows or borders.
---     gaps_in = 0,
---     gaps_out = 0,
---     border_size = 0,
---
---     -- Change to niri-like side-scrolling layout.
---     layout = "scrolling",
---   },
--- })
+hl.config({
+  general = {
+    -- No gaps between windows or borders.
+    gaps_in = 2,
+    gaps_out = 2,
+    -- border_size = 1,
+
+    -- Change to niri-like side-scrolling layout.
+    -- layout = "scrolling",
+  },
+})
 
 -- https://wiki.hypr.land/Configuring/Basics/Variables/#decoration
 hl.config({
@@ -49,3 +49,27 @@ hl.config({
 --     column_width = 0.97,
 --   },
 -- })
+
+-- https://wiki.hypr.land/configuring/core/advanced-configuration/events/
+-- Use a solid bar while the qconsole is open.
+local restoreBarTransparency = false
+
+hl.on("workspace.special_active", function(workspace)
+  local qconsoleOpen = workspace and workspace.name == "special:scratchpad"
+
+  if qconsoleOpen then
+    local pipe = assert(io.popen("omarchy shell shell listShellConfig | jq -r '.bar.transparent'"))
+    restoreBarTransparency = pipe:read("*l") == "true"
+    pipe:close()
+
+    if restoreBarTransparency then
+      hl.exec_cmd("omarchy bar transparent false")
+    end
+    return
+  end
+
+  if restoreBarTransparency then
+    hl.exec_cmd("omarchy bar transparent true")
+    restoreBarTransparency = false
+  end
+end)

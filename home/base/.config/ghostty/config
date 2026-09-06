@@ -6,6 +6,7 @@ config-file = ?linux
 config-file = ?local
 
 # function
+command = shell:fish || /opt/homebrew/bin/fish
 font-size = 10
 clipboard-read = "allow"
 clipboard-paste-protection = false

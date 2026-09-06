@@ -1,19 +1,19 @@
 mode = "dark"
 
 accent = "#d97706" # amber-600
-selection = "#78350f" # amber-950
+selection = "#451a03" # amber-950
 selection_background = "#451a03" # amber-950
 selection_foreground = "#d97706" # amber-600
-muted = "#44403c" # stone-700
+muted = "#473c39" # taupe-700
 
-background = "#0c0a09" # stone-950
-dark_background = "#0c0a09" # stone-950
-darker_background = "#0c0a09" # stone-950
-lighter_background = "#1c1917" # stone-900
+background = "#0c0a09" # taupe-950
+dark_background = "#0c0a09" # taupe-950
+darker_background = "#0c0a09" # taupe-950
+lighter_background = "#1d1816" # taupe-900
 
 foreground = "#d97706" # amber-600
 dark_foreground = "#b45309" # amber-700
-light_foreground = "#f59e0b" # amber-500
+light_foreground = "#fb923c" # orange-400
 bright_foreground = "#f59e0b" # amber-500
 
 red = "#dc2626" # red-600

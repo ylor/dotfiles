@@ -2,13 +2,8 @@
 # Usage: sh -c "$(curl -fsSL boot.roly.sh)"
 set -e
 
-exist() {
+exists() {
     for cmd; do command -v "$cmd" >/dev/null || return 1; done
-}
-
-missing() {
-    for cmd; do command -v "$cmd" >/dev/null || return 0; done
-    return 1
 }
 
 npc() {
@@ -23,34 +18,52 @@ npc() {
 }
 
 clear
-curl -fsSL banner.roly.sh
+curl -fsL https://banner.roly.sh
 npc "Privileged access is required. Press Ctrl-C to abort."
+
+# Refresh sudo credentials until exit to avoid repeated prompts.
 sudo true
-while true; do sudo --non-interactive true; sleep 60; kill -0 "$$" || exit; done 2>/dev/null &
+while true; do
+    sudo --non-interactive true
+    sleep 60
+done 2>/dev/null &
+sudo_keepalive=$!
+trap 'kill "$sudo_keepalive" 2>/dev/null || true' EXIT
 
-if [ "$(uname)" = "Darwin" ]; then
-	if missing /opt/homebrew/bin/brew; then
-		NONINTERACTIVE=1 bash -c "$(curl -fsSL https://raw.githubusercontent.com/Homebrew/install/HEAD/install.sh)"
-	fi
-	eval "$(/opt/homebrew/bin/brew shellenv)"
-	brew install --yes age fd fish git gum
+if ! exists mise; then
+  curl -fsL https://mise.run | MISE_QUIET=1 sh
 fi
 
-if [ "$(uname)" = "Linux" ] && exist pacman; then
-	if exist omarchy-update; then
-		omarchy-update
-		sudo pacman -S --noconfirm --needed age fd fish git gum # Omarchy
-	else
-		sudo pacman -Syu --noconfirm --needed age fd fish git gum # Arch
-	fi
-fi
+PACKAGES="age fd fish git gum"
+case "$(uname)" in
+    Darwin)
+        if ! exists /opt/homebrew/bin/brew; then
+            NONINTERACTIVE=1 bash -c "$(curl -fsSL https://raw.githubusercontent.com/Homebrew/install/HEAD/install.sh)"
+        fi
+        eval "$(/opt/homebrew/bin/brew shellenv)"
+        brew install --yes $PACKAGES
+        ;;
+    Linux)
+        . /etc/os-release
+        case "$ID" in
+            arch|cachyos)
+                sudo pacman -Syu --noconfirm --needed $PACKAGES
+                ;;
+            omarchy)
+                omarchy update
+                omarchy pkg add $PACKAGES
+                ;;
+        esac
+        ;;
+esac
 
-if missing age fd fish git gum; then
-    printf '\n%sBootstrap Error%s\n' "$(tput setaf 1)" "$(tput sgr0)" >&2
-    printf '%s\n' \
-        '~~~ Required Commands Unavailable ~~~' \
-        'ERROR MESSAGE: Install age, fd, fish, git, and gum.' \
-        "RECOVERY: Run fish $HOME/.dotfiles/main.fish after installation." >&2
+missing=
+for cmd in $PACKAGES; do
+    exists "$cmd" || missing="$missing $cmd"
+done
+
+if [ -n "$missing" ]; then
+    printf '%s\n' "Missing required commands:$missing. Install them and rerun this script." >&2
     exit 67
 fi
 

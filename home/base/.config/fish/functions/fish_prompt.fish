@@ -22,7 +22,7 @@ function fish_prompt
 
     if contains -- --final-rendering $argv
         if test $command_duration -ge $prompt_duration_threshold
-            set_color brblack
+            set_color normal
             printf '%ss ' (math --scale=1 $command_duration / 1000)
         end
 
@@ -40,11 +40,10 @@ function fish_prompt
         end
     end
 
-    if set --query SSH_CONNECTION
-        set -l machine (string split --max 1 . $hostname)[1]
-        set_color white
-        printf '❬%s@%s❭ ' $USER $machine
-    end
+    # if set --query SSH_CONNECTION
+    set_color normal
+    printf '❬%s@%s❭ ' $USER (prompt_hostname)
+    # end
     set_color --bold green
     printf '%s' (path basename (prompt_pwd))
     set_color normal
@@ -52,7 +51,7 @@ function fish_prompt
     fish_git_prompt ' %s'
 
     if test $command_duration -ge $prompt_duration_threshold
-        set_color brblack
+        set_color normal
         printf ' %ss' (math --scale=1 $command_duration / 1000)
     end
 

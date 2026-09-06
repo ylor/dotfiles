@@ -8,7 +8,7 @@ dofile((os.getenv("OMARCHY_PATH") or "/usr/share/omarchy") .. "/default/hypr/boo
 --
 -- Or disable only bindings for Omarchy's preinstalled apps/web apps while
 -- keeping core window-manager bindings:
--- omarchy_preinstalled_bindings = false
+omarchy_preinstalled_bindings = false
 
 -- Load Omarchy defaults.
 require("default.hypr.omarchy")
