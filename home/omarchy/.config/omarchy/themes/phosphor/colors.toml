@@ -1,33 +1,33 @@
 mode = "dark"
 
-accent = "#d97706"
-selection = "#d97706"
-selection_background = "#d97706"
-selection_foreground = "#0c0a09"
-muted = "#4b2902"
+accent = "#d97706" # amber-600
+selection = "#78350f" # amber-950
+selection_background = "#451a03" # amber-950
+selection_foreground = "#d97706" # amber-600
+muted = "#44403c" # stone-700
 
-background = "#0c0a09"
-dark_background = "#090909"
-darker_background = "#070605"
-lighter_background = "#130b01"
+background = "#0c0a09" # stone-950
+dark_background = "#0c0a09" # stone-950
+darker_background = "#0c0a09" # stone-950
+lighter_background = "#1c1917" # stone-900
 
-foreground = "#d97706"
-dark_foreground = "#b45309"
-light_foreground = "#f59e0b"
-bright_foreground = "#f59e0b"
+foreground = "#d97706" # amber-600
+dark_foreground = "#b45309" # amber-700
+light_foreground = "#f59e0b" # amber-500
+bright_foreground = "#f59e0b" # amber-500
 
-red = "#dc2626"
-yellow = "#d97706"
-orange = "#b45309"
-green = "#d97706"
-cyan = "#d97706"
-blue = "#d97706"
-magenta = "#d97706"
-brown = "#451a03"
+red = "#dc2626" # red-600
+yellow = "#d97706" # amber-600
+orange = "#b45309" # amber-700
+green = "#d97706" # amber-600
+cyan = "#d97706" # amber-600
+blue = "#d97706" # amber-600
+magenta = "#d97706" # amber-600
+brown = "#451a03" # amber-950
 
-bright_red = "#ef4444"
-bright_yellow = "#f59e0b"
-bright_green = "#10b981"
-bright_cyan = "#f59e0b"
-bright_blue = "#f59e0b"
-bright_magenta = "#f59e0b"
+bright_red = "#ef4444" # red-500
+bright_yellow = "#f59e0b" # amber-500
+bright_green = "#10b981" # emerald-500
+bright_cyan = "#f59e0b" # amber-500
+bright_blue = "#f59e0b" # amber-500
+bright_magenta = "#f59e0b" # amber-500

@@ -81,13 +81,18 @@ if grep -iq "B650 AORUS ELITE AX" /sys/devices/virtual/dmi/id/board_name
 end
 
 if command -vq 1password
-    set allowed_browsers /etc/1password/custom_allowed_browsers
-    sudo mkdir -p /etc/1password
-    sudo touch $allowed_browsers
+    set allowed_browsers_dir /etc/1password
+    set allowed_browsers $allowed_browsers_dir/custom_allowed_browsers
+
+    test -d $allowed_browsers_dir; or sudo mkdir -p $allowed_browsers_dir; or return $status
+    test -f $allowed_browsers; or sudo touch $allowed_browsers; or return $status
+
     for browser in helium helium-browser
-        sudo grep --fixed-strings --line-regexp --quiet $browser $allowed_browsers; or printf '%s\n' $browser | sudo tee --append $allowed_browsers >/dev/null; or return $status
+        grep --fixed-strings --line-regexp --quiet $browser $allowed_browsers; and continue
+        printf '%s\n' $browser | sudo tee --append $allowed_browsers >/dev/null; or return $status
     end
-    sudo chmod 644 $allowed_browsers; or return $status
+
+    test (stat --format=%a $allowed_browsers) = 644; or sudo chmod 644 $allowed_browsers; or return $status
 end
 
 # TODO

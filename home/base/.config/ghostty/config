@@ -1,6 +1,12 @@
 # https://ghostty.org/docs/config
 
+config-file = ?"~/.local/state/omarchy/current/theme/ghostty.conf"
+config-file = ?mac
+config-file = ?linux
+config-file = ?local
+
 # function
+font-size = 10
 clipboard-read = "allow"
 clipboard-paste-protection = false
 copy-on-select = true
@@ -9,21 +15,14 @@ confirm-close-surface = false
 window-save-state = always
 
 # form
+window-theme = ghostty
 theme = phosphor
 alpha-blending = linear-corrected
-background = #000000
+# background = #000000
 #background-blur = macos-glass-regular
 background-blur = true
-background-opacity = 0.90
-# font-family = "SF Mono"
-# font-family = "Jetbrains Mono"
-# font-family = "Berkeley Mono Retina"
+# background-opacity = 0.90
 font-family = "Berkeley Mono Variable"
-# font-style = "SemiCondensed"
-# font-style-bold = "Bold SemiCondensed"
-# font-style-italic = "SemiCondensed Oblique"
-# font-style-bold-italic = "Bold SemiCondensed Oblique"
-# font-size = 16
 macos-titlebar-style = tabs
 palette-generate=true
 window-padding-balance = true
@@ -35,14 +34,16 @@ unfocused-split-opacity = 0.9
 # shaders
 # custom-shader = shaders/tft.glsl
 custom-shader = shaders/bloom.glsl
+confirm-close-surface=false
+resize-overlay = never
+gtk-toolbar-style = flat
 
 # keybinds
+keybind = ctrl+t=new_tab
+keybind = ctrl+w=close_surface
 keybind = ctrl+k=clear_screen
 keybind = ctrl+-=new_split:down
 keybind = ctrl+==new_split:right
 keybind = ctrl+\=new_split:right
 
-# modules
-config-file = ?mac
-config-file = ?linux
-config-file = ?local
+

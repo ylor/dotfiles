@@ -1,5 +1,4 @@
 if status is-interactive
-	echo foo
     fish_add_path --prepend --move "$HOME/.local/bin"
     fish_vi_key_bindings
 

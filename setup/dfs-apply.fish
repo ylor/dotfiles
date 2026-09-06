@@ -1,15 +1,9 @@
 function dfs-apply
-    set root $argv[1]
-    set --erase argv[1]
-
     argparse h/help -- $argv; or return 2
     if set -q _flag_help
-        dfs help
+        dfs-help
         return
     end
-
-    set -Ux DOTFILES $root
-    set --prepend fish_function_path "$DOTFILES/home/base/.config/fish/functions" "$DOTFILES/setup"
 
     test -f $DOTFILES/.env; and source $DOTFILES/.env
     clear && command cat $DOTFILES/art.txt
@@ -53,5 +47,5 @@ function dfs-apply
         return $failure_status
     end
 
-    printf '\n%sConfiguration Complete%s\nThe system is ready.\n\n' (set_color --bold) (set_color normal)
+    printf '█ %sSEE YOU SPACE COWBOY%s\n\n' (set_color --bold --italics) (set_color normal)
 end
