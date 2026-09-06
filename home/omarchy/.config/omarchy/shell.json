@@ -10,7 +10,7 @@
           "format": "dddd h:mm AP",
           "formatAlt": "d MMMM 'W'ww yyyy",
           "id": "omarchy.clock",
-          "verticalFormat": "HH\n\u2014\nmm"
+          "verticalFormat": "HH\n—\nmm"
         },
         {
           "id": "omarchy.keyboard-layout"
@@ -28,6 +28,9 @@
         },
         {
           "id": "omarchy.workspaces"
+        },
+        {
+          "id": "omarchy.active-window"
         }
       ],
       "right": [
@@ -55,7 +58,7 @@
       ]
     },
     "position": "top",
-    "transparent": false,
+    "transparent": true,
     "id": "omarchy.bar"
   },
   "idle": {

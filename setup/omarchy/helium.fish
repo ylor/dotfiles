@@ -1,7 +1,7 @@
 if not command -q helium-browser
     omarchy pkg aur add helium-browser-bin
-    # xdg-settings set default-web-browser helium.desktop
-    # xdg-mime default helium.desktop x-scheme-handler/http x-scheme-handler/https text/html
+    omarchy pkg drop chromium
+    helium-browser
 end
 
 if not grep -Fxq helium-browser /etc/1password/custom_allowed_browsers 2>/dev/null

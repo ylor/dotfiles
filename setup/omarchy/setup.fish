@@ -1,5 +1,8 @@
 command -q 1password; or omarchy install service 1password
 command -q ghostty; or omarchy default terminal --install ghostty
+command -q lact; or omarchy pkg add lact
+systemctl is-enabled --quiet lactd; or sudo systemctl enable lactd
+systemctl is-active --quiet lactd; or sudo systemctl start lactd
 
 # omarchy pkg drop foot && rm -f ~/.local/share/applications/foot.desktop
 omarchy pkg drop kdenlive
