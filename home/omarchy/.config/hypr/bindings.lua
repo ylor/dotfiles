@@ -26,6 +26,7 @@ o.bind("ALT + mouse_up", "Brightness up", "omarchy-brightness-display +5%", { lo
 o.bind("ALT + mouse_down", "Brightness down", "omarchy-brightness-display 5%-", { locked = true })
 
 hl.unbind("SUPER + W")
+o.bind("SUPER + I", "Browser", { omarchy = "browser" })
 
 local function volume_if_over_bar(direction)
   local cursor = hl.get_cursor_pos()
@@ -44,3 +45,24 @@ end
 
 o.bind("mouse_up", "Volume up over Omarchy bar", function() volume_if_over_bar("raise") end, { locked = true, non_consuming = true })
 o.bind("mouse_down", "Volume down over Omarchy bar", function() volume_if_over_bar("lower") end, { locked = true, non_consuming = true })
+
+hl.bind("SUPER + M", function()
+  if hl.get_workspace("special:minimized") then
+    hl.dispatch(hl.dsp.window.move({
+      workspace = hl.get_active_workspace(),
+      window = "tag:minimized",
+    }))
+    hl.dispatch(hl.dsp.window.clear_tags({
+      window = "tag:minimized",
+    }))
+  else
+    hl.dispatch(hl.dsp.window.tag({
+      tag = "minimized",
+      window = hl.get_active_window(),
+    }))
+    hl.dispatch(hl.dsp.window.move({
+      workspace = "special:minimized",
+      follow = false,
+    }))
+  end
+end)

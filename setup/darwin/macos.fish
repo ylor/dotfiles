@@ -1,13 +1,13 @@
 # Configure Dock
 if defaults read com.apple.Dock | grep -q "com.apple.apps.launcher"
-    command --query dockutil; or brew install --quiet dockutil; or return $status
+    command --query dockutil; or brew install --quiet dockutil
     dockutil --remove all --add /Applications --add "$HOME/Downloads" >/dev/null
 end
 
 # Set hostname
-set hostname (scutil --get ComputerName); or return $status
+set hostname (scutil --get ComputerName)
 if string match -q "*’s*" $hostname; and gum confirm "Revise the default hostname? Current: $hostname"
-    set gum_hostname (gum input --prompt "New hostname: " --placeholder $hostname); or return $status
+    set gum_hostname (gum input --prompt "New hostname: " --placeholder $hostname)
     if test -n "$gum_hostname"
         sudo scutil --set ComputerName "$gum_hostname"
         and sudo scutil --set HostName "$gum_hostname"
@@ -18,12 +18,12 @@ end
 
 # Enable FileVault
 if not fdesetup isactive >/dev/null 2>&1; and gum confirm "Enable FileVault disk encryption?"
-    sudo fdesetup enable -user "$USER"; or return $status
+    sudo fdesetup enable -user "$USER"
 end
 
 # Enable Firewall
 if /usr/libexec/ApplicationFirewall/socketfilterfw --getglobalstate | grep -q disabled; and gum confirm "Enable the application firewall?"
-    sudo /usr/libexec/ApplicationFirewall/socketfilterfw --setglobalstate on; or return $status
+    sudo /usr/libexec/ApplicationFirewall/socketfilterfw --setglobalstate on
 end
 
 # Enable Screen Sharing

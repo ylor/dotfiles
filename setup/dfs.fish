@@ -8,10 +8,10 @@ function dfs --description "Configure the system and manage linked files"
 
     switch "$operation"
         case ''
-            dfs-apply; or return $status
+            dfs-apply
             exec fish
         case apply reset
-            dfs-$operation; or return $status
+            dfs-$operation
             exec fish
         case layers
           dfs-$operation
