@@ -1,6 +1,6 @@
 # dotfiles
 
-Idempotent and unattended computing.
+Unattended, idempotent computing.
 
 ## Usage
 

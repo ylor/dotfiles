@@ -4,9 +4,9 @@ if not command -q helium-browser
     helium-browser
 end
 
-if not grep -Fxq helium-browser /etc/1password/custom_allowed_browsers 2>/dev/null
+if not grep -Fxq helium /etc/1password/custom_allowed_browsers 2>/dev/null
     sudo mkdir -p /etc/1password
-    printf '%s\n' helium-browser | sudo tee --append /etc/1password/custom_allowed_browsers >/dev/null
+    printf '%s\n' helium | sudo tee --append /etc/1password/custom_allowed_browsers >/dev/null
 end
 
 if test -e /etc/chromium/policies/managed/color.json

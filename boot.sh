@@ -20,13 +20,13 @@ npc() {
 clear
 curl -fsL https://banner.roly.sh
 npc "Privileged access is required. Press Ctrl-C to abort."
+sudo --validate
 
-# Refresh sudo credentials until exit to avoid repeated prompts.
-sudo true
+# Keep credentials fresh until exit.
 while true; do
-    sudo --non-interactive true
+    sudo --non-interactive --validate 2>/dev/null || true
     sleep 60
-done 2>/dev/null &
+done &
 sudo_keepalive=$!
 trap 'kill "$sudo_keepalive" 2>/dev/null || true' EXIT
 

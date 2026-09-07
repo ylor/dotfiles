@@ -36,6 +36,13 @@ if command -q git; and status --is-interactive
 
             case lol
                 command git rev-parse --is-inside-work-tree >/dev/null 2>&1; or return 67
+
+                set -l remote (command git remote get-url origin 2>/dev/null)
+                string match --quiet '*git@*' $remote; or begin
+                    echo "git lol requires an SSH origin remote." >&2
+                    return 68
+                end
+
                 command git add -A
                 command git commit --quiet -m (curl -sf https://whatthecommit.com/index.txt)
                 command git push

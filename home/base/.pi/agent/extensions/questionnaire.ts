@@ -1,5 +1,6 @@
 /**
  * Questionnaire Tool - Unified tool for asking single or multiple questions
+ * https://github.com/earendil-works/pi/blob/main/packages/coding-agent/examples/extensions/questionnaire.ts
  *
  * Single question: simple options list
  * Multiple questions: tab bar navigation between questions

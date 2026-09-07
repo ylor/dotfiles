@@ -1,5 +1,6 @@
 /**
  * Handoff extension - transfer context to a new focused session
+ * https://github.com/earendil-works/pi/blob/main/packages/coding-agent/examples/extensions/handoff.ts
  *
  * Instead of compacting (which is lossy), handoff extracts what matters
  * for your next task and creates a new session with a generated prompt.

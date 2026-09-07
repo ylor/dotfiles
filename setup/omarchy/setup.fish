@@ -5,6 +5,7 @@ systemctl is-enabled --quiet lactd; or sudo systemctl enable lactd
 systemctl is-active --quiet lactd; or sudo systemctl start lactd
 
 # omarchy pkg drop foot && rm -f ~/.local/share/applications/foot.desktop
+omarchy pkg drop docker ufw-docker
 omarchy pkg drop kdenlive
 omarchy pkg drop libreoffice-fresh
 omarchy pkg drop obs-studio

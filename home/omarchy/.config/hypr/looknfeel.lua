@@ -13,6 +13,11 @@ hl.config({
   },
 })
 
+hl.workspace_rule({
+  workspace = "w[tv1]",
+  no_border = true,
+})
+
 -- https://wiki.hypr.land/Configuring/Basics/Variables/#decoration
 hl.config({
   decoration = {

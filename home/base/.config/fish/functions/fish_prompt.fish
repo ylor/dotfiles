@@ -45,7 +45,7 @@ function fish_prompt
     printf '❬%s@%s❭ ' $USER (prompt_hostname)
     # end
     set_color --bold green
-    printf '%s' (path basename (prompt_pwd))
+    printf '%s' (path basename (prompt_pwd) | string trim -l -c .)
     set_color normal
     # fish_git_prompt ' ❬%s❭'
     fish_git_prompt ' %s'

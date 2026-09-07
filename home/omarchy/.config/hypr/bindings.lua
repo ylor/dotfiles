@@ -34,6 +34,7 @@ o.bind("ALT + mouse_down", "Brightness down", "omarchy-brightness-display 5%-", 
 
 hl.unbind("SUPER + W")
 o.bind("SUPER + I", "Browser", { omarchy = "browser" })
+o.rebind("SUPER + Home", "Rebalance window split", hl.dsp.layout("splitratio 1.0 exact"))
 
 local function volume_if_over_bar(direction)
   local cursor = hl.get_cursor_pos()
@@ -73,3 +74,10 @@ hl.bind("SUPER + M", function()
     }))
   end
 end)
+
+-- flea --default: begin. Written by `flea --default`; `flea --default off` removes the block whole.
+hl.unbind("SUPER + SHIFT + F")
+o.rebind("SUPER + E", "File manager", { launch = 'flea --gui' })
+hl.unbind("SUPER + ALT + SHIFT + F")
+o.rebind("SUPER + SHIFT + E", "File manager (cwd)", { launch = 'flea --gui "$(omarchy-cmd-terminal-cwd)"' })
+-- flea --default: end.
