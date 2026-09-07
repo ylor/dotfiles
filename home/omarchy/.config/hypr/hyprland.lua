@@ -28,6 +28,8 @@ require("default.hypr.toggles")
 -- Add any other personal Hyprland configuration below.
 -- o.window("qemu", { workspace = "5" })
 
+o.exec_on_start("1password --silent")
+
 -- Keep GNOME applications' font rendering consistent across sessions.
 o.exec_on_start("gsettings set org.gnome.desktop.interface font-name 'Berkeley Mono Variable 11'")
 o.exec_on_start("gsettings set org.gnome.desktop.interface document-font-name 'Berkeley Mono Variable 12'")
