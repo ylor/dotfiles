@@ -21,6 +21,7 @@ function dfs-apply
         test -d $layer; or continue
 
         for script in $layer/*.fish
+            set -q dfs_verbose; and echo "· run "(string replace -- $HOME '~' $script)
             source $script
             or begin
                 set -l failure_status $status

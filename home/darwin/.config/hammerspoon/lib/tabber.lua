@@ -9,13 +9,12 @@ end
 
 local timer = hs.timer.delayed.new(1, reset)
 
-local wf = hs.window.filter.copy(hs.window.filter.defaultCurrentSpace)
-    :setScreens(hs.screen.mainScreen():getUUID())
-
 local function switcher(reverse)
     local current = hs.window.focusedWindow()
     current = current and current:id()
     if current ~= last or #list == 0 then
+        local wf = hs.window.filter.copy(hs.window.filter.defaultCurrentSpace)
+            :setScreens(hs.screen.mainScreen():getUUID())
         list = wf:getWindows(hs.window.filter.sortByFocusedLast)
         index = 1
     end

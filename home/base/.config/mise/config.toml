@@ -11,6 +11,7 @@ auto_prune = false
 
 [tools]
 claude = "latest"
+cloudflared = "latest"
 codex = "latest"
 delta = "latest"
 gh = "latest"

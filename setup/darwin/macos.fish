@@ -5,13 +5,13 @@ if defaults read com.apple.Dock | grep -q "com.apple.apps.launcher"
 end
 
 # Set hostname
-set hostname (scutil --get ComputerName)
-if string match -q "*’s*" $hostname; and gum confirm "Revise the default hostname? Current: $hostname"
-    set gum_hostname (gum input --prompt "New hostname: " --placeholder $hostname)
-    if test -n "$gum_hostname"
-        sudo scutil --set ComputerName "$gum_hostname"
-        and sudo scutil --set HostName "$gum_hostname"
-        and sudo scutil --set LocalHostName "$gum_hostname"
+set -l computer_name (scutil --get ComputerName)
+if string match -q "*’s*" $computer_name; and gum confirm "Revise the default hostname? Current: $computer_name"
+    set -l new_name (gum input --prompt "New hostname: " --placeholder $computer_name)
+    if test -n "$new_name"
+        sudo scutil --set ComputerName "$new_name"
+        and sudo scutil --set HostName "$new_name"
+        and sudo scutil --set LocalHostName "$new_name"
         or return $status
     end
 end

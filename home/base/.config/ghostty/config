@@ -6,7 +6,7 @@ config-file = ?linux
 config-file = ?local
 
 # function
-command = shell:fish || /opt/homebrew/bin/fish || ${SHELL:-/bin/sh}
+command = shell:"$(command -v fish || command -v /opt/homebrew/bin/fish || echo "${SHELL:-/bin/sh}")"
 font-size = 10
 clipboard-read = "allow"
 clipboard-paste-protection = false
@@ -39,10 +39,10 @@ resize-overlay = never
 gtk-toolbar-style = flat
 
 # keybinds
-keybind = performable:ctrl+t=new_tab
 keybind = performable:ctrl+c=copy_to_clipboard
 keybind = performable:ctrl+v=paste_from_clipboard
 keybind = performable:ctrl+k=clear_screen
+keybind = performable:ctrl+t=new_tab
 keybind = ctrl+w=close_surface
 keybind = ctrl+-=new_split:down
 keybind = ctrl+==new_split:right

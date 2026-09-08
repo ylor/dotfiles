@@ -49,7 +49,7 @@ function machine_report
         # "$zfs_used_gb/$zfs_available_gb GiB [$disk_percent%]" \
         # "$zfs_health" \
         "$root_used_gb/$root_total_gb $disk_unit [$disk_percent%]" \
-        "$mem_used_gb/$mem_total_gb GiB [$mem_percent%]" \
+        "$mem_used_gb/$mem_total_gb $mem_unit [$mem_percent%]" \
         "$last_login_time" \
         "$last_login_ip" \
         "$sys_uptime"
@@ -292,6 +292,11 @@ function machine_report
     set -f mem_percent (awk -v "used=$mem_used" -v "total=$mem_total" 'BEGIN {printf "%.2f", (used / total) * 100}')
     set -f mem_total_gb (awk -v "value=$mem_total" 'BEGIN {printf "%.2f", value / (1024 * 1024)}')
     set -f mem_used_gb (awk -v "value=$mem_used" 'BEGIN {printf "%.2f", value / (1024 * 1024)}')
+    set -f mem_unit 'GiB'
+    if test (uname) = Darwin
+        # macOS labels this binary value "GB" everywhere (About This Mac, Activity Monitor).
+        set -f mem_unit 'GB'
+    end
 
     # Disk information
     # if command -q zfs; and test (zpool list -H | count) -gt 0
@@ -358,12 +363,12 @@ function machine_report
     end
     set -f sys_uptime (uptime | cut -d, -f1 | sed 's/^[^ ]* //; s/^[^ ]* //; s/^[ ]* //; s/up[ ][[:space:]]*//; s/[[:space:]]*day\(s*\)/d/; s/[[:space:]]*hour\(s*\)/h/; s/[[:space:]]*minute\(s*\)/m/')
 
-    set -l labels OS KERNEL UPTIME PROCESSOR 'LOAD  1m' 'LOAD  5m' 'LOAD 15m' DISK MEMORY USAGE
+    set -l labels OS KERNEL UPTIME CPU 'LOAD  1m' 'LOAD  5m' 'LOAD 15m' DISK MEMORY USAGE
     if test -n "$SSH_CONNECTION"; or test -n "$SSH_CLIENT"
         set -a labels HOSTNAME 'MACHINE IP' 'CLIENT  IP' 'LAST LOGIN'
     end
     if test (count $gpu_models) -gt 0
-        set -a labels GRAPHICS
+        set -a labels GPU
     end
     if test "$cpu_hypervisor" != 'Bare Metal'
         set -a labels HYPERVISOR
@@ -404,9 +409,9 @@ function machine_report
     # end
     # print_data USER "$net_current_user"
     print_divider
-    print_data PROCESSOR "$cpu_model"
+    print_data CPU "$cpu_model"
     for gpu_model in $gpu_models
-        print_data GRAPHICS "$gpu_model"
+        print_data GPU "$gpu_model"
     end
     # print_data CORES "$cpu_cores_per_socket vCPU(s) / $cpu_sockets Socket(s)"
     if test "$cpu_hypervisor" != 'Bare Metal'
@@ -426,7 +431,7 @@ function machine_report
     print_bar 'USAGE' "$disk_bar_graph"
     # end
     print_divider
-    print_data MEMORY "$mem_used_gb/$mem_total_gb GiB [$mem_percent%]"
+    print_data MEMORY "$mem_used_gb/$mem_total_gb $mem_unit [$mem_percent%]"
     print_bar USAGE "$mem_bar_graph"
     print_divider end
 end
