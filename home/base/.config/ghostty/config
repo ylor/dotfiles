@@ -6,7 +6,7 @@ config-file = ?linux
 config-file = ?local
 
 # function
-command = shell:fish || /opt/homebrew/bin/fish
+command = shell:fish || /opt/homebrew/bin/fish || ${SHELL:-/bin/sh}
 font-size = 10
 clipboard-read = "allow"
 clipboard-paste-protection = false
@@ -35,7 +35,6 @@ unfocused-split-opacity = 0.9
 # shaders
 # custom-shader = shaders/tft.glsl
 custom-shader = shaders/bloom.glsl
-confirm-close-surface=false
 resize-overlay = never
 gtk-toolbar-style = flat
 

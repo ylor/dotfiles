@@ -10,6 +10,7 @@ compile = true
 auto_prune = false
 
 [tools]
+claude = "latest"
 codex = "latest"
 delta = "latest"
 gh = "latest"

@@ -48,7 +48,7 @@ function machine_report
         # "$cpu_freq GHz" \
         # "$zfs_used_gb/$zfs_available_gb GiB [$disk_percent%]" \
         # "$zfs_health" \
-        "$root_used_gb/$root_total_gb GiB [$disk_percent%]" \
+        "$root_used_gb/$root_total_gb $disk_unit [$disk_percent%]" \
         "$mem_used_gb/$mem_total_gb GiB [$mem_percent%]" \
         "$last_login_time" \
         "$last_login_ip" \
@@ -246,9 +246,9 @@ function machine_report
     # end
 
     if string match -qr '^(FreeBSD|Darwin)$' (uname)
-        set -l load_label 'load averages: '
+        set -f load_label 'load averages: '
     else
-        set -l load_label 'load average: '
+        set -f load_label 'load average: '
     end
     set -f load_avg_1min (uptime | awk -F "$load_label" '{print $2}' | cut -d, -f1 | tr -d ' ')
     set -f load_avg_5min (uptime | awk -F "$load_label" '{print $2}' | cut -d, -f2 | tr -d ' ')
@@ -276,9 +276,14 @@ function machine_report
             set -f mem_total (math (sysctl -n hw.physmem)' / 1024')
             set -f mem_available (math '('(sysctl -n vm.stats.vm.v_free_count)' + '(sysctl -n vm.stats.vm.v_inactive_count)') * '(sysctl -n hw.pagesize)' / 1024')
         case Darwin
-            set -f mem_total (math (sysctl -n hw.physmem)' / 1024')
-            set -l pages_free (vm_stat | grep 'Pages free:' | tr -d ' .' | cut -d: -f2)
-            set -f mem_available (math (sysctl -n hw.pagesize)' * '$pages_free' / 1024')
+            set -f mem_total (math (sysctl -n hw.memsize)' / 1024')
+            set -l page_size (sysctl -n hw.pagesize)
+            set -l anon_pages (vm_stat | grep 'Anonymous pages:' | tr -d ' .' | cut -d: -f2)
+            set -l wired_pages (vm_stat | grep 'Pages wired down:' | tr -d ' .' | cut -d: -f2)
+            set -l compressed_pages (vm_stat | grep 'Pages occupied by compressor:' | tr -d ' .' | cut -d: -f2)
+            # Match Activity Monitor: used = app (anonymous) + wired + compressed.
+            # Free/inactive/file-backed pages are reclaimable, not actually "used".
+            set -f mem_available (math "$mem_total - ($anon_pages + $wired_pages + $compressed_pages) * $page_size / 1024")
         case SunOS
             set -f mem_total (math (kstat -C -m unix -n system_pages -s physmem | cut -d: -f5)' * 4')
             set -f mem_available (math (kstat -C -m unix -n system_pages -s freemem | cut -d: -f5)' * 4')
@@ -302,8 +307,22 @@ function machine_report
     # else
     set -f root_used (df -m / | awk 'NR==2 {print $3}')
     set -f root_total (df -m / | awk 'NR==2 {print $2}')
-    set -f root_total_gb (awk -v "total=$root_total" 'BEGIN {printf "%.2f", total / 1024}')
-    set -f root_used_gb (awk -v "used=$root_used" 'BEGIN {printf "%.2f", used / 1024}')
+    set -f disk_unit 'GiB'
+    if test (uname) = Darwin
+        # Finder/Disk Utility report decimal GB; df -m reports binary MiB.
+        set -f disk_unit 'GB'
+        if test -d /System/Volumes/Data
+            # "/" is the sealed, read-only System volume. User data lives on
+            # the separate Data volume, which df / never reports.
+            set -l data_used (df -m /System/Volumes/Data | awk 'NR==2 {print $3}')
+            set -f root_used (math "$root_used + $data_used")
+        end
+        set -f root_total_gb (awk -v "total=$root_total" 'BEGIN {printf "%.2f", total * 1048576 / 1000000000}')
+        set -f root_used_gb (awk -v "used=$root_used" 'BEGIN {printf "%.2f", used * 1048576 / 1000000000}')
+    else
+        set -f root_total_gb (awk -v "total=$root_total" 'BEGIN {printf "%.2f", total / 1024}')
+        set -f root_used_gb (awk -v "used=$root_used" 'BEGIN {printf "%.2f", used / 1024}')
+    end
     set -f disk_percent (awk -v "used=$root_used" -v "total=$root_total" 'BEGIN {printf "%.2f", (used / total) * 100}')
     # end
 
@@ -403,7 +422,7 @@ function machine_report
     #     print_bar 'DISK USAGE' "$disk_bar_graph"
     #     print_data 'ZFS HEALTH' "$zfs_health"
     # else
-    print_data DISK "$root_used_gb/$root_total_gb GiB [$disk_percent%]"
+    print_data DISK "$root_used_gb/$root_total_gb $disk_unit [$disk_percent%]"
     print_bar 'USAGE' "$disk_bar_graph"
     # end
     print_divider
