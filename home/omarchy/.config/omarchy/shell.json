@@ -1,8 +1,8 @@
 {
   "version": 1,
   "idle": {
-    "screensaver": 150,
-    "lock": 300
+    "screensaver": 600,
+    "lock": 900
   },
   "bar": {
     "position": "top",

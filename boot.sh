@@ -30,7 +30,7 @@ done &
 sudo_keepalive=$!
 trap 'kill "$sudo_keepalive" 2>/dev/null || true' EXIT
 
-if ! exists mise; then
+if ! exists "$HOME/.local/bin/mise"; then
   curl -fsL https://mise.run | MISE_QUIET=1 sh
 fi
 

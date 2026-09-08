@@ -1,6 +1,8 @@
 command -q 1password; or omarchy install service 1password
 command -q ghostty; or omarchy default terminal --install ghostty
+command -q flea; or omarchy pkg add flea
 command -q lact; or omarchy pkg add lact
+command -q trash; or omarchy pkg add trash-cli
 systemctl is-enabled --quiet lactd; or sudo systemctl enable lactd
 systemctl is-active --quiet lactd; or sudo systemctl start lactd
 

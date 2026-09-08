@@ -40,10 +40,10 @@ function fish_prompt
         end
     end
 
-    # if set --query SSH_CONNECTION
-    set_color normal
-    printf '❬%s@%s❭ ' $USER (prompt_hostname)
-    # end
+    if test -n "$SSH_CONNECTION"; or test -n "$SSH_CLIENT"
+        set_color normal
+        printf '❬%s@%s❭ ' $USER (prompt_hostname)
+    end
     set_color --bold green
     printf '%s' (path basename (prompt_pwd) | string trim -l -c .)
     set_color normal
