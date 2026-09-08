@@ -15,7 +15,7 @@ cloudflared = "latest"
 codex = "latest"
 delta = "latest"
 gh = "latest"
-"github:aloisdeniel/omafiles" = "latest"
+"github:aloisdeniel/omafiles" = { version = "latest", os = ["linux"] }
 "github:thisisgm/flea" = { version = "latest", os = ["linux"], bin_path = "target/release", strip_components = 1, postinstall = "cd \"$MISE_TOOL_INSTALL_PATH\" && ln -sfn /usr/share/omarchy/shell/Commons ui/Commons && ln -sfn /usr/share/omarchy/shell/Ui ui/Ui && mise x rust@stable -- cargo build --release --locked" }
 hunk = "latest"
 node = "latest"

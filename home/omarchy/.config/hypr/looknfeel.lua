@@ -18,6 +18,11 @@ hl.workspace_rule({
   no_border = true,
 })
 
+hl.window_rule({
+  match = { float = true },
+  border_size = 1,
+})
+
 -- https://wiki.hypr.land/Configuring/Basics/Variables/#decoration
 hl.config({
   decoration = {

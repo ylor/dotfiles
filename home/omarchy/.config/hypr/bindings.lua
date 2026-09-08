@@ -42,7 +42,10 @@ local function volume_if_over_bar(direction)
 
   for _, layer in ipairs(hl.get_layers()) do
     local is_bar = layer.namespace == "omarchy-bar" and layer.mapped
-    local within_x = cursor.x >= layer.x and cursor.x < layer.x + layer.w
+    local horizontal_margin = layer.w * 0.1
+    local inner_left = layer.x + horizontal_margin
+    local inner_right = layer.x + layer.w - horizontal_margin
+    local within_x = cursor.x >= inner_left and cursor.x < inner_right
     local within_y = cursor.y >= layer.y and cursor.y < layer.y + layer.h
     if is_bar and within_x and within_y then
       hl.exec_cmd("omarchy-audio-output-volume " .. direction)
