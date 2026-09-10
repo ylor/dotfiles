@@ -1,6 +1,13 @@
 -- Keep only your personal input overrides here. Uncommented settings below
 -- replace Omarchy's defaults.
 
+hl.config({
+  input = {
+    accel_profile = "flat",
+    sensitivity = 0,
+  },
+})
+
 -- Keyboard layout and options.
 -- See https://wiki.hypr.land/Configuring/Basics/Variables/#input
 -- hl.config({

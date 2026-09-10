@@ -23,6 +23,12 @@ hl.window_rule({
   border_size = 1,
 })
 
+hl.window_rule({
+  match = { initial_class = "steam" },
+  fullscreen = true,
+  border_size = 0,
+})
+
 -- https://wiki.hypr.land/Configuring/Basics/Variables/#decoration
 hl.config({
   decoration = {
