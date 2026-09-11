@@ -10,3 +10,4 @@ o.exec_on_start("[workspace 2 silent; no_initial_focus; suppress_event activate 
 o.exec_on_start("gsettings set org.gnome.desktop.interface font-name 'Berkeley Mono Variable 11'")
 o.exec_on_start("gsettings set org.gnome.desktop.interface document-font-name 'Berkeley Mono Variable 12'")
 o.exec_on_start("gsettings set org.gnome.desktop.interface monospace-font-name 'Berkeley Mono Variable 11'")
+o.exec_on_start("gsettings set org.gnome.desktop.wm.preferences button-layout ''")
