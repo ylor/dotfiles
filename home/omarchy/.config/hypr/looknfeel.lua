@@ -6,7 +6,7 @@ hl.config({
     -- No gaps between windows or borders.
     gaps_in = 2,
     gaps_out = 2,
-    -- border_size = 1,
+    border_size = 0,
 
     -- Change to niri-like side-scrolling layout.
     -- layout = "scrolling",
@@ -24,17 +24,31 @@ hl.window_rule({
 })
 
 hl.window_rule({
-  match = { initial_class = "steam" },
-  fullscreen = true,
+  match = { class = "1Password", float = true },
   border_size = 0,
+})
+
+hl.window_rule({
+  match = { class = "steam", title = "Steam" },
+  float = false,
+  border_size = 0,
+  no_shadow = true,
+  decorate = false,
 })
 
 -- https://wiki.hypr.land/Configuring/Basics/Variables/#decoration
 hl.config({
   decoration = {
     -- Use round window corners.
-    rounding = 1,
-    rounding_power = 4
+    rounding = 2,
+    rounding_power = 4,
+    glow = {
+      enabled = true,
+      range = 4,
+      render_power = 2,
+      color = hl.get_config("general.col.active_border"),
+      color_inactive = "rgba(00000000)",
+    },
 
     -- -- Dim unfocused windows (0.0 = no dim, 1.0 = fully dimmed).
     -- dim_inactive = true,
@@ -68,24 +82,24 @@ hl.config({
 
 -- https://wiki.hypr.land/configuring/core/advanced-configuration/events/
 -- Use a solid bar while the qconsole is open.
-local restoreBarTransparency = false
+local restore_bar_transparency = false
 
 hl.on("workspace.special_active", function(workspace)
-  local qconsoleOpen = workspace and workspace.name == "special:scratchpad"
+  local qconsole_open = workspace and workspace.name == "special:scratchpad"
 
-  if qconsoleOpen then
+  if qconsole_open then
     local pipe = assert(io.popen("omarchy shell shell listShellConfig | jq -r '.bar.transparent'"))
-    restoreBarTransparency = pipe:read("*l") == "true"
+    restore_bar_transparency = pipe:read("*l") == "true"
     pipe:close()
 
-    if restoreBarTransparency then
+    if restore_bar_transparency then
       hl.exec_cmd("omarchy bar transparent false")
     end
     return
   end
 
-  if restoreBarTransparency then
-    hl.exec_cmd("omarchy bar transparent true")
-    restoreBarTransparency = false
-  end
+  if not restore_bar_transparency then return end
+
+  hl.exec_cmd("omarchy bar transparent true")
+  restore_bar_transparency = false
 end)
