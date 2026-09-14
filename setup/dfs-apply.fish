@@ -4,7 +4,7 @@ function dfs-apply
     command cat $DOTFILES/art.txt
 
     if test -z "$DOTFILES_PROFILE"
-        if gum confirm "Use full profile? Default: standard (10s timeout)." --timeout=10s --affirmative=yes --negative=no --default=false
+        if gum confirm "use full profile? default: standard (10s timeout)." --timeout=10s --affirmative=yes --negative=no --default=false
             set -Ux DOTFILES_PROFILE full
         else
             set -Ux DOTFILES_PROFILE default
@@ -16,7 +16,7 @@ function dfs-apply
         test -d $layer; or continue
 
         for script in $layer/*.fish
-            set -q dfs_verbose[1]; and echo "RUN  "(string replace -- $HOME '~' $script)
+            set -q dfs_verbose[1]; and echo "[RUN] "(string lower -- (string replace -- $HOME '~' $script))
             source $script
             set -l script_status $status
             if test $script_status -ne 0

@@ -19,7 +19,7 @@ npc() {
 
 clear
 curl -fsL https://banner.roly.sh
-npc "Privileged access is required. Press Ctrl-C to abort."
+npc "privileged access is required. press ctrl-c to abort."
 sudo --validate
 
 # Keep credentials fresh until exit.
@@ -63,7 +63,7 @@ for cmd in $PACKAGES; do
 done
 
 if [ -n "$missing" ]; then
-    printf '%s\n' "Missing required commands:$missing. Install them and rerun this script." >&2
+    printf '%s\n' "missing required commands:$missing. install them and rerun this script." >&2
     exit 67
 fi
 
