@@ -1,3 +1,3 @@
 function dfs-success
-    printf '✓ %s\n' "$argv"
+    printf 'OK  %s\n' "$argv"
 end

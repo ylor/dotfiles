@@ -9,9 +9,6 @@ if test (powerprofilesctl get) != $power_profile
     powerprofilesctl set $power_profile
 end
 
-# ONBOARD
-# fprintd fwupd
-
 if command -vq sshd
     systemctl is-enabled --quiet sshd; or sudo systemctl enable sshd
     systemctl is-active --quiet sshd; or sudo systemctl start sshd
@@ -38,25 +35,6 @@ if command -vq ufw; and not systemctl is-enabled --quiet ufw
     sudo ufw reload
     sudo systemctl enable ufw
 end
-
-# SECURE BOOT
-# if command -vq sbctl
-#     sudo sbctl create-keys
-#     sudo sbctl enroll-keys --microsoft || exit 1
-#     sudo sbctl status
-#     sudo sbctl verify
-#     #| sed 's/✗ /sbctl sign -s /e'
-#     #sbctl status
-# end
-
-# GNOME
-# if command -vq gsettings
-#     gsettings set org.gnome.desktop.interface font-name 'Iosevka Aile 11'
-#     gsettings set org.gnome.desktop.interface document-font-name 'Adwaita Sans 12'
-#     gsettings set org.gnome.desktop.interface monospace-font-name 'JetBrainsMono Nerd Font 11'
-#     gsettings set org.gnome.desktop.interface icon-theme breeze-dark
-#     gsettings set org.gnome.desktop.wm.preferences button-layout :
-# end
 
 # DESKTOP
 if grep -iq "B650 AORUS ELITE AX" /sys/devices/virtual/dmi/id/board_name
@@ -93,8 +71,6 @@ if command -vq 1password
     test (stat --format=%a $allowed_browsers) = 644; or sudo chmod 644 $allowed_browsers
 end
 
-# TODO
-## TODO: set firefox fonts, userjs, extensions
-## VNC server/client
+dfs-fonts; or return $status
 
-dfs-success "Linux configured."
+dfs-success "Linux"

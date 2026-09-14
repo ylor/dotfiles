@@ -1,3 +1,3 @@
 function dfs-failure
-    printf '✗ %s\n' "$argv" >&2
+    printf 'ERR  %s\n' "$argv" >&2
 end

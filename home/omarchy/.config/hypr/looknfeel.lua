@@ -6,7 +6,7 @@ hl.config({
     -- No gaps between windows or borders.
     gaps_in = 2,
     gaps_out = 2,
-    border_size = 1,
+    -- border_size = 1,
 
     -- Change to niri-like side-scrolling layout.
     -- layout = "scrolling",
@@ -43,11 +43,7 @@ hl.config({
     rounding = 0,
     rounding_power = 4,
     glow = {
-      enabled = true,
-      range = 3,
-      render_power = 1,
-      color = hl.get_config("general.col.active_border"),
-      color_inactive = "rgba(00000000)",
+      enabled = false,
     },
 
     -- -- Dim unfocused windows (0.0 = no dim, 1.0 = fully dimmed).

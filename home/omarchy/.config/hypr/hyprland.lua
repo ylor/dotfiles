@@ -22,6 +22,10 @@ require("hypr.bindings")
 require("hypr.looknfeel")
 require("hypr.autostart")
 
+if package.searchpath("hypr.local", package.path) then
+  require("hypr.local")
+end
+
 -- Toggle config flags dynamically.
 require("default.hypr.toggles")
 

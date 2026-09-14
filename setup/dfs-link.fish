@@ -1,5 +1,5 @@
 function dfs-link
-    set -q DOTFILES || dfs
+    set -l DOTFILES (path resolve (status dirname)/..)
 
     set links
     for layer in (dfs-layers)
@@ -28,6 +28,7 @@ function dfs-link
 
     string join \n $links | sort -u >$manifest
 
-    test $removed -gt 0; and dfs-success "$removed obsolete managed file links removed."
-    dfs-success (count $links)" managed file links established."
+    set -l summary (count $links)
+    test $removed -gt 0; and set summary "$summary, −$removed"
+    dfs-success "Dotfiles ($summary)"
 end

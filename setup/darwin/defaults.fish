@@ -4,10 +4,6 @@ mkdir -p /Applications/Xcode.app # enable spotlight category
 mkdir -p "$HOME/Developer" # pretty finder icon
 touch "$HOME/.hushlogin" # shut up terminal
 
-# Activity Monitor
-## set update period to 1s
-# defaults write com.apple.ActivityMonitor UpdatePeriod -int 1
-
 # Dock
 ## autohide
 defaults write com.apple.dock autohide -bool true
@@ -17,13 +13,6 @@ defaults write com.apple.dock autohide-delay -float 0
 defaults write com.apple.dock show-recents -bool false
 ## set minimize animation to scale
 defaults write com.apple.dock mineffect -string scale
-# Enable spring loading for directories
-# defaults write NSGlobalDomain com.apple.springing.enabled -bool true
-# Remove the spring loading delay for directories
-# defaults write NSGlobalDomain com.apple.springing.delay -float 0
-## enable spring loading universally
-# defaults write com.apple.dock enable-spring-load-actions-on-all-items -bool true
-
 # Finder
 ## set default location of new Finder windows
 defaults write com.apple.finder NewWindowTarget -string PfLo
@@ -65,32 +54,6 @@ defaults write NSGlobalDomain NSAutomaticPeriodSubstitutionEnabled -bool false
 sqlite3 ~/Library/KeyboardServices/TextReplacements.db \
     "DELETE FROM ZTEXTREPLACEMENTENTRY WHERE ZSHORTCUT = 'omw';"
 
-# set replacements \
-#     "shrugg:¯\_(ツ)_/¯" \
-#     "@@:$(echo cm9seXJleWVzQG1lLmNvbQo= | base64 --decode)"
-
-# for r in $replacements
-#     set parts (string split -m1 ":" $r)
-#     set ts (math (date +%s) - 978307200)
-#     sqlite3 ~/Library/KeyboardServices/TextReplacements.db "
-#         DELETE FROM ZTEXTREPLACEMENTENTRY WHERE ZSHORTCUT = '$parts[1]' AND ZPHRASE != '$parts[2]';
-#         UPDATE ZTEXTREPLACEMENTENTRY SET ZWASDELETED = 0 WHERE ZSHORTCUT = '$parts[1]' AND ZPHRASE = '$parts[2]';
-#         INSERT OR IGNORE INTO ZTEXTREPLACEMENTENTRY (Z_ENT, Z_OPT, ZNEEDSSAVETOCLOUD, ZWASDELETED, ZTIMESTAMP, ZPHRASE, ZSHORTCUT, ZUNIQUENAME)
-#         SELECT (SELECT Z_ENT FROM ZTEXTREPLACEMENTENTRY LIMIT 1), 1, 1, 0, $ts, '$parts[2]', '$parts[1]', '"(uuidgen)"'
-#         WHERE NOT EXISTS (SELECT 1 FROM ZTEXTREPLACEMENTENTRY WHERE ZSHORTCUT = '$parts[1]' AND ZPHRASE = '$parts[2]');
-#     "
-# end
-
-# sqlite3 ~/Library/KeyboardServices/TextReplacements.db "SELECT * FROM ZTEXTREPLACEMENTENTRY"
-# killall cfprefsd
-# General
-## Hide scrollbars when scrolling
-# defaults write -g AppleShowScrollBars -string WhenScrolling
-
-# Mouse
-## disable mouse acceleration
-# defaults write NSGlobalDomain com.apple.mouse.linear -bool true
-
 # Trackpad
 ## three finger drag
 defaults write com.apple.AppleMultitouchTrackpad TrackpadThreeFingerDrag -bool true
@@ -120,8 +83,6 @@ defaults write com.apple.dock wvous-bl-modifier -int 0
 defaults write com.apple.dock wvous-br-modifier -int 0
 
 # Window Management
-## Drag with cmd+ctrl
-# defaults write -g NSWindowS houldDragOnGesture -bool true
 defaults write com.apple.WindowManager EnableStandardClickToShowDesktop -bool false
 
 # Hammerspoon
@@ -131,5 +92,4 @@ defaults write org.hammerspoon.Hammerspoon MJShowMenuIconKey -int 0
 # disable reopening windows after restart
 defaults write com.apple.loginwindow TALLogoutSavesState -bool false
 
-# killall Finder Dock
-dfs-success "System preferences applied."
+dfs-success "System preferences"

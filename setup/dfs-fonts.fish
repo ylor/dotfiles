@@ -7,7 +7,7 @@ function dfs-fonts --description "Install the managed typefaces"
         case Linux
             set destination_directory $HOME/.local/share/fonts
         case '*'
-            dfs-failure "Font installation is not available on $platform."
+            dfs-failure "Font installation unsupported on $platform"
             return 1
     end
 
@@ -27,9 +27,5 @@ function dfs-fonts --description "Install the managed typefaces"
         fc-cache -f $destination_directory; or return 1
     end
 
-    if $fonts_added; and contains -- omarchy (dfs-layers)
-        omarchy font set "Berkeley Mono Variable" >/dev/null 2>&1; or return 1
-    end
-
-    dfs-success "Fonts installed."
+    dfs-success "Fonts"
 end

@@ -19,6 +19,9 @@
       ],
       "center": [
         {
+          "id": "njpatel.omapager"
+        },
+        {
           "id": "omarchy.indicators"
         },
         {
@@ -58,9 +61,15 @@
         },
         {
           "id": "omarchy.power"
+        },
+        {
+          "id": "jankeesvw.notification-center"
         }
       ]
     }
   },
-  "plugins": []
+  "plugins": [],
+  "disabledPlugins": [
+    "omarchy.notifications"
+  ]
 }
