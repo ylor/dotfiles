@@ -16,17 +16,19 @@ hl.config({
 hl.workspace_rule({
   workspace = "w[tv1]",
   no_border = true,
+  -- border_size = 1
 })
 
-hl.window_rule({
-  match = { float = true },
-  border_size = 1,
-})
+-- hl.window_rule({
+--   match = { float = true },
+--   border_size = 1,
+-- })
 
 hl.window_rule({
   match = { class = "1Password", float = true },
   border_size = 0,
 })
+
 
 hl.window_rule({
   match = { class = "steam", title = "Steam" },
@@ -40,11 +42,8 @@ hl.window_rule({
 hl.config({
   decoration = {
     -- Use round window corners.
-    rounding = 0,
-    rounding_power = 4,
-    glow = {
-      enabled = false,
-    },
+    -- rounding = 1,
+    -- rounding_power = 4,
 
     -- -- Dim unfocused windows (0.0 = no dim, 1.0 = fully dimmed).
     dim_inactive = true,
@@ -60,13 +59,6 @@ hl.config({
 --   },
 -- })
 
--- https://wiki.hypr.land/Configuring/Basics/Variables/#layout
--- hl.config({
---   layout = {
---     -- Avoid overly wide single-window layouts on wide screens.
---     single_window_aspect_ratio = { 1, 1 },
---   },
--- })
 
 -- https://wiki.hypr.land/Configuring/Layouts/Scrolling-Layout/
 -- hl.config({

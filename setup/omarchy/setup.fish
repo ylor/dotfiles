@@ -27,6 +27,8 @@ if not test -f $wake_rule; or test "$wake_rule_content" != (string collect <$wak
     sudo udevadm trigger --action=add --subsystem-match=usb --attr-match=idVendor=19f5 --attr-match=idProduct=1028
 end
 
-omarchy font set "Berkeley Mono Variable" >/dev/null 2>&1; or return $status
+if test (omarchy font current) != "Berkeley Mono Variable"
+    omarchy font set "Berkeley Mono Variable" >/dev/null 2>&1; or return $status
+end
 
 dfs-success "Omarchy"

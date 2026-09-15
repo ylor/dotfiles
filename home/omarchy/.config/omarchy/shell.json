@@ -45,6 +45,9 @@
           "id": "omarchy.tray"
         },
         {
+          "id": "jankeesvw.notification-center"
+        },
+        {
           "id": "omarchy.agents"
         },
         {
@@ -61,9 +64,6 @@
         },
         {
           "id": "omarchy.power"
-        },
-        {
-          "id": "jankeesvw.notification-center"
         }
       ]
     }
