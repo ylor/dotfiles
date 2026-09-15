@@ -5,7 +5,7 @@
     "code-review@claude-plugins-official": true,
     "swift-lsp@claude-plugins-official": true
   },
-  "outputStyle"": "concise",
+  "outputStyle": "concise",
   "theme": "auto",
-  "tui": "fullscreen",
+  "tui": "fullscreen"
 }
