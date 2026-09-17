@@ -6,6 +6,7 @@
     "swift-lsp@claude-plugins-official": true
   },
   "outputStyle": "concise",
+  "tui": "fullscreen",
   "theme": "auto",
-  "tui": "fullscreen"
+  "model": "opus[1m]"
 }

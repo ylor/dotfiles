@@ -6,7 +6,10 @@ require("config.remote_clipboard").setup()
 vim.opt.relativenumber = false
 vim.opt.signcolumn = "auto"
 vim.g.autoformat = false
+vim.opt.autoread = true
 
 vim.opt.wrap = true
 vim.opt.textwidth = 100
 vim.opt.colorcolumn = "100"
+
+vim.o.winborder = "single"

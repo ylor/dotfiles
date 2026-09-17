@@ -99,3 +99,16 @@ if not Work then
 end
 
 hs.hotkey.bind(Mod.hyper, "\\", hs.reload)
+
+-- Temporary: on macOS 27 Golden Gate the ctrl+[1-5] space switching shortcuts
+-- stop working after an unlock. The Dock owns Mission Control, so restarting it
+-- brings them back. Closest public report of the Golden Gate regression:
+-- https://github.com/ruittenb/Spaceman/issues/46
+-- Drop this once the bug is fixed.
+_G.DockRestartWatcher = hs.caffeinate.watcher
+	.new(function(event)
+		if event == hs.caffeinate.watcher.screensDidUnlock then
+			hs.execute("killall Dock")
+		end
+	end)
+	:start()

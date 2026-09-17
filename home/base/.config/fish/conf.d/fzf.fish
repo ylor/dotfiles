@@ -1,18 +1,19 @@
 if command -q fzf # https://github.com/junegunn/fzf
     fzf --fish | source
 
-    bind ctrl-shift-g fzf-cd-widget
-    bind -M insert ctrl-shift-g fzf-cd-widget
-    bind ctrl-shift-f fzf-file-widget
-    bind -M insert ctrl-shift-f fzf-file-widget
+    bind super-shift-g fzf-cd-widget
+    bind -M insert super-shift-g fzf-cd-widget
+    bind super-shift-f fzf-file-widget
+    bind -M insert super-shift-f fzf-file-widget
 
     set -x FZF_DEFAULT_OPTS "--bind change:first \
-        --border rounded \
+        --border sharp \
         --marker '›' \
         --no-color \
         --pointer '◆' \
         --popup \
         --preview-window wrap \
+        --preview-window="border-sharp"
         --prompt '→ '"
 
     set -x FZF_CTRL_R_OPTS "--no-color --height ~50% --with-nth=3.."

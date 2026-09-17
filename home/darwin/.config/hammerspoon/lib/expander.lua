@@ -18,17 +18,12 @@ local triggers = {
 	["<-"] = "←",
 }
 
+local SPACE = " "
+
 local buffer = ""
 local maxLen = 0
-
--- bucket triggers by their last character so a keystroke only needs to
--- check the handful of triggers it could possibly complete, not all of them
-local byLastChar = {}
-for trigger, replacement in pairs(triggers) do
+for trigger in pairs(triggers) do
 	maxLen = math.max(maxLen, #trigger)
-	local lastChar = trigger:sub(-1)
-	byLastChar[lastChar] = byLastChar[lastChar] or {}
-	byLastChar[lastChar][trigger] = replacement
 end
 
 -- keys that always abort a pending trigger, checked with one getKeyCode()
@@ -69,25 +64,29 @@ _G.textExpander = hs.eventtap.new({
 		return false
 	end
 
-	buffer = (buffer .. chars):sub(-(maxLen + 1))
+	-- room for the longest trigger, the space that fires it, and the
+	-- character before the trigger
+	buffer = (buffer .. chars):sub(-(maxLen + 2))
 
-	local bucket = byLastChar[chars:sub(-1)]
-	if not bucket then
+	if chars ~= SPACE then
 		return false
 	end
 
-	for trigger, replacement in pairs(bucket) do
-		if buffer:sub(-#trigger) == trigger and not buffer:sub(-(#trigger + 1), -(#trigger + 1)):match("%w") then
+	for trigger, replacement in pairs(triggers) do
+		local typed = buffer:sub(-(#trigger + 1), -2)
+		local charBefore = buffer:sub(-(#trigger + 2), -(#trigger + 2))
+		if typed == trigger and not charBefore:match("%w") then
 			buffer = ""
 			textExpander:stop()
-			for _ = 1, #trigger - 1 do
+			for _ = 1, #trigger do
 				hs.eventtap.keyStroke({}, "delete", 0)
 			end
 			hs.timer.doAfter(0.02, function()
 				if type(replacement) == "function" then
 					replacement = replacement()
 				end
-				hs.eventtap.keyStrokes(replacement)
+				-- the space was swallowed to fire the trigger, so put it back
+				hs.eventtap.keyStrokes(replacement .. SPACE)
 				textExpander:start()
 			end)
 			return true

@@ -33,13 +33,11 @@ window-padding-y = 0
 unfocused-split-opacity = 0.9
 
 # shaders
-# custom-shader = shaders/tft.glsl
 custom-shader = shaders/bloom.glsl
 resize-overlay = never
 gtk-toolbar-style = flat
 
 # keybinds
-keybind = ctrl+shift+f=unbind
 keybind = performable:ctrl+f=start_search
 keybind = performable:ctrl+c=copy_to_clipboard
 keybind = performable:ctrl+v=paste_from_clipboard
