@@ -27,8 +27,10 @@
 -- o.bind("SUPER + H", nil, "voxtype record toggle")
 -- o.bind("SUPER + PERIOD", nil, "omarchy-shell shell toggle omarchy.emojis")
 
-o.bind("SUPER + CTRL + ALT + UP", "Brightness up", "omarchy-brightness-display +5%", { locked = true, repeating = true })
-o.bind("SUPER + CTRL + ALT + DOWN", "Brightness down", "omarchy-brightness-display 5%-", { locked = true, repeating = true })
+local hyper = "CTRL + ALT + SUPER"
+
+o.bind(hyper .. " + UP", "Brightness up", "omarchy-brightness-display +5%", { locked = true, repeating = true })
+o.bind(hyper .. " + DOWN", "Brightness down", "omarchy-brightness-display 5%-", { locked = true, repeating = true })
 o.bind("ALT + mouse_up", "Brightness up", "omarchy-brightness-display +5%", { locked = true })
 o.bind("ALT + mouse_down", "Brightness down", "omarchy-brightness-display 5%-", { locked = true })
 
@@ -36,20 +38,45 @@ hl.unbind("SUPER + W")
 o.bind("SUPER + I", "Browser", { omarchy = "browser" })
 o.rebind("SUPER + Home", "Rebalance window split", hl.dsp.layout("splitratio 1.0 exact"))
 
+local function cycle_window(forward)
+  hl.dispatch(hl.dsp.window.cycle_next({ next = forward }))
+  local active = hl.get_active_window()
+  if not active then return end
+
+  local workspace = active.workspace
+  -- Raising fullscreen alone leaves floating windows allowed above it.
+  if workspace and active.fullscreen ~= 0 then
+    for _, window in ipairs(workspace:get_windows()) do
+      local other_floating = window.floating and window.address ~= active.address
+      if other_floating and not window.pinned then
+        hl.dispatch(hl.dsp.window.alter_zorder({ mode = "bottom", window = window }))
+      end
+    end
+  end
+
+  hl.dispatch(hl.dsp.window.alter_zorder({ mode = "top", window = active }))
+end
+
+for _, modifier in ipairs({ "ALT", "SUPER" }) do
+  o.rebind(modifier .. " + TAB", "Next window in active workspace", function() cycle_window(true) end)
+  o.rebind(modifier .. " + SHIFT + TAB", "Previous window in active workspace", function() cycle_window(false) end)
+end
+
+o.rebind(hyper .. " + TAB", "Toggle last two workspaces", hl.dsp.focus({ workspace = "previous" }))
+
 local function volume_if_over_bar(direction)
   local cursor = hl.get_cursor_pos()
   if not cursor then return end
 
   for _, layer in ipairs(hl.get_layers()) do
-    local is_bar = layer.namespace == "omarchy-bar" and layer.mapped
-    local horizontal_margin = layer.w * 0.1
-    local inner_left = layer.x + horizontal_margin
-    local inner_right = layer.x + layer.w - horizontal_margin
-    local within_x = cursor.x >= inner_left and cursor.x < inner_right
-    local within_y = cursor.y >= layer.y and cursor.y < layer.y + layer.h
-    if is_bar and within_x and within_y then
-      hl.exec_cmd("omarchy-audio-output-volume " .. direction)
-      return
+    if layer.namespace == "omarchy-bar" and layer.mapped then
+      local margin = layer.w * 0.1
+      local within_x = cursor.x >= layer.x + margin and cursor.x < layer.x + layer.w - margin
+      local within_y = cursor.y >= layer.y and cursor.y < layer.y + layer.h
+      if within_x and within_y then
+        hl.exec_cmd("omarchy-audio-output-volume " .. direction)
+        return
+      end
     end
   end
 end
@@ -63,18 +90,10 @@ hl.bind("SUPER + M", function()
       workspace = hl.get_active_workspace(),
       window = "tag:minimized",
     }))
-    hl.dispatch(hl.dsp.window.clear_tags({
-      window = "tag:minimized",
-    }))
+    hl.dispatch(hl.dsp.window.clear_tags({ window = "tag:minimized" }))
   else
-    hl.dispatch(hl.dsp.window.tag({
-      tag = "minimized",
-      window = hl.get_active_window(),
-    }))
-    hl.dispatch(hl.dsp.window.move({
-      workspace = "special:minimized",
-      follow = false,
-    }))
+    hl.dispatch(hl.dsp.window.tag({ tag = "minimized", window = hl.get_active_window() }))
+    hl.dispatch(hl.dsp.window.move({ workspace = "special:minimized", follow = false }))
   end
 end)
 

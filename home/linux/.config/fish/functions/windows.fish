@@ -1,15 +1,14 @@
 function windows
-    set sudoers /etc/sudoers.d/90-efibootmgr
-    if not test -f $sudoers
-        printf '%s\n' "$USER ALL=(root) NOPASSWD: /usr/bin/efibootmgr -n *" | sudo install -m 0440 /dev/stdin $sudoers
+    set -l entry (efibootmgr | string match -i '*windows*' | string sub -s 5 -l 4)[1]
+    or return 1
+
+    if not sudo -n -l /usr/bin/efibootmgr -n $entry &>/dev/null
+        printf '%s\n' "$USER ALL=(root) NOPASSWD: /usr/bin/efibootmgr -n *" |
+            sudo install -m 0440 /dev/stdin /etc/sudoers.d/90-efibootmgr
         or return 1
     end
 
-    set entry (string sub --start 5 --end 8 (efibootmgr | string match --entire -ir windows)[1])
-    sudo efibootmgr -n $entry &>/dev/null
-    or return 1
-
-    hyprshutdown --post-cmd systemctl reboot || systemctl reboot
+    sudo -n /usr/bin/efibootmgr -n $entry; and omarchy system reboot
 end
 
 alias hell="windows"

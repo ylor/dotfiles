@@ -1,0 +1,6 @@
+## Interface: 120105
+## Title: Secondary Lighting Fix
+## Notes: Sets Secondary Lighting low on logout, high on login
+## Version: 1.0
+
+SecondaryLightingFix.lua

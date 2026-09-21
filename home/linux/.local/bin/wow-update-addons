@@ -1,0 +1,108 @@
+#!/bin/sh
+# Install or update BetterBlizzFrames and BetterBlizzPlates for WoW Forever.
+set -eu
+
+addons_dir="$HOME/Games/battlenet/drive_c/Program Files (x86)/World of Warcraft/_classic_beta_/Interface/AddOns"
+check=0
+
+usage() {
+    printf '%s\n' 'Usage: wow-update-addons [--check] [--addons-dir PATH]' \
+        'Close WoW before updating. Addon settings are preserved.'
+}
+
+fail() {
+    printf 'Error: %s\n' "$*" >&2
+    exit 1
+}
+
+while [ "$#" -gt 0 ]; do
+    case "$1" in
+        --check) check=1; shift ;;
+        --addons-dir)
+            [ "$#" -ge 2 ] || fail '--addons-dir needs a path'
+            addons_dir=$2
+            shift 2
+            ;;
+        -h|--help) usage; exit 0 ;;
+        *) usage >&2; fail "Unknown argument: $1" ;;
+    esac
+done
+
+for tool in curl jq unzip awk mktemp; do
+    command -v "$tool" >/dev/null 2>&1 || fail "Required command not found: $tool"
+done
+
+[ -n "$addons_dir" ] || fail 'Addon directory cannot be empty'
+case "$addons_dir" in
+    /*) ;;
+    *) addons_dir="$PWD/$addons_dir" ;;
+esac
+
+tmp=$(mktemp -d)
+trap 'rm -rf "$tmp"' 0
+trap 'exit 130' INT
+trap 'exit 143' TERM
+trap 'exit 129' HUP
+
+fetch() {
+    curl --fail --silent --show-error --location --retry 2 \
+        --connect-timeout 15 --max-time 120 "$1" -o "$2"
+}
+
+version() {
+    awk '/^## Version:/ { sub(/^## Version:[[:space:]]*/, ""); sub(/\r$/, ""); print; exit }' "$1"
+}
+
+if [ "$check" -eq 0 ]; then
+    printf '%s\n' 'Close WoW before updating. SavedVariables and game settings are left untouched.'
+fi
+
+for addon in BetterBlizzFrames BetterBlizzPlates; do
+    fetch "https://api.github.com/repos/Bodify/$addon/releases/latest" "$tmp/release.json"
+    url=$(jq -er --arg prefix "$addon-" '
+        [.assets[] | select(.name | startswith($prefix)) |
+         select(.name | endswith(".zip")) | .browser_download_url] |
+        if length == 1 then .[0] else error("Expected one release ZIP") end
+    ' "$tmp/release.json")
+    fetch "$url" "$tmp/addon.zip"
+    unzip -tq "$tmp/addon.zip" >/dev/null
+    unzip -Z1 "$tmp/addon.zip" > "$tmp/files"
+    awk -v addon="$addon" '
+        /^\// || /\\/ || /(^|\/)\.\.(\/|$)/ { exit 1 }
+        { split($0, parts, "/"); if (parts[1] != addon) exit 1 }
+    ' "$tmp/files" || fail "$addon: unsafe archive paths"
+
+    toc="$addon/${addon}_Camelot.toc"
+    unzip -p "$tmp/addon.zip" "$toc" > "$tmp/addon.toc"
+    awk '
+        /^## Interface:/ {
+            sub(/\r$/, "")
+            for (i = 3; i <= NF; i++) {
+                gsub(/,/, "", $i)
+                if ($i == "16001") found = 1
+            }
+        }
+        END { exit !found }
+    ' "$tmp/addon.toc" || fail "$addon: release does not declare Forever 1.60.1 support"
+    latest=$(version "$tmp/addon.toc")
+    [ -n "$latest" ] || fail "$addon: missing release version"
+    installed='not installed'
+    if [ -f "$addons_dir/$toc" ]; then
+        installed=$(version "$addons_dir/$toc")
+    fi
+    if [ "$installed" = "$latest" ]; then
+        printf '%s: %s (up to date)\n' "$addon" "$latest"
+        continue
+    fi
+    printf '%s: %s -> %s\n' "$addon" "$installed" "$latest"
+    [ "$check" -eq 0 ] || continue
+
+    target="$addons_dir/$addon"
+    [ ! -L "$target" ] || fail "Refusing to replace symlink: $target"
+    mkdir -p "$tmp/staging" "$addons_dir"
+    # Extract completely before removing obsolete files from the old installation.
+    unzip -q "$tmp/addon.zip" -d "$tmp/staging"
+    rm -rf "$target"
+    mv "$tmp/staging/$addon" "$target"
+    printf 'Installed %s\n' "$target"
+done

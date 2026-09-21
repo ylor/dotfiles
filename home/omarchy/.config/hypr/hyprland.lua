@@ -10,8 +10,21 @@ dofile((os.getenv("OMARCHY_PATH") or "/usr/share/omarchy") .. "/default/hypr/boo
 -- keeping core window-manager bindings:
 omarchy_preinstalled_bindings = false
 
+-- Replace the stock 1Password rule because its forced size flashes before auth dialogs resize.
+package.loaded["default.hypr.apps.1password"] = true
+
 -- Load Omarchy defaults.
 require("default.hypr.omarchy")
+
+-- Map D3D12 descriptor heaps directly to Vulkan to reduce CPU translation overhead.
+-- Check around November 2026 whether this has become the default.
+hl.env("VKD3D_CONFIG", "descriptor_heap")
+hl.env("DXVK_NVAPI_DRS_NGX_DLSS_SR_OVERRIDE", "on")
+hl.env("DXVK_NVAPI_DRS_NGX_DLSS_SR_OVERRIDE_RENDER_PRESET_SELECTION", "render_preset_latest")
+hl.env("DXVK_NVAPI_DRS_NGX_DLSS_RR_OVERRIDE", "on")
+hl.env("DXVK_NVAPI_DRS_NGX_DLSS_RR_OVERRIDE_RENDER_PRESET_SELECTION", "render_preset_latest")
+hl.env("DXVK_NVAPI_DRS_NGX_DLSS_FG_OVERRIDE", "on")
+hl.env("DXVK_NVAPI_DRS_NGX_DLSS_FG_OVERRIDE_RENDER_PRESET_SELECTION", "render_preset_latest")
 
 -- Put your personal overrides in these files. They're loaded after Omarchy's
 -- defaults so package updates can improve the defaults without rewriting your
@@ -32,30 +45,28 @@ require("default.hypr.toggles")
 -- Add any other personal Hyprland configuration below.
 -- o.window("qemu", { workspace = "5" })
 
+o.window({ title = "^World of Warcraft.*" }, {
+  fullscreen = true,
+  suppress_event = "fullscreen",
+})
+
 hl.config({
   dwindle = {
     force_split = 2,
   },
 })
 
--- Override Agent default working directory
 local function set_qconsole_seed()
   hl.workspace_rule({
     workspace = "special:scratchpad",
     on_created_empty = [=[[workspace special:scratchpad silent] /bin/bash -c '
-      cd "$HOME/.dotfiles" 2>/dev/null && exec /usr/bin/omarchy-agent
-
-      # The stock launcher redirects HOME to Work, so bypass it for the fallback.
-      cd "$HOME" || exit 1
-      agent=$(/usr/bin/omarchy-default-agent)
-      exec /usr/bin/omarchy-launch-tui --app-id=org.omarchy.agent \
-        "${agent:?Choose default agent with: omarchy default agent <name>}"
+      cd "$HOME/.dotfiles" 2>/dev/null && exec omarchy-agent
+      cd "$HOME" || exit
+      exec omarchy-launch-tui --app-id=org.omarchy.agent "$(omarchy-default-agent)"
     ']=],
   })
 end
 
 set_qconsole_seed()
-
--- Omarchy restores its seed when refitting the console.
 hl.on("monitor.layout_changed", set_qconsole_seed)
 hl.on("monitor.focused", set_qconsole_seed)

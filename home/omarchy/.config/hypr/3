@@ -14,9 +14,10 @@ hl.config({
 })
 
 hl.workspace_rule({
-  workspace = "w[tv1]s[false]",
+  workspace = "w[tv1]",
   no_border = true,
-  gaps_out = 4,
+  -- border_size = 1
+  gaps_out = 8
 })
 
 hl.window_rule({

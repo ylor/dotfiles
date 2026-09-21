@@ -20,6 +20,7 @@ gh = "latest"
 "github:unstablebuild/rune" = "latest"
 hunk = "latest"
 node = "latest"
+"npm:@opencode/cli" = { version = "latest", allow_builds = true, allow_low_downloads = true }
 pi = "latest"
 
 [bootstrap.packages]
