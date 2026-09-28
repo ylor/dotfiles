@@ -3,7 +3,7 @@
 
 o.exec_on_start("1password --silent")
 
-o.exec_on_start("[workspace 1 silent; no_initial_focus; suppress_event activate activatefocus] helium-browser")
+o.exec_on_start("[workspace 1 silent; no_initial_focus] helium-browser")
 o.exec_on_start("[workspace 2 silent; no_initial_focus; suppress_event activate activatefocus] ghostty")
 
 -- Keep GNOME applications' font rendering consistent across sessions.

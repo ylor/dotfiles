@@ -1,5 +1,5 @@
 #!/bin/sh
-# Install or update BetterBlizzFrames and BetterBlizzPlates for WoW Forever.
+# Install or update BetterBlizzFrames, BetterBlizzPlates, BlizzMove, and Leatrix Plus for WoW Forever.
 set -eu
 
 addons_dir="$HOME/Games/battlenet/drive_c/Program Files (x86)/World of Warcraft/_classic_beta_/Interface/AddOns"
@@ -106,3 +106,100 @@ for addon in BetterBlizzFrames BetterBlizzPlates; do
     mv "$tmp/staging/$addon" "$target"
     printf 'Installed %s\n' "$target"
 done
+
+addon=BlizzMove
+fetch 'https://api.github.com/repos/Kiatra/BlizzMove/releases/latest' "$tmp/release.json"
+url=$(jq -er '
+    [.assets[] | select(.name | startswith("BlizzMove-")) |
+     select(.name | endswith(".zip")) | .browser_download_url] |
+    if length == 1 then .[0] else error("Expected one release ZIP") end
+' "$tmp/release.json")
+fetch "$url" "$tmp/addon.zip"
+unzip -tq "$tmp/addon.zip" >/dev/null
+unzip -Z1 "$tmp/addon.zip" > "$tmp/files"
+awk -v addon="$addon" '
+    /^\// || /\\/ || /(^|\/)\.\.(\/|$)/ { exit 1 }
+    { split($0, parts, "/"); if (parts[1] != addon && parts[1] != addon "_Debug") exit 1 }
+' "$tmp/files" || fail "$addon: unsafe archive paths"
+
+toc="$addon/$addon.toc"
+unzip -p "$tmp/addon.zip" "$toc" > "$tmp/addon.toc"
+awk '
+    /^## Interface:/ {
+        sub(/\r$/, "")
+        for (i = 3; i <= NF; i++) {
+            gsub(/,/, "", $i)
+            if ($i == "16001") found = 1
+        }
+    }
+    END { exit !found }
+' "$tmp/addon.toc" || fail "$addon: release does not declare Forever 1.60.1 support"
+latest=$(version "$tmp/addon.toc")
+[ -n "$latest" ] || fail "$addon: missing release version"
+installed='not installed'
+if [ -f "$addons_dir/$toc" ]; then
+    installed=$(version "$addons_dir/$toc")
+fi
+if [ "$installed" = "$latest" ]; then
+    printf '%s: %s (up to date)\n' "$addon" "$latest"
+else
+    printf '%s: %s -> %s\n' "$addon" "$installed" "$latest"
+    if [ "$check" -eq 0 ]; then
+        target="$addons_dir/$addon"
+        [ ! -L "$target" ] || fail "Refusing to replace symlink: $target"
+        mkdir -p "$tmp/staging" "$addons_dir"
+        unzip -q "$tmp/addon.zip" "$addon/*" -d "$tmp/staging"
+        rm -rf "$target"
+        mv "$tmp/staging/$addon" "$target"
+        printf 'Installed %s\n' "$target"
+    fi
+fi
+
+addon=Leatrix_Plus
+fetch 'https://api.cfwidget.com/94855' "$tmp/release.json"
+url=$(jq -er '
+    [.files[] | select(.versions | index("1.60.1")) |
+     select(.name | test("^Leatrix_Plus-[A-Za-z0-9.-]+-forever\\.zip$"))] |
+    max_by(.id) |
+    "https://mediafilez.forgecdn.net/files/\((.id / 1000) | floor)/\(.id % 1000)/\(.name)"
+' "$tmp/release.json")
+fetch "$url" "$tmp/addon.zip"
+unzip -tq "$tmp/addon.zip" >/dev/null
+unzip -Z1 "$tmp/addon.zip" > "$tmp/files"
+awk -v addon="$addon" '
+    /^\// || /\\/ || /(^|\/)\.\.(\/|$)/ { exit 1 }
+    { split($0, parts, "/"); if (parts[1] != addon) exit 1 }
+' "$tmp/files" || fail "$addon: unsafe archive paths"
+
+toc="$addon/$addon.toc"
+unzip -p "$tmp/addon.zip" "$toc" > "$tmp/addon.toc"
+awk '
+    /^## Interface:/ {
+        sub(/\r$/, "")
+        for (i = 3; i <= NF; i++) {
+            gsub(/,/, "", $i)
+            if ($i == "16001") found = 1
+        }
+    }
+    END { exit !found }
+' "$tmp/addon.toc" || fail "$addon: release does not declare Forever 1.60.1 support"
+latest=$(version "$tmp/addon.toc")
+[ -n "$latest" ] || fail "$addon: missing release version"
+installed='not installed'
+if [ -f "$addons_dir/$toc" ]; then
+    installed=$(version "$addons_dir/$toc")
+fi
+if [ "$installed" = "$latest" ]; then
+    printf '%s: %s (up to date)\n' "$addon" "$latest"
+    exit 0
+fi
+printf '%s: %s -> %s\n' "$addon" "$installed" "$latest"
+[ "$check" -eq 0 ] || exit 0
+
+target="$addons_dir/$addon"
+[ ! -L "$target" ] || fail "Refusing to replace symlink: $target"
+mkdir -p "$tmp/staging" "$addons_dir"
+unzip -q "$tmp/addon.zip" -d "$tmp/staging"
+rm -rf "$target"
+mv "$tmp/staging/$addon" "$target"
+printf 'Installed %s\n' "$target"

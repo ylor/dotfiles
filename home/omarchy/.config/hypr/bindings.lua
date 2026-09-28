@@ -29,6 +29,8 @@
 
 local hyper = "CTRL + ALT + SUPER"
 
+o.bind(hyper .. " + A", "Switch audio output", "omarchy-audio-output-switch", { locked = true })
+o.bind(hyper .. " + V", "Volume mixer", "omarchy-shell shell toggle omarchy.audio")
 o.bind(hyper .. " + UP", "Brightness up", "omarchy-brightness-display +5%", { locked = true, repeating = true })
 o.bind(hyper .. " + DOWN", "Brightness down", "omarchy-brightness-display 5%-", { locked = true, repeating = true })
 o.bind("ALT + mouse_up", "Brightness up", "omarchy-brightness-display +5%", { locked = true })

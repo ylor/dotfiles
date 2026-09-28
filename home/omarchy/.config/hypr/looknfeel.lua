@@ -2,6 +2,9 @@
 
 -- https://wiki.hypr.land/Configuring/Basics/Variables/#general
 hl.config({
+  misc = {
+    vrr = 0,
+  },
   general = {
     -- No gaps between windows or borders.
     gaps_in = 2,
