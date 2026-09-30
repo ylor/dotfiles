@@ -70,10 +70,15 @@ defaults write com.apple.AppleMultitouchTrackpad ActuateDetents -int 0
 defaults write com.apple.dock mru-spaces -bool false
 
 # Textedit
-## set plain text as default
-defaults write com.apple.TextEdit RichText -bool false
-## disable smart quotes
-defaults write com.apple.TextEdit SmartQuotes -bool false
+## sandboxed prefs, needs full disk access on the terminal
+if test -w "$HOME/Library/Containers/com.apple.TextEdit/Data/Library/Preferences"
+    ## set plain text as default
+    defaults write com.apple.TextEdit RichText -bool false
+    ## disable smart quotes
+    defaults write com.apple.TextEdit SmartQuotes -bool false
+else
+    printf '[SKIP] textedit (needs full disk access)\n'
+end
 
 # Hot Corners
 ## bottom right → mission control

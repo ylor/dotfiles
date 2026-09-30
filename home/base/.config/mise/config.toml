@@ -4,7 +4,6 @@ env_file = ".env"
 minimum_release_age = "0s"
 
 [settings.ruby]
-compile = true
 
 [settings.upgrade]
 auto_prune = false

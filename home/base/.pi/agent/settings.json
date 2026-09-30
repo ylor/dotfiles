@@ -1,10 +1,10 @@
 {
-  "lastChangelogVersion": "0.87.1",
+  "lastChangelogVersion": "0.99.1",
   "defaultModel": "gpt-6-sol",
   "defaultProvider": "openai-codex",
   "defaultThinkingLevel": "medium",
   "showCacheMissNotices": true,
-  "theme": "omarchy-system",
+  "theme": "system",
   "tuiMode": "fullscreen",
   "packages": [
     "npm:pi-web-search"
