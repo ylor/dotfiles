@@ -21,8 +21,9 @@ end
 set extension_config '{ "external_update_url": "https://services.helium.imput.net/ext" }'
 set onepassword aeblfdkhhhdcdjpifhhbdiojplfjncoa
 set darkreader eimadpbcbfnmbkopoojfekhnkhdbieeh
+set sponsorblock mnjggcdmjocbbbhaepdhchncahnbgone
 
-for id in $onepassword $darkreader
+for id in $onepassword $darkreader $sponsorblock
     set extension_file /usr/share/chromium/extensions/$id.json
 
     if not test -r $extension_file; or test "$(cat $extension_file)" != "$extension_config"

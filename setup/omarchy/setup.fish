@@ -31,4 +31,6 @@ if test (omarchy font current) != "Berkeley Mono Variable"
     omarchy font set "Berkeley Mono Variable" >/dev/null 2>&1; or return $status
 end
 
+omarchy-hyprland-toggle no-animations on
+
 dfs-success "Omarchy"

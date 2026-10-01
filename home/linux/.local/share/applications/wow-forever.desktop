@@ -1,0 +1,12 @@
+[Desktop Entry]
+Type=Application
+Name=World of Warcraft: Forever
+GenericName=World of Warcraft
+Comment=Play World of Warcraft Forever
+Exec=wow-forever
+Icon=wow-forever-symbol
+Terminal=false
+Categories=Game;
+Keywords=WoW;Warcraft;Forever;Blizzard;
+StartupNotify=true
+StartupWMClass=wowb.exe

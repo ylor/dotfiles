@@ -1,8 +1,8 @@
 {
-  "lastChangelogVersion": "0.99.1",
-  "defaultModel": "gpt-6-sol",
+  "lastChangelogVersion": "0.99.2",
+  "defaultModel": "gpt-6.1-sol",
   "defaultProvider": "openai-codex",
-  "defaultThinkingLevel": "medium",
+  "defaultThinkingLevel": "low",
   "showCacheMissNotices": true,
   "theme": "system",
   "tuiMode": "fullscreen",
@@ -10,9 +10,8 @@
     "npm:pi-web-search"
   ],
   "enabledModels": [
-    "openai-codex/gpt-6-astra",
     "openai-codex/gpt-6-luna",
-    "openai-codex/gpt-6-sol"
+    "openai-codex/gpt-6.1-sol"
   ],
   "hideThinkingBlock": false
 }

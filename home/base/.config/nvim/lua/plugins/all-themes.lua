@@ -23,7 +23,7 @@ return {
   -- package never shipped. That cost a network clone on first launch, and the
   -- theme fell back to tokyonight until nvim was restarted.
   {
-    "bjarneo/aether.nvim",
+    "omacom/aether.nvim",
     branch = "v3",
     name = "aether",
     lazy = true,
