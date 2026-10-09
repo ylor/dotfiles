@@ -1,4 +1,5 @@
 [tools]
 elixir = "latest"
 erlang = "latest"
+gitleaks = "latest"
 gleam = "latest"

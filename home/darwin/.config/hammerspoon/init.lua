@@ -18,6 +18,9 @@ require("lib.window")
 require("lib.input")
 require("lib.app.modals")
 require("lib.menubar.spaces")
+-- Since macOS 27 Golden Gate, ctrl+[1-5] space switching breaks until the Dock restarts.
+-- Do it after hs.spaces has loaded, because it crashes on load while the Dock is down.
+hs.execute("killall Dock")
 -- require("lib.menubar.windows")
 require("lib.expander")
 require("lib.quitter")

@@ -136,6 +136,10 @@ function machine_report
             set percent (awk -v "used=$used" -v "total=$total" 'BEGIN { printf "%.2f", (used / total) * 100 }')
         end
         set -l blocks (awk -v "percent=$percent" -v "width=$CURRENT_LEN" 'BEGIN { printf "%d", (percent / 100) * width }')
+        # load can exceed core count, which would overflow the box
+        if test $blocks -gt $CURRENT_LEN
+            set blocks $CURRENT_LEN
+        end
         printf '%s' (string repeat -n $blocks '█')
         if test $blocks -lt $CURRENT_LEN
             printf '%s' (string repeat -n (math "$CURRENT_LEN - $blocks") '░')
@@ -245,14 +249,11 @@ function machine_report
     #         set -f cpu_freq '???'
     # end
 
-    if string match -qr '^(FreeBSD|Darwin)$' (uname)
-        set -f load_label 'load averages: '
-    else
-        set -f load_label 'load average: '
-    end
-    set -f load_avg_1min (uptime | awk -F "$load_label" '{print $2}' | cut -d, -f1 | tr -d ' ')
-    set -f load_avg_5min (uptime | awk -F "$load_label" '{print $2}' | cut -d, -f2 | tr -d ' ')
-    set -f load_avg_15min (uptime | awk -F "$load_label" '{print $2}' | cut -d, -f3 | tr -d ' ')
+    # load averages are the only decimals in uptime output
+    set -l loads (uptime | string match -ar '\d+\.\d+')
+    set -f load_avg_1min $loads[1]
+    set -f load_avg_5min $loads[2]
+    set -f load_avg_15min $loads[3]
 
     set -f gpu_models
     if command -q lspci

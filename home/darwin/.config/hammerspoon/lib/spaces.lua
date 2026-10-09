@@ -2,6 +2,9 @@ local hs = hs ---@diagnostic disable-line: undefined-global
 
 function SpaceInfo()
 	local spaces = hs.spaces.spacesForScreen("Primary")
+	if not spaces then
+		return nil
+	end
 	local active = hs.spaces.activeSpaceOnScreen("Primary")
 	return hs.fnutils.indexOf(spaces, active), #spaces
 end
