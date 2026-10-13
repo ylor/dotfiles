@@ -5,7 +5,7 @@ hl.config({
   input = {
     accel_profile = "flat",
     sensitivity = 0,
-    kb_options = "compose:caps,shift:both_capslock_cancel,altwin:swap_alt_win",
+    kb_options = "shift:both_capslock_cancel,altwin:swap_alt_win",
   },
 })
 

@@ -1,32 +1,11 @@
 {
-  "version": 1,
-  "idle": {
-    "screensaver": 600,
-    "lock": 900
-  },
   "bar": {
-    "position": "top",
-    "transparent": false,
+    "background": "glassy",
     "centerAnchor": "omarchy.clock",
     "layout": {
-      "left": [
-        {
-          "id": "omarchy.menu"
-        },
-        {
-          "id": "omarchy.workspaces"
-        }
-      ],
       "center": [
         {
-          "id": "njpatel.omapager"
-        },
-        {
           "id": "omarchy.indicators"
-        },
-        {
-          "id": "omacom.elsewhen",
-          "zones": "New York|America/New_York, London|Europe/London, Dubai|Asia/Dubai, Tokyo|Asia/Tokyo, Los Angeles|America/Los_Angeles"
         },
         {
           "id": "omarchy.clock",
@@ -35,21 +14,33 @@
           "verticalFormat": "HH\n—\nmm"
         },
         {
-          "id": "omarchy.keyboard-layout"
-        },
-        {
-          "id": "omarchy.weather"
-        },
-        {
           "id": "omarchy.system-update"
         }
       ],
+      "left": [
+        {
+          "id": "omarchy.menu"
+        },
+        {
+          "id": "omarchy.workspaces"
+        }
+      ],
       "right": [
+        {
+          "id": "omarchy.keyboard-layout"
+        },
         {
           "id": "omarchy.tray"
         },
         {
           "id": "omarchy.agents"
+        },
+        {
+          "id": "omarchy.weather"
+        },
+        {
+          "id": "omarchy.elsewhen",
+          "zones": "New York|America/New_York, London|Europe/London, Dubai|Asia/Dubai, Tokyo|Asia/Tokyo, Los Angeles|America/Los_Angeles"
         },
         {
           "id": "omarchy.bluetooth"
@@ -67,10 +58,25 @@
           "id": "omarchy.power"
         }
       ]
-    }
+    },
+    "position": "top"
+  },
+  "dock": {
+    "pinned": [
+      "org.gnome.Nautilus",
+      "chromium",
+      "foot",
+      "omacalc",
+      "omawrite",
+      "X",
+      "YouTube"
+    ],
+    "position": "bottom"
+  },
+  "idle": {
+    "lock": 300,
+    "screensaver": 150
   },
   "plugins": [],
-  "disabledPlugins": [
-    "omarchy.notifications"
-  ]
+  "version": 1
 }

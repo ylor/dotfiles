@@ -1,6 +1,8 @@
 -- Extra autostart processes.
 -- o.launch_on_start("my-service")
 
+o.launch_on_start("hyprsunset")
+
 o.exec_on_start("1password --silent")
 
 o.exec_on_start("[workspace 1 silent; no_initial_focus] helium-browser")

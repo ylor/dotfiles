@@ -25,14 +25,22 @@
 -- Logitech MX Keys examples:
 -- o.bind("SUPER + SHIFT + S", nil, "omarchy-capture-screenshot")
 -- o.bind("SUPER + H", nil, "voxtype record toggle")
--- o.bind("SUPER + PERIOD", nil, "omarchy-shell shell toggle omarchy.emojis")
+-- o.bind("SUPER + PERIOD", nil, { panel = "omarchy.emojis" })
 
 local hyper = "CTRL + ALT + SUPER"
 
 o.bind(hyper .. " + A", "Switch audio output", "omarchy-audio-output-switch", { locked = true })
-o.bind(hyper .. " + V", "Volume mixer", "omarchy-shell shell toggle omarchy.audio")
+o.bind(hyper .. " + V", "Volume mixer", { panel = "omarchy.audio" })
 o.bind(hyper .. " + UP", "Brightness up", "omarchy-brightness-display +5%", { locked = true, repeating = true })
 o.bind(hyper .. " + DOWN", "Brightness down", "omarchy-brightness-display 5%-", { locked = true, repeating = true })
+-- The LG ignores standard input switching (VCP 0x60), so use its private 0xF4: 0x90 = HDMI-1, 0xD0 = DP-1.
+-- It also can't report the current input, so remember the last choice here.
+local on_hdmi = false
+o.bind(hyper .. " + I", "Toggle monitor input DP-1/HDMI-1", function()
+  on_hdmi = not on_hdmi
+  local code = on_hdmi and "0x90" or "0xD0"
+  hl.exec_cmd("ddcutil --sn 409NTHM0S137 --noverify --i2c-source-addr=0x50 setvcp 0xF4 " .. code)
+end, { locked = true })
 o.bind("ALT + mouse_up", "Brightness up", "omarchy-brightness-display +5%", { locked = true })
 o.bind("ALT + mouse_down", "Brightness down", "omarchy-brightness-display 5%-", { locked = true })
 

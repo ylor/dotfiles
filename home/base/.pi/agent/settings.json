@@ -1,17 +1,20 @@
 {
-  "lastChangelogVersion": "1.0.0",
-  "defaultModel": "gpt-6.1-sol",
-  "defaultProvider": "openai-codex",
-  "defaultThinkingLevel": "low",
+  "lastChangelogVersion": "1.1.0",
+  "defaultModel": "claude-sonnet-5-5",
+  "defaultProvider": "anthropic",
+  "defaultTools": [
+    "+codemode"
+  ],
   "showCacheMissNotices": true,
-  "theme": "system",
-  "tuiMode": "fullscreen",
   "packages": [
-    "npm:pi-web-search"
+    "npm:pi-web-search",
+    "npm:@gotgenes/pi-anthropic-auth"
   ],
   "enabledModels": [
-    "openai-codex/gpt-6-luna",
-    "openai-codex/gpt-6.1-sol"
+    "anthropic/claude-sonnet-5-5",
+    "anthropic/claude-opus-5-5"
   ],
-  "hideThinkingBlock": false
+  "warnings": {
+    "anthropicExtraUsage": false
+  }
 }

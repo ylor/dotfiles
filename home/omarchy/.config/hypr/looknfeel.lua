@@ -2,9 +2,6 @@
 
 -- https://wiki.hypr.land/Configuring/Basics/Variables/#general
 hl.config({
-  misc = {
-    vrr = 0,
-  },
   general = {
     -- No gaps between windows or borders.
     gaps_in = 2,
@@ -23,35 +20,8 @@ hl.workspace_rule({
 })
 
 hl.window_rule({
-  match = { float = true },
-  no_anim = true,
-})
-
-hl.window_rule({
-  match = { class = "^(1[pP]assword|com\\.onepassword\\.OnePassword)$" },
-  float = true,
-  center = true,
-  border_size = 0,
-  no_anim = true,
-  no_screen_share = true,
-})
-
-hl.window_rule({
-  match = {
-    class = "^(1[pP]assword|com\\.onepassword\\.OnePassword)$",
-    title = "^1Password$",
-  },
-  size = { 420, 390 },
-  min_size = { 420, 390 },
-  max_size = { 420, 390 },
-})
-
-
-hl.window_rule({
   match = { class = "steam", title = "Steam" },
   float = false,
-  border_size = 0,
-  no_shadow = true,
   decorate = false,
 })
 
@@ -76,35 +46,7 @@ hl.config({
 --   },
 -- })
 
-
--- https://wiki.hypr.land/Configuring/Layouts/Scrolling-Layout/
--- hl.config({
---   scrolling = {
---     -- See only one column per screen instead of two.
---     column_width = 0.97,
---   },
--- })
-
--- https://wiki.hypr.land/configuring/core/advanced-configuration/events/
--- Use a solid bar while the qconsole is open.
-local restore_bar_transparency = false
-
-hl.on("workspace.special_active", function(workspace)
-  local qconsole_open = workspace and workspace.name == "special:scratchpad"
-
-  if qconsole_open then
-    local pipe = assert(io.popen("omarchy shell shell listShellConfig | jq -r '.bar.transparent'"))
-    restore_bar_transparency = pipe:read("*l") == "true"
-    pipe:close()
-
-    if restore_bar_transparency then
-      hl.exec_cmd("omarchy bar transparent false")
-    end
-    return
-  end
-
-  if not restore_bar_transparency then return end
-
-  hl.exec_cmd("omarchy bar transparent true")
-  restore_bar_transparency = false
-end)
+-- Opt another application in to Omarchy's standard transparency.
+-- Find its class with: hyprctl clients
+-- o.transparent_window("my-app")
+-- o.transparent_window("my-app", "0.9 0.85") -- Custom active/inactive opacity.

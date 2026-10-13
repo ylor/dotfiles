@@ -10,9 +10,6 @@ dofile((os.getenv("OMARCHY_PATH") or "/usr/share/omarchy") .. "/default/hypr/boo
 -- keeping core window-manager bindings:
 omarchy_preinstalled_bindings = false
 
--- Replace the stock 1Password rule because its forced size flashes before auth dialogs resize.
-package.loaded["default.hypr.apps.1password"] = true
-
 -- Load Omarchy defaults.
 require("default.hypr.omarchy")
 
@@ -44,11 +41,6 @@ require("default.hypr.toggles")
 
 -- Add any other personal Hyprland configuration below.
 -- o.window("qemu", { workspace = "5" })
-
-o.window({ title = "^World of Warcraft.*" }, {
-  fullscreen = true,
-  suppress_event = "fullscreen",
-})
 
 hl.config({
   dwindle = {

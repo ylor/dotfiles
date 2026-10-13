@@ -3,16 +3,13 @@ command -q ghostty; or omarchy default terminal --install ghostty
 command -q hypridle; or omarchy pkg add hypridle
 systemctl --user is-enabled --quiet hypridle; or systemctl --user enable hypridle
 command -q flea; or omarchy pkg add flea
+command -q strata; or omarchy pkg add strata
 command -q trash; or omarchy pkg add trash-cli
 
 command -q lact; or omarchy pkg add lact
 systemctl is-enabled --quiet lactd; and systemctl is-active --quiet lactd; or sudo systemctl enable --now lactd
 
-set installed_plugins (omarchy plugin list --json | jq -r '.[].id')
-contains njpatel.omapager $installed_plugins; or omarchy plugin add https://github.com/njpatel/omapager.git --enable --yes
-contains jankeesvw.notification-center $installed_plugins; or omarchy plugin add https://github.com/jankeesvw/omarchy-notification-center.git --enable --yes
-
-omarchy pkg drop docker ufw-docker kdenlive libreoffice-fresh obs-studio obsidian pinta system-config-printer xournalpp
+omarchy pkg drop docker ufw-docker libreoffice-fresh obsidian pinta system-config-printer
 
 omarchy webapp remove all >/dev/null
 
