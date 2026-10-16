@@ -3,6 +3,7 @@
 config-file = ?"~/.local/state/omarchy/current/theme/ghostty.conf"
 config-file = ?mac
 config-file = ?linux
+config-file = ?omarchy
 config-file = ?local
 
 # function
