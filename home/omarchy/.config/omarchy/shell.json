@@ -5,9 +5,6 @@
     "layout": {
       "center": [
         {
-          "id": "omarchy.indicators"
-        },
-        {
           "id": "omarchy.clock",
           "format": "dddd h:mm AP",
           "formatAlt": "d MMMM 'W'ww yyyy",
@@ -56,6 +53,12 @@
         },
         {
           "id": "omarchy.power"
+        }
+      ],
+      "centerEnd": [],
+      "centerBegin": [
+        {
+          "id": "omarchy.indicators"
         }
       ]
     },

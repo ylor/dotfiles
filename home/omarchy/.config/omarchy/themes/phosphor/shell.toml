@@ -1,129 +1,18 @@
+# Pin glassy alpha so flea draws Phosphor amber as-is instead of lifting it toward white.
+[flea]
+background-alpha = 0.80
+
+# A brighter phosphor flare instead of red for "look at me".
 [bar]
-background = "#0c0a09"
-background-alpha = 1.0
-text = "#d97706"
-active = "#dc2626"
-scale-with-font = true
-size-horizontal = 26
-size-vertical = 28
-
-[hyprland]
-active-border = "#f59e0b"
-active-border-foreground = "#f59e0b"
-
-[controls]
-normal-color = "#d97706"
-normal-fill-alpha = 0.04
-normal-border = "#b45309"
-normal-border-width = 1
-normal-border-alpha = 0.6
-hover-cursor-color = "#f59e0b"
-hover-cursor-fill-alpha = 0.12
-hover-cursor-border = "#f59e0b"
-hover-cursor-border-width = 1
-hover-cursor-border-alpha = 0.8
-focus-color = "#f59e0b"
-focus-fill-alpha = 0.12
-focus-border = "#f59e0b"
-focus-border-width = 1
-focus-border-alpha = 1.0
-selected-color = "#f59e0b"
-selected-fill-alpha = 0.2
-selected-border = "#f59e0b"
-selected-border-width = 1
-selected-border-alpha = 1.0
-pressed-fill-alpha = 0.3
-selection-fill-alpha = 0.35
-
-[spacing]
-scale = 0.9
-scale-with-font = true
-
-[font]
-base-size = 12
-
-[popups]
-background = "#0c0a09"
-background-alpha = 1.0
-text = "#d97706"
-border = "#f59e0b"
-border-alpha = 1.0
-border-width = 1
-
-[tooltip]
-background = "#0c0a09"
-background-alpha = 1.0
-text = "#fb923c"
-border = "#b45309"
-border-alpha = 1.0
+active = "#ffb15e"
 
 [notifications]
-background = "#0c0a09"
-background-alpha = 1.0
-text = "#d97706"
-border = "#f59e0b"
-border-alpha = 1.0
-border-width = 1
-countdown = "#f59e0b"
-
-[launcher]
-background = "#0c0a09"
-background-alpha = 1.0
-text = "#d97706"
-border = "#d97706"
-border-alpha = 1.0
-scrim = "#0c0a09"
-scrim-alpha = 0.65
-selected-background = "#461901"
-selected-background-alpha = 1.0
-selected-text = "#d97706"
-selected-border = "#d97706"
-selected-border-alpha = 1.0
+countdown = "#ff8d09"
 
 [menu]
-background = "#0c0a09"
-background-alpha = 1.0
-text = "#d97706"
-border = "#d97706"
-border-alpha = 1.0
-scrim = "#0c0a09"
-scrim-alpha = 0.65
-selected-background = "#461901"
-selected-background-alpha = 1.0
-selected-text = "#d97706"
-selected-border = "#d97706"
-selected-border-alpha = 1.0
-
-[polkit]
-background = "#0c0a09"
-background-alpha = 1.0
-text = "#d97706"
-text-error = "#ef4444"
-border = "#f59e0b"
-border-error = "#ef4444"
-border-alpha = 1.0
-scrim = "#0c0a09"
-scrim-alpha = 0.65
-accent = "#f59e0b"
+selected-background = "#6c3801"
+selected-background-alpha = 0.2
+selected-text = "#ffb15e"
 
 [lock]
-background = "#0c0a09"
-background-alpha = 1.0
-text = "#f59e0b"
-placeholder = "#b45309"
-text-error = "#ef4444"
-border = "#b45309"
-border-active = "#f59e0b"
-border-error = "#ef4444"
-border-alpha = 1.0
-selection = "#d97706"
-selection-alpha = 0.45
-
-[image-picker]
-scrim = "#0c0a09"
-scrim-alpha = 0.65
-text = "#d97706"
-selected-border = "#f59e0b"
-selected-border-alpha = 1.0
-unselected-border = "#b45309"
-unselected-border-alpha = 0.35
+text = "#ffb15e"

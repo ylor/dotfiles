@@ -2,7 +2,7 @@
 set -e
 
 prefix="$HOME/Games/battlenet"
-game_dir="$prefix/drive_c/Program Files (x86)/World of Warcraft/_classic_beta_"
+launcher="$prefix/drive_c/Program Files (x86)/Battle.net/Battle.net.exe"
 
-cd "$game_dir"
-exec env WINEPREFIX="$prefix" PROTONPATH=GE-Proton GAMEID=umu-battlenet PROTON_VERB=run umu-run "$game_dir/WowB.exe"
+# go through Battle.net so the game gets the saved login
+exec env WINEPREFIX="$prefix" PROTONPATH=GE-Proton GAMEID=umu-battlenet PROTON_VERB=run umu-run "$launcher" --exec="launch_uid wow_classic_beta"

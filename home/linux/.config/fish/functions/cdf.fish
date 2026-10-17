@@ -1,22 +1,19 @@
 function cdf
-    set -l locations (gdbus call \
-        --session \
-        --dest org.gnome.Nautilus \
-        --object-path /org/freedesktop/FileManager1 \
-        --method org.freedesktop.DBus.Properties.Get \
-        org.freedesktop.FileManager1 OpenWindowsWithLocations 2>/dev/null)
+    set -l class (hyprctl clients -j | jq -r '
+        map(select(.class == "io.github.lgse.Strata" or .class == "com.thisisgm.flea"))
+        | min_by(.focusHistoryID).class')
 
-    set -l uri (string match -r "file://[^']+" -- $locations | head -n 1)
-    if test -z "$uri"
-        echo "cdf: no open Nautilus window" >&2
-        return 1
+    switch $class
+        case io.github.lgse.Strata
+            # strata has no location on D-Bus, but rewrites its tab session on every navigation
+            set -l session ~/.config/strata/tabs.toml
+            set -l active (string match -rg '^active = (\d+)' <$session)
+            set -l tabs (string match -rg '^value = "(.*)"' <$session)
+            cd $tabs[(math $active + 1)]
+        case com.thisisgm.flea
+            cd (flea --ui-state | jq -r .lastPath)
+        case '*'
+            echo "cdf: no file manager window" >&2
+            return 1
     end
-
-    set -l path (string unescape --style=url (string replace 'file://' '' -- $uri))
-    if not test -d "$path"
-        echo "cdf: Nautilus location is not a directory" >&2
-        return 1
-    end
-
-    cd "$path"
 end

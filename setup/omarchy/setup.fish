@@ -3,15 +3,16 @@ command -q ghostty; or omarchy default terminal --install ghostty
 command -q hypridle; or omarchy pkg add hypridle
 systemctl --user is-enabled --quiet hypridle; or systemctl --user enable hypridle
 command -q flea; or omarchy pkg add flea
-command -q strata; or omarchy pkg add strata
+# paused: command -q strata; or omarchy pkg add strata
 command -q trash; or omarchy pkg add trash-cli
 
 command -q lact; or omarchy pkg add lact
 systemctl is-enabled --quiet lactd; and systemctl is-active --quiet lactd; or sudo systemctl enable --now lactd
 
-omarchy pkg drop docker ufw-docker libreoffice-fresh obsidian pinta system-config-printer
+omarchy pkg drop docker docker-buildx docker-compose lazydocker ufw-docker nautilus nautilus-python foot libreoffice-fresh obsidian pinta system-config-printer
 
 omarchy webapp remove all >/dev/null
+omarchy tui remove Docker >/dev/null
 
 set wake_rule /etc/udev/rules.d/90-nuphy-disable-wakeup.rules
 set wake_rule_content 'ACTION=="add", SUBSYSTEM=="usb", ATTR{idVendor}=="19f5", ATTR{idProduct}=="1028", TEST=="power/wakeup", ATTR{power/wakeup}="disabled"

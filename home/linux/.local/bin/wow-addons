@@ -1,0 +1,158 @@
+#!/bin/sh
+# Install or update WoW Forever addons: BetterBlizzFrames, BetterBlizzPlates,
+# BlizzMove, Leatrix Plus, OpenMap, and Polestar.
+set -eu
+
+addons_dir=
+check=0
+
+usage() {
+    printf '%s\n' 'Usage: wow-addons [--check] [--addons-dir PATH]' \
+        'Close WoW before updating. Addon settings are preserved.'
+}
+
+fail() {
+    printf 'Error: %s\n' "$*" >&2
+    exit 1
+}
+
+while [ "$#" -gt 0 ]; do
+    case "$1" in
+        --check) check=1; shift ;;
+        --addons-dir)
+            [ "$#" -ge 2 ] || fail '--addons-dir needs a path'
+            addons_dir=$2
+            shift 2
+            ;;
+        -h|--help) usage; exit 0 ;;
+        *) usage >&2; fail "Unknown argument: $1" ;;
+    esac
+done
+
+for tool in curl jq unzip awk grep mktemp; do
+    command -v "$tool" >/dev/null 2>&1 || fail "Required command not found: $tool"
+done
+
+# Releases target Forever (_classic_beta_), so only that flavor is searched.
+if [ -z "$addons_dir" ]; then
+    count=0
+    for game in "$HOME"/Games/*/drive_c/Program\ Files*/World\ of\ Warcraft/_classic_beta_ \
+                "$HOME"/.wine/drive_c/Program\ Files*/World\ of\ Warcraft/_classic_beta_; do
+        [ -d "$game" ] || continue
+        addons_dir=$game/Interface/AddOns
+        count=$((count + 1))
+        printf 'Found install: %s\n' "$game" >&2
+    done
+    [ "$count" -gt 0 ] || fail 'No WoW install found; use --addons-dir PATH'
+    [ "$count" -eq 1 ] || fail 'Multiple WoW installs found; use --addons-dir PATH'
+fi
+case "$addons_dir" in
+    /*) ;;
+    *) addons_dir="$PWD/$addons_dir" ;;
+esac
+
+tmp=$(mktemp -d)
+trap 'rm -rf "$tmp"' 0
+trap 'exit 130' INT
+trap 'exit 143' TERM
+trap 'exit 129' HUP
+
+fetch() {
+    curl --fail --silent --show-error --location --retry 2 \
+        --connect-timeout 15 --max-time 120 "$1" -o "$2"
+}
+
+version() {
+    awk '/^## Version:/ { sub(/^## Version:[[:space:]]*/, ""); sub(/\r$/, ""); print; exit }' "$1"
+}
+
+# Prints the download URL of the single "<prefix>-*.zip" asset of the latest release.
+github_zip() {
+    fetch "https://api.github.com/repos/$1/releases/latest" "$tmp/release.json"
+    jq -er --arg prefix "$2-" '
+        [.assets[] | select(.name | startswith($prefix) and endswith(".zip")) |
+         .browser_download_url] |
+        if length == 1 then .[0] else error("Expected one release ZIP") end
+    ' "$tmp/release.json"
+}
+
+# Prints the download URL of the newest 1.60.1 file whose name matches a regex.
+curseforge_zip() {
+    fetch "https://api.cfwidget.com/$1" "$tmp/release.json"
+    jq -er --arg re "$2" '
+        [.files[] | select(.versions | index("1.60.1")) | select(.name | test($re))] |
+        max_by(.id) |
+        "https://mediafilez.forgecdn.net/files/\((.id / 1000) | floor)/\(.id % 1000)/\(.name)"
+    ' "$tmp/release.json"
+}
+
+# Installs every top-level folder in the zip, so multi-folder addons like Polestar work.
+update() {
+    addon=$1
+    toc=$addon/$2
+    url=$3
+
+    fetch "$url" "$tmp/addon.zip"
+    unzip -tq "$tmp/addon.zip" >/dev/null
+    unzip -Z1 "$tmp/addon.zip" | awk -v addon="$addon" '
+        /^\// || /\\/ || /(^|\/)\.\.(\/|$)/ { exit 1 }
+        { split($0, parts, "/"); if (index(parts[1], addon) != 1) exit 1 }
+    ' || fail "$addon: unsafe archive paths"
+
+    unzip -p "$tmp/addon.zip" "$toc" > "$tmp/addon.toc"
+    grep -Eq '^## Interface:.*[^0-9]16001([^0-9]|$)' "$tmp/addon.toc" ||
+        fail "$addon: release does not declare Forever 1.60.1 support"
+    latest=$(version "$tmp/addon.toc")
+    [ -n "$latest" ] || fail "$addon: missing release version"
+
+    installed='not installed'
+    if [ -f "$addons_dir/$toc" ]; then
+        installed=$(version "$addons_dir/$toc")
+    fi
+    if [ "$installed" = "$latest" ]; then
+        printf '%s: %s (up to date)\n' "$addon" "$latest"
+        return 0
+    fi
+    printf '%s: %s -> %s\n' "$addon" "$installed" "$latest"
+    [ "$check" -eq 0 ] || return 0
+
+    # Extract completely before removing obsolete files from the old installation.
+    mkdir -p "$tmp/staging" "$addons_dir"
+    unzip -q "$tmp/addon.zip" -d "$tmp/staging"
+    for dir in "$tmp/staging"/*/; do
+        name=$(basename "$dir")
+        target="$addons_dir/$name"
+        [ ! -L "$target" ] || fail "Refusing to replace symlink: $target"
+        rm -rf "$target"
+        # Skip debug builds and non-English locale packs like Polestar_Guides_deDE.
+        case "$name" in
+            *_enUS) ;;
+            *_Debug|*_[a-z][a-z][A-Z][A-Z]) continue ;;
+        esac
+        mv "$dir" "$target"
+        printf 'Installed %s\n' "$target"
+    done
+    rm -rf "$tmp/staging"
+}
+
+if [ "$check" -eq 0 ]; then
+    printf '%s\n' 'Close WoW before updating. SavedVariables are left untouched.'
+fi
+
+url=$(github_zip Bodify/BetterBlizzFrames BetterBlizzFrames)
+update BetterBlizzFrames BetterBlizzFrames_Camelot.toc "$url"
+
+url=$(github_zip Bodify/BetterBlizzPlates BetterBlizzPlates)
+update BetterBlizzPlates BetterBlizzPlates_Camelot.toc "$url"
+
+url=$(github_zip Kiatra/BlizzMove BlizzMove)
+update BlizzMove BlizzMove.toc "$url"
+
+url=$(curseforge_zip 94855 '^Leatrix_Plus-[A-Za-z0-9.-]+-forever\.zip$')
+update Leatrix_Plus Leatrix_Plus.toc "$url"
+
+url=$(curseforge_zip 1735937 '^OpenMap-[A-Za-z0-9.-]+\.zip$')
+update OpenMap OpenMap.toc "$url"
+
+url=$(curseforge_zip 1744437 '^Polestar-[A-Za-z0-9.-]+\.zip$')
+update Polestar Polestar.toc "$url"

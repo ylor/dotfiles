@@ -2,9 +2,9 @@
    Ghostty loads it above libadwaita's styles, so plain selectors win
    without repeating every state. */
 :root {
-  --bar-bg: {{ background }};
-  --bar-fg: {{ foreground }};
-  --theme-red: {{ red }};
+  --bg: {{ background }};
+  --fg: {{ foreground }};
+  --red: {{ red }};
 }
 
 /* windowhandle sits inside headerbar and tabbar, so painting it too would
@@ -15,8 +15,9 @@ windowhandle {
 
 headerbar,
 tabbar .box {
-  background-color: var(--bar-bg);
-  color: var(--bar-fg);
+  min-height: 0;
+  background-color: var(--bg);
+  color: var(--fg);
   box-shadow: none;
   border: none;
 }
@@ -25,36 +26,38 @@ tabbar .box {
    read the value, so this repeats omarchy glass's 0.65. */
 window:not(.background) headerbar,
 window:not(.background) tabbar .box {
-  background-color: rgb(from var(--bar-bg) r g b / 0.65);
+  background-color: rgb(from var(--bg) r g b / 0.65);
 }
 
-/* No line between the bar and the terminal. */
+/* Libadwaita draws a line under the bar and between tabs. */
 toolbarview > .top-bar,
-toolbarview scrolledwindow > undershoot.top {
+toolbarview scrolledwindow > undershoot.top,
+tabbar separator {
   box-shadow: none;
   background: none;
 }
 
-tabbar separator {
-  background: none;
+/* Libadwaita fades bars to half opacity in unfocused windows. */
+tabbar .box > scrolledwindow,
+tabbar .box > .start-action,
+tabbar .box > .end-action,
+headerbar > windowhandle,
+toolbarview > .top-bar > windowhandle {
+  filter: none;
 }
 
-tabbar .box,
-tabbar tab,
-tabbar button {
-  min-height: 0;
-}
-
-tabbar tabboxchild,
-tabbar tab {
+tabbar tabboxchild {
   border-radius: 0;
 }
 
 /* Tabs show the bar's glass. An inset outline marks state without shifting
-   layout. Mixing in oklab keeps the steps even across themes. */
-tabbar tab {
-  --ink: color-mix(in oklab, var(--bar-fg) 85%, var(--bar-bg));
-  --line: color-mix(in oklab, var(--bar-fg) 35%, var(--bar-bg));
+   layout. Mixing in oklab keeps the steps even across themes. Bare tab
+   selectors also match the dragged copy, which lives in dnd. */
+tab {
+  --ink: color-mix(in oklab, var(--fg) 85%, var(--bg));
+  --line: color-mix(in oklab, var(--fg) 35%, var(--bg));
+  min-height: 0;
+  border-radius: 0;
   font-size: 0.85em;
   background: none;
   color: var(--ink);
@@ -62,42 +65,50 @@ tabbar tab {
   transition: color 120ms, box-shadow 120ms;
 }
 
-tabbar tab:hover {
-  --ink: color-mix(in oklab, var(--bar-fg) 95%, var(--bar-bg));
-  --line: color-mix(in oklab, var(--bar-fg) 60%, var(--bar-bg));
+tab:hover {
+  --ink: color-mix(in oklab, var(--fg) 95%, var(--bg));
+  --line: color-mix(in oklab, var(--fg) 60%, var(--bg));
 }
 
-tabbar tab:selected {
-  --ink: var(--bar-fg);
-  --line: var(--bar-fg);
+tab:selected {
+  --ink: var(--fg);
+  --line: var(--fg);
 }
 
 /* An unfocused window steps down so the focused one stands out. */
-tabbar tab:backdrop {
-  --ink: color-mix(in oklab, var(--bar-fg) 70%, var(--bar-bg));
+tab:backdrop {
+  --ink: color-mix(in oklab, var(--fg) 70%, var(--bg));
 }
 
-tabbar tab:selected:backdrop {
-  --ink: color-mix(in oklab, var(--bar-fg) 80%, var(--bar-bg));
-  --line: color-mix(in oklab, var(--bar-fg) 45%, var(--bar-bg));
+tab:selected:backdrop {
+  --ink: color-mix(in oklab, var(--fg) 80%, var(--bg));
+  --line: color-mix(in oklab, var(--fg) 45%, var(--bg));
 }
 
-tabbar button {
+/* A dragged tab floats outside the bar, so it carries the bar's color. */
+dnd tab {
+  background-color: var(--bg);
+}
+
+tabbar button,
+dnd button {
+  min-height: 0;
   color: inherit;
   background: none;
   opacity: 0.7;
 }
 
-tabbar button:hover {
+tabbar button:hover,
+dnd button:hover {
   opacity: 1;
-  background-color: color-mix(in oklab, var(--bar-fg) 15%, transparent);
+  background-color: color-mix(in oklab, var(--fg) 15%, transparent);
 }
 
 /* Progress bar from OSC 9;4. Libadwaita colors it with the system accent. */
 .surface progressbar progress {
-  background-color: var(--bar-fg);
+  background-color: var(--fg);
 }
 
 .surface progressbar.error progress {
-  background-color: var(--theme-red);
+  background-color: var(--red);
 }

@@ -1,25 +1,25 @@
 # Phosphor
 
-palette = 0=#0c0a09
+palette = 0=#110500
 palette = 1=#dc2626
-palette = 2=#d97706
+palette = 2=#ff8d09
 palette = 3=#d97706
-palette = 4=#d97706
-palette = 5=#d97706
-palette = 6=#d97706
+palette = 4=#ff8d09
+palette = 5=#ff8d09
+palette = 6=#ff8d09
 palette = 7=#d97706
-palette = 8=#2d1901
+palette = 8=#522901
 palette = 9=#ef4444
-palette = 10=#10b981
-palette = 11=#f59e0b
-palette = 12=#f59e0b
-palette = 13=#f59e0b
-palette = 14=#f59e0b
-palette = 15=#f59e0b
+palette = 10=#6fe39a
+palette = 11=#ffb15e
+palette = 12=#ffb15e
+palette = 13=#ffb15e
+palette = 14=#ffb15e
+palette = 15=#ff8d09
 
-background = #0c0a09
+background = #110500
 foreground = #d97706
-cursor-color = #d97706
-cursor-text = #0c0a09
-selection-background = #d97706
-selection-foreground = #0c0a09
+cursor-color = #ff8d09
+cursor-text = #110500
+selection-background = #6c3801
+selection-foreground = #ffb15e

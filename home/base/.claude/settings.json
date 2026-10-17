@@ -5,8 +5,9 @@
     "code-review@claude-plugins-official": true,
     "swift-lsp@claude-plugins-official": true
   },
-  "outputStyle": "concise",
+  "outputStyle": "Concise",
   "tui": "fullscreen",
   "theme": "dark-ansi",
-  "switchModelsOnFlag": false
+  "remoteControlAtStartup": true,
+  "agentPushNotifEnabled": true
 }
