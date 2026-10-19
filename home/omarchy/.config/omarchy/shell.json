@@ -30,7 +30,10 @@
           "id": "omarchy.tray"
         },
         {
-          "id": "omarchy.agents"
+          "id": "omarchy.agents",
+          "providers": {
+            "codex": { "enabled": false }
+          }
         },
         {
           "id": "omarchy.weather"

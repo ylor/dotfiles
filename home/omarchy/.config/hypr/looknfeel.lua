@@ -9,7 +9,7 @@ hl.config({
     -- border_size = 1,
 
     -- Change to niri-like side-scrolling layout.
-    -- layout = "scrolling",
+    layout = "scrolling",
   },
 })
 
@@ -23,6 +23,21 @@ hl.window_rule({
   match = { class = "steam", title = "Steam" },
   float = false,
   decorate = false,
+})
+
+hl.window_rule({
+  match = { class = "^steam_app_battlenet$", title = "^World of Warcraft$" },
+  fullscreen = true,
+  suppress_event = "fullscreen maximize",
+})
+
+hl.window_rule({
+  match = { class = "^wowb?\\.exe$" },
+  -- app thinks it is fullscreen, but the compositor keeps it a tiled column
+  fullscreen_state = "0 2",
+  border_size = 0,
+  rounding = 0,
+  suppress_event = "fullscreen maximize",
 })
 
 -- https://wiki.hypr.land/Configuring/Basics/Variables/#decoration

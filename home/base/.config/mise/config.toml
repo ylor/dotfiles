@@ -9,12 +9,7 @@ minimum_release_age = "0s"
 auto_prune = false
 
 [tools]
-claude = "latest"
 cloudflared = "latest"
-codex = "latest"
 delta = "latest"
-gh = "latest"
-hunk = "latest"
 node = "latest"
-"npm:@opencode/cli" = { version = "latest", allow_builds = true, allow_low_downloads = true }
-pi = "latest"
+opencode = "latest"

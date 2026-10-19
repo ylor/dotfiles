@@ -1,13 +1,14 @@
 #!/bin/sh
-# Install or update WoW Forever addons: BetterBlizzFrames, BetterBlizzPlates,
-# BlizzMove, Leatrix Plus, OpenMap, and Polestar.
+# Install or update WoW addons for Forever (_classic_beta_) and Retail (_retail_).
+# Each flavor is found and updated on its own. Lists at the bottom: shared_addons, forever_addons, retail_addons.
 set -eu
 
-addons_dir=
+forever_dir=
+retail_dir=
 check=0
 
 usage() {
-    printf '%s\n' 'Usage: wow-addons [--check] [--addons-dir PATH]' \
+    printf '%s\n' 'Usage: wow-addons [--check] [--forever-dir PATH] [--retail-dir PATH]' \
         'Close WoW before updating. Addon settings are preserved.'
 }
 
@@ -19,40 +20,44 @@ fail() {
 while [ "$#" -gt 0 ]; do
     case "$1" in
         --check) check=1; shift ;;
-        --addons-dir)
-            [ "$#" -ge 2 ] || fail '--addons-dir needs a path'
-            addons_dir=$2
+        --forever-dir)
+            [ "$#" -ge 2 ] || fail '--forever-dir needs a path'
+            forever_dir=$2
+            shift 2
+            ;;
+        --retail-dir)
+            [ "$#" -ge 2 ] || fail '--retail-dir needs a path'
+            retail_dir=$2
             shift 2
             ;;
         -h|--help) usage; exit 0 ;;
-        *) usage >&2; fail "Unknown argument: $1" ;;
+        *) usage >&2; exit 2 ;;
     esac
 done
 
-for tool in curl jq unzip awk grep mktemp; do
+for tool in curl jq unzip awk grep sed mktemp diff; do
     command -v "$tool" >/dev/null 2>&1 || fail "Required command not found: $tool"
 done
 
-# Releases target Forever (_classic_beta_), so only that flavor is searched.
-if [ -z "$addons_dir" ]; then
-    count=0
-    for game in "$HOME"/Games/*/drive_c/Program\ Files*/World\ of\ Warcraft/_classic_beta_ \
-                "$HOME"/.wine/drive_c/Program\ Files*/World\ of\ Warcraft/_classic_beta_; do
+# Prints the AddOns dir of the single install with the given flavor folder, or nothing.
+find_addons_dir() {
+    found=
+    for game in "$HOME"/Games/*/drive_c/Program\ Files*/World\ of\ Warcraft/"$1" \
+                "$HOME"/.wine/drive_c/Program\ Files*/World\ of\ Warcraft/"$1"; do
         [ -d "$game" ] || continue
-        addons_dir=$game/Interface/AddOns
-        count=$((count + 1))
-        printf 'Found install: %s\n' "$game" >&2
+        [ -z "$found" ] || fail "Multiple $1 installs found; pass the dir explicitly"
+        found=$game/Interface/AddOns
     done
-    [ "$count" -gt 0 ] || fail 'No WoW install found; use --addons-dir PATH'
-    [ "$count" -eq 1 ] || fail 'Multiple WoW installs found; use --addons-dir PATH'
-fi
-case "$addons_dir" in
-    /*) ;;
-    *) addons_dir="$PWD/$addons_dir" ;;
-esac
+    printf '%s' "$found"
+}
+
+[ -n "$forever_dir" ] || forever_dir=$(find_addons_dir _classic_beta_)
+[ -n "$retail_dir" ] || retail_dir=$(find_addons_dir _retail_)
+[ -n "$forever_dir$retail_dir" ] || fail 'No WoW install found; use --forever-dir or --retail-dir'
 
 tmp=$(mktemp -d)
 trap 'rm -rf "$tmp"' 0
+# Exit on signals so the cleanup trap above runs.
 trap 'exit 130' INT
 trap 'exit 143' TERM
 trap 'exit 129' HUP
@@ -76,21 +81,33 @@ github_zip() {
     ' "$tmp/release.json"
 }
 
-# Prints the download URL of the newest 1.60.1 file whose name matches a regex.
+# Prints the download URL of the newest file for $game_version whose name matches a regex.
 curseforge_zip() {
     fetch "https://api.cfwidget.com/$1" "$tmp/release.json"
-    jq -er --arg re "$2" '
-        [.files[] | select(.versions | index("1.60.1")) | select(.name | test($re))] |
+    jq -er --arg re "$2" --arg ver "$game_version" '
+        [.files[] | select(.versions | any(startswith($ver))) | select(.name | test($re))] |
         max_by(.id) |
+        if . == null then error("No file matches \($re) for \($ver)") else . end |
         "https://mediafilez.forgecdn.net/files/\((.id / 1000) | floor)/\(.id % 1000)/\(.name)"
     ' "$tmp/release.json"
 }
 
+# Usage: update ADDON TOC_FILE SOURCE_FUNC SOURCE_ARGS...
 # Installs every top-level folder in the zip, so multi-folder addons like Polestar work.
 update() {
     addon=$1
     toc=$addon/$2
-    url=$3
+    shift 2
+    url=$("$@")
+
+    # Release URLs change with every version, so a known URL means nothing to download.
+    url_file=$addons_dir/$addon/.wow-addons-url
+    cached_url=
+    [ ! -f "$url_file" ] || cached_url=$(cat "$url_file")
+    if [ "$cached_url" = "$url" ] && [ -f "$addons_dir/$toc" ]; then
+        printf '%s: %s (up to date)\n' "$addon" "$(version "$addons_dir/$toc")"
+        return 0
+    fi
 
     fetch "$url" "$tmp/addon.zip"
     unzip -tq "$tmp/addon.zip" >/dev/null
@@ -99,18 +116,19 @@ update() {
         { split($0, parts, "/"); if (index(parts[1], addon) != 1) exit 1 }
     ' || fail "$addon: unsafe archive paths"
 
-    unzip -p "$tmp/addon.zip" "$toc" > "$tmp/addon.toc"
-    grep -Eq '^## Interface:.*[^0-9]16001([^0-9]|$)' "$tmp/addon.toc" ||
-        fail "$addon: release does not declare Forever 1.60.1 support"
+    unzip -l "$tmp/addon.zip" "$toc" >/dev/null 2>&1 || fail "$addon: $toc not in archive"
+    # Pawn's TOC starts with a UTF-8 BOM, which breaks the ^## match.
+    unzip -p "$tmp/addon.zip" "$toc" | sed '1s/^\xEF\xBB\xBF//' > "$tmp/addon.toc"
+    grep -Eq "^## Interface:.*[^0-9]$interface([^0-9]|\$)" "$tmp/addon.toc" ||
+        fail "$addon: release does not declare Interface $interface support"
     latest=$(version "$tmp/addon.toc")
     [ -n "$latest" ] || fail "$addon: missing release version"
 
     installed='not installed'
-    if [ -f "$addons_dir/$toc" ]; then
-        installed=$(version "$addons_dir/$toc")
-    fi
+    [ ! -f "$addons_dir/$toc" ] || installed=$(version "$addons_dir/$toc")
     if [ "$installed" = "$latest" ]; then
         printf '%s: %s (up to date)\n' "$addon" "$latest"
+        [ "$check" -eq 1 ] || printf '%s\n' "$url" > "$url_file"
         return 0
     fi
     printf '%s: %s -> %s\n' "$addon" "$installed" "$latest"
@@ -121,7 +139,7 @@ update() {
     unzip -q "$tmp/addon.zip" -d "$tmp/staging"
     for dir in "$tmp/staging"/*/; do
         name=$(basename "$dir")
-        target="$addons_dir/$name"
+        target=$addons_dir/$name
         [ ! -L "$target" ] || fail "Refusing to replace symlink: $target"
         rm -rf "$target"
         # Skip debug builds and non-English locale packs like Polestar_Guides_deDE.
@@ -133,26 +151,100 @@ update() {
         printf 'Installed %s\n' "$target"
     done
     rm -rf "$tmp/staging"
+    printf '%s\n' "$url" > "$url_file"
 }
 
-if [ "$check" -eq 0 ]; then
-    printf '%s\n' 'Close WoW before updating. SavedVariables are left untouched.'
+# Our own addon, so it is written fresh on every run.
+install_graphics_settings() {
+    dir=$addons_dir/GraphicsSettings
+    new=$tmp/GraphicsSettings
+    mkdir -p "$new"
+    cat > "$new/GraphicsSettings.toc" <<EOF
+## Interface: $interface
+## Title: Graphics Settings
+## Notes: Sets ground clutter and image sharpening on login
+## Version: 1.0
+
+GraphicsSettings.lua
+EOF
+    cat > "$new/GraphicsSettings.lua" <<'EOF'
+local function Apply()
+    SetCVar("groundEffectDensity", "256")
+    SetCVar("groundEffectDist", "500")
+    SetCVar("groundEffectFade", "370")
+    SetCVar("ResampleAlwaysSharpen", "1")
+    SetCVar("graphicsShadowQuality", "3")
+    SetCVar("graphicsSSAO", "3")
+    SetCVar("graphicsLightMode", "2")
+    SetCVar("giQuality", "3")
+end
+
+local f = CreateFrame("Frame")
+f:RegisterEvent("PLAYER_ENTERING_WORLD")
+f:SetScript("OnEvent", function(self, event, isInitialLogin, isReloadingUi)
+    if isInitialLogin or isReloadingUi then
+        -- changing secondary lighting right away used to crash the game
+        C_Timer.After(3, Apply)
+    end
+end)
+EOF
+    if diff -rq "$new" "$dir" >/dev/null 2>&1; then
+        printf 'GraphicsSettings: up to date\n'
+        return 0
+    fi
+    printf 'GraphicsSettings: changed\n'
+    [ "$check" -eq 0 ] || return 0
+    mkdir -p "$addons_dir"
+    rm -rf "$dir"
+    mv "$new" "$dir"
+    printf 'Installed %s\n' "$dir"
+}
+
+[ "$check" -eq 1 ] || printf '%s\n' 'Close WoW before updating. SavedVariables are left untouched.'
+
+# Same addons on both clients. Only the release file and TOC names differ.
+shared_addons() {
+    update Pawn Pawn.toc curseforge_zip 4646 "$pawn_re"
+    update BetterBlizzFrames "BetterBlizzFrames$blizz_toc_suffix.toc" github_zip Bodify/BetterBlizzFrames BetterBlizzFrames
+    update BetterBlizzPlates "BetterBlizzPlates$blizz_toc_suffix.toc" github_zip Bodify/BetterBlizzPlates BetterBlizzPlates
+    update BlizzMove BlizzMove.toc github_zip Kiatra/BlizzMove BlizzMove
+    update Leatrix_Plus Leatrix_Plus.toc curseforge_zip 94855 "$leatrix_re"
+}
+
+forever_addons() {
+    update OpenMap OpenMap.toc curseforge_zip 1735937 '^OpenMap-[A-Za-z0-9.-]+\.zip$'
+    update Polestar Polestar.toc curseforge_zip 1744437 '^Polestar-[A-Za-z0-9.-]+\.zip$'
+    install_graphics_settings
+}
+
+retail_addons() {
+    :
+}
+
+if [ -n "$forever_dir" ]; then
+    printf '== Forever: %s ==\n' "$forever_dir"
+    addons_dir=$forever_dir
+    game_version=1.60.1
+    interface=16001
+    pawn_re='^Pawn-[0-9.]+-Forever\.zip$'
+    leatrix_re='^Leatrix_Plus-[A-Za-z0-9.-]+-forever\.zip$'
+    blizz_toc_suffix=_Camelot
+    shared_addons
+    forever_addons
+else
+    printf '== Forever: not found, skipped ==\n'
 fi
 
-url=$(github_zip Bodify/BetterBlizzFrames BetterBlizzFrames)
-update BetterBlizzFrames BetterBlizzFrames_Camelot.toc "$url"
-
-url=$(github_zip Bodify/BetterBlizzPlates BetterBlizzPlates)
-update BetterBlizzPlates BetterBlizzPlates_Camelot.toc "$url"
-
-url=$(github_zip Kiatra/BlizzMove BlizzMove)
-update BlizzMove BlizzMove.toc "$url"
-
-url=$(curseforge_zip 94855 '^Leatrix_Plus-[A-Za-z0-9.-]+-forever\.zip$')
-update Leatrix_Plus Leatrix_Plus.toc "$url"
-
-url=$(curseforge_zip 1735937 '^OpenMap-[A-Za-z0-9.-]+\.zip$')
-update OpenMap OpenMap.toc "$url"
-
-url=$(curseforge_zip 1744437 '^Polestar-[A-Za-z0-9.-]+\.zip$')
-update Polestar Polestar.toc "$url"
+if [ -n "$retail_dir" ]; then
+    printf '== Retail: %s ==\n' "$retail_dir"
+    addons_dir=$retail_dir
+    game_version=12.
+    interface='12[0-9]{4}'
+    pawn_re='^Pawn-[0-9.]+\.zip$'
+    leatrix_re='^Leatrix_Plus-[A-Za-z0-9.]+\.zip$'
+    blizz_toc_suffix=
+    shared_addons
+    retail_addons
+else
+    printf '== Retail: not found, skipped ==\n'
+fi
