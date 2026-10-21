@@ -58,19 +58,8 @@ if grep -iq "B650 AORUS ELITE AX" /sys/devices/virtual/dmi/id/board_name
     systemctl is-enabled --quiet gigabyte-suspend-workaround.service; or sudo systemctl enable gigabyte-suspend-workaround.service
 end
 
-if command -vq 1password
-    set allowed_browsers_dir /etc/1password
-    set allowed_browsers $allowed_browsers_dir/custom_allowed_browsers
-
-    test -d $allowed_browsers_dir; or sudo mkdir -p $allowed_browsers_dir
-    test -f $allowed_browsers; or sudo touch $allowed_browsers
-
-    grep --fixed-strings --line-regexp --quiet helium-browser $allowed_browsers; or \
-        printf '%s\n' helium-browser | sudo tee --append $allowed_browsers >/dev/null
-
-    test (stat --format=%a $allowed_browsers) = 644; or sudo chmod 644 $allowed_browsers
-end
-
-dfs-fonts; or return $status
+# GPU
+command -q lact; or sudo pacman -S --needed --noconfirm lact
+systemctl is-enabled --quiet lactd; and systemctl is-active --quiet lactd; or sudo systemctl enable --now lactd
 
 dfs-success "Linux"

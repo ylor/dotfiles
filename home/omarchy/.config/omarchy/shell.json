@@ -30,9 +30,14 @@
           "id": "omarchy.tray"
         },
         {
+          "id": "io.github.thisisgm.flea-shelf"
+        },
+        {
           "id": "omarchy.agents",
           "providers": {
-            "codex": { "enabled": false }
+            "codex": {
+              "enabled": false
+            }
           }
         },
         {
@@ -63,7 +68,8 @@
         {
           "id": "omarchy.indicators"
         }
-      ]
+      ],
+      "tray": []
     },
     "position": "top"
   },
@@ -83,6 +89,10 @@
     "lock": 300,
     "screensaver": 150
   },
-  "plugins": [],
+  "plugins": [
+    {
+      "id": "typecraft.oma-cast"
+    }
+  ],
   "version": 1
 }

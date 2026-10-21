@@ -33,6 +33,11 @@ o.bind(hyper .. " + A", "Switch audio output", "omarchy-audio-output-switch", { 
 o.bind(hyper .. " + V", "Volume mixer", { panel = "omarchy.audio" })
 o.bind(hyper .. " + UP", "Brightness up", "omarchy-brightness-display +5%", { locked = true, repeating = true })
 o.bind(hyper .. " + DOWN", "Brightness down", "omarchy-brightness-display 5%-", { locked = true, repeating = true })
+-- 40% is roughly 120 nits on the LG OLED.
+local brightness_presets = { 0, 20, 40, 70, 100 }
+for key, percent in ipairs(brightness_presets) do
+  o.bind(hyper .. " + " .. key, "Brightness " .. percent .. "%", "omarchy-brightness-display " .. percent .. "%", { locked = true })
+end
 -- The LG ignores standard input switching (VCP 0x60), so use its private 0xF4: 0x90 = HDMI-1, 0xD0 = DP-1.
 -- It also can't report the current input, so remember the last choice here.
 local on_hdmi = false
@@ -117,3 +122,5 @@ o.rebind("SUPER + SHIFT + E", "File manager (cwd)", { launch = 'flea --gui "$(om
 -- flea --picker: begin. Written by `flea --picker`; `flea --picker off` removes the block whole.
 o.window("com.thisisgm.flea.picker", { tag = "+floating-window" })
 -- flea --picker: end.
+
+o.bind("ALT + SPACE", "oma-cast launcher", hl.dsp.global("oma-cast:toggle"))

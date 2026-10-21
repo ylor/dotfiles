@@ -23,10 +23,6 @@ hl.env("DXVK_NVAPI_DRS_NGX_DLSS_RR_OVERRIDE_RENDER_PRESET_SELECTION", "render_pr
 hl.env("DXVK_NVAPI_DRS_NGX_DLSS_FG_OVERRIDE", "on")
 hl.env("DXVK_NVAPI_DRS_NGX_DLSS_FG_OVERRIDE_RENDER_PRESET_SELECTION", "render_preset_latest")
 
--- Make gum confirm buttons use the terminal background.
-hl.env("GUM_CONFIRM_SELECTED_BACKGROUND", "transparent")
-hl.env("GUM_CONFIRM_UNSELECTED_BACKGROUND", "transparent")
-
 -- Put your personal overrides in these files. They're loaded after Omarchy's
 -- defaults so package updates can improve the defaults without rewriting your
 -- ~/.config/hypr files.
@@ -45,6 +41,14 @@ require("default.hypr.toggles")
 
 -- Add any other personal Hyprland configuration below.
 -- o.window("qemu", { workspace = "5" })
+
+-- Azeroth Survivors (Bevy) panics when it can't get a frame, which happens when the
+-- window is resized out of fullscreen or hidden. Keep it fullscreen and rendering.
+o.window({ initial_title = "^Azeroth Survivors$" }, {
+  fullscreen = true,
+  suppress_event = "fullscreen maximize",
+  render_unfocused = true,
+})
 
 hl.config({
   dwindle = {

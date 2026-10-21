@@ -1,0 +1,10 @@
+#!/bin/bash
+
+set -e
+
+font=$1
+
+# GTK apps read fonts from gsettings, not fontconfig.
+gsettings set org.gnome.desktop.interface font-name "$font 11"
+gsettings set org.gnome.desktop.interface document-font-name "$font 12"
+gsettings set org.gnome.desktop.interface monospace-font-name "$font 11"

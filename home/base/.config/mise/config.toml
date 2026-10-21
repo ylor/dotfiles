@@ -6,10 +6,13 @@ minimum_release_age = "0s"
 [settings.ruby]
 
 [settings.upgrade]
-auto_prune = false
+auto_prune = true
 
 [tools]
+claude = "latest"
 cloudflared = "latest"
+codex = "latest"
 delta = "latest"
 node = "latest"
 opencode = "latest"
+pi = "latest"

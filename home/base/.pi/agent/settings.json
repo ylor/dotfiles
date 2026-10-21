@@ -7,7 +7,7 @@
   ],
   "showCacheMissNotices": true,
   "packages": [
-    "npm:pi-web-search",
+    "git:github.com/ttttmr/pi-web-search",
     "npm:@gotgenes/pi-anthropic-auth"
   ],
   "enabledModels": [

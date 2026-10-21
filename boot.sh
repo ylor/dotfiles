@@ -46,7 +46,7 @@ case "$(uname)" in
     Linux)
         . /etc/os-release
         case "$ID" in
-            arch|cachyos)
+            arch)
                 sudo pacman -Syu --noconfirm --needed $PACKAGES
                 ;;
             omarchy)

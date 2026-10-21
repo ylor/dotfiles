@@ -26,6 +26,8 @@ function dfs-apply
         end
     end
 
+    dfs-fonts; or return $status
+
     dfs-link
     set -l link_status $status
     if test $link_status -ne 0

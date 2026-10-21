@@ -24,6 +24,8 @@ alpha-blending = linear-corrected
 #background-blur = macos-glass-regular
 background-blur = true
 # background-opacity = 0.90
+# TUIs paint explicit backgrounds that would otherwise stay opaque
+background-opacity-cells = true
 font-family = "Berkeley Mono Variable"
 macos-titlebar-style = tabs
 palette-generate=true

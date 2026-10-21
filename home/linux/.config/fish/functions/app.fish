@@ -20,7 +20,7 @@ function app
 
         set applications
         set application_names
-        set overrides $DOTFILES/platforms/linux/distros/cachyos/home/.local/share/applications
+        set overrides $DOTFILES/home/linux/.local/share/applications
 
         if test $action = reveal
             for override in $overrides/*.desktop

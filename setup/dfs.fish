@@ -25,11 +25,8 @@ function dfs --description "Configure the system and manage linked files"
                 set -e dfs_sudo_auth_status
             end
 
-            if test "$operation" = reset
-                dfs-reset
-            else
-                dfs-apply
-            end
+            test "$operation" = reset; and set --erase DOTFILES_PROFILE
+            dfs-apply
             set -l result $status
             dfs-stop-sudo-keepalive
             functions -e dfs-stop-sudo-keepalive sudo
