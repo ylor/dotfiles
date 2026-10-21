@@ -14,10 +14,14 @@ if not (vim.uv or vim.loop).fs_stat(lazypath) then
 end
 vim.opt.rtp:prepend(lazypath)
 
+require("config.omarchy").bootstrap()
+
 require("lazy").setup({
   spec = {
     -- add LazyVim and import its plugins
     { "LazyVim/LazyVim", import = "lazyvim.plugins" },
+    -- never loaded; listed so lazy updates and locks it
+    { "omacom/omarchy-pkgs", lazy = true },
     -- import/override with your plugins
     { import = "plugins" },
   },
