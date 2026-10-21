@@ -13,6 +13,10 @@ function CopyChromeTabURL()
     if ok then hs.pasteboard.setContents(url) end
 end
 
+function ChromeNewTabBelow()
+    hs.application.frontmostApplication():selectMenuItem({ "Tab", "New Tab Below" })
+end
+
 _G.ChromeModal = AppModal({ "Google Chrome", "Google Chrome Beta", "Google Chrome Dev" })
 -- ChromeModal:bind(Mod.main, "k", function()
 --     hs.eventtap.keyStroke({ "cmd", "shift" }, "a", 0)

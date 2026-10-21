@@ -2,9 +2,7 @@ local hs = hs ---@diagnostic disable-line: undefined-global
 
 -- Focus or cycle an app's windows on the main screen
 function AppCycler(app)
-    -- if not hs.application.find(app) then return end
-    local primary = hs.screen.primaryScreen()
-    local primaryUUID = primary:getUUID()
+    local primaryUUID = hs.screen.primaryScreen():getUUID()
 
     local windows = hs.fnutils.filter(
         hs.window.filter.new(app):getWindows(hs.window.filter.sortByLastFocused),
@@ -22,6 +20,16 @@ end
 
 function App(app)
     return function() AppCycler(app) end
+end
+
+-- Cycle the default app for a URL scheme, e.g. "http" or "mailto"
+function DefaultApp(scheme)
+    return function()
+        local bundleID = hs.urlevent.getDefaultHandler(scheme)
+        local path = hs.application.pathForBundleID(bundleID)
+        -- nameForBundleID doesn't match the app name, so use the .app filename
+        AppCycler(path:match("([^/]+)%.app$"))
+    end
 end
 
 function AppExists(app)

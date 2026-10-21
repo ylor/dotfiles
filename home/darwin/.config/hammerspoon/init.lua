@@ -30,7 +30,7 @@ hs.hotkey.bind(Mod.main, ".", App("1Password"))
 -- hs.hotkey.bind(Mod.main, "\\", App("Zed"))
 hs.hotkey.bind(Mod.main, "E", App("Finder"))
 hs.hotkey.bind(Mod.main, "G", App("Moonlight"))
-hs.hotkey.bind(Mod.main, "I", App("Google Chrome"))
+hs.hotkey.bind(Mod.main, "I", DefaultApp("http"))
 -- hs.hotkey.bind(Mod.main, "I", function()
 -- 	AppCycler(AppRunning("Safari") and "Safari" or "Dia")
 -- end)
@@ -55,6 +55,7 @@ hs.hotkey.bind(Mod.main, "W", hs.spaces.toggleMissionControl)
 hs.hotkey.bind({ "ctrl" }, "W", WindowCycleWidth)
 hs.hotkey.bind(Mod.hyper, "D", hs.spaces.toggleShowDesktop)
 hs.hotkey.bind(Mod.hyper, "H", AppZen)
+hs.hotkey.bind(Mod.hyper, "I", ToggleMonitorInput)
 hs.hotkey.bind(Mod.hyper, "L", hs.caffeinate.lockScreen)
 hs.hotkey.bind(Mod.hyper, "up", WindowMaxi)
 hs.hotkey.bind(Mod.hyper, "down", WindowMini)
@@ -74,6 +75,7 @@ _G.WindowEventTapper = hs.eventtap
 	:start()
 
 ChromeModal:bind({ "cmd", "shift" }, "c", CopyChromeTabURL)
+ChromeModal:bind({ "cmd" }, "t", ChromeNewTabBelow)
 FinderModal:bind({ "cmd" }, "l", FinderJumpToFolder)
 HeliumModal:bind(Mod.main, "k", HeliumSelectAll)
 
@@ -88,7 +90,7 @@ if Work then
 	-- hs.hotkey.bind(Mod.main, "O", App("Helium"))
 	hs.hotkey.bind(Mod.main, "M", App("Mail"))
 	hs.hotkey.bind(Mod.main, "S", App("Slack"))
-	hs.hotkey.bind(Mod.hyper, "I", App("Island"))
+	-- hs.hotkey.bind(Mod.hyper, "I", App("Island"))
 	if AppExists("/Applications/Gemini.app") then
 		hs.hotkey.bind(Mod.hyper, "A", App("Gemini"))
 	else
