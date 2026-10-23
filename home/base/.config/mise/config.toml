@@ -5,8 +5,12 @@ minimum_release_age = "0s"
 
 [settings.ruby]
 
+[settings.self_update]
+check_duration = "1h"
+
 [settings.tool_update]
 global_auto = true
+check_duration = "1h"
 
 [settings.upgrade]
 auto_prune = true

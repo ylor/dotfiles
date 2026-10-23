@@ -46,6 +46,9 @@ if status is-interactive
     alias mac="test (uname) = Darwin"
     alias linux="test (uname) = Linux"
     alias re="exec fish"
+    alias tch=touch
+    alias mvi=rename
+    alias rn=rename
 
     # for module in $__fish_config_dir/conf.d/{$KERNEL}/*.fish
     for module in $__fish_config_dir/conf.d/{$KERNEL,prompt}/*.fish

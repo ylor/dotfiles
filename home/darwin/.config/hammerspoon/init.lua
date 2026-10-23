@@ -36,7 +36,8 @@ hs.hotkey.bind(Mod.main, "I", DefaultApp("http"))
 -- end)
 -- hs.hotkey.bind(Mod.main, "O", App("Helium"))
 hs.hotkey.bind(Mod.main, "P", App("1Password"))
-hs.hotkey.bind(Mod.main, "Return", App("Ghostty"))
+local terminal = hs.fnutils.find({ "Rex", "Rex Beta" }, AppExists) or "Ghostty"
+hs.hotkey.bind(Mod.main, "Return", App(terminal))
 
 hs.hotkey.bind(Mod.hyper, ",", App("System Settings"))
 
