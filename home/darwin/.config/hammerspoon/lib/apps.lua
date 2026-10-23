@@ -46,10 +46,13 @@ function AppRunning(name)
     return app:isRunning()
 end
 
+Terminal = hs.fnutils.find({ "Rex", "Rex Beta" }, AppExists) or "Terminal"
+
+-- Rex takes the same flags as Ghostty
 function Tui(cmd)
     return function()
-        local terminal =
-        "/usr/bin/open -na /Applications/Ghostty.app --args --confirm-close-surface=false --quit-after-last-window-closed=true --window-decoration=none --command="
+        local terminal = "/usr/bin/open -na '" .. Terminal .. "' --args" ..
+            " --confirm-close-surface=false --quit-after-last-window-closed=true --window-decoration=none --command="
         hs.execute(terminal .. cmd)
         hs.timer.doAfter(0.5, function()
             WindowMaxi()

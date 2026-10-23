@@ -1,5 +1,0 @@
-window-padding-x = 4
-
-keybind = global:super+escape=toggle_quick_terminal
-keybind = global:alt+`=toggle_quick_terminal
-keybind = super+,=text:$EDITOR ~/.config/ghostty/config\r

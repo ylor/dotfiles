@@ -1,13 +1,10 @@
 # https://ghostty.org/docs/config
 
 config-file = ?"~/.local/state/omarchy/current/theme/ghostty.conf"
-config-file = ?mac
-config-file = ?linux
-config-file = ?omarchy
 config-file = ?local
 
 # function
-command = shell:"$(command -v fish || command -v /opt/homebrew/bin/fish || echo "${SHELL:-/bin/sh}")"
+command = fish
 font-size = 10
 clipboard-read = "allow"
 clipboard-paste-protection = false
@@ -18,30 +15,22 @@ window-save-state = always
 
 # form
 window-theme = ghostty
-theme = phosphor
 alpha-blending = linear-corrected
-# background = #000000
-#background-blur = macos-glass-regular
-background-blur = true
-background-opacity = 0.80
 # TUIs paint explicit backgrounds that would otherwise stay opaque
 background-opacity-cells = true
 font-family = "Berkeley Mono Variable"
-macos-titlebar-style = tabs
 palette-generate=true
 window-padding-balance = true
-# window-padding-x = 2
 window-padding-y = 0
-# window-subtitle = working-directory
 unfocused-split-opacity = 0.9
 
 # shaders
 custom-shader = shaders/bloom.glsl
 resize-overlay = never
 gtk-toolbar-style = flat
+gtk-custom-css = ?~/.local/state/omarchy/current/theme/ghostty.css
 
 # keybinds
-# keybind = performable:ctrl+f=start_search
 keybind = performable:ctrl+c=copy_to_clipboard
 keybind = performable:ctrl+v=paste_from_clipboard
 keybind = performable:ctrl+k=clear_screen
@@ -50,5 +39,3 @@ keybind = ctrl+w=close_surface
 keybind = ctrl+-=new_split:down
 keybind = ctrl+==new_split:right
 keybind = ctrl+\=new_split:right
-
-
