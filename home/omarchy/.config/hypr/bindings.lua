@@ -30,14 +30,39 @@
 local hyper = "CTRL + ALT + SUPER"
 
 o.bind(hyper .. " + A", "Switch audio output", "omarchy-audio-output-switch", { locked = true })
+o.bind(hyper .. " + L", "Lock system", "omarchy-system-lock")
 o.bind(hyper .. " + V", "Volume mixer", { panel = "omarchy.audio" })
 o.bind(hyper .. " + UP", "Brightness up", "omarchy-brightness-display +5%", { locked = true, repeating = true })
 o.bind(hyper .. " + DOWN", "Brightness down", "omarchy-brightness-display 5%-", { locked = true, repeating = true })
--- 40% is roughly 120 nits on the LG OLED.
-local brightness_presets = { 0, 20, 40, 70, 100 }
-for key, percent in ipairs(brightness_presets) do
-  o.bind(hyper .. " + " .. key, "Brightness " .. percent .. "%", "omarchy-brightness-display " .. percent .. "%", { locked = true })
+-- Step to the next multiple of 20 (p = current %), skipping when it falls outside 0-100.
+-- The lock drops a tick while the previous DDC read+write (~300ms) is still running.
+-- DDC floors 0% to 1%, so 1 counts as 0.
+local function brightness_step(next_percent)
+  return [[exec 9>"$XDG_RUNTIME_DIR/brightness-step.lock"; flock -n 9 || exit
+    p=$(omarchy-brightness-display) || exit
+    [ "$p" -le 1 ] && p=0
+    t=$(( ]] .. next_percent .. [[ ))
+    [ "$t" -ge 0 ] && [ "$t" -le 100 ] && omarchy-brightness-display "$t%"]]
 end
+
+-- Keyboard repeat (40Hz) outruns DDC, so holding steps on a slower timer instead.
+local brightness_hold
+local function stop_brightness_hold()
+  if brightness_hold then brightness_hold:set_enabled(false) end
+end
+local function brightness_hold_bind(key, description, next_percent)
+  local cmd = brightness_step(next_percent)
+  o.bind(hyper .. " + " .. key, description, function()
+    stop_brightness_hold()
+    hl.exec_cmd(cmd)
+    brightness_hold = hl.timer(function() hl.exec_cmd(cmd) end, { timeout = 400, type = "repeat" })
+  end, { locked = true })
+  -- Any-mod release, so letting go of hyper first still stops it.
+  hl.bind(key, stop_brightness_hold, { release = true, ignore_mods = true, non_consuming = true, locked = true })
+end
+brightness_hold_bind("RIGHT", "Brightness step up 10%", "(p / 10 + 1) * 10")
+brightness_hold_bind("LEFT", "Brightness step down 10%", "((p + 9) / 10 - 1) * 10")
+o.bind(hyper .. " + BACKSPACE", "Brightness 0%", "omarchy-brightness-display 0%", { locked = true })
 -- The LG ignores standard input switching (VCP 0x60), so use its private 0xF4: 0x90 = HDMI-1, 0xD0 = DP-1.
 -- It also can't report the current input, so remember the last choice here.
 local on_hdmi = false
@@ -51,6 +76,9 @@ o.bind("ALT + mouse_down", "Brightness down", "omarchy-brightness-display 5%-", 
 
 hl.unbind("SUPER + W")
 o.bind("SUPER + I", "Browser", { omarchy = "browser" })
+-- Stepping back from scrolling lands on tiling, so floating is never reached.
+local tiling_scrolling_toggle = [[if [ "$(omarchy-hyprland-workspace-layout-current)" = scrolling ]; then omarchy-hyprland-workspace-layout-toggle back; else omarchy-hyprland-workspace-layout-toggle; fi]]
+o.rebind("SUPER + L", "Toggle tiling/scrolling layout", tiling_scrolling_toggle)
 o.rebind("SUPER + Home", "Rebalance window split", hl.dsp.layout("splitratio 1.0 exact"))
 
 local function cycle_window(forward)
@@ -79,25 +107,43 @@ end
 
 o.rebind(hyper .. " + TAB", "Toggle last two workspaces", hl.dsp.focus({ workspace = "previous" }))
 
-local function volume_if_over_bar(direction)
-  local cursor = hl.get_cursor_pos()
-  if not cursor then return end
+-- Step volume onto the next multiple of 5, so a level set by hand (e.g. 37%)
+-- snaps back to the 5% grid. Shell, because reading the volume in Lua blocks Hyprland.
+local volume_up = [[v=$(LC_ALL=C pactl get-sink-volume "$(omarchy-audio-output-sink)" | grep -oP '[0-9]+(?=%)' | head -n1); omarchy-audio-output-volume +$((5 - v % 5))]]
+local volume_down = [[v=$(LC_ALL=C pactl get-sink-volume "$(omarchy-audio-output-sink)" | grep -oP '[0-9]+(?=%)' | head -n1); omarchy-audio-output-volume -$(((v + 4) % 5 + 1))]]
 
-  for _, layer in ipairs(hl.get_layers()) do
-    if layer.namespace == "omarchy-bar" and layer.mapped then
-      local margin = layer.w * 0.1
-      local within_x = cursor.x >= layer.x + margin and cursor.x < layer.x + layer.w - margin
-      local within_y = cursor.y >= layer.y and cursor.y < layer.y + layer.h
-      if within_x and within_y then
-        hl.exec_cmd("omarchy-audio-output-volume " .. direction)
-        return
-      end
-    end
-  end
+o.rebind("XF86AudioRaiseVolume", "Volume up", volume_up, { locked = true, repeating = true })
+o.rebind("XF86AudioLowerVolume", "Volume down", volume_down, { locked = true, repeating = true })
+
+-- The bar is the monitor's reserved top strip, minus 10% at each end.
+local function over_bar()
+  local cursor = hl.get_cursor_pos()
+  local monitor = hl.get_monitor_at_cursor()
+  if not cursor or not monitor then return false end
+
+  local width = monitor.width / monitor.scale
+  local x = cursor.x - monitor.x
+  local within_x = x >= width * 0.1 and x < width * 0.9
+  local within_y = cursor.y - monitor.y < monitor.reserved.top
+  return within_x and within_y
 end
 
-o.bind("mouse_up", "Volume up over Omarchy bar", function() volume_if_over_bar("raise") end, { locked = true, non_consuming = true })
-o.bind("mouse_down", "Volume down over Omarchy bar", function() volume_if_over_bar("lower") end, { locked = true, non_consuming = true })
+o.bind("mouse_up", "Volume up over Omarchy bar", function() if over_bar() then hl.exec_cmd(volume_up) end end, { locked = true, non_consuming = true })
+o.bind("mouse_down", "Volume down over Omarchy bar", function() if over_bar() then hl.exec_cmd(volume_down) end end, { locked = true, non_consuming = true })
+
+-- scroll_event_delay is low for volume, so workspace scrolling waits 300ms
+-- itself; otherwise one wheel flick skips several workspaces.
+local workspace_scroll_cooling = false
+
+local function scroll_workspace(direction)
+  if workspace_scroll_cooling then return end
+  workspace_scroll_cooling = true
+  hl.timer(function() workspace_scroll_cooling = false end, { timeout = 300, type = "oneshot" })
+  hl.dispatch(hl.dsp.focus({ workspace = direction }))
+end
+
+o.rebind("SUPER + mouse_down", "Scroll active workspace forward", function() scroll_workspace("m+1") end)
+o.rebind("SUPER + mouse_up", "Scroll active workspace backward", function() scroll_workspace("m-1") end)
 
 hl.bind("SUPER + M", function()
   if hl.get_workspace("special:minimized") then
@@ -124,3 +170,22 @@ o.window("com.thisisgm.flea.picker", { tag = "+floating-window" })
 -- flea --picker: end.
 
 o.bind("ALT + SPACE", "oma-cast launcher", hl.dsp.global("oma-cast:toggle"))
+hl.layer_rule({ match = { namespace = "^oma-cast$" }, no_anim = true, animation = "none" })
+o.bind(hyper .. " + SPACE", "Omarchy menu", { menu = "root" })
+if o.cmd_present("oma-cast") then
+  o.rebind("SUPER + SPACE", "oma-cast launcher", hl.dsp.global("oma-cast:toggle"))
+end
+
+-- In scrolling layout, toggle full-width column instead of tiled fullscreen.
+o.rebind("SUPER + CTRL + F", "Tiled full screen / column full width", function()
+  local window = hl.get_active_window()
+  local scrolling = hl.get_active_workspace().tiled_layout == "scrolling"
+  if not (window and scrolling) then
+    return hl.exec_cmd("omarchy-hyprland-window-tiled-fullscreen-toggle")
+  end
+
+  local monitor = hl.get_active_monitor()
+  local is_full = window.size.x > 0.9 * monitor.width / monitor.scale
+  local width = is_full and hl.get_config("scrolling.column_width") or 1
+  hl.dispatch(hl.dsp.layout("colresize " .. width))
+end)

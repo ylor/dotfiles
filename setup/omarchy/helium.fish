@@ -1,7 +1,6 @@
 if not command -q helium-browser
     omarchy pkg aur add helium-browser-bin
     omarchy pkg drop chromium
-    helium-browser
 end
 
 if not grep -Fxq helium /etc/1password/custom_allowed_browsers 2>/dev/null

@@ -7,6 +7,10 @@ hl.config({
     sensitivity = 0,
     kb_options = "shift:both_capslock_cancel,altwin:swap_alt_win",
   },
+  binds = {
+    -- Default 300ms drops most wheel notches on scroll binds like volume.
+    scroll_event_delay = 30,
+  },
 })
 
 -- Keyboard layout and options.

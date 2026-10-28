@@ -15,25 +15,22 @@ if command -vq sshd
 end
 
 # FIREWALL
-if command -vq ufw; and not systemctl is-enabled --quiet ufw
-    # Allow nothing in, everything out
-    sudo ufw default deny incoming
-    sudo ufw default allow outgoing
+# Distros like Omarchy enable ufw with their own rules, so add ours every run.
+# ufw skips rules that already exist.
+if command -vq ufw
+    set ssh 22/tcp
+    set sunshine 47984/tcp 47989/tcp 47990/tcp 48010/tcp 47998/udp 47999/udp 48000/udp 48002/udp 48010/udp
 
-    sudo ufw allow 22/tcp # ssh
-    sudo ufw allow 47990/tcp # sunshine
-    sudo ufw allow 47984/tcp # sunshine
-    sudo ufw allow 47989/tcp # sunshine
-    sudo ufw allow 48010/tcp # sunshine
-    sudo ufw allow 47998/udp # sunshine
-    sudo ufw allow 47999/udp # sunshine
-    sudo ufw allow 48000/udp # sunshine
-    sudo ufw allow 48002/udp # sunshine
-    sudo ufw allow 48010/udp # sunshine
+    sudo ufw default deny incoming >/dev/null
+    sudo ufw default allow outgoing >/dev/null
+    for rule in $ssh $sunshine
+        sudo ufw allow $rule >/dev/null
+    end
 
-    sudo ufw enable
-    sudo ufw reload
-    sudo systemctl enable ufw
+    if not systemctl is-enabled --quiet ufw
+        sudo ufw --force enable >/dev/null
+        sudo systemctl enable ufw
+    end
 end
 
 # DESKTOP

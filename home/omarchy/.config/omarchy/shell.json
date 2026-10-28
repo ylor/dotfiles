@@ -20,6 +20,9 @@
         },
         {
           "id": "omarchy.workspaces"
+        },
+        {
+          "id": "omarchy.active-window"
         }
       ],
       "right": [

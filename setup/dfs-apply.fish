@@ -11,6 +11,10 @@ function dfs-apply
         end
     end
 
+    # Layer scripts need the fonts and linked files, e.g. the hypr plugin build.
+    dfs-fonts; or return $status
+    dfs-link; or return $status
+
     for name in (dfs-layers)
         set layer $DOTFILES/setup/$name
         test -d $layer; or continue
@@ -26,8 +30,7 @@ function dfs-apply
         end
     end
 
-    dfs-fonts; or return $status
-
+    # Relink because some omarchy commands edit configs in place and replace symlinks.
     dfs-link
     set -l link_status $status
     if test $link_status -ne 0

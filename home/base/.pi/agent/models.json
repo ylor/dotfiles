@@ -1,0 +1,17 @@
+{
+  "$schema": "https://pi.dev/schemas/models.schema.json",
+  "providers": {
+    "openrouter": {
+      "modelOverrides": {
+        "deepseek/deepseek-v4.1-flash-1017": {
+          "compat": {
+            "openRouterRouting": {
+              "quantizations": ["fp8"],
+              "allow_fallbacks": false
+            }
+          }
+        }
+      }
+    }
+  }
+}

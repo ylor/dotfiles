@@ -1,0 +1,13 @@
+#!/bin/bash
+
+set -e
+
+plugin_dir=~/.config/hypr/plugins/expand
+
+if make -q -C "$plugin_dir" 2>/dev/null; then
+  exit 0
+fi
+
+echo -e "\e[32m\nBuild Hyprland expand plugin\e[0m"
+
+make -C "$plugin_dir"

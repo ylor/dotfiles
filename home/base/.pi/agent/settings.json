@@ -12,9 +12,11 @@
   ],
   "enabledModels": [
     "anthropic/claude-sonnet-5-5",
-    "anthropic/claude-opus-5-5"
+    "anthropic/claude-opus-5-5",
+    "openrouter/deepseek/deepseek-v4.1-flash-1017"
   ],
   "warnings": {
     "anthropicExtraUsage": false
-  }
+  },
+  "hideThinkingBlock": true
 }

@@ -2,7 +2,7 @@
 
 set -e
 
-echo -e "\nUpdate oma-cast"
+echo -e "\e[32m\nUpdate oma-cast\e[0m"
 
 git -C ~/.local/share/oma-cast pull --ff-only
 oma-cast reload

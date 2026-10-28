@@ -1,15 +1,4 @@
 {
-  "enabledPlugins": {
-    "superpowers@claude-plugins-official": true,
-    "frontend-design@claude-plugins-official": true,
-    "code-review@claude-plugins-official": true,
-    "swift-lsp@claude-plugins-official": true
-  },
-  "outputStyle": "Concise",
-  "tui": "fullscreen",
-  "theme": "dark-ansi",
-  "remoteControlAtStartup": true,
-  "agentPushNotifEnabled": true,
   "hooks": {
     "SessionStart": [
       {
@@ -22,5 +11,16 @@
         ]
       }
     ]
-  }
+  },
+  "enabledPlugins": {
+    "superpowers@claude-plugins-official": true,
+    "frontend-design@claude-plugins-official": true,
+    "code-review@claude-plugins-official": true,
+    "swift-lsp@claude-plugins-official": false
+  },
+  "outputStyle": "Concise",
+  "tui": "fullscreen",
+  "theme": "dark-ansi",
+  "remoteControlAtStartup": true,
+  "agentPushNotifEnabled": true
 }
