@@ -1,11 +1,11 @@
 [settings]
-auto_update = true
 env_file = ".env"
 minimum_release_age = "0s"
 
 [settings.ruby]
 
 [settings.self_update]
+auto = true
 check_duration = "1h"
 
 [settings.tool_update]

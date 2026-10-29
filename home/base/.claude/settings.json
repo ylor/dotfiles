@@ -18,6 +18,11 @@
     "code-review@claude-plugins-official": true,
     "swift-lsp@claude-plugins-official": false
   },
+  "attribution": {
+    "commit": "",
+    "pr": ""
+  },
+  "includeCoAuthoredBy": false,
   "outputStyle": "Concise",
   "tui": "fullscreen",
   "theme": "dark-ansi",
