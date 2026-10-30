@@ -1,5 +1,5 @@
 // Text expander. Watches typed characters and replaces a trigger with its
-// snippet. Snippets come from hl.plugin.expand.add(trigger, text) in Lua.
+// snippet. Snippets come from hl.plugin.expandr.add(trigger, text) in Lua.
 #define WLR_USE_UNSTABLE
 
 #include <hyprland/src/plugins/PluginAPI.hpp>
@@ -12,6 +12,7 @@
 #include <xkbcommon/xkbcommon.h>
 #include <optional>
 #include <unordered_map>
+#include <vector>
 
 extern "C" {
 #include <lua.h>
@@ -20,94 +21,95 @@ extern "C" {
 
 inline HANDLE PHANDLE = nullptr;
 
-static std::unordered_map<std::string, std::string> g_snippets;
-static std::string                                  g_typed;
-
-constexpr size_t MAX_TYPED = 128;
+struct SSnippet {
+    std::string               trigger;
+    size_t                    backspaces; // trigger chars that already reached the app
+    std::vector<xkb_keysym_t> keysyms;
+};
 
 struct SKeyStroke {
     xkb_keycode_t  keycode;
     xkb_mod_mask_t mods;
 };
 
+static std::vector<SSnippet> g_snippets;
+static std::string           g_typed;
+
+constexpr size_t MAX_TYPED = 128;
+
 static bool isContinuationByte(char c) {
     return (static_cast<unsigned char>(c) & 0xC0) == 0x80;
 }
 
-static size_t countChars(const std::string& s) {
-    return std::ranges::count_if(s, [](char c) { return !isContinuationByte(c); });
-}
-
-static std::u32string decodeUtf8(const std::string& s) {
-    std::u32string out;
-    size_t         i = 0;
-    while (i < s.size()) {
+static std::vector<xkb_keysym_t> toKeysyms(const std::string& s) {
+    std::vector<xkb_keysym_t> out;
+    for (size_t i = 0; i < s.size();) {
         const unsigned char lead = s[i];
         const int           len  = lead < 0x80 ? 1 : (lead >> 5) == 0x6 ? 2 : (lead >> 4) == 0xE ? 3 : 4;
         char32_t            cp   = len == 1 ? lead : lead & (0x3F >> (len - 1));
         for (int j = 1; j < len && i + j < s.size(); j++)
             cp = (cp << 6) | (s[i + j] & 0x3F);
-        out += cp;
         i += len;
+
+        if (cp == '\n')
+            out.push_back(XKB_KEY_Return);
+        else if (cp == '\t')
+            out.push_back(XKB_KEY_Tab);
+        else
+            out.push_back(xkb_utf32_to_keysym(cp));
     }
     return out;
 }
 
-static xkb_keysym_t keysymFor(char32_t cp) {
-    if (cp == '\n')
-        return XKB_KEY_Return;
-    if (cp == '\t')
-        return XKB_KEY_Tab;
-    return xkb_utf32_to_keysym(cp);
-}
-
-// Find a key and modifier combo in the current layout that produces sym.
-static std::optional<SKeyStroke> findKey(xkb_keymap* keymap, xkb_layout_index_t layout, xkb_keysym_t sym) {
-    const auto last = xkb_keymap_max_keycode(keymap);
+// One pass over the keymap: the first key and modifier combo that produces each keysym.
+static std::unordered_map<xkb_keysym_t, SKeyStroke> mapKeys(xkb_keymap* keymap, xkb_layout_index_t layout) {
+    std::unordered_map<xkb_keysym_t, SKeyStroke> keys;
+    const auto                                   last = xkb_keymap_max_keycode(keymap);
     for (auto keycode = xkb_keymap_min_keycode(keymap); keycode <= last; keycode++) {
         const auto levels = xkb_keymap_num_levels_for_key(keymap, keycode, layout);
         for (xkb_level_index_t level = 0; level < levels; level++) {
-            const xkb_keysym_t* syms  = nullptr;
-            const int           count = xkb_keymap_key_get_syms_by_level(keymap, keycode, layout, level, &syms);
-            if (count != 1 || syms[0] != sym)
+            const xkb_keysym_t* syms = nullptr;
+            if (xkb_keymap_key_get_syms_by_level(keymap, keycode, layout, level, &syms) != 1)
                 continue;
 
             xkb_mod_mask_t mods      = 0;
             const bool     reachable = xkb_keymap_key_get_mods_for_level(keymap, keycode, layout, level, &mods, 1) > 0;
-            if (!reachable && level != 0)
-                continue;
-
-            return SKeyStroke{keycode, mods};
+            if (reachable || level == 0)
+                keys.try_emplace(syms[0], SKeyStroke{keycode, mods});
         }
     }
-    return std::nullopt;
+    return keys;
 }
 
 // Sends keys straight to the focused client. They skip Hyprland's input
 // handling, so they never come back through onKey.
-static void replace(SP<IKeyboard> keyboard, uint32_t timeMs, size_t backspaces, const std::string& text) {
-    const auto keymap = keyboard->m_xkbKeymap;
+static void replace(SP<IKeyboard> keyboard, uint32_t timeMs, const SSnippet& snippet) {
     const auto layout = xkb_state_serialize_layout(keyboard->m_xkbState, XKB_STATE_LAYOUT_EFFECTIVE);
+    const auto keys   = mapKeys(keyboard->m_xkbKeymap, layout);
 
-    auto tap = [&](const SKeyStroke& key) {
-        // Clear locked mods so Caps Lock doesn't flip the case.
-        g_pSeatManager->sendKeyboardMods(key.mods, 0, 0, layout);
+    std::optional<xkb_mod_mask_t> sentMods;
+    auto                          tap = [&](const SKeyStroke& key) {
+        if (sentMods != key.mods) {
+            // Clear locked mods so Caps Lock doesn't flip the case.
+            g_pSeatManager->sendKeyboardMods(key.mods, 0, 0, layout);
+            sentMods = key.mods;
+        }
         g_pSeatManager->sendKeyboardKey(timeMs, key.keycode - 8, WL_KEYBOARD_KEY_STATE_PRESSED);
         g_pSeatManager->sendKeyboardKey(timeMs, key.keycode - 8, WL_KEYBOARD_KEY_STATE_RELEASED);
     };
 
-    if (const auto backspace = findKey(keymap, layout, XKB_KEY_BackSpace)) {
-        for (size_t i = 0; i < backspaces; i++)
-            tap(*backspace);
+    if (const auto backspace = keys.find(XKB_KEY_BackSpace); backspace != keys.end()) {
+        for (size_t i = 0; i < snippet.backspaces; i++)
+            tap(backspace->second);
     }
 
-    for (const auto cp : decodeUtf8(text)) {
-        const auto key = findKey(keymap, layout, keysymFor(cp));
-        if (!key) {
-            Log::logger->log(Log::WARN, "[expand] no key for U+{:04X} in the current layout", static_cast<uint32_t>(cp));
+    for (const auto sym : snippet.keysyms) {
+        const auto key = keys.find(sym);
+        if (key == keys.end()) {
+            LOG(Log::WARN, "no key for keysym 0x{:x} in the current layout", sym);
             continue;
         }
-        tap(*key);
+        tap(key->second);
     }
 
     const auto& mods = keyboard->m_modifiersState;
@@ -140,23 +142,21 @@ static void onKey(const IKeyboard::SKeyEvent& event, Event::SCallbackInfo& info)
         return;
 
     if (sym == XKB_KEY_BackSpace) {
-        while (!g_typed.empty() && isContinuationByte(g_typed.back()))
+        while (!g_typed.empty()) {
+            const char last = g_typed.back();
             g_typed.pop_back();
-        if (!g_typed.empty())
-            g_typed.pop_back();
+            if (!isContinuationByte(last))
+                break;
+        }
         return;
     }
 
-    const bool ctrl     = xkb_state_mod_name_is_active(state, XKB_MOD_NAME_CTRL, XKB_STATE_MODS_EFFECTIVE) > 0;
-    const bool alt      = xkb_state_mod_name_is_active(state, XKB_MOD_NAME_ALT, XKB_STATE_MODS_EFFECTIVE) > 0;
-    const bool super    = xkb_state_mod_name_is_active(state, XKB_MOD_NAME_LOGO, XKB_STATE_MODS_EFFECTIVE) > 0;
-    const bool shortcut = ctrl || alt || super;
+    const bool shortcut = xkb_state_mod_names_are_active(state, XKB_STATE_MODS_EFFECTIVE, XKB_STATE_MATCH_ANY, XKB_MOD_NAME_CTRL, XKB_MOD_NAME_ALT, XKB_MOD_NAME_LOGO, nullptr) > 0;
 
-    char      text[16] = {};
-    const int length   = xkb_state_key_get_utf8(state, keycode, text, sizeof(text));
+    char       text[16]  = {};
+    const int  length    = shortcut ? 0 : xkb_state_key_get_utf8(state, keycode, text, sizeof(text));
     const bool printable = length > 0 && static_cast<unsigned char>(text[0]) >= 0x20 && text[0] != 0x7F;
-
-    if (shortcut || !printable) {
+    if (!printable) {
         g_typed.clear();
         return;
     }
@@ -165,25 +165,31 @@ static void onKey(const IKeyboard::SKeyEvent& event, Event::SCallbackInfo& info)
     if (g_typed.size() > MAX_TYPED)
         g_typed.erase(0, g_typed.size() - MAX_TYPED);
 
-    for (const auto& [trigger, snippet] : g_snippets) {
-        if (!g_typed.ends_with(trigger))
+    for (const auto& snippet : g_snippets) {
+        if (!g_typed.ends_with(snippet.trigger))
             continue;
 
         g_typed.clear();
         // Swallow the last trigger key; the earlier ones already reached the app.
         info.cancelled = true;
-        replace(keyboard, event.timeMs, countChars(trigger) - 1, snippet);
+        replace(keyboard, event.timeMs, snippet);
         return;
     }
 }
 
 static int luaAdd(lua_State* L) {
-    const char* trigger = luaL_checkstring(L, 1);
-    const char* snippet = luaL_checkstring(L, 2);
-    if (!*trigger)
-        return Config::Lua::Bindings::Internal::configError(L, "expand.add: trigger must not be empty");
+    const std::string trigger = luaL_checkstring(L, 1);
+    const std::string text    = luaL_checkstring(L, 2);
+    if (trigger.empty())
+        return Config::Lua::Bindings::Internal::configError(L, "expandr.add: trigger must not be empty");
 
-    g_snippets[trigger] = snippet;
+    SSnippet snippet{trigger, toKeysyms(trigger).size() - 1, toKeysyms(text)};
+
+    const auto existing = std::ranges::find(g_snippets, trigger, &SSnippet::trigger);
+    if (existing != g_snippets.end())
+        *existing = std::move(snippet);
+    else
+        g_snippets.push_back(std::move(snippet));
     return 0;
 }
 
@@ -197,8 +203,8 @@ APICALL EXPORT PLUGIN_DESCRIPTION_INFO PLUGIN_INIT(HANDLE handle) {
     const std::string HASH        = __hyprland_api_get_hash();
     const std::string CLIENT_HASH = __hyprland_api_get_client_hash();
     if (HASH != CLIENT_HASH) {
-        HyprlandAPI::addNotification(PHANDLE, "[expand] Built for a different Hyprland. Rebuild it.", CHyprColor{1.0, 0.2, 0.2, 1.0}, 8000);
-        throw std::runtime_error("[expand] version mismatch");
+        HyprlandAPI::addNotification(PHANDLE, "[hypr-expandr] Built for a different Hyprland. Rebuild it.", CHyprColor{1.0, 0.2, 0.2, 1.0}, 8000);
+        throw std::runtime_error("[hypr-expandr] version mismatch");
     }
 
     static auto keyListener    = Event::bus()->m_events.input.keyboard.key.listen(onKey);
@@ -207,9 +213,9 @@ APICALL EXPORT PLUGIN_DESCRIPTION_INFO PLUGIN_INIT(HANDLE handle) {
     static auto clickListener = Event::bus()->m_events.input.mouse.button.listen([](const IPointer::SButtonEvent&, Event::SCallbackInfo&) { g_typed.clear(); });
     static auto focusListener = Event::bus()->m_events.input.keyboard.focus.listen([](SP<CWLSurfaceResource>) { g_typed.clear(); });
 
-    HyprlandAPI::addLuaFunction(PHANDLE, "expand", "add", luaAdd);
+    HyprlandAPI::addLuaFunction(PHANDLE, "expandr", "add", luaAdd);
 
-    return {"expand", "Replaces typed triggers with snippets", "roly", "1.0"};
+    return {"hypr-expandr", "Replaces typed triggers with snippets", "roly", "1.0"};
 }
 
 APICALL EXPORT void PLUGIN_EXIT() {}

@@ -2,12 +2,12 @@
 
 set -e
 
-plugin_dir=~/.config/hypr/plugins/expand
+plugin_dir=~/.config/hypr/plugins/hypr-expandr
 
 if make -q -C "$plugin_dir" 2>/dev/null; then
   exit 0
 fi
 
-echo -e "\e[32m\nBuild Hyprland expand plugin\e[0m"
+echo -e "\e[32m\nBuild hypr-expandr plugin\e[0m"
 
 make -C "$plugin_dir"

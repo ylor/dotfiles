@@ -1,6 +1,6 @@
 -- Text expander: typing a trigger replaces it with the snippet.
--- The plugin source is in plugins/expand; setup builds expand.so there.
-local plugin = os.getenv("HOME") .. "/.config/hypr/plugins/expand/expand.so"
+-- The plugin source is in plugins/hypr-expandr; setup builds hypr-expandr.so there.
+local plugin = os.getenv("HOME") .. "/.config/hypr/plugins/hypr-expandr/hypr-expandr.so"
 
 if io.open(plugin) then
   hl.plugin.load(plugin)
@@ -16,6 +16,6 @@ local function base64_decode(encoded)
   return decoded
 end
 
-if hl.plugin.expand then
-  hl.plugin.expand.add("@@ ", base64_decode("cm9seXJleWVzQG1lLmNvbQ=="))
+if hl.plugin.expandr then
+  hl.plugin.expandr.add("@@ ", base64_decode("cm9seXJleWVzQG1lLmNvbQ=="))
 end

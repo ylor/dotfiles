@@ -177,6 +177,39 @@ if o.cmd_present("oma-cast") then
 end
 
 -- In scrolling layout, toggle full-width column instead of tiled fullscreen.
+-- Neighbouring columns peek in at the edges so they stay findable.
+local peek = 0.03
+
+local function monitor_width()
+  local monitor = hl.get_active_monitor()
+  return monitor.width / monitor.scale
+end
+
+-- Stacked windows share their column's x, so they count as neither side.
+local function neighbours(window)
+  local left, right = 0, 0
+  for _, other in ipairs(hl.get_active_workspace():get_windows()) do
+    if not other.floating then
+      if other.at.x < window.at.x then left = 1 end
+      if other.at.x > window.at.x then right = 1 end
+    end
+  end
+  return left, right
+end
+
+-- The view only scrolls to fit the column, so shift it to leave room for each peek.
+local function center_between_peeks()
+  local window = hl.get_active_window()
+  local left, right = neighbours(window)
+  local width = monitor_width()
+  local target_x = hl.get_active_monitor().x + (width - window.size.x + (left - right) * peek * width) / 2
+  hl.dispatch(hl.dsp.layout(string.format("move %+d", math.floor(target_x - window.at.x + 0.5))))
+end
+
+local function is_wide(window)
+  return window.size.x > 0.9 * monitor_width()
+end
+
 o.rebind("SUPER + CTRL + F", "Tiled full screen / column full width", function()
   local window = hl.get_active_window()
   local scrolling = hl.get_active_workspace().tiled_layout == "scrolling"
@@ -184,8 +217,19 @@ o.rebind("SUPER + CTRL + F", "Tiled full screen / column full width", function()
     return hl.exec_cmd("omarchy-hyprland-window-tiled-fullscreen-toggle")
   end
 
-  local monitor = hl.get_active_monitor()
-  local is_full = window.size.x > 0.9 * monitor.width / monitor.scale
-  local width = is_full and hl.get_config("scrolling.column_width") or 1
-  hl.dispatch(hl.dsp.layout("colresize " .. width))
+  if is_wide(window) then
+    return hl.dispatch(hl.dsp.layout("colresize " .. hl.get_config("scrolling.column_width")))
+  end
+  local left, right = neighbours(window)
+  hl.dispatch(hl.dsp.layout("colresize " .. (1 - (left + right) * peek)))
+  center_between_peeks()
+end)
+
+-- Focusing a neighbour scrolls it into view; coming back must restore both peeks.
+hl.on("window.active", function()
+  local window = hl.get_active_window()
+  local scrolling = hl.get_active_workspace().tiled_layout == "scrolling"
+  if window and scrolling and not window.floating and is_wide(window) then
+    center_between_peeks()
+  end
 end)

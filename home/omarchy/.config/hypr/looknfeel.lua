@@ -105,19 +105,25 @@ hl.window_rule({
 
 -- Scrolling columns are 0.49 wide so a third window peeks in from the edge.
 -- With exactly two there is nothing to peek, so they fill the screen instead.
-local function scrolling_tiled_count()
+-- A column the user widened to full is left alone. Its stored width is the
+-- user's, unlike a lone column that fullscreen_on_one_column only draws full.
+local function auto_sized_count()
   local workspace = hl.get_active_workspace()
   if not workspace or workspace.tiled_layout ~= "scrolling" then return 0 end
 
   local tiled = 0
   for _, window in ipairs(workspace:get_windows()) do
-    if not window.floating then tiled = tiled + 1 end
+    if not window.floating then
+      local column = window.layout and window.layout.column
+      if column and column.width > 0.9 then return 0 end
+      tiled = tiled + 1
+    end
   end
   return tiled
 end
 
 local function fill_two_columns()
-  if scrolling_tiled_count() == 2 then
+  if auto_sized_count() == 2 then
     hl.dispatch(hl.dsp.layout("fit visible"))
   end
 end
@@ -126,7 +132,7 @@ end
 -- the first column peeking in. A window that opens floating is undone by window.open.
 -- The opening window is already counted here.
 hl.on("window.open_early", function()
-  if scrolling_tiled_count() == 3 then
+  if auto_sized_count() == 3 then
     hl.dispatch(hl.dsp.layout("colresize all 0.49"))
   end
 end)

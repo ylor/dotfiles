@@ -5,7 +5,7 @@ systemctl --user is-enabled --quiet hypridle; or systemctl --user enable hypridl
 command -q flea; or omarchy pkg add flea
 # paused: command -q strata; or omarchy pkg add strata
 command -q trash; or omarchy pkg add trash-cli
-make --silent -C ~/.config/hypr/plugins/expand; or return $status
+make --silent -C ~/.config/hypr/plugins/hypr-expandr; or return $status
 
 omarchy pkg drop docker docker-buildx docker-compose lazydocker ufw-docker nautilus nautilus-python foot libreoffice-fresh obsidian pinta system-config-printer
 

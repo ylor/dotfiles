@@ -58,52 +58,52 @@ o.window({ initial_title = "^Azeroth Survivors$" }, {
   idle_inhibit = "always",
 })
 
--- 1Password's auth modal should hold focus and dim around it, like the polkit prompt.
--- The modal and the main window open identically: floating, "1Password", 875x600.
--- The modal shrinks within ~33ms, so hide new windows briefly and split them by width.
-o.window({ class = "^com\\.onepassword\\.OnePassword$", title = "^1Password$" }, { no_anim = true })
+-- -- 1Password's auth modal should hold focus and dim around it, like the polkit prompt.
+-- -- The modal and the main window open identically: floating, "1Password", 875x600.
+-- -- The modal shrinks within ~33ms, so hide new windows briefly and split them by width.
+-- o.window({ class = "^com\\.onepassword\\.OnePassword$", title = "^1Password$" }, { no_anim = true })
 
--- The new window is still floating here, so it never finds itself.
-local function tiled_onepassword()
-  for _, window in ipairs(hl.get_windows()) do
-    if window.class == "com.onepassword.OnePassword" and not window.floating then
-      return window
-    end
-  end
-end
+-- -- The new window is still floating here, so it never finds itself.
+-- local function tiled_onepassword()
+--   for _, window in ipairs(hl.get_windows()) do
+--     if window.class == "com.onepassword.OnePassword" and not window.floating then
+--       return window
+--     end
+--   end
+-- end
 
-hl.on("window.open", function(window)
-  if window.class ~= "com.onepassword.OnePassword" then
-    return
-  end
+-- hl.on("window.open", function(window)
+--   if window.class ~= "com.onepassword.OnePassword" then
+--     return
+--   end
 
-  local target = "address:" .. window.address
-  local function set_prop(prop, value)
-    hl.dispatch(hl.dsp.window.set_prop({ prop = prop, value = value, window = target }))
-  end
+--   local target = "address:" .. window.address
+--   local function set_prop(prop, value)
+--     hl.dispatch(hl.dsp.window.set_prop({ prop = prop, value = value, window = target }))
+--   end
 
-  set_prop("opacity", "0")
+--   set_prop("opacity", "0")
 
-  hl.timer(function()
-    local is_modal = window.size.x < 600
-    if is_modal then
-      set_prop("stay_focused", "1")
-      set_prop("dim_around", "1")
-    else
-      -- Only the main window tiles. Settings and other extras float centered over it.
-      local main = tiled_onepassword()
-      if main then
-        local x = main.at.x + (main.size.x - window.size.x) // 2
-        local y = main.at.y + (main.size.y - window.size.y) // 2
-        hl.dispatch(hl.dsp.window.move({ x = x, y = y, window = target }))
-      else
-        hl.dispatch(hl.dsp.window.float({ action = "off", window = target }))
-      end
-    end
+--   hl.timer(function()
+--     local is_modal = window.size.x < 600
+--     if is_modal then
+--       set_prop("stay_focused", "1")
+--       set_prop("dim_around", "1")
+--     else
+--       -- Only the main window tiles. Settings and other extras float centered over it.
+--       local main = tiled_onepassword()
+--       if main then
+--         local x = main.at.x + (main.size.x - window.size.x) // 2
+--         local y = main.at.y + (main.size.y - window.size.y) // 2
+--         hl.dispatch(hl.dsp.window.move({ x = x, y = y, window = target }))
+--       else
+--         hl.dispatch(hl.dsp.window.float({ action = "off", window = target }))
+--       end
+--     end
 
-    set_prop("opacity", "1")
-  end, { type = "oneshot", timeout = 50 })
-end)
+--     set_prop("opacity", "1")
+--   end, { type = "oneshot", timeout = 50 })
+-- end)
 
 hl.config({
   dwindle = {
@@ -113,12 +113,8 @@ hl.config({
 
 local function set_qconsole_seed()
   hl.workspace_rule({
-    workspace = "special:scratchpad",
-    on_created_empty = [=[[workspace special:scratchpad silent] /bin/bash -c '
-      cd "$HOME/.dotfiles" 2>/dev/null && exec omarchy-agent
-      cd "$HOME" || exit
-      exec omarchy-launch-tui --app-id=org.omarchy.agent "$(omarchy-default-agent)"
-    ']=],
+    workspace = "special:qconsole",
+    on_created_empty = "[workspace special:qconsole silent] cd ~/.dotfiles && omarchy-agent",
   })
 end
 
