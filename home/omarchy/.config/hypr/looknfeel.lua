@@ -20,6 +20,12 @@ hl.config({
     -- Change to niri-like side-scrolling layout.
     layout = "scrolling",
   },
+
+  -- Hover-focus only scrolls a column into view if 40% of the monitor width of it
+  -- is already visible, so peeking columns needed a click. 0 always follows.
+  scrolling = {
+    follow_min_visible = 0,
+  },
 })
 
 -- https://wiki.hypr.land/Configuring/Basics/Variables/#decoration
@@ -47,6 +53,21 @@ hl.config({
       color_inactive = "rgba(" .. shadow .. "25)",
     },
   },
+})
+
+-- Omarchy keeps fullscreen apps in SDR. Switch to HDR so HDR games
+-- (RenoDX, DXVK_HDR) actually reach the display in HDR mode.
+hl.config({
+  render = {
+    cm_auto_hdr = 1,
+  },
+})
+
+hl.window_rule({
+  match = { class = "^helium$" },
+  -- Fullscreen Helium is offered HDR and always submits it, even for SDR video,
+  -- which washes it out. Keep it in SDR; HDR video is tone-mapped instead.
+  no_auto_hdr = true,
 })
 
 -- https://wiki.hypr.land/Configuring/Basics/Variables/#animations

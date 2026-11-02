@@ -18,12 +18,12 @@ end
 
 # Enable FileVault
 if not fdesetup isactive >/dev/null 2>&1; and gum confirm "enable filevault disk encryption?"
-    sudo fdesetup enable -user "$USER"
+    sudo fdesetup enable -user "$USER"; or return
 end
 
 # Enable Firewall
 if /usr/libexec/ApplicationFirewall/socketfilterfw --getglobalstate | grep -q disabled; and gum confirm "enable application firewall?"
-    sudo /usr/libexec/ApplicationFirewall/socketfilterfw --setglobalstate on
+    sudo /usr/libexec/ApplicationFirewall/socketfilterfw --setglobalstate on; or return
 end
 
 dfs-success "macOS"

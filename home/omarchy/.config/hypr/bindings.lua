@@ -210,6 +210,13 @@ local function is_wide(window)
   return window.size.x > 0.9 * monitor_width()
 end
 
+-- Full width, minus room for the neighbours to peek. Acts on the active window.
+local function widen(window)
+  local left, right = neighbours(window)
+  hl.dispatch(hl.dsp.layout("colresize " .. (1 - (left + right) * peek)))
+  center_between_peeks()
+end
+
 o.rebind("SUPER + CTRL + F", "Tiled full screen / column full width", function()
   local window = hl.get_active_window()
   local scrolling = hl.get_active_workspace().tiled_layout == "scrolling"
@@ -220,16 +227,28 @@ o.rebind("SUPER + CTRL + F", "Tiled full screen / column full width", function()
   if is_wide(window) then
     return hl.dispatch(hl.dsp.layout("colresize " .. hl.get_config("scrolling.column_width")))
   end
-  local left, right = neighbours(window)
-  hl.dispatch(hl.dsp.layout("colresize " .. (1 - (left + right) * peek)))
-  center_between_peeks()
+  widen(window)
 end)
+
+-- Helium windows start as a full-width column. Column resizes only act on the
+-- active window, so a window opened silently is widened when first focused.
+-- stable_id, unlike address, is never reused by a later window.
+local helium_seen = {}
 
 -- Focusing a neighbour scrolls it into view; coming back must restore both peeks.
 hl.on("window.active", function()
   local window = hl.get_active_window()
+  if not window then return end
+
+  local first_helium = window.class == "helium" and not helium_seen[window.stable_id]
+  if first_helium then helium_seen[window.stable_id] = true end
+
   local scrolling = hl.get_active_workspace().tiled_layout == "scrolling"
-  if window and scrolling and not window.floating and is_wide(window) then
+  if window.floating or not scrolling then return end
+
+  if is_wide(window) then
     center_between_peeks()
+  elseif first_helium then
+    widen(window)
   end
 end)

@@ -50,7 +50,6 @@ defaults write NSGlobalDomain NSAutomaticInlinePredictionEnabled -bool false
 defaults write NSGlobalDomain NSAutomaticPeriodSubstitutionEnabled -bool false
 
 ## Text expansions
-# sqlite3 ~/Library/KeyboardServices/TextReplacements.db "DELETE FROM ZTEXTREPLACEMENTENTRY;"
 sqlite3 ~/Library/KeyboardServices/TextReplacements.db \
     "DELETE FROM ZTEXTREPLACEMENTENTRY WHERE ZSHORTCUT = 'omw';"
 

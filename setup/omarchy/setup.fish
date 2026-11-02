@@ -3,7 +3,6 @@ command -q ghostty; or omarchy default terminal --install ghostty
 command -q hypridle; or omarchy pkg add hypridle
 systemctl --user is-enabled --quiet hypridle; or systemctl --user enable hypridle
 command -q flea; or omarchy pkg add flea
-# paused: command -q strata; or omarchy pkg add strata
 command -q trash; or omarchy pkg add trash-cli
 make --silent -C ~/.config/hypr/plugins/hypr-expandr; or return $status
 
@@ -17,10 +16,10 @@ set wake_rule_content 'ACTION=="add", SUBSYSTEM=="usb", ATTR{idVendor}=="19f5", 
 ACTION=="add", SUBSYSTEM=="usb", ATTR{idVendor}=="3710", ATTR{idProduct}=="5406", TEST=="power/wakeup", ATTR{power/wakeup}="disabled"'
 
 if not test -f $wake_rule; or test "$wake_rule_content" != (string collect <$wake_rule)
-    printf '%s\n' "$wake_rule_content" | sudo tee $wake_rule >/dev/null
-    sudo chmod 644 $wake_rule
-    sudo udevadm control --reload-rules
-    sudo udevadm trigger --action=add --subsystem-match=usb --attr-match=idVendor=19f5 --attr-match=idProduct=1028
+    printf '%s\n' "$wake_rule_content" | sudo tee $wake_rule >/dev/null; or return
+    sudo chmod 644 $wake_rule; or return
+    sudo udevadm control --reload-rules; or return
+    sudo udevadm trigger --action=add --subsystem-match=usb --attr-match=idVendor=19f5 --attr-match=idProduct=1028; or return
 end
 
 if test (omarchy font current) != "Berkeley Mono Variable"

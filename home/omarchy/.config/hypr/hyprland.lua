@@ -111,24 +111,11 @@ hl.config({
   },
 })
 
-local function set_qconsole_seed()
-  hl.workspace_rule({
-    workspace = "special:qconsole",
-    on_created_empty = "[workspace special:qconsole silent] cd ~/.dotfiles && omarchy-agent",
-  })
-end
-
--- Omarchy's qconsole.lua rewrites the whole rule on these events and resets the seed.
-set_qconsole_seed()
-for _, event in ipairs({
-  "monitor.layout_changed",
-  "monitor.focused",
-  "workspace.special_active",
-  "workspace.move_to_monitor",
-  "window.open",
-  "window.destroy",
-  "window.move_to_workspace",
-  "window.update_rules",
-}) do
-  hl.on(event, set_qconsole_seed)
+-- Omarchy's qconsole.lua seeds the console with a bare `omarchy-agent`, which starts in ~.
+local exec_cmd = hl.exec_cmd
+hl.exec_cmd = function(cmd, rules)
+  if cmd == "omarchy-agent" then
+    cmd = "cd ~/.dotfiles && omarchy-agent"
+  end
+  return exec_cmd(cmd, rules)
 end

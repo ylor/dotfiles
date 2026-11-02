@@ -1,3 +1,4 @@
 #!/bin/sh
 
-PROTON_ENABLE_WAYLAND=1 PROTON_ENABLE_HDR=1 exec "$@"
+# Proton-CachyOS ignores PROTON_ENABLE_HDR, so DXVK_HDR turns HDR on directly.
+PROTON_ENABLE_WAYLAND=1 PROTON_ENABLE_HDR=1 DXVK_HDR=1 exec "$@"
