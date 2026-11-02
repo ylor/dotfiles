@@ -1,23 +1,30 @@
 {
-  "lastChangelogVersion": "1.4.0",
+  "lastChangelogVersion": "1.5.0",
   "defaultModel": "claude-opus-5-5",
-  "defaultProvider": "anthropic",
+  "defaultProvider": "claude-code",
   "defaultTools": [
     "+codemode"
   ],
   "showCacheMissNotices": true,
   "packages": [
     "git:github.com/ttttmr/pi-web-search",
-    "npm:@gotgenes/pi-anthropic-auth"
+    "https://github.com/earendil-works/pi-claude-code"
   ],
   "enabledModels": [
-    "anthropic/claude-sonnet-5-5",
-    "anthropic/claude-opus-5-5",
-    "openrouter/deepseek/deepseek-v4.1-flash-1017"
+    "openrouter/deepseek/deepseek-v4.1-flash-1017",
+    "claude-code/claude-opus-5-5",
+    "claude-code/claude-sonnet-5-5"
   ],
   "warnings": {
     "anthropicExtraUsage": false
   },
   "hideThinkingBlock": true,
-  "quietStartup": false
+  "quietStartup": false,
+  "modelThinkingLevels": {
+    "anthropic/claude-sonnet-5-5": "medium",
+    "anthropic/claude-opus-5-5": "medium"
+  },
+  "extensionChangelogVersions": {
+    "{\"source\":\"npm:@gotgenes/pi-anthropic-auth\",\"scope\":\"user\"}": "3.4.4"
+  }
 }
