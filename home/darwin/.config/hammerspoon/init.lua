@@ -1,6 +1,8 @@
 ---@diagnostic disable-next-line: undefined-global
 local hs = hs
 hs.window.animationDuration = 0.1
+-- Lets the `hs` CLI talk to this instance.
+require("hs.ipc")
 
 Mod = {}
 Mod.main = { "option" }
