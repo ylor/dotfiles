@@ -8,3 +8,5 @@
 
 - Make package lists easier to maintain: read Omarchy's install list from the currently unused `setup/omarchy/pkgs.txt`, and move its hardcoded package removals into a separate list. Keep each platform's native package manager.
 - Clarify configuration naming: `DOTFILES_PROFILE` currently selects macOS package scope, separately from platform layers. Consider renaming the tracked Fish configuration `.env` to `config.fish`.
+
+- Move the papa SSH key selection from SSH to git: set `core.sshCommand` (papa key, `IdentitiesOnly`, separate `ControlPath`) in `home/base/.config/git/papa`, then remove the `pwd | grep -i papa` match block and the github.com `ControlMaster no` block from `home/base/.ssh/config`.
