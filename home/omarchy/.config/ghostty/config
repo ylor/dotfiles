@@ -26,6 +26,7 @@ unfocused-split-opacity = 0.9
 
 # shaders
 custom-shader = shaders/bloom.glsl
+custom-shader-animation = false
 resize-overlay = never
 gtk-toolbar-style = flat
 gtk-custom-css = ?~/.local/state/omarchy/current/theme/ghostty.css

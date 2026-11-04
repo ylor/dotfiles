@@ -76,6 +76,7 @@ o.bind("ALT + mouse_down", "Brightness down", "omarchy-brightness-display 5%-", 
 
 hl.unbind("SUPER + W")
 o.bind("SUPER + I", "Browser", { omarchy = "browser" })
+o.rebind("SUPER + SHIFT + N", "Browser (private)", { omarchy = "browser --private" })
 -- Stepping back from scrolling lands on tiling, so floating is never reached.
 local tiling_scrolling_toggle = [[if [ "$(omarchy-hyprland-workspace-layout-current)" = scrolling ]; then omarchy-hyprland-workspace-layout-toggle back; else omarchy-hyprland-workspace-layout-toggle; fi]]
 o.rebind("SUPER + L", "Toggle tiling/scrolling layout", tiling_scrolling_toggle)
@@ -169,12 +170,10 @@ o.rebind("SUPER + SHIFT + E", "File manager (cwd)", { launch = 'flea --gui "$(om
 o.window("com.thisisgm.flea.picker", { tag = "+floating-window" })
 -- flea --picker: end.
 
-o.bind("ALT + SPACE", "oma-cast launcher", hl.dsp.global("oma-cast:toggle"))
-hl.layer_rule({ match = { namespace = "^oma-cast$" }, no_anim = true, animation = "none" })
+o.rebind("ALT + SPACE", "omacast launcher", hl.dsp.global("omacast:toggle"))
+hl.layer_rule({ match = { namespace = "^omacast$" }, no_anim = true, animation = "none" })
 o.bind(hyper .. " + SPACE", "Omarchy menu", { menu = "root" })
-if o.cmd_present("oma-cast") then
-  o.rebind("SUPER + SPACE", "oma-cast launcher", hl.dsp.global("oma-cast:toggle"))
-end
+o.rebind("SUPER + SPACE", "omacast launcher", hl.dsp.global("omacast:toggle"))
 
 -- In scrolling layout, toggle full-width column instead of tiled fullscreen.
 -- Neighbouring columns peek in at the edges so they stay findable.

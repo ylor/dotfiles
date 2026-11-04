@@ -37,6 +37,8 @@ require("hypr.looknfeel")
 require("hypr.autostart")
 require("hypr.expand")
 require("hypr.controller")
+-- TODO: Remove once omacom/omarchy PR #16349 is merged and installed.
+require("hypr.workspace-fix")
 
 if package.searchpath("hypr.local", package.path) then
   require("hypr.local")
@@ -111,11 +113,12 @@ hl.config({
   },
 })
 
--- Omarchy's qconsole.lua seeds the console with a bare `omarchy-agent`, which starts in ~.
+-- Omarchy's qconsole.lua seeds the console with `omarchy-agent [flags]`, which starts in ~.
+-- Match the prefix so new upstream flags don't silently bypass this.
 local exec_cmd = hl.exec_cmd
 hl.exec_cmd = function(cmd, rules)
-  if cmd == "omarchy-agent" then
-    cmd = "cd ~/.dotfiles && omarchy-agent"
+  if type(cmd) == "string" and (cmd == "omarchy-agent" or cmd:find("^omarchy%-agent ")) then
+    cmd = "cd ~/.dotfiles && " .. cmd
   end
   return exec_cmd(cmd, rules)
 end

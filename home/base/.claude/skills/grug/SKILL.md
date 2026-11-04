@@ -1,0 +1,1 @@
+../../../.agents/skills/grug/SKILL.md

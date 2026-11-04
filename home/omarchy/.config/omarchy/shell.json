@@ -33,9 +33,6 @@
           "id": "omarchy.tray"
         },
         {
-          "id": "io.github.thisisgm.flea-shelf"
-        },
-        {
           "id": "omarchy.agents",
           "providers": {
             "codex": {
@@ -94,7 +91,7 @@
   },
   "plugins": [
     {
-      "id": "typecraft.oma-cast"
+      "id": "typecraft.omacast"
     }
   ],
   "version": 1

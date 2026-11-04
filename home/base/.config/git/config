@@ -48,7 +48,6 @@
         diffFilter = delta --color-only 2>/dev/null || cat
 [rebase]
         autoSquash = true
-        autoStash = true
         updateRefs = true
 
 # a matter of taste (uncomment if you dare)

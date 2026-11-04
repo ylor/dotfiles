@@ -3,8 +3,10 @@ command -q ghostty; or omarchy default terminal --install ghostty
 command -q hypridle; or omarchy pkg add hypridle
 systemctl --user is-enabled --quiet hypridle; or systemctl --user enable hypridle
 command -q flea; or omarchy pkg add flea
+flea --ui-state | string match -q '*"keys": "mac"*'; or flea --ui-state '{"keys":"mac"}' >/dev/null; or return $status
 command -q trash; or omarchy pkg add trash-cli
 make --silent -C ~/.config/hypr/plugins/hypr-expandr; or return $status
+omarchy plugin list | grep -q typecraft.omacast; or omarchy plugin add https://github.com/typecraft-dev/oma-cast.git --enable --yes; or return $status
 
 omarchy pkg drop docker docker-buildx docker-compose lazydocker ufw-docker nautilus nautilus-python foot libreoffice-fresh obsidian pinta system-config-printer
 

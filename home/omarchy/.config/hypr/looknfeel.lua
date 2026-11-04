@@ -20,12 +20,6 @@ hl.config({
     -- Change to niri-like side-scrolling layout.
     layout = "scrolling",
   },
-
-  -- Hover-focus only scrolls a column into view if 40% of the monitor width of it
-  -- is already visible, so peeking columns needed a click. 0 always follows.
-  scrolling = {
-    follow_min_visible = 0,
-  },
 })
 
 -- https://wiki.hypr.land/Configuring/Basics/Variables/#decoration
