@@ -3,6 +3,20 @@ set -e
 
 prefix="$HOME/Games/battlenet"
 launcher="$prefix/drive_c/Program Files (x86)/Battle.net/Battle.net.exe"
+logs="$prefix/drive_c/users/steamuser/AppData/Local/Battle.net/Logs"
 
-# go through Battle.net so the game gets the saved login
-exec env WINEPREFIX="$prefix" PROTONPATH=GE-Proton GAMEID=umu-battlenet PROTON_VERB=run umu-run "$launcher" --exec="launch_uid wow_classic_beta"
+bnet=(env WINEPREFIX="$prefix" PROTONPATH=GE-Proton GAMEID=umu-battlenet PROTON_VERB=run umu-run "$launcher")
+
+# A cold-started Battle.net ignores --exec, so start it, wait for its login,
+# then hand the launch to the running instance (the game needs it for -launcherlogin).
+if ! pgrep -f 'Battle\.net\.exe' >/dev/null; then
+    before=$(ls -t "$logs"/battle.net-*.log 2>/dev/null | head -1)
+    "${bnet[@]}" >/dev/null 2>&1 &
+    for _ in $(seq 120); do
+        sleep 1
+        log=$(ls -t "$logs"/battle.net-*.log 2>/dev/null | head -1)
+        [ "$log" != "$before" ] && grep -aq 'Logged into Battle.net successfully' "$log" && break
+    done
+fi
+
+exec "${bnet[@]}" --exec="launch WoWF"

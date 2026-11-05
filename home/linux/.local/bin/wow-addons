@@ -1,14 +1,12 @@
 #!/bin/sh
-# Install or update WoW addons for Forever (_classic_beta_) and Retail (_retail_).
-# Each flavor is found and updated on its own. Lists at the bottom: shared_addons, forever_addons, retail_addons.
+# Install or update WoW addons for Forever (_forever_). Addon list is at the bottom.
 set -eu
 
-forever_dir=
-retail_dir=
+addons_dir=
 check=0
 
 usage() {
-    printf '%s\n' 'Usage: wow-addons [--check] [--forever-dir PATH] [--retail-dir PATH]' \
+    printf '%s\n' 'Usage: wow-addons [--check] [--forever-dir PATH]' \
         'Close WoW before updating. Addon settings are preserved.'
 }
 
@@ -22,12 +20,7 @@ while [ "$#" -gt 0 ]; do
         --check) check=1; shift ;;
         --forever-dir)
             [ "$#" -ge 2 ] || fail '--forever-dir needs a path'
-            forever_dir=$2
-            shift 2
-            ;;
-        --retail-dir)
-            [ "$#" -ge 2 ] || fail '--retail-dir needs a path'
-            retail_dir=$2
+            addons_dir=$2
             shift 2
             ;;
         -h|--help) usage; exit 0 ;;
@@ -39,21 +32,17 @@ for tool in curl jq unzip awk grep sed mktemp diff; do
     command -v "$tool" >/dev/null 2>&1 || fail "Required command not found: $tool"
 done
 
-# Prints the AddOns dir of the single install with the given flavor folder, or nothing.
-find_addons_dir() {
-    found=
-    for game in "$HOME"/Games/*/drive_c/Program\ Files*/World\ of\ Warcraft/"$1" \
-                "$HOME"/.wine/drive_c/Program\ Files*/World\ of\ Warcraft/"$1"; do
+if [ -z "$addons_dir" ]; then
+    for game in "$HOME"/Games/*/drive_c/Program\ Files*/World\ of\ Warcraft/_forever_ \
+                "$HOME"/.wine/drive_c/Program\ Files*/World\ of\ Warcraft/_forever_; do
         [ -d "$game" ] || continue
-        [ -z "$found" ] || fail "Multiple $1 installs found; pass the dir explicitly"
-        found=$game/Interface/AddOns
+        [ -z "$addons_dir" ] || fail 'Multiple Forever installs found; use --forever-dir'
+        addons_dir=$game/Interface/AddOns
     done
-    printf '%s' "$found"
-}
-
-[ -n "$forever_dir" ] || forever_dir=$(find_addons_dir _classic_beta_)
-[ -n "$retail_dir" ] || retail_dir=$(find_addons_dir _retail_)
-[ -n "$forever_dir$retail_dir" ] || fail 'No WoW install found; use --forever-dir or --retail-dir'
+fi
+[ -n "$addons_dir" ] || fail 'No Forever install found; use --forever-dir'
+game_version=1.60.1
+interface=16001
 
 tmp=$(mktemp -d)
 trap 'rm -rf "$tmp"' 0
@@ -202,49 +191,12 @@ EOF
 
 [ "$check" -eq 1 ] || printf '%s\n' 'Close WoW before updating. SavedVariables are left untouched.'
 
-# Same addons on both clients. Only the release file and TOC names differ.
-shared_addons() {
-    update Pawn Pawn.toc curseforge_zip 4646 "$pawn_re"
-    update BetterBlizzFrames "BetterBlizzFrames$blizz_toc_suffix.toc" github_zip Bodify/BetterBlizzFrames BetterBlizzFrames
-    update BetterBlizzPlates "BetterBlizzPlates$blizz_toc_suffix.toc" github_zip Bodify/BetterBlizzPlates BetterBlizzPlates
-    update BlizzMove BlizzMove.toc github_zip Kiatra/BlizzMove BlizzMove
-    update Leatrix_Plus Leatrix_Plus.toc curseforge_zip 94855 "$leatrix_re"
-}
-
-forever_addons() {
-    update OpenMap OpenMap.toc curseforge_zip 1735937 '^OpenMap-[A-Za-z0-9.-]+\.zip$'
-    update Polestar Polestar.toc curseforge_zip 1744437 '^Polestar-[A-Za-z0-9.-]+\.zip$'
-    install_graphics_settings
-}
-
-retail_addons() {
-    :
-}
-
-if [ -n "$forever_dir" ]; then
-    printf '== Forever: %s ==\n' "$forever_dir"
-    addons_dir=$forever_dir
-    game_version=1.60.1
-    interface=16001
-    pawn_re='^Pawn-[0-9.]+-Forever\.zip$'
-    leatrix_re='^Leatrix_Plus-[A-Za-z0-9.-]+-forever\.zip$'
-    blizz_toc_suffix=_Camelot
-    shared_addons
-    forever_addons
-else
-    printf '== Forever: not found, skipped ==\n'
-fi
-
-if [ -n "$retail_dir" ]; then
-    printf '== Retail: %s ==\n' "$retail_dir"
-    addons_dir=$retail_dir
-    game_version=12.
-    interface='12[0-9]{4}'
-    pawn_re='^Pawn-[0-9.]+\.zip$'
-    leatrix_re='^Leatrix_Plus-[A-Za-z0-9.]+\.zip$'
-    blizz_toc_suffix=
-    shared_addons
-    retail_addons
-else
-    printf '== Retail: not found, skipped ==\n'
-fi
+printf '== Forever: %s ==\n' "$addons_dir"
+update Pawn Pawn.toc curseforge_zip 4646 '^Pawn-[0-9.]+-Forever\.zip$'
+update BetterBlizzFrames BetterBlizzFrames_Camelot.toc github_zip Bodify/BetterBlizzFrames BetterBlizzFrames
+update BetterBlizzPlates BetterBlizzPlates_Camelot.toc github_zip Bodify/BetterBlizzPlates BetterBlizzPlates
+update BlizzMove BlizzMove.toc github_zip Kiatra/BlizzMove BlizzMove
+update Leatrix_Plus Leatrix_Plus.toc curseforge_zip 94855 '^Leatrix_Plus-[A-Za-z0-9.-]+-forever\.zip$'
+update OpenMap OpenMap.toc curseforge_zip 1735937 '^OpenMap-[A-Za-z0-9.-]+\.zip$'
+update Polestar Polestar.toc curseforge_zip 1744437 '^Polestar-[A-Za-z0-9.-]+\.zip$'
+install_graphics_settings
