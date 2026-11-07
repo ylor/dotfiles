@@ -10,3 +10,5 @@
 - Clarify configuration naming: `DOTFILES_PROFILE` currently selects macOS package scope, separately from platform layers. Consider renaming the tracked Fish configuration `.env` to `config.fish`.
 
 - Move the papa SSH key selection from SSH to git: set `core.sshCommand` (papa key, `IdentitiesOnly`, separate `ControlPath`) in `home/base/.config/git/papa`, then remove the `pwd | grep -i papa` match block and the github.com `ControlMaster no` block from `home/base/.ssh/config`.
+
+- Choose a cross-platform Wake-on-LAN CLI. `github:trugamr/wol` is in `home/base/.config/mise/config.toml` but not installed yet: it adds named machines, status checks, and a web UI, but downloads a binary. The alternative is a small Python script at `home/base/.local/bin/wol`, which needs only `python3` and can be read at a glance. Bash `/dev/udp` and `nc` can't reliably send broadcast packets. If the script wins, remove the mise entry.

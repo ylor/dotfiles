@@ -23,6 +23,9 @@ hl.env("DXVK_NVAPI_DRS_NGX_DLSS_RR_OVERRIDE_RENDER_PRESET_SELECTION", "render_pr
 hl.env("DXVK_NVAPI_DRS_NGX_DLSS_FG_OVERRIDE", "on")
 hl.env("DXVK_NVAPI_DRS_NGX_DLSS_FG_OVERRIDE_RENDER_PRESET_SELECTION", "render_preset_latest")
 
+-- Run Proton games as native Wayland windows instead of through XWayland.
+hl.env("PROTON_ENABLE_WAYLAND", "1")
+
 -- GTK's default Vulkan renderer adds a GL->Vulkan copy per frame for GL apps
 -- like Ghostty, which lags on NVIDIA. Use the GL renderer instead.
 hl.env("GSK_RENDERER", "ngl")

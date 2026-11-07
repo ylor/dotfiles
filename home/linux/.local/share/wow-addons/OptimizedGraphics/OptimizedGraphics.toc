@@ -1,0 +1,6 @@
+## Interface: 16001
+## Title: Optimized Graphics
+## Notes: Sets sharpening, bloom, shadows and lighting, and keeps them set
+## Version: 1.1
+
+OptimizedGraphics.lua

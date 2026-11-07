@@ -1,0 +1,11 @@
+## Interface: 16001
+## Title: Lush
+## IconTexture: Interface\Icons\INV_Misc_Herb_18
+## Notes: More grass than the game allows. /lush opens the options.
+## Version: 1.0
+## SavedVariables: LushDB
+## AddonCompartmentFunc: Lush_OnCompartmentClick
+## AddonCompartmentFuncOnEnter: Lush_OnCompartmentEnter
+## AddonCompartmentFuncOnLeave: Lush_OnCompartmentLeave
+
+Lush.lua

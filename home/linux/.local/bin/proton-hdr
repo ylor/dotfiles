@@ -1,4 +1,7 @@
 #!/bin/sh
 
 # Proton-CachyOS ignores PROTON_ENABLE_HDR, so DXVK_HDR turns HDR on directly.
-PROTON_ENABLE_WAYLAND=1 PROTON_ENABLE_HDR=1 DXVK_HDR=1 exec "$@"
+# GE-Proton only reports a screen as HDR when the desktop is already in HDR, but
+# Hyprland switches to HDR only once a game asks for it, so PROTON_FORCE_HDR always
+# reports HDR.
+PROTON_ENABLE_WAYLAND=1 PROTON_ENABLE_HDR=1 PROTON_FORCE_HDR=1 DXVK_HDR=1 exec "$@"

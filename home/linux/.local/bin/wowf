@@ -5,7 +5,8 @@ prefix="$HOME/Games/battlenet"
 launcher="$prefix/drive_c/Program Files (x86)/Battle.net/Battle.net.exe"
 logs="$prefix/drive_c/users/steamuser/AppData/Local/Battle.net/Logs"
 
-bnet=(env WINEPREFIX="$prefix" PROTONPATH=GE-Proton GAMEID=umu-battlenet PROTON_VERB=run umu-run "$launcher")
+# proton-hdr: the game inherits Battle.net's environment, so HDR is set on Battle.net.
+bnet=(env WINEPREFIX="$prefix" NVPRESENT_ENABLE_SMOOTH_MOTION=1 PROTONPATH=GE-Proton GAMEID=umu-battlenet PROTON_VERB=run proton-hdr umu-run "$launcher")
 
 # A cold-started Battle.net ignores --exec, so start it, wait for its login,
 # then hand the launch to the running instance (the game needs it for -launcherlogin).

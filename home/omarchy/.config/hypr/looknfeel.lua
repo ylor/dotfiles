@@ -53,7 +53,8 @@ hl.config({
 -- (RenoDX, DXVK_HDR) actually reach the display in HDR mode.
 hl.config({
   render = {
-    cm_auto_hdr = 1,
+    -- hdredid: use the monitor's own brightness range; plain hdr looks washed out.
+    cm_auto_hdr = 2,
   },
 })
 
@@ -106,12 +107,22 @@ hl.window_rule({
   suppress_event = "fullscreen maximize",
 })
 
+-- WoW as a native Wayland window (proton-hdr). Fullscreen, so Hyprland's auto HDR
+-- switches the display to HDR.
 hl.window_rule({
   match = { class = "^wowb?\\.exe$" },
-  -- app thinks it is fullscreen, but the compositor keeps it a tiled column
-  fullscreen_state = "0 2",
+  fullscreen = true,
+  -- Out of fullscreen it would float, since it asks for a fixed size.
+  float = false,
   suppress_event = "fullscreen maximize",
 })
+
+-- Out of fullscreen, WoW gets a full-width column.
+hl.on("window.open", function(window)
+  if window.class and window.class:match("^wowb?%.exe$") then
+    hl.dispatch(hl.dsp.layout("colresize 1.0"))
+  end
+end)
 
 -- Opt another application in to Omarchy's standard transparency.
 -- Find its class with: hyprctl clients

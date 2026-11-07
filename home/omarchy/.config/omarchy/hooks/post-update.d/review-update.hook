@@ -1,0 +1,155 @@
+#!/bin/bash
+
+# Have the default agent check an Omarchy upgrade against my config and print
+# its findings inline in the `omarchy update` output. Covers both omarchy and
+# omarchy-settings, which are built from the same repo at the same commit
+# (settings ships the repo's etc/ into /etc). The hook narrows the upstream
+# diff to what touches my config first, and skips the agent when nothing does.
+
+set -e
+
+agent=$(omarchy-default-agent)
+[[ -n $agent ]] || exit 0
+
+pkg=$(pacman -Qqo /usr/bin/omarchy 2>/dev/null) || exit 0
+new=$(pacman -Q "$pkg" | cut -d' ' -f2)
+
+state=~/.local/state/omarchy/update-review
+mark_reviewed() { mkdir -p "$(dirname "$state")" && echo "$new" >"$state"; }
+
+[[ -f $state ]] && [[ $(<"$state") == "$new" ]] && exit 0
+
+old=$(grep -oP "upgraded \Q$pkg\E \(\K\S+(?= -> \Q$new\E\))" /var/log/pacman.log | tail -1)
+if [[ -z $old ]]; then
+  # Nothing to compare against (first run, or Omarchy wasn't upgraded).
+  mark_reviewed
+  exit 0
+fi
+
+repo=$(pacman -Qi "$pkg" | sed -n 's/^URL *: //p')
+ref() { [[ $1 =~ \.g([0-9a-f]+)- ]] && echo "${BASH_REMATCH[1]}" || echo "v${1%-*}"; }
+range="$(ref "$old")..$(ref "$new")"
+
+dotfiles=${DOTFILES:-$HOME/.dotfiles}
+work=$(mktemp -d)
+trap 'rm -rf "$work"' EXIT
+
+if ! git clone -q --filter=blob:none --no-checkout "$repo" "$work/omarchy" 2>/dev/null ||
+  ! changed=$(git -C "$work/omarchy" diff --name-only --no-renames "$range" 2>/dev/null); then
+  echo -e "\e[33mCould not fetch $range from $repo; will retry on the next update.\e[0m" >&2
+  exit 0
+fi
+
+# grep -r skips symlinked files, so search the dotfiles they point into as well
+# as the live config they're linked into.
+config_roots=("$dotfiles"/home/* ~/.config/hypr ~/.config/omarchy)
+theme=$(cat ~/.local/state/omarchy/current/theme.name 2>/dev/null || true)
+
+# A config target is mine when my dotfiles carry it, or it's one of the live
+# roots I edit in place. Seeded copies Omarchy dropped into ~/.config don't count.
+mine() { [[ $1 == .config/hypr || $1 == .config/omarchy ]] || compgen -G "$dotfiles/home/*/$1" >/dev/null; }
+
+relevant=()
+notes=""
+while IFS= read -r file; do
+  IFS=/ read -r _ sub sub2 _ <<<"$file"
+  reason="" target=""
+  case "$file" in
+  test/* | docs/* | .github/* | *.md) continue ;;
+  migrations/*) reason="migration (may rewrite user config)" ;;
+  shell/*)
+    [[ -e ~/.config/omarchy/plugins || -e ~/.config/omarchy/shell.json ]] &&
+      reason="shell change; you have shell.json/plugins"
+    ;;
+  themes/*)
+    [[ -e ~/.config/omarchy/themes/$sub || $sub == "$theme" ]] && reason="theme $sub is active or overlaid"
+    ;;
+  bin/omarchy-*)
+    route=${sub#omarchy-}
+    hits=$(grep -rlF --exclude-dir=.git -e "$sub" -e "omarchy ${route//-/ }" "${config_roots[@]}" 2>/dev/null | head -5)
+    [[ -n $hits ]] && reason="referenced by: $(echo $hits)"
+    ;;
+  etc/profile.d/*) reason="login shell environment" ;;
+  # Everything else maps a repo path to the home-relative config it seeds or
+  # defaults; relevant when that config is mine.
+  config/* | default/*) target=.config/$sub ;;
+  etc/xdg/*) target=.config/$sub2 ;;
+  etc/systemd/user*) target=.config/systemd/user ;;
+  etc/*) target=.config/$sub ;;
+  esac
+  [[ -n $target ]] && mine "$target" && reason="affects $target, which you customize"
+  if [[ -n $reason ]]; then
+    relevant+=("$file")
+    notes+="  $file -- $reason"$'\n'
+  fi
+done <<<"$changed"
+
+if ((${#relevant[@]} == 0)); then
+  mark_reviewed
+  exit 0
+fi
+
+git -C "$work/omarchy" log --oneline "$range" -- "${relevant[@]}" >"$work/changes.log"
+git -C "$work/omarchy" diff "$range" -- "${relevant[@]}" >"$work/changes.diff"
+
+prompt="Omarchy was just upgraded: $pkg $old -> $new, along with omarchy-settings,
+which is built from the same repo and installs its etc/ into /etc.
+
+Tell me what, if anything, about MY custom config breaks or changes behavior
+as a result. Only these upstream files were judged relevant to my config:
+
+$notes
+Commits: $work/changes.log
+Diff of just those files: $work/changes.diff
+Installed Omarchy: $OMARCHY_PATH. Update log: /tmp/omarchy-update.log.
+
+My config: dotfiles repo $dotfiles (layers home/base, home/linux, home/omarchy
+are symlinked into \$HOME), plus live ~/.config/hypr and ~/.config/omarchy.
+
+Read the diff, then check only the parts of my config it could affect; don't
+survey the rest. Report, most important first:
+  1. Breaks: things in my config that no longer work.
+  2. Behavior changes: changed defaults under settings I rely on.
+  3. Worth adopting: new options relevant to things I've customized.
+Cite files and lines. Report only findings worth acting on. If there are none,
+reply with exactly NONE and nothing else.
+Read-only review printed to a terminal: edit nothing, keep it plain and compact."
+
+add_dirs=(--add-dir "$work" --add-dir ~/.config --add-dir "${OMARCHY_PATH:-/usr/share/omarchy}" --add-dir /etc)
+
+# Each agent's non-interactive "print and exit" mode.
+# claude and codex resolve through Omarchy's mise wrappers, which pick the
+# selected subscription account.
+case "$agent" in
+claude)
+  # No MCP servers or skills, and only the tools a review needs: read and
+  # search files, inspect the live system, and look up upstream context.
+  command=(claude -p --model sonnet --permission-mode auto
+    --strict-mcp-config --disable-slash-commands --tools Read Grep Glob Bash WebFetch
+    "${add_dirs[@]}" -- "$prompt")
+  ;;
+codex)
+  command=(codex exec --model gpt-6-luna --sandbox read-only "${add_dirs[@]}" -- "$prompt")
+  ;;
+pi) command=(pi -p "$prompt") ;;
+opencode) command=(opencode run "$prompt") ;;
+*)
+  echo "No inline review mode set up for agent '$agent'; skipping." >&2
+  exit 0
+  ;;
+esac
+
+# Stay silent unless the agent found something; show its stderr only on failure.
+cd "$dotfiles"
+if ! review=$("${command[@]}" </dev/null 2>"$work/agent.err"); then
+  cat "$work/agent.err" >&2
+  echo -e "\e[33mOmarchy update review failed; it will run again on the next update.\e[0m" >&2
+  exit 0
+fi
+mark_reviewed
+
+verdict=$(tr -d '[:space:]' <<<"$review")
+[[ -z $verdict || $verdict == NONE ]] && exit 0
+
+echo -e "\e[32m\nOmarchy $old -> $new: review against your config\e[0m"
+echo "$review"

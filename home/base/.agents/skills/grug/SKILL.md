@@ -1,6 +1,7 @@
 ---
 name: grug
 description: Simplify code. Cut needless abstraction, indirection, cleverness, and dead code without changing behavior.
+disable-model-invocation: true
 ---
 
 # Grug simplify

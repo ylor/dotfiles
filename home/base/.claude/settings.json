@@ -1,26 +1,14 @@
 {
   "$schema": "https://json.schemastore.org/claude-code-settings.json",
-  "agentPushNotifEnabled": true,
-  "outputStyle": "Concise",
-  "remoteControlAtStartup": true,
-  "spinnerTipsEnabled": false,
-  "feedbackSurveyRate": 0,
-  "theme": "dark-ansi",
-  "tui": "fullscreen",
-  "attribution": {
-    "commit": "",
-    "pr": ""
-  },
-  "enabledPlugins": {
-    "code-review@claude-plugins-official": true,
-    "frontend-design@claude-plugins-official": true,
-    "superpowers@claude-plugins-official": true
-  },
   "env": {
     "CLAUDE_CODE_DISABLE_FEEDBACK_SURVEY": "1",
     "DISABLE_ERROR_REPORTING": "1",
     "DISABLE_TELEMETRY": "1",
     "DO_NOT_TRACK": "1"
+  },
+  "attribution": {
+    "commit": "",
+    "pr": ""
   },
   "hooks": {
     "SessionStart": [
@@ -34,5 +22,18 @@
         ]
       }
     ]
-  }
+  },
+  "enabledPlugins": {
+    "code-review@claude-plugins-official": false,
+    "frontend-design@claude-plugins-official": false,
+    "superpowers@claude-plugins-official": false
+  },
+  "outputStyle": "Concise",
+  "feedbackSurveyRate": 0,
+  "spinnerTipsEnabled": false,
+  "tui": "fullscreen",
+  "theme": "dark-ansi",
+  "remoteControlAtStartup": true,
+  "agentPushNotifEnabled": true,
+  "model": "sonnet"
 }
