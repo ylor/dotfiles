@@ -1,0 +1,74 @@
+# AmberConsole neon for btop. Replaces Omarchy's generated btop.theme.
+# Boxes are panel--dim (stroke-dim), dividers ink-trace, meter troughs
+# screen-well, and every graph climbs the drive ramp 30 -> 70 -> 100.
+# See DESIGN.md § btop.
+
+# Empty means the terminal's own background (#100600). It must stay empty:
+# Omarchy's glass mode appends a block to this file otherwise, and the deployed
+# file is a symlink into the dotfiles.
+theme[main_bg]=""
+
+theme[main_fg]="#ff6b08"
+theme[title]="#ff6b08"
+theme[hi_fg]="#ffa86d"
+
+# Selected process row: inverse video (table.css row--active).
+theme[selected_bg]="#ff6b08"
+theme[selected_fg]="#1e0c00"
+
+theme[inactive_fg]="#ab4500"
+theme[graph_text]="#ffa86d"
+theme[meter_bg]="#060200"
+theme[proc_misc]="#dd5800"
+
+theme[cpu_box]="#ab4500"
+theme[mem_box]="#ab4500"
+theme[net_box]="#ab4500"
+theme[proc_box]="#ab4500"
+theme[div_line]="#5b2500"
+
+# btop interpolates between start, mid and end; each named stop is a token.
+theme[temp_start]="#5b2500"
+theme[temp_mid]="#dd5800"
+theme[temp_end]="#ffa86d"
+
+theme[cpu_start]="#5b2500"
+theme[cpu_mid]="#dd5800"
+theme[cpu_end]="#ffa86d"
+
+theme[free_start]="#5b2500"
+theme[free_mid]="#dd5800"
+theme[free_end]="#ffa86d"
+
+theme[cached_start]="#5b2500"
+theme[cached_mid]="#dd5800"
+theme[cached_end]="#ffa86d"
+
+theme[available_start]="#5b2500"
+theme[available_mid]="#dd5800"
+theme[available_end]="#ffa86d"
+
+theme[used_start]="#5b2500"
+theme[used_mid]="#dd5800"
+theme[used_end]="#ffa86d"
+
+theme[download_start]="#5b2500"
+theme[download_mid]="#dd5800"
+theme[download_end]="#ffa86d"
+
+theme[upload_start]="#5b2500"
+theme[upload_mid]="#dd5800"
+theme[upload_end]="#ffa86d"
+
+theme[process_start]="#5b2500"
+theme[process_mid]="#dd5800"
+theme[process_end]="#ffa86d"
+
+theme[gradient_color_0]="#060200"
+theme[gradient_color_1]="#5b2500"
+theme[gradient_color_2]="#ab4500"
+theme[gradient_color_3]="#dd5800"
+theme[gradient_color_4]="#ff6b08"
+theme[gradient_color_5]="#ff6b08"
+theme[gradient_color_6]="#ffa86d"
+theme[gradient_color_7]="#ffa86d"

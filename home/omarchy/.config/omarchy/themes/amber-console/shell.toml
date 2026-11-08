@@ -1,60 +1,175 @@
-# DIL-2680: existing shell surfaces; unspecified roles use palette defaults.
+# AmberConsole neon for the Omarchy shell. Complete on purpose: a theme's
+# shell.toml replaces the generated one, and anything left out falls back to
+# the colors.toml foundations (always on-palette) rather than to a template
+# default that might blend. Spacing, font and bar sizes are copied unchanged
+# from Omarchy's default/themed/shell.toml.tpl (d9cc361). See DESIGN.md.
+#
+# Values with an alpha suffix are halo triples (light, never ink), written as
+# #RRGGBBAA with the alpha their -alpha companion also states:
+#   halo-1 (255, 120, 30)  halo-2 (255, 109, 12)  halo-3 (255, 102, 0)  halo-4 (255, 140, 64)
+
 [bar]
-background = "#100600"
+# statusbar.css --line variant: ink on the panel. Attention modules go ink-bright.
+background       = "#100600"
 background-alpha = 1.0
-text = "#ff6b08"
-active = "#ffa86d"
+text             = "#ff6b08"
+active           = "#ffa86d"
+scale-with-font  = true
+size-horizontal  = 26
+size-vertical    = 28
 
-[menu]
-background = "#100600"
-background-alpha = 1.0
-text = "#ff6b08"
-border = "#dd5800"
-border-alpha = 1.0
-border-width = 2
-scrim = "#100600"
-scrim-alpha = 0.5
-selected-background = "#ff6b08"
-selected-background-alpha = 1.0
-selected-text = "#1e0c00"
-selected-border = "#ffa86d"
+[hyprland]
+# Mirrors hyprland_active_border; surfaces below name their stroke directly.
+active-border            = "#ffa86d"
+active-border-foreground = "#ffa86d"
+
+[controls]
+# Five states by drive level. Omarchy paints a control's label and fill from
+# the same state color, so inverse video cannot be expressed here; see DESIGN.md.
+
+# Normal: stroke-dim box (input.css idle), unlit.
+normal-color        = "#ab4500"
+normal-fill-alpha   = 0.0
+normal-border       = "#ab4500"
+normal-border-width = 1
+normal-border-alpha = 1.0
+
+# Hover / keyboard cursor: border to ink-bright (button.css :hover), the inside
+# lit by --ac-glow-box's inset layer, halo-1 at 0.07.
+hover-cursor-color        = "#ff781e12"
+hover-cursor-fill-alpha   = 0.07
+hover-cursor-border       = "#ffa86d"
+hover-cursor-border-width = 1
+hover-cursor-border-alpha = 1.0
+
+# Focus: its own ring, 2px ink-dim (reset.css :focus-visible), with only the
+# outermost halo layer (halo-3 at 0.10) spilling inside.
+focus-color        = "#ff66001a"
+focus-fill-alpha   = 0.10
+focus-border       = "#dd5800"
+focus-border-width = 2
+focus-border-alpha = 1.0
+
+# Selected: latched. Label goes ink-bright; the block is lit at the trace drive
+# tier (0.11). Omarchy also uses this color for toggle knobs and slider troughs.
+selected-color        = "#ffa86d"
+selected-fill-alpha   = 0.11
+selected-border       = "#ffa86d"
+selected-border-width = 0
 selected-border-alpha = 1.0
 
-[launcher]
-background = "#100600"
-background-alpha = 1.0
-text = "#ff6b08"
-border = "#dd5800"
-border-alpha = 1.0
-border-width = 2
-scrim = "#100600"
-scrim-alpha = 0.5
-selected-background = "#ff6b08"
-selected-background-alpha = 1.0
-selected-text = "#1e0c00"
-selected-border = "#ffa86d"
-selected-border-alpha = 1.0
+# Pressed: the mid halo layer at its own alpha (halo-2, 0.26), the strongest
+# tint any control reaches. Text selection: the plasma's 26px layer (halo-3,
+# 0.20). The shell keeps selected text in the field's own ink, so the source's
+# inverse-video selection cannot be drawn; this is the brightest tint that
+# keeps ink above the 5.2:1 body gate (5.42:1).
+pressed-color        = "#ff6d0c42"
+pressed-fill-alpha   = 0.26
+selection-color      = "#ff660033"
+selection-fill-alpha = 0.20
+
+[spacing]
+scale = 1.0
+scale-with-font = true
+
+[font]
+base-size = 12
 
 [popups]
-background = "#100600"
+# Bar flyouts are panels: full stroke (panel.css).
+background       = "#100600"
 background-alpha = 1.0
-text = "#ff6b08"
-border = "#dd5800"
-border-alpha = 1.0
-border-width = 2
-
-[notifications]
-background = "#100600"
-background-alpha = 1.0
-text = "#ff6b08"
-border = "#dd5800"
-border-alpha = 1.0
-border-width = 2
-countdown = "#ffa86d"
+text             = "#ff6b08"
+border           = "#ff6b08"
+border-alpha     = 1.0
+border-width     = 2
 
 [tooltip]
-background = "#100600"
+# Transient, secondary: panel--dim stroke.
+background       = "#100600"
 background-alpha = 1.0
-text = "#ff6b08"
-border = "#dd5800"
-border-alpha = 1.0
+text             = "#ff6b08"
+border           = "#ab4500"
+border-alpha     = 1.0
+
+[notifications]
+# banner.css stroke. The countdown is a meter bar (fill, emit-90); critical
+# notifications use colors.toml red (emit-100), low urgency the shell's own dim.
+background       = "#100600"
+background-alpha = 1.0
+text             = "#ff6b08"
+border           = "#ff6b08"
+border-alpha     = 1.0
+border-width     = 2
+countdown        = "#ff6b08"
+
+[launcher]
+# Same tokens as [menu].
+background                = "#100600"
+background-alpha          = 1.0
+text                      = "#ff6b08"
+border                    = "#ff6b08"
+border-alpha              = 1.0
+border-width              = 2
+scrim                     = "#060200"
+scrim-alpha               = 0.72
+selected-background       = "#ffa86d"
+selected-background-alpha = 1.0
+selected-text             = "#1e0c00"
+selected-border           = "#ff8c40bf"
+selected-border-alpha     = 1.0
+
+[menu]
+# dialog.css: screen card, full stroke, backdrop at the source's 0.72 (in
+# screen-well, not black). The cursor row is inverse video at fill-bright, the
+# hover fill (button.css [aria-pressed]:hover), edged by the plasma hot core:
+# halo-4 at 0.75.
+background                = "#100600"
+background-alpha          = 1.0
+text                      = "#ff6b08"
+border                    = "#ff6b08"
+border-alpha              = 1.0
+border-width              = 2
+scrim                     = "#060200"
+scrim-alpha               = 0.72
+selected-background       = "#ffa86d"
+selected-background-alpha = 1.0
+selected-text             = "#1e0c00"
+selected-border           = "#ff8c40bf"
+selected-border-alpha     = 1.0
+
+[polkit]
+# A dialog. Failure drives text and stroke to ink-bright while the shell
+# flashes the border, the blink half of the source's alarm.
+background       = "#100600"
+background-alpha = 1.0
+text             = "#ff6b08"
+text-error       = "#ffa86d"
+border           = "#ff6b08"
+border-error     = "#ffa86d"
+border-alpha     = 1.0
+scrim            = "#060200"
+scrim-alpha      = 0.72
+accent           = "#ffa86d"
+
+[lock]
+# input.css: operator entry is ink-bright in a screen-well, placeholder
+# ink-faint, stroke-dim at rest, full stroke while typing, ink-bright on error.
+background       = "#060200"
+background-alpha = 1.0
+text             = "#ffa86d"
+placeholder      = "#ab4500"
+text-error       = "#ffa86d"
+border           = "#ab4500"
+border-active    = "#ff6b08"
+border-error     = "#ffa86d"
+border-alpha     = 1.0
+selection        = "#ff8c404f"
+selection-alpha  = 0.31
+
+[image-picker]
+text                    = "#ff6b08"
+selected-border         = "#ffa86d"
+selected-border-alpha   = 1.0
+unselected-border       = "#ab4500"
+unselected-border-alpha = 1.0
