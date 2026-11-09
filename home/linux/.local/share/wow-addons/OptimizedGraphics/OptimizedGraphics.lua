@@ -6,6 +6,7 @@ local VALUES = {
     graphicsSSAO = "3", -- High
     graphicsComputeEffects = "3", -- High
     graphicsLightMode = "1", -- Secondary Lighting: Good
+    rawMouseEnable = "1", -- smoother mouse look
 }
 
 local byLower = {} -- [lowercase console variable] = console variable

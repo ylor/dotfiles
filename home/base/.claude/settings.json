@@ -10,6 +10,7 @@
     "commit": "",
     "pr": ""
   },
+  "model": "sonnet",
   "hooks": {
     "SessionStart": [
       {
@@ -34,6 +35,5 @@
   "tui": "fullscreen",
   "theme": "dark-ansi",
   "remoteControlAtStartup": true,
-  "agentPushNotifEnabled": true,
-  "model": "sonnet"
+  "agentPushNotifEnabled": true
 }

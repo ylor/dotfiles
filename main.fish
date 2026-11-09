@@ -42,15 +42,20 @@ function dfs-layers
 end
 
 function dfs-link
+    argparse q/quiet -- $argv; or return 2
     set links
+    set fixed 0
     for layer in (dfs-layers)
         set home $DOTFILES/home/$layer
         test -d $home; or continue
 
         for file in (fd --hidden --absolute-path --type file --type symlink . $home)
             set link $HOME/(string replace -- "$home/" '' $file)
-            mkdir -p (path dirname $link)
-            ln -sf $file $link
+            if test "$(readlink $link 2>/dev/null)" != $file
+                mkdir -p (path dirname $link)
+                ln -sf $file $link
+                set fixed (math $fixed + 1)
+            end
             set --append links $link
         end
     end
@@ -75,8 +80,14 @@ function dfs-link
 
     string join \n $links | sort -u >$manifest
 
+    # The repair pass after the layers stays silent unless something had to be relinked.
+    if set -q _flag_quiet; and test $fixed -eq 0; and test $removed -eq 0
+        return 0
+    end
+
     set -l summary (count $links)
     test $removed -gt 0; and set summary "$summary, −$removed"
+    set -q _flag_quiet; and set summary "relinked $fixed, $summary"
     dfs-success "Dotfiles ($summary)"
 end
 
@@ -147,7 +158,7 @@ function dfs-apply
     end
 
     # Relink because some omarchy commands edit configs in place and replace symlinks.
-    dfs-link
+    dfs-link --quiet
     set -l link_status $status
     if test $link_status -ne 0
         dfs-failure "Managed symlink update failed"

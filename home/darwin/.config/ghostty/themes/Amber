@@ -1,0 +1,24 @@
+# Amber: one emitter, five drive levels. See home/omarchy/.config/omarchy/themes/amber.
+background = #100600
+foreground = #ff6b08
+cursor-color = #ffa86d
+cursor-text = #1e0c00
+selection-background = #ff6b08
+selection-foreground = #1e0c00
+
+palette = 0=#060200
+palette = 1=#ffa86d
+palette = 2=#dd5800
+palette = 3=#ffa86d
+palette = 4=#dd5800
+palette = 5=#ff6b08
+palette = 6=#dd5800
+palette = 7=#dd5800
+palette = 8=#ab4500
+palette = 9=#ffa86d
+palette = 10=#ff6b08
+palette = 11=#ffa86d
+palette = 12=#ff6b08
+palette = 13=#ffa86d
+palette = 14=#ff6b08
+palette = 15=#ffa86d

@@ -114,6 +114,10 @@ hl.config({
   dwindle = {
     force_split = 2,
   },
+  -- VRR for fullscreen windows only, so games track their frame rate without desktop flicker.
+  misc = {
+    vrr = 2,
+  },
 })
 
 -- Omarchy's qconsole.lua seeds the console with `omarchy-agent [flags]`, which starts in ~.

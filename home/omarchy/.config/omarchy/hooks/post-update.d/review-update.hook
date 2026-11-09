@@ -11,20 +11,21 @@ set -e
 agent=$(omarchy-default-agent)
 [[ -n $agent ]] || exit 0
 
-pkg=$(pacman -Qqo /usr/bin/omarchy 2>/dev/null) || exit 0
+echo -e "\e[32m\nAgentic update review\e[0m"
+nothing() { echo "Nothing to review"; exit 0; }
+
+pkg=$(pacman -Qqo /usr/bin/omarchy 2>/dev/null) || nothing
 new=$(pacman -Q "$pkg" | cut -d' ' -f2)
 
 state=~/.local/state/omarchy/update-review
-mark_reviewed() { mkdir -p "$(dirname "$state")" && echo "$new" >"$state"; }
+mark_reviewed() { mkdir -p "${state%/*}" && echo "$new" >"$state"; }
 
-[[ -f $state ]] && [[ $(<"$state") == "$new" ]] && exit 0
+[[ -f $state && $(<"$state") == "$new" ]] && nothing
+reviewed_nothing() { mark_reviewed; nothing; }
 
 old=$(grep -oP "upgraded \Q$pkg\E \(\K\S+(?= -> \Q$new\E\))" /var/log/pacman.log | tail -1)
-if [[ -z $old ]]; then
-  # Nothing to compare against (first run, or Omarchy wasn't upgraded).
-  mark_reviewed
-  exit 0
-fi
+# Nothing to compare against (first run, or Omarchy wasn't upgraded).
+[[ -n $old ]] || reviewed_nothing
 
 repo=$(pacman -Qi "$pkg" | sed -n 's/^URL *: //p')
 ref() { [[ $1 =~ \.g([0-9a-f]+)- ]] && echo "${BASH_REMATCH[1]}" || echo "v${1%-*}"; }
@@ -33,12 +34,10 @@ range="$(ref "$old")..$(ref "$new")"
 dotfiles=${DOTFILES:-$HOME/.dotfiles}
 work=$(mktemp -d)
 trap 'rm -rf "$work"' EXIT
+retry_later() { echo -e "\e[33mCould not fetch $range from $repo; will retry on the next update.\e[0m" >&2; exit 0; }
 
-if ! git clone -q --filter=blob:none --no-checkout "$repo" "$work/omarchy" 2>/dev/null ||
-  ! changed=$(git -C "$work/omarchy" diff --name-only --no-renames "$range" 2>/dev/null); then
-  echo -e "\e[33mCould not fetch $range from $repo; will retry on the next update.\e[0m" >&2
-  exit 0
-fi
+git clone -q --filter=blob:none --no-checkout "$repo" "$work/omarchy" 2>/dev/null || retry_later
+changed=$(git -C "$work/omarchy" diff --name-only --no-renames "$range" 2>/dev/null) || retry_later
 
 # grep -r skips symlinked files, so search the dotfiles they point into as well
 # as the live config they're linked into.
@@ -67,7 +66,7 @@ while IFS= read -r file; do
   bin/omarchy-*)
     route=${sub#omarchy-}
     hits=$(grep -rlF --exclude-dir=.git -e "$sub" -e "omarchy ${route//-/ }" "${config_roots[@]}" 2>/dev/null | head -5)
-    [[ -n $hits ]] && reason="referenced by: $(echo $hits)"
+    [[ -n $hits ]] && reason="referenced by: ${hits//$'\n'/ }"
     ;;
   etc/profile.d/*) reason="login shell environment" ;;
   # Everything else maps a repo path to the home-relative config it seeds or
@@ -84,13 +83,11 @@ while IFS= read -r file; do
   fi
 done <<<"$changed"
 
-if ((${#relevant[@]} == 0)); then
-  mark_reviewed
-  exit 0
-fi
+((${#relevant[@]})) || reviewed_nothing
 
 git -C "$work/omarchy" log --oneline "$range" -- "${relevant[@]}" >"$work/changes.log"
-git -C "$work/omarchy" diff "$range" -- "${relevant[@]}" >"$work/changes.diff"
+# The partial clone fetches blobs lazily here, and that fetch prints progress.
+git -C "$work/omarchy" diff "$range" -- "${relevant[@]}" >"$work/changes.diff" 2>/dev/null || retry_later
 
 prompt="Omarchy was just upgraded: $pkg $old -> $new, along with omarchy-settings,
 which is built from the same repo and installs its etc/ into /etc.
@@ -108,12 +105,19 @@ are symlinked into \$HOME), plus live ~/.config/hypr and ~/.config/omarchy.
 
 Read the diff, then check only the parts of my config it could affect; don't
 survey the rest. Report, most important first:
-  1. Breaks: things in my config that no longer work.
-  2. Behavior changes: changed defaults under settings I rely on.
-  3. Worth adopting: new options relevant to things I've customized.
-Cite files and lines. Report only findings worth acting on. If there are none,
-reply with exactly NONE and nothing else.
-Read-only review printed to a terminal: edit nothing, keep it plain and compact."
+  Breaks: things in my config that no longer work.
+  Changes: changed defaults under settings I rely on.
+  Adopt: new options relevant to things I've customized.
+Rules:
+  - One bullet per finding, one or two short lines, citing file:line.
+  - Omit any category with no findings; never write 'nothing' or 'none'.
+  - Never mention things that are fine, unaffected, or hardware-gated.
+  - Skip findings that need no action (e.g. a changed default I'd never notice).
+  - No title, preamble, or closing summary.
+  - Use plain markdown only: '## Breaks' style headings, '- ' bullets, and
+    backticks for paths and commands. No bold, no tables, no numbering.
+If there are no findings, reply with exactly NONE and nothing else.
+Read-only review printed to a terminal: edit nothing, keep it compact."
 
 add_dirs=(--add-dir "$work" --add-dir ~/.config --add-dir "${OMARCHY_PATH:-/usr/share/omarchy}" --add-dir /etc)
 
@@ -139,9 +143,11 @@ opencode) command=(opencode run "$prompt") ;;
   ;;
 esac
 
-# Stay silent unless the agent found something; show its stderr only on failure.
 cd "$dotfiles"
-if ! review=$("${command[@]}" </dev/null 2>"$work/agent.err"); then
+# gum spin draws the spinner on stderr and passes stdout through; its stderr is
+# dropped, so the wrapper keeps the agent's for the failure report.
+if ! review=$(gum spin --spinner dot --title "Reviewing..." --show-output -- \
+  bash -c 'err=$1; shift; exec "$@" 2>"$err"' _ "$work/agent.err" "${command[@]}" </dev/null); then
   cat "$work/agent.err" >&2
   echo -e "\e[33mOmarchy update review failed; it will run again on the next update.\e[0m" >&2
   exit 0
@@ -149,7 +155,11 @@ fi
 mark_reviewed
 
 verdict=$(tr -d '[:space:]' <<<"$review")
-[[ -z $verdict || $verdict == NONE ]] && exit 0
+if [[ -z $verdict || $verdict == NONE ]]; then
+  echo "Nothing needs your attention"
+  exit 0
+fi
 
-echo -e "\e[32m\nOmarchy $old -> $new: review against your config\e[0m"
-echo "$review"
+echo -e "\e[33m\nFindings\e[0m"
+# Render the markdown with terminal styling; fall back to the raw text.
+gum format <<<"$review" 2>/dev/null || echo "$review"

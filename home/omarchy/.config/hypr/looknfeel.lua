@@ -4,10 +4,10 @@ local function theme_color(key)
   local file = io.open(os.getenv("HOME") .. "/.local/state/omarchy/current/theme/colors.toml")
   local text = file and file:read("a") or ""
   if file then file:close() end
-  return text:match(key .. '%s*=%s*"#(%x+)"') or "000000"
+  return text:match("%f[%w_]" .. key .. '%s*=%s*"#(%x+)"')
 end
 
-local shadow = theme_color("darker_background")
+local shadow = theme_color("darker_background") or "000000"
 
 -- https://wiki.hypr.land/Configuring/Basics/Variables/#general
 hl.config({
@@ -26,7 +26,7 @@ hl.config({
 hl.config({
   decoration = {
     -- Use round window corners.
-    rounding = 2,
+    rounding = 1,
     rounding_power = 4,
 
     -- -- Dim unfocused windows (0.0 = no dim, 1.0 = fully dimmed).

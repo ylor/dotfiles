@@ -3,7 +3,11 @@
    without repeating every state. */
 :root {
   --bg: {{ background }};
+  --bright: {{ bright_foreground }};
   --fg: {{ foreground }};
+  --dim: {{ dark_foreground }};
+  --faint: {{ muted }};
+  --trace: {{ selection }};
   --red: {{ red }};
 }
 
@@ -51,23 +55,23 @@ tabbar tabboxchild {
 }
 
 /* Tabs show the bar's glass. An inset outline marks state without shifting
-   layout. Mixing in oklab keeps the steps even across themes. Bare tab
-   selectors also match the dragged copy, which lives in dnd. */
+   layout. Each state takes a palette key rather than a mix, so a theme with a
+   strict palette stays on it. Bare tab selectors also match the dragged copy,
+   which lives in dnd. */
 tab {
-  --ink: color-mix(in oklab, var(--fg) 85%, var(--bg));
-  --line: color-mix(in oklab, var(--fg) 35%, var(--bg));
+  --ink: var(--faint);
+  --line: var(--trace);
   min-height: 0;
   border-radius: 0;
   font-size: 0.85em;
   background: none;
   color: var(--ink);
   box-shadow: inset 0 0 0 1px var(--line);
-  transition: color 120ms, box-shadow 120ms;
 }
 
 tab:hover {
-  --ink: color-mix(in oklab, var(--fg) 95%, var(--bg));
-  --line: color-mix(in oklab, var(--fg) 60%, var(--bg));
+  --ink: var(--bright);
+  --line: var(--bright);
 }
 
 tab:selected {
@@ -77,12 +81,12 @@ tab:selected {
 
 /* An unfocused window steps down so the focused one stands out. */
 tab:backdrop {
-  --ink: color-mix(in oklab, var(--fg) 70%, var(--bg));
+  --ink: var(--faint);
 }
 
 tab:selected:backdrop {
-  --ink: color-mix(in oklab, var(--fg) 80%, var(--bg));
-  --line: color-mix(in oklab, var(--fg) 45%, var(--bg));
+  --ink: var(--dim);
+  --line: var(--faint);
 }
 
 /* A dragged tab floats outside the bar, so it carries the bar's color. */
@@ -93,15 +97,14 @@ dnd tab {
 tabbar button,
 dnd button {
   min-height: 0;
-  color: inherit;
+  color: var(--dim);
   background: none;
-  opacity: 0.7;
 }
 
 tabbar button:hover,
 dnd button:hover {
-  opacity: 1;
-  background-color: color-mix(in oklab, var(--fg) 15%, transparent);
+  color: var(--bright);
+  background-color: var(--trace);
 }
 
 /* Progress bar from OSC 9;4. Libadwaita colors it with the system accent. */

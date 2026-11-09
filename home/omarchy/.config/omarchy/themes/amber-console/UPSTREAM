@@ -1,6 +1,0 @@
-source: https://github.com/zigmoo/omarchy-amber-console-theme
-commit: 7550b0aac4fe41b32922fcb4af7d52d4cbd19ab7 (2026-09-13, "DIL-2723: Update theme preview with padded sector 10")
-
-Compare against upstream:
-  git clone https://github.com/zigmoo/omarchy-amber-console-theme /tmp/amber-upstream
-  git -C /tmp/amber-upstream diff 7550b0a HEAD

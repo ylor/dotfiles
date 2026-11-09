@@ -1,0 +1,154 @@
+# AmberConsole neon for the Omarchy shell. Tokens only, mapped from the
+# source's component rules rather than from the generic template:
+#
+#   panel / popup / card   2px stroke (emit-90) on screen; no hairlines
+#   read-only region       recedes to stroke-dim (emit-50)
+#   hover, focus           ink-bright (emit-100) outline
+#   latched / selected     inverse video: fill (emit-90) + on-fill text,
+#                          or a trace-lit (emit-30) cell where the shell keeps
+#                          its own text color
+#   placeholder, disabled  ink-faint (emit-50)
+#   alarm                  hottest drive level (emit-100); never a new hue
+#
+# Alpha appears only where the compositor must see through a layer (scrims,
+# lock card); every opaque surface is a token at alpha 1.
+
+[bar]
+background       = "#100600" # screen
+background-alpha = 1.0
+text             = "#ff6b08" # ink
+active           = "#ffa86d" # alarm runs hot
+scale-with-font  = true
+size-horizontal  = 26
+size-vertical    = 28
+
+[hyprland]
+# Same lit stroke as the focused window border in colors.toml.
+active-border            = "#ff6b08"
+active-border-foreground = "#ff6b08"
+
+[controls]
+# Idle chrome is a dim-driven key: stroke-dim outline, no fill.
+normal-color        = "#ab4500"
+normal-fill-alpha   = 0.0
+normal-border       = "#ab4500"
+normal-border-width = 2
+normal-border-alpha = 1.0
+
+# Hover and the keyboard cursor light the outline to ink-bright.
+hover-cursor-color        = "#ffa86d"
+hover-cursor-fill-alpha   = 0.0
+hover-cursor-border       = "#ffa86d"
+hover-cursor-border-width = 2
+hover-cursor-border-alpha = 1.0
+
+# Focus is the source's focus token: ink-bright, same as hover.
+focus-color        = "#ffa86d"
+focus-fill-alpha   = 0.0
+focus-border       = "#ffa86d"
+focus-border-width = 2
+focus-border-alpha = 1.0
+
+# Selected (and slider/toggle tracks): a trace-lit cell, opaque.
+selected-color        = "#5b2500"
+selected-fill-alpha   = 1.0
+selected-border       = "#5b2500"
+selected-border-width = 0
+selected-border-alpha = 1.0
+
+# Press and text selection land on the same trace cell, opaque, so nothing
+# blends into an off-palette tint.
+pressed-color        = "#5b2500"
+pressed-fill-alpha   = 1.0
+selection-color      = "#5b2500"
+selection-fill-alpha = 1.0
+
+[popups]
+background       = "#100600"
+background-alpha = 1.0
+text             = "#ff6b08"
+border           = "#ff6b08" # stroke
+border-alpha     = 1.0
+border-width     = 2
+
+[tooltip]
+# A tooltip is a recessed readout, not a panel: well surface, dim stroke.
+background       = "#060200"
+background-alpha = 1.0
+text             = "#ff6b08"
+border           = "#ab4500"
+border-alpha     = 1.0
+
+[notifications]
+background       = "#100600"
+background-alpha = 1.0
+text             = "#ff6b08"
+border           = "#ff6b08"
+border-alpha     = 1.0
+border-width     = 2
+countdown        = "#ffa86d"
+
+[launcher]
+background                = "#100600"
+background-alpha          = 1.0
+text                      = "#ff6b08"
+border                    = "#ff6b08"
+border-alpha              = 1.0
+border-width              = 2
+scrim                     = "#060200"
+scrim-alpha               = 0.6
+selected-background       = "#ff6b08" # inverse video
+selected-background-alpha = 1.0
+selected-text             = "#1e0c00"
+selected-border           = "#ffa86d"
+selected-border-alpha     = 1.0
+
+[menu]
+# Menu consumers (omacast, clipboard, emojis) keep body text at menu.text on
+# the selected row, so inverse video would erase it. A trace-lit cell keeps
+# ink readable (4.3:1) and the title runs at ink-bright (6.5:1).
+background                = "#100600"
+background-alpha          = 1.0
+text                      = "#ff6b08"
+border                    = "#ff6b08"
+border-alpha              = 1.0
+border-width              = 2
+scrim                     = "#060200"
+scrim-alpha               = 0.6
+selected-background       = "#5b2500" # ink-trace
+selected-background-alpha = 1.0
+selected-text             = "#ffa86d" # ink-bright
+selected-border           = "#ffa86d"
+selected-border-alpha     = 1.0
+
+[polkit]
+background       = "#100600"
+background-alpha = 1.0
+text             = "#ff6b08"
+text-error       = "#ffa86d"
+border           = "#ff6b08"
+border-error     = "#ffa86d"
+border-alpha     = 1.0
+scrim            = "#060200"
+scrim-alpha      = 0.6
+accent           = "#ffa86d"
+
+[lock]
+background       = "#100600"
+background-alpha = 0.85
+text             = "#ff6b08"
+placeholder      = "#ab4500" # ink-faint, as the source's input placeholder
+text-error       = "#ffa86d"
+border           = "#ab4500" # idle well: stroke-dim
+border-active    = "#ff6b08" # typing: lit stroke
+border-error     = "#ffa86d" # wrong password: hottest
+border-alpha     = 1.0
+selection        = "#5b2500"
+selection-alpha  = 1.0
+
+[image-picker]
+text                    = "#ff6b08"
+selected-border         = "#ffa86d"
+selected-border-alpha   = 1.0
+unselected-border       = "#5b2500"
+unselected-border-alpha = 1.0

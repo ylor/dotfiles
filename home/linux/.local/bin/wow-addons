@@ -304,6 +304,7 @@ update ForeverQuestTint ForeverQuestTint.toc 1703732 '^ForeverQuestTint-[A-Za-z0
 update HDRTuner HDRTuner.toc 1701739 '^HDRTuner\.zip$'
 update KeepOrToss KeepOrToss.toc 1737994 '^KeepOrToss-[0-9.]+\.zip$'
 update Leatrix_Plus Leatrix_Plus.toc 94855 '^Leatrix_Plus-[A-Za-z0-9.-]+-forever\.zip$'
+update NodeSight NodeSight.toc 1731463 '^NodeSight-[0-9.]+\.zip$'
 update OpenMap OpenMap.toc 1735937 '^OpenMap-[A-Za-z0-9.-]+\.zip$'
 update Pawn Pawn.toc 4646 '^Pawn-[0-9.]+-Forever\.zip$'
 update Questie Questie_Forever.toc 334372 '^Questie-v[0-9.]+\.zip$'

@@ -1,0 +1,58 @@
+# AmberConsole, plasma / neon. Every value below is a neon token from
+# DutchDiederik/AmberConsole src/tokens/colors.css; see UPSTREAM.
+#
+#   screen         #100600   screen-raised  #1b0c02   screen-well  #060200
+#   emit-100       #ffa86d   ink-bright · focus · fill-bright      10.57:1
+#   emit-90        #ff6b08   ink · stroke · fill                    7.02:1
+#   emit-70        #dd5800   ink-dim                                5.22:1
+#   emit-50        #ab4500   ink-faint · stroke-dim                 3.42:1
+#   emit-30        #5b2500   ink-trace (decorative)                 1.63:1
+#   on-fill        #1e0c00   text on a fill (inverse video)
+#
+# One emitter, five drive levels. "Never introduce a second hue." The ANSI
+# names are therefore roles, sorted by how hard the cell is driven:
+#   alarm    red, yellow                       emit-100
+#   reading  magenta, orange                   emit-90  (same as body text)
+#   context  green, cyan, blue                 emit-70
+#   ghost    brown, muted (bright black)       emit-50
+# Every bright_* is one drive level above its normal partner.
+mode = "dark"
+
+background         = "#100600" # screen
+lighter_background = "#1b0c02" # screen-raised
+dark_background    = "#060200" # screen-well
+darker_background  = "#060200" # screen-well (the source has three surfaces)
+
+foreground        = "#ff6b08" # ink
+dark_foreground   = "#dd5800" # ink-dim
+light_foreground  = "#ffa86d" # ink-bright
+bright_foreground = "#ffa86d" # ink-bright
+muted             = "#5b2500" # ink-trace (experiment; was emit-50 ink-faint)
+
+accent = "#ffa86d" # focus
+
+# selection is the quiet lifted row (stock themes use it as a surface);
+# selection_background/foreground is inverse video: fill + on-fill.
+selection            = "#5b2500" # ink-trace
+selection_background = "#ff6b08" # fill
+selection_foreground = "#1e0c00" # on-fill
+
+# Lit stroke around the focused window; unlit cells keep a trace ghost.
+hyprland_active_border   = "rgb(ff6b08)" # stroke
+hyprland_inactive_border = "rgb(5b2500)" # ink-trace
+
+red     = "#ffa86d"
+yellow  = "#ffa86d"
+magenta = "#ff6b08"
+orange  = "#ff6b08"
+green   = "#dd5800"
+cyan    = "#dd5800"
+blue    = "#dd5800"
+brown   = "#ab4500"
+
+bright_red     = "#ffa86d"
+bright_yellow  = "#ffa86d"
+bright_magenta = "#ffa86d"
+bright_green   = "#ff6b08"
+bright_cyan    = "#ff6b08"
+bright_blue    = "#ff6b08"

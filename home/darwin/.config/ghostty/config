@@ -1,0 +1,4 @@
+# https://ghostty.org/docs/config
+
+theme = Amber
+config-file = ?local
