@@ -27,5 +27,7 @@ local onHdmi = true
 function ToggleMonitorInput()
     onHdmi = not onHdmi
     local input = onHdmi and 144 or 208 -- HDMI 1 or DP 1
-    hs.execute('/opt/homebrew/bin/betterdisplaycli set --name="LG ULTRAGEAR+" --ddcAlt --vcp=inputSelectAlt --value=' .. input)
+    hs.task.new("/opt/homebrew/bin/betterdisplaycli", nil, {
+        "set", "--name=LG ULTRAGEAR+", "--ddcAlt", "--vcp=inputSelectAlt", "--value=" .. input,
+    }):start()
 end

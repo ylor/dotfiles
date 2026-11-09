@@ -1,17 +1,6 @@
 ---@diagnostic disable-next-line: undefined-global
 local hs = hs
 
-
--- helpers
-
-local function centerMouse(win)
-    win = win or hs.window.frontmostWindow()
-    local frame = win:frame()
-    if not hs.geometry.inside(hs.mouse.absolutePosition(), frame) then
-        hs.mouse.absolutePosition(frame.center)
-    end
-end
-
 function WindowCycleWidth(win)
     win          = win or hs.window.focusedWindow()
 
@@ -69,39 +58,19 @@ function WindowCenter(win)
     end
 end
 
-function WindowLeft(win)
-    win          = win or hs.window.frontmostWindow()
-    local screen = win:screen():frame()
-    if not
-        win:application():selectMenuItem({ "Window", "Move & Resize", "Left" }) then
-        win:setFrame({
-            x = screen.x,
-            y = screen.y,
-            w = screen.w / 2,
-            h = screen.h
-        })
+-- The app's Window menu item, or a screen unit rect when it has none
+local function menuOrUnit(path, unit)
+    return function(win)
+        win = win or hs.window.frontmostWindow()
+        if not win:application():selectMenuItem(path) then
+            win:moveToUnit(unit)
+        end
     end
 end
 
-function WindowRight(win)
-    win          = win or hs.window.frontmostWindow()
-    local screen = win:screen():frame()
-    if not win:application():selectMenuItem({ "Window", "Move & Resize", "Right" }) then
-        win:setFrame({
-            x = screen.x + screen.w / 2,
-            y = screen.y,
-            w = screen.w / 2,
-            h = screen.h
-        })
-    end
-end
-
-function WindowFill(win)
-    win = win or hs.window.frontmostWindow()
-    if not win:application():selectMenuItem({ "Window", "Fill" }) then
-        win:moveToUnit({ 0, 0, 1, 1 })
-    end
-end
+WindowLeft = menuOrUnit({ "Window", "Move & Resize", "Left" }, { 0, 0, 0.5, 1 })
+WindowRight = menuOrUnit({ "Window", "Move & Resize", "Right" }, { 0.5, 0, 0.5, 1 })
+WindowFill = menuOrUnit({ "Window", "Fill" }, { 0, 0, 1, 1 })
 
 function WindowFillToggle(win)
     win = win or hs.window.frontmostWindow()
@@ -118,19 +87,19 @@ function WindowMaxi(win) WindowFloat(win, 0.9) end
 
 function WindowMini(win) WindowFloat(win, 0.5) end
 
-function MoveWindowLeftScreen(win)
-    win = win or hs.window.frontmostWindow()
-    local westScreen = win:screen():toWest()
-    if not westScreen then return end
-    win:application():selectMenuItem({ "Window", "Move to " .. westScreen:name() })
+-- `direction` is an hs.screen neighbor method: "toWest" or "toEast"
+local function moveWindowToScreen(direction)
+    return function(win)
+        win = win or hs.window.frontmostWindow()
+        local screen = win:screen()
+        local target = screen[direction](screen)
+        if not target then return end
+        win:application():selectMenuItem({ "Window", "Move to " .. target:name() })
+    end
 end
 
-function MoveWindowRightScreen(win)
-    win = win or hs.window.frontmostWindow()
-    local eastScreen = win:screen():toEast()
-    if not eastScreen then return end
-    win:application():selectMenuItem({ "Window", "Move to " .. eastScreen:name() })
-end
+MoveWindowLeftScreen = moveWindowToScreen("toWest")
+MoveWindowRightScreen = moveWindowToScreen("toEast")
 
 function AppZen()
     local screen = hs.screen.mainScreen()
@@ -165,7 +134,10 @@ end
 -- extensions
 
 hs.getObjectMetatable("hs.window").centerMouse = function(self)
-    centerMouse(self)
+    local frame = self:frame()
+    if not hs.geometry.inside(hs.mouse.absolutePosition(), frame) then
+        hs.mouse.absolutePosition(frame.center)
+    end
     return self
 end
 
@@ -184,17 +156,3 @@ function WindowArrowKeyHandler(actions)
         end
     end
 end
-
-
--- local prevScreens = {}
--- hs.window.filter.new():subscribe(hs.window.filter.windowMoved, function(win)
---     local id, screen = win:id(), win:screen()
---     local prev, curr = prevScreens[id], screen:id()
---     prevScreens[id] = curr
-
---     if prev and prev ~= curr and screen:name() == "Built-in Retina Display" then
---         if hs.fnutils.find(hs.screen.allScreens(), function(s) return s:id() == prev end) then
---             WindowFill(win)
---         end
---     end
--- end)

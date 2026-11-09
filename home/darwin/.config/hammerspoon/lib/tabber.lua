@@ -1,11 +1,11 @@
 local hs = hs ---@diagnostic disable-line: undefined-global
 
-
-local index, last, list = 1, nil, {}
+local index, last, list
 
 local function reset()
     index, last, list = 1, nil, {}
 end
+reset()
 
 local timer = hs.timer.delayed.new(1, reset)
 
@@ -25,14 +25,10 @@ local function switcher(reverse)
     list[index]:focus():centerMouse()
 end
 
-_G.SwitcherFocusWatcher = hs.window.filter.new():subscribe(
+hs.window.filter.default:subscribe(
     hs.window.filter.windowFocused,
     function() timer:start() end
 )
-
--- likely redundant: focus change and the reset timer already rebuild the list
--- _G.SwitcherSpaceWatcher = hs.spaces.watcher.new(reset):start()
--- _G.SwitcherScreenWatcher = hs.screen.watcher.new(reset):start()
 
 local TAB = hs.keycodes.map.tab
 _G.TabberEventTapper = hs.eventtap.new({ hs.eventtap.event.types.keyDown },

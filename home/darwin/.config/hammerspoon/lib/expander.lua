@@ -26,8 +26,7 @@ for trigger in pairs(triggers) do
 	maxLen = math.max(maxLen, #trigger)
 end
 
--- keys that always abort a pending trigger, checked with one getKeyCode()
--- call and one table lookup instead of a chain of equality comparisons
+-- keys that always abort a pending trigger
 local RESET_KEYCODES = {
 	[hs.keycodes.map.escape] = true,
 	[hs.keycodes.map.left] = true,
@@ -46,16 +45,14 @@ _G.textExpander = hs.eventtap.new({
 	hs.eventtap.event.types.leftMouseDown,
 	hs.eventtap.event.types.rightMouseDown,
 }, function(event)
-	if event:getType() ~= hs.eventtap.event.types.keyDown then
-		return resetBuffer()
-	end
-
-	if RESET_KEYCODES[event:getKeyCode()] then
-		return resetBuffer()
-	end
-
 	local flags = event:getFlags()
-	if flags.cmd or flags.ctrl or flags.alt then
+	if
+		event:getType() ~= hs.eventtap.event.types.keyDown
+		or RESET_KEYCODES[event:getKeyCode()]
+		or flags.cmd
+		or flags.ctrl
+		or flags.alt
+	then
 		return resetBuffer()
 	end
 

@@ -1,5 +1,8 @@
 ---@diagnostic disable-next-line: undefined-global
 local hs = hs
+-- Cap AX calls for all of Hammerspoon so a hung app can't block it for the
+-- 6s default. Set first so the window filters' startup scans are capped too.
+hs.axuielement.systemWideElement():setTimeout(0.25)
 hs.window.animationDuration = 0.1
 -- Lets the `hs` CLI talk to this instance.
 require("hs.ipc")
@@ -20,13 +23,30 @@ require("lib.window")
 require("lib.input")
 require("lib.app.modals")
 require("lib.menubar.spaces")
--- Since macOS 27 Golden Gate, ctrl+[1-5] space switching breaks until the Dock restarts.
--- Do it after hs.spaces has loaded, because it crashes on load while the Dock is down.
-hs.execute("killall Dock")
+
+-- Temporary: on macOS 27 Golden Gate the ctrl+[1-5] space switching shortcuts
+-- break on login and after an unlock. The Dock owns Mission Control, so
+-- restarting it brings them back. Closest public report of the regression:
+-- https://github.com/ruittenb/Spaceman/issues/46
+-- Drop this once the bug is fixed.
+local function restartDock()
+	hs.task.new("/usr/bin/killall", nil, { "Dock" }):start()
+end
+-- After hs.spaces has loaded, because it crashes on load while the Dock is down.
+restartDock()
+_G.DockRestartWatcher = hs.caffeinate.watcher
+	.new(function(event)
+		if event == hs.caffeinate.watcher.screensDidUnlock then
+			restartDock()
+		end
+	end)
+	:start()
+
 -- require("lib.menubar.windows")
 require("lib.expander")
 require("lib.quitter")
 require("lib.tabber")
+require("lib.focus")
 
 hs.hotkey.bind(Mod.main, ".", App("1Password"))
 -- hs.hotkey.bind(Mod.main, "\\", App("Zed"))
@@ -42,11 +62,7 @@ hs.hotkey.bind(Mod.main, "Return", App(Terminal))
 
 hs.hotkey.bind(Mod.hyper, ",", App("System Settings"))
 
-if AppExists("/Applications/Claude.app") then
-	hs.hotkey.bind(Mod.main, "A", App("Claude"))
-else
-	hs.hotkey.bind(Mod.main, "A", Web("https://claude.ai"))
-end
+hs.hotkey.bind(Mod.main, "A", AppOrWeb("Claude", "https://claude.ai"))
 
 hs.hotkey.bind(Mod.main, "R", App("Screen Sharing"))
 hs.hotkey.bind(Mod.hyper, "P", Tui("/opt/homebrew/bin/btop"))
@@ -56,9 +72,13 @@ hs.hotkey.bind(Mod.main, "V", ShowClipboard)
 hs.hotkey.bind(Mod.main, "W", hs.spaces.toggleMissionControl)
 hs.hotkey.bind({ "ctrl" }, "W", WindowCycleWidth)
 hs.hotkey.bind(Mod.hyper, "D", hs.spaces.toggleShowDesktop)
+hs.hotkey.bind(Mod.hyper, "F", FocusFollowsMouseToggle)
 hs.hotkey.bind(Mod.hyper, "H", AppZen)
 hs.hotkey.bind(Mod.hyper, "I", ToggleMonitorInput)
 hs.hotkey.bind(Mod.hyper, "L", hs.caffeinate.lockScreen)
+hs.hotkey.bind(Mod.hyper, "O", function()
+	hs.task.new(os.getenv("HOME") .. "/.local/bin/ocr", nil):start()
+end)
 hs.hotkey.bind(Mod.hyper, "up", WindowMaxi)
 hs.hotkey.bind(Mod.hyper, "down", WindowMini)
 hs.hotkey.bind(Mod.hyper, "left", MoveWindowLeftScreen)
@@ -93,29 +113,10 @@ if Work then
 	hs.hotkey.bind(Mod.main, "M", App("Mail"))
 	hs.hotkey.bind(Mod.main, "S", App("Slack"))
 	-- hs.hotkey.bind(Mod.hyper, "I", App("Island"))
-	if AppExists("/Applications/Gemini.app") then
-		hs.hotkey.bind(Mod.hyper, "A", App("Gemini"))
-	else
-		hs.hotkey.bind(Mod.hyper, "A", Web("https://gemini.google.com"))
-	end
-end
-
-if not Work then
+	hs.hotkey.bind(Mod.hyper, "A", AppOrWeb("Gemini", "https://gemini.google.com"))
+else
 	hs.hotkey.bind(Mod.main, "M", App("Messages"))
 	hs.hotkey.bind(Mod.hyper, "M", App("Mail"))
 end
 
 hs.hotkey.bind(Mod.hyper, "\\", hs.reload)
-
--- Temporary: on macOS 27 Golden Gate the ctrl+[1-5] space switching shortcuts
--- stop working after an unlock. The Dock owns Mission Control, so restarting it
--- brings them back. Closest public report of the Golden Gate regression:
--- https://github.com/ruittenb/Spaceman/issues/46
--- Drop this once the bug is fixed.
-_G.DockRestartWatcher = hs.caffeinate.watcher
-	.new(function(event)
-		if event == hs.caffeinate.watcher.screensDidUnlock then
-			hs.execute("killall Dock")
-		end
-	end)
-	:start()

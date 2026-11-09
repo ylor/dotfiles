@@ -1,3 +1,3 @@
-if command -q codex
-    abbr c codex
-end
+# if command -q codex
+#     abbr c codex
+# end

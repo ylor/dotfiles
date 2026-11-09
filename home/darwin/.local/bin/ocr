@@ -1,2 +1,32 @@
 #!/bin/sh
-exec /Applications/TRex.app/Contents/MacOS/cli/trex "$@"
+# OCR a screen selection (or an image file) using macOS's built-in Vision framework.
+# Usage: ocr [image]   — prints text and copies it to the clipboard.
+set -e
+
+if [ -n "$1" ]; then
+  img=$1
+else
+  img=$(mktemp -t ocr).png
+  trap 'rm -f "$img"' EXIT
+  screencapture -i "$img"
+  [ -s "$img" ] || exit 1 # selection cancelled
+fi
+
+text=$(osascript -l JavaScript - "$img" <<'EOF'
+ObjC.import('Vision')
+function run(argv) {
+  const url = $.NSURL.fileURLWithPath(argv[0])
+  const req = $.VNRecognizeTextRequest.alloc.init
+  const handler = $.VNImageRequestHandler.alloc.initWithURLOptions(url, $({}))
+  if (!handler.performRequestsError($([req]), null)) throw 'OCR failed'
+  const out = []
+  const results = req.results
+  for (let i = 0; i < results.count; i++)
+    out.push(results.objectAtIndex(i).topCandidates(1).objectAtIndex(0).string.js)
+  return out.join('\n')
+}
+EOF
+)
+
+printf '%s\n' "$text"
+printf '%s' "$text" | pbcopy

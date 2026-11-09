@@ -51,9 +51,11 @@ Terminal = hs.fnutils.find({ "Rex", "Rex Beta" }, AppExists) or "Terminal"
 -- Rex takes the same flags as Ghostty
 function Tui(cmd)
     return function()
-        local terminal = "/usr/bin/open -na '" .. Terminal .. "' --args" ..
-            " --confirm-close-surface=false --quit-after-last-window-closed=true --window-decoration=none --command="
-        hs.execute(terminal .. cmd)
+        hs.task.new("/usr/bin/open", nil, {
+            "-na", Terminal, "--args",
+            "--confirm-close-surface=false", "--quit-after-last-window-closed=true",
+            "--window-decoration=none", "--command=" .. cmd,
+        }):start()
         hs.timer.doAfter(0.5, function()
             WindowMaxi()
         end)
@@ -62,23 +64,14 @@ end
 
 function Web(url)
     return function()
-        hs.execute("open " .. url)
+        hs.urlevent.openURL(url)
     end
 end
 
--- unused, kept for ad hoc use from the Hammerspoon console
--- function Run(mods, key, cmd)
---     hs.hotkey.bind(mods, key, function()
---         hs.execute(cmd)
---     end)
--- end
-
--- unused, kept for ad hoc use from the Hammerspoon console
--- function RunCommand(bin)
---     local home = os.getenv("HOME")
---     local cmd = home .. "/.local/bin/" .. bin
---     hs.execute(hs.fs.symlinkAttributes(cmd).target)
--- end
+-- The app if it's installed, otherwise its web version
+function AppOrWeb(name, url)
+    return AppExists(name) and App(name) or Web(url)
+end
 
 -- Keep watchers referenced so they aren't garbage collected.
 local watchers = {}
