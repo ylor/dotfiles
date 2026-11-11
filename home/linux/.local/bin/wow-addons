@@ -7,7 +7,7 @@ check=0
 
 usage() {
     printf '%s\n' 'Usage: wow-addons [--check] [--forever-dir PATH]' \
-        'Close WoW before updating. Addon settings are preserved.'
+        'Run /reload in game afterward to load updates. Addon settings are preserved.'
 }
 
 fail() {
@@ -288,7 +288,7 @@ install_own_addon() {
 
 say_path "$addons_dir"
 if [ "$check" -eq 0 ] && pgrep -fi '_forever_.*\.exe' >/dev/null; then
-    say 33 'WoW Forever is running; close it so updated addons load cleanly'
+    say 33 'WoW Forever is running; /reload in game to load updated addons'
 fi
 
 # Only plain numbered releases; Baganator-841-3-ge3f466e.zip style names are alphas.
@@ -307,6 +307,7 @@ update Leatrix_Plus Leatrix_Plus.toc 94855 '^Leatrix_Plus-[A-Za-z0-9.-]+-forever
 update NodeSight NodeSight.toc 1731463 '^NodeSight-[0-9.]+\.zip$'
 update OpenMap OpenMap.toc 1735937 '^OpenMap-[A-Za-z0-9.-]+\.zip$'
 update Pawn Pawn.toc 4646 '^Pawn-[0-9.]+-Forever\.zip$'
+update PrettyTooltip PrettyTooltip.toc 1720719 '^PrettyTooltip-v[0-9.]+-forever\.zip$'
 update Questie Questie_Forever.toc 334372 '^Questie-v[0-9.]+\.zip$'
 # KeepOrToss reads quest data from this, not from Questie. Older names lack the version.
 update QuestieDB QuestieDB_Forever.toc 1696795 '^QuestieDB-([0-9.]+-)?Forever\.zip$'
