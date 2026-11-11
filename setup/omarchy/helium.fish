@@ -1,6 +1,6 @@
 if not command -q helium-browser
     omarchy pkg aur add helium-browser-bin
-    omarchy pkg drop chromium
+    # omarchy pkg drop chromium
 end
 
 if not grep -Fxq helium /etc/1password/custom_allowed_browsers 2>/dev/null
@@ -8,10 +8,10 @@ if not grep -Fxq helium /etc/1password/custom_allowed_browsers 2>/dev/null
     printf '%s\n' helium | sudo tee --append /etc/1password/custom_allowed_browsers >/dev/null; or return
 end
 
-if test -e /etc/chromium/policies/managed/color.json
-    sudo rm -f /etc/chromium/policies/managed/color.json; or return
-    sudo rmdir --ignore-fail-on-non-empty /etc/chromium/policies/managed; or return
-end
+# if test -e /etc/chromium/policies/managed/color.json
+#     sudo rm -f /etc/chromium/policies/managed/color.json; or return
+#     sudo rmdir --ignore-fail-on-non-empty /etc/chromium/policies/managed; or return
+# end
 
 if not test -d /usr/share/chromium/extensions
     sudo mkdir -p /usr/share/chromium/extensions; or return
