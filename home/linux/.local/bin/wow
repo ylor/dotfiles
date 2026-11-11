@@ -349,6 +349,7 @@ addons() {
     trap 'exit 129' HUP
 
     # Only plain numbered releases; Baganator-841-3-ge3f466e.zip style names are alphas.
+    update Auctionator Auctionator.toc 6124 '^Auctionator-[0-9]+\.zip$'
     update Baganator Baganator.toc 914482 '^Baganator-[0-9]+\.zip$'
     update BetterBlizzFrames BetterBlizzFrames_Camelot.toc 940950 '^BetterBlizzFrames-v[0-9.]+[a-z]?\.zip$'
     update BetterBlizzPlates BetterBlizzPlates_Camelot.toc 913377 '^BetterBlizzPlates-v[0-9.]+[a-z]?\.zip$'
