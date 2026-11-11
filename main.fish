@@ -142,6 +142,7 @@ function dfs-apply
     # Layer scripts need the linked files, e.g. the hypr plugin build.
     dfs-link; or return $status
 
+    set -l failed_scripts
     for name in (dfs-layers)
         set layer $DOTFILES/setup/$name
         test -d $layer; or continue
@@ -152,7 +153,7 @@ function dfs-apply
             set -l script_status $status
             if test $script_status -ne 0
                 dfs-failure "Script failed: $script (exit $script_status)"
-                return $script_status
+                set -a failed_scripts $script
             end
         end
     end
@@ -166,6 +167,14 @@ function dfs-apply
     end
 
     printf '\n%sSEE YOU SPACE COWBOY%s\n\n' (set_color --bold) (set_color normal)
+
+    if test (count $failed_scripts) -gt 0
+        dfs-failure "Finished with "(count $failed_scripts)" failed script(s):"
+        for script in $failed_scripts
+            echo "  $script"
+        end
+        return 1
+    end
 end
 
 argparse h/help v/verbose -- $argv; or exit 2

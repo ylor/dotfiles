@@ -5,7 +5,6 @@ config-file = ?local
 
 # function
 command = fish
-font-size = 10
 clipboard-read = "allow"
 clipboard-paste-protection = false
 copy-on-select = clipboard
@@ -18,18 +17,18 @@ window-theme = ghostty
 alpha-blending = linear-corrected
 # TUIs paint explicit backgrounds that would otherwise stay opaque
 background-opacity-cells = true
-font-family = "Berkeley Mono Variable"
+# font-family = "Berkeley Mono Variable"
 palette-generate=true
-window-padding-balance = true
-window-padding-y = 0
+# window-padding-balance = true
+# window-padding-y = 0
 unfocused-split-opacity = 0.9
 
 # shaders
 custom-shader = shaders/bloom.glsl
 custom-shader-animation = false
-resize-overlay = never
-gtk-toolbar-style = flat
-gtk-custom-css = ?~/.local/state/omarchy/current/theme/ghostty.css
+# resize-overlay = never
+# gtk-toolbar-style = flat
+# gtk-custom-css = ?~/.local/state/omarchy/current/theme/ghostty.css
 
 # keybinds
 keybind = performable:ctrl+c=copy_to_clipboard

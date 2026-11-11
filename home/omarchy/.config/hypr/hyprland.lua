@@ -38,8 +38,7 @@ require("hypr.input")
 require("hypr.bindings")
 require("hypr.looknfeel")
 require("hypr.autostart")
-require("hypr.expand")
-require("hypr.controller")
+require("hypr.expandr")
 -- TODO: Remove once omacom/omarchy PR #16349 is merged and installed.
 require("hypr.workspace-fix")
 

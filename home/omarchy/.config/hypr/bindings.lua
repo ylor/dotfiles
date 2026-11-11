@@ -29,11 +29,77 @@
 
 local hyper = "CTRL + ALT + SUPER"
 
-o.bind(hyper .. " + A", "Switch audio output", "omarchy-audio-output-switch", { locked = true })
+---------------------------------------------------------------------------
+-- Launchers and apps
+---------------------------------------------------------------------------
+
+hl.unbind("SUPER + W")
+o.bind("SUPER + I", "Browser", { omarchy = "browser" })
+o.rebind("SUPER + SHIFT + N", "Browser (private)", { omarchy = "browser --private" })
+
+o.rebind("ALT + SPACE", "omacast launcher", hl.dsp.global("omacast:toggle"))
+o.rebind("SUPER + SPACE", "omacast launcher", hl.dsp.global("omacast:toggle"))
+hl.layer_rule({ match = { namespace = "^omacast$" }, no_anim = true, animation = "none" })
+o.bind(hyper .. " + SPACE", "Omarchy menu", { menu = "root" })
+
+-- flea --default: begin. Written by `flea --default`; `flea --default off` removes the block whole.
+hl.unbind("SUPER + SHIFT + F")
+o.rebind("SUPER + E", "File manager", { launch = 'flea --gui' })
+hl.unbind("SUPER + ALT + SHIFT + F")
+o.rebind("SUPER + SHIFT + E", "File manager (cwd)", { launch = 'flea --gui "$(omarchy-cmd-terminal-cwd)"' })
+-- flea --default: end.
+
+-- flea --picker: begin. Written by `flea --picker`; `flea --picker off` removes the block whole.
+o.window("com.thisisgm.flea.picker", { tag = "+floating-window" })
+-- flea --picker: end.
+
+---------------------------------------------------------------------------
+-- System
+---------------------------------------------------------------------------
+
 o.bind(hyper .. " + L", "Lock system", "omarchy-system-lock")
+
+---------------------------------------------------------------------------
+-- Audio
+---------------------------------------------------------------------------
+
+o.bind(hyper .. " + A", "Switch audio output", "omarchy-audio-output-switch", { locked = true })
 o.bind(hyper .. " + V", "Volume mixer", { panel = "omarchy.audio" })
+
+-- Step volume onto the next multiple of 5, so a level set by hand (e.g. 37%)
+-- snaps back to the 5% grid. Shell, because reading the volume in Lua blocks Hyprland.
+local volume_up = [[v=$(LC_ALL=C pactl get-sink-volume "$(omarchy-audio-output-sink)" | grep -oP '[0-9]+(?=%)' | head -n1); omarchy-audio-output-volume +$((5 - v % 5))]]
+local volume_down = [[v=$(LC_ALL=C pactl get-sink-volume "$(omarchy-audio-output-sink)" | grep -oP '[0-9]+(?=%)' | head -n1); omarchy-audio-output-volume -$(((v + 4) % 5 + 1))]]
+
+o.rebind("XF86AudioRaiseVolume", "Volume up", volume_up, { locked = true, repeating = true })
+o.rebind("XF86AudioLowerVolume", "Volume down", volume_down, { locked = true, repeating = true })
+
+-- The bar is the monitor's reserved top strip, minus 10% at each end.
+local function over_bar()
+  local cursor = hl.get_cursor_pos()
+  local monitor = hl.get_monitor_at_cursor()
+  if not cursor or not monitor then return false end
+
+  local width = monitor.width / monitor.scale
+  local x = cursor.x - monitor.x
+  local within_x = x >= width * 0.1 and x < width * 0.9
+  local within_y = cursor.y - monitor.y < monitor.reserved.top
+  return within_x and within_y
+end
+
+o.bind("mouse_up", "Volume up over Omarchy bar", function() if over_bar() then hl.exec_cmd(volume_up) end end, { locked = true, non_consuming = true })
+o.bind("mouse_down", "Volume down over Omarchy bar", function() if over_bar() then hl.exec_cmd(volume_down) end end, { locked = true, non_consuming = true })
+
+---------------------------------------------------------------------------
+-- Display: brightness and monitor input
+---------------------------------------------------------------------------
+
 o.bind(hyper .. " + UP", "Brightness up", "omarchy-brightness-display +5%", { locked = true, repeating = true })
 o.bind(hyper .. " + DOWN", "Brightness down", "omarchy-brightness-display 5%-", { locked = true, repeating = true })
+o.bind(hyper .. " + BACKSPACE", "Brightness 0%", "omarchy-brightness-display 0%", { locked = true })
+o.bind("ALT + mouse_up", "Brightness up", "omarchy-brightness-display +5%", { locked = true })
+o.bind("ALT + mouse_down", "Brightness down", "omarchy-brightness-display 5%-", { locked = true })
+
 -- Step to the next multiple of 20 (p = current %), skipping when it falls outside 0-100.
 -- The lock drops a tick while the previous DDC read+write (~300ms) is still running.
 -- DDC floors 0% to 1%, so 1 counts as 0.
@@ -62,7 +128,7 @@ local function brightness_hold_bind(key, description, next_percent)
 end
 brightness_hold_bind("RIGHT", "Brightness step up 10%", "(p / 10 + 1) * 10")
 brightness_hold_bind("LEFT", "Brightness step down 10%", "((p + 9) / 10 - 1) * 10")
-o.bind(hyper .. " + BACKSPACE", "Brightness 0%", "omarchy-brightness-display 0%", { locked = true })
+
 -- The LG ignores standard input switching (VCP 0x60), so use its private 0xF4: 0x90 = HDMI-1, 0xD0 = DP-1.
 -- It also can't report the current input, so remember the last choice here.
 local on_hdmi = false
@@ -71,16 +137,10 @@ o.bind(hyper .. " + I", "Toggle monitor input DP-1/HDMI-1", function()
   local code = on_hdmi and "0x90" or "0xD0"
   hl.exec_cmd("ddcutil --sn 409NTHM0S137 --noverify --i2c-source-addr=0x50 setvcp 0xF4 " .. code)
 end, { locked = true })
-o.bind("ALT + mouse_up", "Brightness up", "omarchy-brightness-display +5%", { locked = true })
-o.bind("ALT + mouse_down", "Brightness down", "omarchy-brightness-display 5%-", { locked = true })
 
-hl.unbind("SUPER + W")
-o.bind("SUPER + I", "Browser", { omarchy = "browser" })
-o.rebind("SUPER + SHIFT + N", "Browser (private)", { omarchy = "browser --private" })
--- Stepping back from scrolling lands on tiling, so floating is never reached.
-local tiling_scrolling_toggle = [[if [ "$(omarchy-hyprland-workspace-layout-current)" = scrolling ]; then omarchy-hyprland-workspace-layout-toggle back; else omarchy-hyprland-workspace-layout-toggle; fi]]
-o.rebind("SUPER + L", "Toggle tiling/scrolling layout", tiling_scrolling_toggle)
-o.rebind("SUPER + Home", "Rebalance window split", hl.dsp.layout("splitratio 1.0 exact"))
+---------------------------------------------------------------------------
+-- Windows: cycling and minimizing
+---------------------------------------------------------------------------
 
 local function cycle_window(forward)
   hl.dispatch(hl.dsp.window.cycle_next({ next = forward }))
@@ -106,31 +166,24 @@ for _, modifier in ipairs({ "ALT", "SUPER" }) do
   o.rebind(modifier .. " + SHIFT + TAB", "Previous window in active workspace", function() cycle_window(false) end)
 end
 
+hl.bind("SUPER + M", function()
+  if hl.get_workspace("special:minimized") then
+    hl.dispatch(hl.dsp.window.move({
+      workspace = hl.get_active_workspace(),
+      window = "tag:minimized",
+    }))
+    hl.dispatch(hl.dsp.window.clear_tags({ window = "tag:minimized" }))
+  else
+    hl.dispatch(hl.dsp.window.tag({ tag = "minimized", window = hl.get_active_window() }))
+    hl.dispatch(hl.dsp.window.move({ workspace = "special:minimized", follow = false }))
+  end
+end)
+
+---------------------------------------------------------------------------
+-- Workspaces
+---------------------------------------------------------------------------
+
 o.rebind(hyper .. " + TAB", "Toggle last two workspaces", hl.dsp.focus({ workspace = "previous" }))
-
--- Step volume onto the next multiple of 5, so a level set by hand (e.g. 37%)
--- snaps back to the 5% grid. Shell, because reading the volume in Lua blocks Hyprland.
-local volume_up = [[v=$(LC_ALL=C pactl get-sink-volume "$(omarchy-audio-output-sink)" | grep -oP '[0-9]+(?=%)' | head -n1); omarchy-audio-output-volume +$((5 - v % 5))]]
-local volume_down = [[v=$(LC_ALL=C pactl get-sink-volume "$(omarchy-audio-output-sink)" | grep -oP '[0-9]+(?=%)' | head -n1); omarchy-audio-output-volume -$(((v + 4) % 5 + 1))]]
-
-o.rebind("XF86AudioRaiseVolume", "Volume up", volume_up, { locked = true, repeating = true })
-o.rebind("XF86AudioLowerVolume", "Volume down", volume_down, { locked = true, repeating = true })
-
--- The bar is the monitor's reserved top strip, minus 10% at each end.
-local function over_bar()
-  local cursor = hl.get_cursor_pos()
-  local monitor = hl.get_monitor_at_cursor()
-  if not cursor or not monitor then return false end
-
-  local width = monitor.width / monitor.scale
-  local x = cursor.x - monitor.x
-  local within_x = x >= width * 0.1 and x < width * 0.9
-  local within_y = cursor.y - monitor.y < monitor.reserved.top
-  return within_x and within_y
-end
-
-o.bind("mouse_up", "Volume up over Omarchy bar", function() if over_bar() then hl.exec_cmd(volume_up) end end, { locked = true, non_consuming = true })
-o.bind("mouse_down", "Volume down over Omarchy bar", function() if over_bar() then hl.exec_cmd(volume_down) end end, { locked = true, non_consuming = true })
 
 -- scroll_event_delay is low for volume, so workspace scrolling waits 300ms
 -- itself; otherwise one wheel flick skips several workspaces.
@@ -146,34 +199,14 @@ end
 o.rebind("SUPER + mouse_down", "Scroll active workspace forward", function() scroll_workspace("m+1") end)
 o.rebind("SUPER + mouse_up", "Scroll active workspace backward", function() scroll_workspace("m-1") end)
 
-hl.bind("SUPER + M", function()
-  if hl.get_workspace("special:minimized") then
-    hl.dispatch(hl.dsp.window.move({
-      workspace = hl.get_active_workspace(),
-      window = "tag:minimized",
-    }))
-    hl.dispatch(hl.dsp.window.clear_tags({ window = "tag:minimized" }))
-  else
-    hl.dispatch(hl.dsp.window.tag({ tag = "minimized", window = hl.get_active_window() }))
-    hl.dispatch(hl.dsp.window.move({ workspace = "special:minimized", follow = false }))
-  end
-end)
+---------------------------------------------------------------------------
+-- Layout: tiling / scrolling
+---------------------------------------------------------------------------
 
--- flea --default: begin. Written by `flea --default`; `flea --default off` removes the block whole.
-hl.unbind("SUPER + SHIFT + F")
-o.rebind("SUPER + E", "File manager", { launch = 'flea --gui' })
-hl.unbind("SUPER + ALT + SHIFT + F")
-o.rebind("SUPER + SHIFT + E", "File manager (cwd)", { launch = 'flea --gui "$(omarchy-cmd-terminal-cwd)"' })
--- flea --default: end.
-
--- flea --picker: begin. Written by `flea --picker`; `flea --picker off` removes the block whole.
-o.window("com.thisisgm.flea.picker", { tag = "+floating-window" })
--- flea --picker: end.
-
-o.rebind("ALT + SPACE", "omacast launcher", hl.dsp.global("omacast:toggle"))
-hl.layer_rule({ match = { namespace = "^omacast$" }, no_anim = true, animation = "none" })
-o.bind(hyper .. " + SPACE", "Omarchy menu", { menu = "root" })
-o.rebind("SUPER + SPACE", "omacast launcher", hl.dsp.global("omacast:toggle"))
+-- Stepping back from scrolling lands on tiling, so floating is never reached.
+local tiling_scrolling_toggle = [[if [ "$(omarchy-hyprland-workspace-layout-current)" = scrolling ]; then omarchy-hyprland-workspace-layout-toggle back; else omarchy-hyprland-workspace-layout-toggle; fi]]
+o.rebind("SUPER + L", "Toggle tiling/scrolling layout", tiling_scrolling_toggle)
+o.rebind("SUPER + Home", "Rebalance window split", hl.dsp.layout("splitratio 1.0 exact"))
 
 -- In scrolling layout, toggle full-width column instead of tiled fullscreen.
 -- Neighbouring columns peek in at the edges so they stay findable.

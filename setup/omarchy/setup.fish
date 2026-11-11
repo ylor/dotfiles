@@ -8,10 +8,7 @@ command -q trash; or omarchy pkg add trash-cli
 make --silent -C ~/.config/hypr/plugins/hypr-expandr; or return $status
 omarchy plugin list | grep -q typecraft.omacast; or omarchy plugin add https://github.com/typecraft-dev/oma-cast.git --enable --yes; or return $status
 
-omarchy pkg drop docker docker-buildx docker-compose lazydocker ufw-docker nautilus nautilus-python foot libreoffice-fresh obsidian pinta system-config-printer
-
 omarchy webapp remove all >/dev/null
-test -f ~/.local/share/applications/Docker.desktop; and omarchy tui remove Docker >/dev/null
 
 set wake_rule /etc/udev/rules.d/90-nuphy-disable-wakeup.rules
 set wake_rule_content 'ACTION=="add", SUBSYSTEM=="usb", ATTR{idVendor}=="19f5", ATTR{idProduct}=="1028", TEST=="power/wakeup", ATTR{power/wakeup}="disabled"
@@ -27,7 +24,5 @@ end
 if test (omarchy font current) != "Berkeley Mono Variable"
     omarchy font set "Berkeley Mono Variable" >/dev/null 2>&1; or return $status
 end
-
-omarchy-hyprland-toggle no-animations on
 
 dfs-success "Omarchy"
