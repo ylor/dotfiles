@@ -42,7 +42,8 @@ local function tick()
 	end
 end
 
-_G.FocusFollowsMouseTimer = hs.timer.doEvery(INTERVAL, tick)
+-- Off by default; hyper+F turns it on.
+_G.FocusFollowsMouseTimer = hs.timer.new(INTERVAL, tick)
 
 function FocusFollowsMouseToggle()
 	if FocusFollowsMouseTimer:running() then
