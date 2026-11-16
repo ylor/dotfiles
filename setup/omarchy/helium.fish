@@ -18,6 +18,7 @@ if not test -d /usr/share/chromium/extensions
 end
 
 set extension_config '{ "external_update_url": "https://services.helium.imput.net/ext" }'
+set chrome_extension_config '{ "external_update_url": "https://clients2.google.com/service/update2/crx" }'
 set onepassword aeblfdkhhhdcdjpifhhbdiojplfjncoa
 set darkreader eimadpbcbfnmbkopoojfekhnkhdbieeh
 set sponsorblock mnjggcdmjocbbbhaepdhchncahnbgone
@@ -25,11 +26,17 @@ set sponsorblock mnjggcdmjocbbbhaepdhchncahnbgone
 for id in $onepassword $darkreader $sponsorblock
     set extension_file /usr/share/chromium/extensions/$id.json
 
-    if not test -r $extension_file; or test "$(cat $extension_file)" != "$extension_config"
+    # Either update URL is fine; only write when the file is missing or unrecognised
+    if not test -r $extension_file; or not contains -- "$(cat $extension_file)" $extension_config $chrome_extension_config
         printf '%s\n' $extension_config | sudo tee $extension_file >/dev/null; or return
     end
 
     if test (stat -c %a $extension_file) != 644
         sudo chmod 644 $extension_file; or return
     end
+end
+
+# omarchy-default-browser doesn't know helium; mirror what it does
+if test "$(env XDG_CURRENT_DESKTOP= xdg-settings get default-web-browser)" != helium.desktop
+    env -u BROWSER XDG_CURRENT_DESKTOP= xdg-settings set default-web-browser helium.desktop; or return
 end

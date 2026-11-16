@@ -161,10 +161,8 @@ local function cycle_window(forward)
   hl.dispatch(hl.dsp.window.alter_zorder({ mode = "top", window = active }))
 end
 
-for _, modifier in ipairs({ "ALT", "SUPER" }) do
-  o.rebind(modifier .. " + TAB", "Next window in active workspace", function() cycle_window(true) end)
-  o.rebind(modifier .. " + SHIFT + TAB", "Previous window in active workspace", function() cycle_window(false) end)
-end
+o.rebind("SUPER + TAB", "Next window in active workspace", function() cycle_window(true) end)
+o.rebind("SUPER + SHIFT + TAB", "Previous window in active workspace", function() cycle_window(false) end)
 
 hl.bind("SUPER + M", function()
   if hl.get_workspace("special:minimized") then
@@ -183,7 +181,8 @@ end)
 -- Workspaces
 ---------------------------------------------------------------------------
 
-o.rebind(hyper .. " + TAB", "Toggle last two workspaces", hl.dsp.focus({ workspace = "previous" }))
+o.rebind("ALT + TAB", "Next workspace", hl.dsp.focus({ workspace = "m+1" }))
+o.rebind("ALT + SHIFT + TAB", "Previous workspace", hl.dsp.focus({ workspace = "m-1" }))
 
 -- scroll_event_delay is low for volume, so workspace scrolling waits 300ms
 -- itself; otherwise one wheel flick skips several workspaces.
@@ -203,84 +202,67 @@ o.rebind("SUPER + mouse_up", "Scroll active workspace backward", function() scro
 -- Layout: tiling / scrolling
 ---------------------------------------------------------------------------
 
--- Stepping back from scrolling lands on tiling, so floating is never reached.
-local tiling_scrolling_toggle = [[if [ "$(omarchy-hyprland-workspace-layout-current)" = scrolling ]; then omarchy-hyprland-workspace-layout-toggle back; else omarchy-hyprland-workspace-layout-toggle; fi]]
-o.rebind("SUPER + L", "Toggle tiling/scrolling layout", tiling_scrolling_toggle)
 o.rebind("SUPER + Home", "Rebalance window split", hl.dsp.layout("splitratio 1.0 exact"))
 
--- In scrolling layout, toggle full-width column instead of tiled fullscreen.
--- Neighbouring columns peek in at the edges so they stay findable.
-local peek = 0.03
+-- -- Neighbouring columns peek in at the edges so they stay findable.
+-- local peek = 0.03
 
-local function monitor_width()
-  local monitor = hl.get_active_monitor()
-  return monitor.width / monitor.scale
-end
+-- local function monitor_width()
+--   local monitor = hl.get_active_monitor()
+--   return monitor.width / monitor.scale
+-- end
 
--- Stacked windows share their column's x, so they count as neither side.
-local function neighbours(window)
-  local left, right = 0, 0
-  for _, other in ipairs(hl.get_active_workspace():get_windows()) do
-    if not other.floating then
-      if other.at.x < window.at.x then left = 1 end
-      if other.at.x > window.at.x then right = 1 end
-    end
-  end
-  return left, right
-end
+-- -- Stacked windows share their column's x, so they count as neither side.
+-- local function neighbours(window)
+--   local left, right = 0, 0
+--   for _, other in ipairs(hl.get_active_workspace():get_windows()) do
+--     if not other.floating then
+--       if other.at.x < window.at.x then left = 1 end
+--       if other.at.x > window.at.x then right = 1 end
+--     end
+--   end
+--   return left, right
+-- end
 
--- The view only scrolls to fit the column, so shift it to leave room for each peek.
-local function center_between_peeks()
-  local window = hl.get_active_window()
-  local left, right = neighbours(window)
-  local width = monitor_width()
-  local target_x = hl.get_active_monitor().x + (width - window.size.x + (left - right) * peek * width) / 2
-  hl.dispatch(hl.dsp.layout(string.format("move %+d", math.floor(target_x - window.at.x + 0.5))))
-end
+-- -- The view only scrolls to fit the column, so shift it to leave room for each peek.
+-- local function center_between_peeks()
+--   local window = hl.get_active_window()
+--   local left, right = neighbours(window)
+--   local width = monitor_width()
+--   local target_x = hl.get_active_monitor().x + (width - window.size.x + (left - right) * peek * width) / 2
+--   hl.dispatch(hl.dsp.layout(string.format("move %+d", math.floor(target_x - window.at.x + 0.5))))
+-- end
 
-local function is_wide(window)
-  return window.size.x > 0.9 * monitor_width()
-end
+-- local function is_wide(window)
+--   return window.size.x > 0.9 * monitor_width()
+-- end
 
--- Full width, minus room for the neighbours to peek. Acts on the active window.
-local function widen(window)
-  local left, right = neighbours(window)
-  hl.dispatch(hl.dsp.layout("colresize " .. (1 - (left + right) * peek)))
-  center_between_peeks()
-end
+-- -- Full width, minus room for the neighbours to peek. Acts on the active window.
+-- local function widen(window)
+--   local left, right = neighbours(window)
+--   hl.dispatch(hl.dsp.layout("colresize " .. (1 - (left + right) * peek)))
+--   center_between_peeks()
+-- end
 
-o.rebind("SUPER + CTRL + F", "Tiled full screen / column full width", function()
-  local window = hl.get_active_window()
-  local scrolling = hl.get_active_workspace().tiled_layout == "scrolling"
-  if not (window and scrolling) then
-    return hl.exec_cmd("omarchy-hyprland-window-tiled-fullscreen-toggle")
-  end
+-- -- Helium windows start as a full-width column. Column resizes only act on the
+-- -- active window, so a window opened silently is widened when first focused.
+-- -- stable_id, unlike address, is never reused by a later window.
+-- local helium_seen = {}
 
-  if is_wide(window) then
-    return hl.dispatch(hl.dsp.layout("colresize " .. hl.get_config("scrolling.column_width")))
-  end
-  widen(window)
-end)
+-- -- Focusing a neighbour scrolls it into view; coming back must restore both peeks.
+-- hl.on("window.active", function()
+--   local window = hl.get_active_window()
+--   if not window then return end
 
--- Helium windows start as a full-width column. Column resizes only act on the
--- active window, so a window opened silently is widened when first focused.
--- stable_id, unlike address, is never reused by a later window.
-local helium_seen = {}
+--   local first_helium = window.class == "helium" and not helium_seen[window.stable_id]
+--   if first_helium then helium_seen[window.stable_id] = true end
 
--- Focusing a neighbour scrolls it into view; coming back must restore both peeks.
-hl.on("window.active", function()
-  local window = hl.get_active_window()
-  if not window then return end
+--   local scrolling = hl.get_active_workspace().tiled_layout == "scrolling"
+--   if window.floating or not scrolling then return end
 
-  local first_helium = window.class == "helium" and not helium_seen[window.stable_id]
-  if first_helium then helium_seen[window.stable_id] = true end
-
-  local scrolling = hl.get_active_workspace().tiled_layout == "scrolling"
-  if window.floating or not scrolling then return end
-
-  if is_wide(window) then
-    center_between_peeks()
-  elseif first_helium then
-    widen(window)
-  end
-end)
+--   if is_wide(window) then
+--     center_between_peeks()
+--   elseif first_helium then
+--     widen(window)
+--   end
+-- end)

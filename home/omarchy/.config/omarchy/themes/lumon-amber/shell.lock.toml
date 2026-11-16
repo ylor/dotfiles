@@ -1,0 +1,15 @@
+# Replaces [lock] in the generated shell.toml. The placeholder is emit-50
+# (dim) instead of an off-ramp 34% mix. Selected text keeps the ink color,
+# so the selection is the opaque emit-30 trace (4.3:1) and not a 45% accent
+# wash under accent text.
+background       = "#100600"
+background-alpha = 0.8
+text             = "#ff6b08"
+placeholder      = "#ab4500"
+text-error       = "#ff0043"
+border           = "hyprland.active-border"
+border-active    = "hyprland.active-border"
+border-error     = "#ff0043"
+border-alpha     = 1.0
+selection        = "#5b2500"
+selection-alpha  = 1.0

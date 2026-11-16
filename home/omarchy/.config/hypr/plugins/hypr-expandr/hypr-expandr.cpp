@@ -200,12 +200,10 @@ APICALL EXPORT std::string PLUGIN_API_VERSION() {
 APICALL EXPORT PLUGIN_DESCRIPTION_INFO PLUGIN_INIT(HANDLE handle) {
     PHANDLE = handle;
 
-    const std::string HASH        = __hyprland_api_get_hash();
-    const std::string CLIENT_HASH = __hyprland_api_get_client_hash();
-    if (HASH != CLIENT_HASH) {
-        HyprlandAPI::addNotification(PHANDLE, "[hypr-expandr] Built for a different Hyprland. Rebuild it.", CHyprColor{1.0, 0.2, 0.2, 1.0}, 8000);
-        throw std::runtime_error("[hypr-expandr] version mismatch");
-    }
+    // Built for a different Hyprland: try anyway. A missing symbol fails the load
+    // cleanly; a changed internal layout can still crash the compositor.
+    if (std::string_view{__hyprland_api_get_hash()} != __hyprland_api_get_client_hash())
+        LOG(Log::WARN, "[hypr-expandr] built for Hyprland {}, running {}; trying anyway", GIT_TAG, HyprlandAPI::getHyprlandVersion(PHANDLE).tag);
 
     static auto keyListener    = Event::bus()->m_events.input.keyboard.key.listen(onKey);
     static auto reloadListener = Event::bus()->m_events.config.preReload.listen([] { g_snippets.clear(); });

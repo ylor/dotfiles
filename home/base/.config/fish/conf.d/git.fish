@@ -50,6 +50,18 @@ if command -q git; and status --is-interactive
             case p
                 command git pull
 
+            case ssh
+                set -l branch (command git branch --show-current 2>/dev/null)
+                set -l remote (command git config branch.$branch.remote 2>/dev/null; or echo origin)
+                set -l url (command git remote get-url $remote); or return 1
+
+                set -l new (string replace -r '^https://([^/]+)/(.+?)(\.git)?/?$' 'git@$1:$2.git' $url); or begin
+                    echo "$remote already uses SSH: $url"
+                    return 0
+                end
+
+                command git remote set-url $remote $new; and echo "Set $remote to: $new"
+
             case root
                 # Only try to cd if the git command successfully returns a path
                 builtin cd (command git rev-parse --show-toplevel 2>/dev/null); or echo "git repo not found"

@@ -1,0 +1,16 @@
+# wow toons: list characters and copy them to the clipboard.
+set -eu
+
+here=$(dirname "$0")
+# shellcheck source=lib.sh
+. "$here/lib.sh"
+parse_args "$@"
+
+# Prints character names (sorted, "-" replaced by a space) and copies them to the clipboard.
+# Names come from the WTF folders, which WoW never cleans up, so deleted characters still show.
+find_forever
+# Layout: WTF/Account/<account>/<realm>/<character>
+names=$(find "$forever/WTF/Account" -mindepth 3 -maxdepth 3 -type d ! -name SavedVariables \
+    -printf '%f\n' | tr '-' ' ' | sort -fu)
+printf '%s\n' "$names"
+printf '%s' "$names" | wl-copy

@@ -1,3 +1,4 @@
 .DS_Store
 state/
 *.log
+home/linux/.local/share/wow/.env

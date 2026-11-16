@@ -1,0 +1,7 @@
+## Interface: 16001
+## Title: Soulbound
+## IconTexture: Interface\Icons\Spell_Shadow_SoulGem
+## Notes: Sets graphics, interface, controls, key bindings and sound options, and keeps them set
+## Version: 1.3
+
+Soulbound.lua

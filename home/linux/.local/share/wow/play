@@ -1,0 +1,55 @@
+# wow play: update addons, then launch the game through Battle.net.
+set -eu
+
+here=$(dirname "$0")
+# shellcheck source=lib.sh
+. "$here/lib.sh"
+parse_args "$@"
+
+find_forever
+# Update addons first. A failure doesn't block the launch.
+sh "$here/addons" --forever-dir "$forever" || printf 'Addon update failed; launching anyway\n' >&2
+prefix=${forever%%/drive_c/*}
+launcher=$prefix/drive_c/Program\ Files\ \(x86\)/Battle.net/Battle.net.exe
+logs=$prefix/drive_c/users/steamuser/AppData/Local/Battle.net/Logs
+# proton-hdr: the game inherits Battle.net's environment, so HDR is set on Battle.net.
+set -- env WINEPREFIX="$prefix" NVPRESENT_ENABLE_SMOOTH_MOTION=1 PROTONPATH=GE-Proton \
+    GAMEID=umu-battlenet PROTON_VERB=run proton-hdr umu-run "$launcher"
+
+# A cold-started Battle.net ignores --exec, so start it, wait for its login,
+# then hand the launch to the running instance (the game needs it for -launcherlogin).
+if ! pgrep -f 'Battle\.net\.exe' >/dev/null; then
+    # Log names are plain timestamps, so ls is safe here.
+    # shellcheck disable=SC2012
+    newest_log() { ls -t "$logs"/battle.net-*.log 2>/dev/null | head -n 1; }
+    before=$(newest_log)
+    "$@" >/dev/null 2>&1 &
+    for _ in $(seq 120); do
+        sleep 1
+        log=$(newest_log)
+        # Login alone isn't enough: until WoW's versioning finishes, Battle.net drops --exec.
+        [ "$log" != "$before" ] || continue
+        grep -aq 'Logged into Battle.net successfully' "$log" &&
+            grep -aq 'Game finished versioning wowf' "$log" && break
+    done
+fi
+
+# Battle.net can still drop the launch (a slow login, or log lines worded differently), so
+# check that a new Wow.exe appears, and ask once more if not. PIDs from before don't count,
+# so a game that was already running isn't taken for this launch.
+game_pids() { pgrep -f '_forever_.Wow\.exe' | tr '\n' ' '; }
+old_games=" $(game_pids)"
+for attempt in 1 2; do
+    "$@" --exec='launch WoWF' >/dev/null 2>&1 &
+    for _ in $(seq 60); do
+        sleep 1
+        for pid in $(game_pids); do
+            case "$old_games" in
+                *" $pid "*) ;;
+                *) exit 0 ;;
+            esac
+        done
+    done
+    [ "$attempt" -eq 2 ] || printf 'WoW has not started after 60s; asking Battle.net again\n' >&2
+done
+fail 'WoW did not start; launch it from Battle.net'

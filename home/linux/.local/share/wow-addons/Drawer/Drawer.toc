@@ -1,0 +1,7 @@
+## Interface: 16001
+## Title: Drawer
+## IconTexture: Interface\Icons\INV_Misc_Bag_10
+## Notes: Moves every addon's minimap button into the minimap's AddOns drawer
+## Version: 1.0
+
+Drawer.lua

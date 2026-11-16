@@ -1,0 +1,5 @@
+# Variables set by lib.sh (forever, check) look unassigned in the commands.
+source-path=SCRIPTDIR
+external-sources=true
+disable=SC2154
+shell=sh

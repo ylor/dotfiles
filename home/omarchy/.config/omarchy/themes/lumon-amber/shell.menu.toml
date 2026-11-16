@@ -1,0 +1,16 @@
+# Replaces [menu] in the generated shell.toml (launcher, clipboard, emojis,
+# dock). The accent is the ink, so the stock 8% tint plus accent text barely
+# marks the row. A row highlight here is the emit-30 trace with emit-100 text
+# (6.48:1), the same rule colors.toml uses for selection.
+background                = "#100600"
+background-alpha          = 1.0
+text                      = "#ff6b08"
+border                    = "hyprland.active-border-foreground"
+border-alpha              = 1.0
+scrim                     = "#100600"
+scrim-alpha               = 0.5
+selected-background       = "#5b2500"
+selected-background-alpha = 1.0
+selected-text             = "#ffa86d"
+selected-border           = "hyprland.active-border-foreground"
+selected-border-alpha     = 0.25

@@ -50,6 +50,29 @@ end
 require("default.hypr.toggles")
 
 -- Add any other personal Hyprland configuration below.
+
+-- Glassy terminals only: same blur and 0.75 opacity as omarchy's Glassy windows toggle,
+-- limited to terminal-tagged windows.
+require("default.hypr.glass")()
+o.window({ tag = "terminal" }, { opacity = "0.75 0.75" })
+
+-- Glassy mode, but the focused window is opaque, except terminals. Must come after
+-- the toggles so it overrides glassy's 0.75 rule.
+-- o.window({ focus = true, tag = "negative:terminal" }, { opacity = "1.0 override" })
+
+-- Hyprland drops that override whenever a window's rules are re-evaluated, which Chromium
+-- triggers on every title change (closing a tab). Re-apply it for the focused window.
+-- local function keep_focused_opaque(window)
+--   if not window or not window.address then return end
+--   local focused = hl.get_active_window()
+--   if not focused or focused.address ~= window.address then return end
+--   for _, tag in ipairs(window.tags or {}) do
+--     if tag:gsub("%*$", "") == "terminal" then return end
+--   end
+--   hl.dispatch(hl.dsp.window.set_prop({ prop = "opacity", value = "1", window = "address:" .. window.address }))
+-- end
+-- hl.on("window.title", keep_focused_opaque)
+-- hl.on("window.update_rules", keep_focused_opaque)
 -- o.window("qemu", { workspace = "5" })
 
 -- Azeroth Survivors (Bevy) panics when it can't get a frame, which happens when the
@@ -112,10 +135,6 @@ o.window({ initial_title = "^Azeroth Survivors$" }, {
 hl.config({
   dwindle = {
     force_split = 2,
-  },
-  -- VRR for fullscreen windows only, so games track their frame rate without desktop flicker.
-  misc = {
-    vrr = 2,
   },
 })
 

@@ -16,19 +16,19 @@ window-save-state = always
 window-theme = ghostty
 alpha-blending = linear-corrected
 # TUIs paint explicit backgrounds that would otherwise stay opaque
-background-opacity-cells = true
-# font-family = "Berkeley Mono Variable"
+# background-opacity-cells = true
+font-family = "Obel Mono"
 palette-generate=true
 # window-padding-balance = true
 # window-padding-y = 0
-unfocused-split-opacity = 0.9
+# unfocused-split-opacity = 0.9
 
 # shaders
 custom-shader = shaders/bloom.glsl
 custom-shader-animation = false
 # resize-overlay = never
 # gtk-toolbar-style = flat
-# gtk-custom-css = ?~/.local/state/omarchy/current/theme/ghostty.css
+gtk-custom-css = ?~/.local/state/omarchy/current/theme/ghostty.css
 
 # keybinds
 keybind = performable:ctrl+c=copy_to_clipboard
@@ -41,3 +41,6 @@ keybind = ctrl+w=close_surface
 keybind = ctrl+-=new_split:down
 keybind = ctrl+==new_split:right
 keybind = ctrl+\=new_split:right
+
+# glass: GTK only asks Hyprland for blur under a CSS backdrop-filter
+gtk-custom-css = /usr/share/omarchy/default/gtk/glass.css

@@ -1,0 +1,458 @@
+# wow addons: install or update addons.
+# Each job runs in a subshell with its own $tmp and $status_file (see start), by design.
+# shellcheck disable=SC2030,SC2031
+set -eu
+
+here=$(dirname "$0")
+# shellcheck source=lib.sh
+. "$here/lib.sh"
+allow_check=1
+parse_args "$@"
+# Sets CURSEFORGE_TOKEN, a CurseForge API key; without it, addons come from cfwidget.
+# shellcheck source=/dev/null
+[ ! -f "$here/.env" ] || . "$here/.env"
+
+game_version=1.60.1
+interface=16001
+
+# Stops jobs still running, removes downloads and shows the cursor again, which the live
+# status rows hide. Background jobs ignore Ctrl-C, so without the kill an interrupted run
+# leaves curl downloading voice packs into the deleted temp folder.
+cleanup() {
+    for job in $pending; do
+        # Each job is its own process group (see start), so this stops its curl too.
+        kill -TERM -- "-${job%%:*}" 2>/dev/null || :
+    done
+    # Let killed jobs exit before their files go.
+    wait
+    rm -rf "$tmp"
+    [ "$tty" -eq 0 ] || printf '\033[?25h'
+}
+
+# Usage: say COLOR TEXT. COLOR is an ANSI code: 31 red, 32 green, 33 yellow, 90 gray.
+say() {
+    if [ "$tty" -eq 1 ]; then
+        printf '\033[%sm%s\033[0m\n' "$1" "$2"
+    else
+        printf '%s\n' "$2"
+    fi
+}
+
+# Usage: status STATE TEXT. Jobs write their state here and the main loop draws it.
+# STATE is busy, ok, new, updated, available or failed.
+status() {
+    # Write then rename, so the main loop never reads a half-written file.
+    printf '%s %s\n' "$1" "$2" >"$status_file.new"
+    mv "$status_file.new" "$status_file"
+}
+
+# Usage: fetch URL -o FILE [CURL_ARG...]
+# Connects normally take 0.05 s (1.3 s at worst), but about 1 in 850 stalls until the
+# timeout; a short one lets --retry reconnect instead of holding the run for 15 s.
+fetch() {
+    curl --fail --silent --show-error --location --retry 2 --compressed \
+        --connect-timeout 3 --speed-limit 1024 --speed-time 60 "$@"
+}
+
+# Usage: toc_field FILE KEY. Prints the value of the "## KEY:" line, ignoring a UTF-8
+# BOM (Pawn's TOC starts with one) and CRLF line endings.
+toc_field() {
+    awk -v key="## $2:" -v bom='\357\273\277' '
+        NR == 1 && index($0, bom) == 1 { $0 = substr($0, length(bom) + 1) }
+        { sub(/\r$/, "") }
+        index($0, key) == 1 { $0 = substr($0, length(key) + 1); sub(/^[[:space:]]+/, ""); print; exit }
+    ' "$1"
+}
+
+declares_interface() {
+    toc_field "$1" Interface | grep -Eq "(^|[^0-9])$interface([^0-9]|\$)"
+}
+
+# Usage: newest_release FILE REGEX. Prints "FILE_ID URL" for the newest release (not alpha
+# or beta) for $game_version whose file name matches REGEX, from cfwidget-shaped JSON FILE.
+# Builds the CDN URL itself: the API leaves downloadUrl empty for addons whose authors opt
+# out of third-party downloads.
+newest_release() {
+    jq -er --arg re "$2" --arg ver "$game_version" '
+        [.files[] | select(.type == "release" and (.versions | any(startswith($ver))) and (.name | test($re)))] |
+        max_by(.id) |
+        if . == null then error("No file matches \($re) for \($ver)") else . end |
+        "\(.id) https://mediafilez.forgecdn.net/files/\((.id / 1000) | floor)/\(.id % 1000)/\(.name)"
+    ' "$1"
+}
+
+# Usage: curseforge_zip PROJECT_ID REGEX. Like newest_release, from CurseForge's own API,
+# which needs $CURSEFORGE_TOKEN.
+curseforge_zip() {
+    # The key goes in on stdin, not the command line, where ps would show it.
+    printf 'x-api-key: %s\n' "$CURSEFORGE_TOKEN" |
+        fetch "https://api.curseforge.com/v1/mods/$1/files?gameVersion=$game_version&pageSize=50" \
+            -o "$tmp/files.json" --header @- &&
+        jq '{files: [.data[] | {id, name: .fileName, versions: .gameVersions,
+            type: (if .releaseType == 1 then "release" else "prerelease" end)}]}' \
+            "$tmp/files.json" >"$tmp/release.json" &&
+        newest_release "$tmp/release.json" "$2"
+}
+
+# Usage: cfwidget_zip PROJECT_ID REGEX. Like curseforge_zip, from cfwidget, which needs no
+# key but can stop refreshing a project (DBM-Core in July 2026).
+cfwidget_zip() {
+    fetch "https://api.cfwidget.com/$1" -o "$tmp/release.json" &&
+        newest_release "$tmp/release.json" "$2"
+}
+
+# Prints "VERSION URL" for the latest GitHub release of OWNER/REPO, from the release.json
+# that BigWigs-packager releases ship.
+github_zip() {
+    base=https://github.com/$1/releases/latest/download
+    fetch "$base/release.json" -o "$tmp/release.json"
+    jq -er '
+        .releases[] | select(any(.metadata[]; .flavor == "forever")) |
+        "\(.version) \($base)/\(.filename)"
+    ' --arg base "$base" "$tmp/release.json" | head -n 1 | grep . ||
+        fail "$1: latest release has no Forever build"
+}
+
+# Usage: find_release PROJECT_ID REGEX [OWNER/REPO]. Tries CurseForge's API, then
+# cfwidget, then GitHub when a repo is given. Each failure stays in the job's log.
+# Without CURSEFORGE_TOKEN, starts at cfwidget.
+find_release() {
+    if [ -n "${CURSEFORGE_TOKEN:-}" ]; then
+        curseforge_zip "$1" "$2" && return
+        printf 'CurseForge API failed; trying cfwidget\n' >&2
+    fi
+    cfwidget_zip "$1" "$2" && return
+    [ -n "${3:-}" ] || return 1
+    printf 'cfwidget failed; trying GitHub\n' >&2
+    github_zip "$3"
+}
+
+# Usage: install_addon ADDON PROJECT_ID [TOC_FILE] [FILE_NAME_REGEX] [FOLDER_PREFIX] [OWNER/REPO]
+# PROJECT_ID is the CurseForge project; OWNER/REPO is a GitHub fallback (see find_release).
+# TOC_FILE defaults to ADDON.toc; FILE_NAME_REGEX defaults to any name. Every top-level folder
+# in the zip must start with FOLDER_PREFIX, which defaults to ADDON; DBM's zips need "DBM-".
+# Installs every top-level folder in the zip, so multi-folder addons like Spoken work.
+install_addon() {
+    addon=$1
+    toc=$addon/${3:-$addon.toc}
+    prefix=${5:-$addon}
+    release=$(find_release "$2" "${4:-.}" "${6:-}")
+    file_id=${release%% *}
+    url=${release#* }
+
+    # Release URLs change with every version, so a known URL means nothing to download.
+    url_file=$addons_dir/$addon/.wow-addons-url
+    cached_url=
+    [ ! -f "$url_file" ] || read -r cached_url <"$url_file" || :
+    installed='new'
+    [ ! -f "$addons_dir/$toc" ] || installed=$(toc_field "$addons_dir/$toc" Version)
+    # Some addons, like HDRTuner, have no version in their TOC.
+    [ -n "$installed" ] || installed='unversioned'
+    if [ "$cached_url" = "$url" ] && [ "$installed" != new ]; then
+        status ok "$installed"
+        return 0
+    fi
+    # --check reports the new file name instead of downloading it (voice packs are huge).
+    if [ "$check" -eq 1 ]; then
+        status available "$installed -> ${url##*/}"
+        return 0
+    fi
+
+    status busy "downloading ${url##*/}"
+    fetch "$url" -o "$tmp/addon.zip"
+    unzip -Z1 "$tmp/addon.zip" | awk -v prefix="$prefix" '
+        /^\// || /\\/ || /(^|\/)\.\.(\/|$)/ { exit 1 }
+        { split($0, parts, "/"); if (index(parts[1], prefix) != 1) exit 1 }
+    ' || fail "$addon: unsafe archive paths"
+    # The folders this release installs, recorded so the next update can remove any it drops.
+    folders=$(unzip -Z1 "$tmp/addon.zip" | awk -F/ 'NF > 1 && $1 !~ /_Debug$/ && !seen[$1]++ { print $1 }')
+    folders_file=$addons_dir/$addon/.wow-addons-folders
+
+    unzip -p "$tmp/addon.zip" "$toc" >"$tmp/addon.toc" 2>/dev/null || fail "$addon: $toc not in archive"
+    declares_interface "$tmp/addon.toc" ||
+        fail "$addon: release does not declare Interface $interface support"
+    latest=$(toc_field "$tmp/addon.toc" Version)
+    # Without one, name the release by its CurseForge file ID.
+    [ -n "$latest" ] || latest="file $file_id"
+
+    if [ "$installed" != "$latest" ]; then
+        status busy "installing $latest"
+        # Read before the loop below replaces the folder that holds it.
+        old_folders=
+        [ ! -f "$folders_file" ] || old_folders=$(cat "$folders_file")
+        # Extract completely before removing obsolete files from the old installation.
+        mkdir -p "$tmp/staging"
+        unzip -q "$tmp/addon.zip" -d "$tmp/staging"
+        # unzip keeps the archive's file modes; Battle.net refuses to update the game
+        # when an addon file is unreadable or read-only (agent error 2113).
+        chmod -R u+rwX,go+rX "$tmp/staging"
+        for dir in "$tmp/staging"/*/; do
+            name=${dir%/}
+            name=${name##*/}
+            target=$addons_dir/$name
+            [ ! -L "$target" ] || fail "Refusing to replace symlink: $target"
+            rm -rf "$target"
+            # Skip debug builds (folders ending in _Debug).
+            case "$name" in
+                *_Debug) continue ;;
+            esac
+            mv "$dir" "$target"
+        done
+        # Remove folders the previous release installed that this one no longer ships,
+        # which multi-folder addons like Polestar would otherwise leave behind. Only names
+        # starting with the addon's prefix, as every installed folder does, and never symlinks.
+        printf '%s\n' "$old_folders" | while IFS= read -r name; do
+            case "$name" in
+                '' | */* | .*) continue ;;
+                "$prefix"*) ;;
+                *) continue ;;
+            esac
+            ! printf '%s\n' "$folders" | grep -qxF "$name" || continue
+            [ ! -L "$addons_dir/$name" ] || continue
+            rm -rf "${addons_dir:?}/$name"
+        done
+    fi
+    # Voice-pack zips are hundreds of MB; free the space now, not at exit.
+    rm -f "$tmp/addon.zip"
+    printf '%s\n' "$folders" >"$folders_file"
+    printf '%s\n' "$url" >"$url_file"
+    if [ "$installed" = "$latest" ]; then
+        status ok "$latest"
+    elif [ "$installed" = new ]; then
+        status new "$latest"
+    else
+        status updated "$installed -> $latest"
+    fi
+}
+
+# Usage: start NAME COMMAND... Runs the command in the background with its own temp
+# dir, log and status file, so downloads overlap.
+pending=
+spinner='-'
+start() {
+    name=$1
+    shift
+    mkdir "$tmp/$name"
+    printf 'busy checking\n' >"$tmp/$name.status"
+    # Job control only while starting the job, so it gets its own process group for cleanup
+    # to kill. Left on, foreground commands would take Ctrl-C away from this script.
+    set -m
+    (
+        status_file=$tmp/$name.status
+        tmp=$tmp/$name
+        "$@"
+    ) >"$tmp/$name.log" 2>&1 &
+    set +m
+    pending="$pending $!:$name"
+}
+
+update() {
+    start "$1" install_addon "$@"
+}
+
+running() {
+    for job in $pending; do
+        ! kill -0 "${job%%:*}" 2>/dev/null || return 0
+    done
+    return 1
+}
+
+# Prints one status row per addon. In a terminal every row shows, so the rows can be
+# redrawn in place; otherwise only rows worth reading are printed.
+draw() {
+    for job in $pending; do
+        name=${job#*:}
+        read -r state text <"$tmp/$name.status"
+        mark_color=
+        case "$state" in
+            busy)
+                mark=$spinner
+                color=90
+                ;;
+            # Green check, gray text: done, but nothing changed.
+            ok)
+                mark='✓'
+                color=90
+                mark_color=32
+                text="$text up to date"
+                ;;
+            new)
+                mark='✓'
+                color=32
+                text="$text installed"
+                ;;
+            updated)
+                mark='✓'
+                color=32
+                ;;
+            available)
+                mark='↑'
+                color=33
+                ;;
+            failed)
+                mark='✗'
+                color=31
+                ;;
+        esac
+        if [ "$tty" -eq 1 ]; then
+            # Cut long text so a row never wraps, which would break the redraw.
+            printf '\033[K\033[%sm%s\033[0m %-26s \033[%sm%.*s\033[0m\n' \
+                "${mark_color:-$color}" "$mark" "$name" "$color" "$width" "$text"
+        elif [ "$state" != ok ]; then
+            printf '%s %s: %s\n' "$mark" "$name" "$text"
+        fi
+    done
+}
+
+# Shows live rows until every job ends, then the final rows and totals.
+wait_all() {
+    # $pending is a space-separated list; splitting it is the point.
+    # shellcheck disable=SC2086
+    set -- $pending
+    rows=$#
+    width=$(($(tput cols 2>/dev/null || echo 80) - 30))
+    if [ "$tty" -eq 1 ]; then
+        # Redrawing the rows moves the cursor up past all of them, which fails when they
+        # outgrow the terminal; then redraw a single progress line instead.
+        rows_fit=0
+        [ "$rows" -ge "$(tput lines 2>/dev/null || echo 24)" ] || rows_fit=1
+        printf '\033[?25l'
+        frame=0
+        while running; do
+            case $((frame % 4)) in 0) spinner='⠋' ;; 1) spinner='⠙' ;; 2) spinner='⠸' ;; 3) spinner='⠴' ;; esac
+            if [ "$rows_fit" -eq 1 ]; then
+                draw
+                printf '\033[%sA' "$rows"
+            else
+                finished=0
+                for job in $pending; do
+                    read -r state _ <"$tmp/${job#*:}.status"
+                    [ "$state" = busy ] || finished=$((finished + 1))
+                done
+                printf '\r\033[K\033[90m%s %s/%s addons checked\033[0m' "$spinner" "$finished" "$rows"
+            fi
+            frame=$((frame + 1))
+            # Redraw every 0.1 s, but notice finished jobs within 0.02 s.
+            tick=0
+            while [ "$tick" -lt 5 ] && running; do
+                sleep 0.02
+                tick=$((tick + 1))
+            done
+        done
+        [ "$rows_fit" -eq 1 ] || printf '\r\033[K'
+    fi
+
+    failed=0
+    changed=0
+    for job in $pending; do
+        name=${job#*:}
+        if ! wait "${job%%:*}"; then
+            failed=$((failed + 1))
+            reason=$(grep . "$tmp/$name.log" | tail -n 1 | sed 's/^Error: //')
+            status_file=$tmp/$name.status status failed "${reason:-unknown error}"
+        else
+            read -r state _ <"$tmp/$name.status"
+            [ "$state" = ok ] || changed=$((changed + 1))
+        fi
+    done
+    width=1000
+    draw
+}
+
+# Our own addons, kept in the dotfiles and copied in on every run.
+own_dir=${XDG_DATA_HOME:-$HOME/.local/share}/wow-addons
+
+# Usage: install_own_addon NAME
+install_own_addon() {
+    src=$own_dir/$1
+    dir=$addons_dir/$1
+    declares_interface "$src/$1.toc" ||
+        fail "$1: $src/$1.toc does not declare Interface $interface"
+    if diff -rq "$src" "$dir" >/dev/null 2>&1; then
+        status ok "$(toc_field "$src/$1.toc" Version)"
+    elif [ "$check" -eq 1 ]; then
+        status available 'changed'
+    else
+        # The sources are symlinks into the dotfiles, so copy what they point to.
+        cp -RL "$src" "$tmp/$1"
+        rm -rf "$dir"
+        mv "$tmp/$1" "$dir"
+        status updated 'copied'
+    fi
+}
+
+for tool in curl jq unzip; do
+    command -v "$tool" >/dev/null 2>&1 || fail "Required command not found: $tool"
+done
+
+find_forever
+addons_dir=$forever/Interface/AddOns
+# Keep downloads next to AddOns so installing is a rename, not a multi-GB copy.
+mkdir -p "$addons_dir"
+tmp=$(mktemp -d "$addons_dir/../.wow.XXXXXX")
+tty=0
+[ ! -t 1 ] || tty=1
+trap cleanup 0
+# Exit on signals so the cleanup trap runs.
+trap 'exit 130' INT
+trap 'exit 143' TERM
+trap 'exit 129' HUP
+
+update Auctionator 6124
+update Baganator 914482
+update BetterBlizzFrames 940950 BetterBlizzFrames_Camelot.toc
+update BetterBlizzPlates 913377 BetterBlizzPlates_Camelot.toc
+# DBM ships many DBM-* folders. GitHub is Core's last fallback, as cfwidget stopped updating it.
+update DBM-Core 3358 DBM-Core.toc '' DBM- DeadlyBossMods/DeadlyBossMods
+# Dungeon modules; Forever's are in DBM-Party-Forever.
+update DBM-Party-Forever 314994 DBM-Party-Forever.toc '' DBM-
+update DialogueUI 989270
+# Number keys pick gossip options, quests and rewards. Not the Aeonzara fork: it
+# draws a selection border that can't be turned off.
+update DialogKey_Numy 1098587
+update DoesItDie 1709161
+update ForeverDungeonJournal 1707971
+update ForeverFishing 1708816
+update ForeverLootSparkles 1729017
+# Herbs & Ores: restores the herb/ore/quest-object sparkles ForeverLootSparkles 2.0 dropped.
+update ForeverLootSparkles_Coloring 1788216
+update ForeverQuestTint 1703732
+update HDRTuner 1701739
+update KeepOrToss 1737994
+update Leatrix_Plus 94855
+update OpenMap 1735937
+# Pawn once labelled an alpha a release (Pawn-2.13.17-ForeverAlpha1.zip).
+# Leveling guides with a waypoint arrow; ships ~28 Polestar_* folders.
+update Polestar 1744437
+update Pawn 4646 Pawn.toc '^Pawn-[0-9.]+-Forever\.zip$'
+update PrettyTooltip 1720719 PrettyTooltip_Camelot.toc
+update Spoken 1700375
+# English voice packs for Spoken; it is silent without them. Each is 300-500 MB.
+update SpokenBossesAudio 1780747
+update SpokenPlacesAudio 1636532
+update SpokenQuestsAudioAlliance 1660197
+update SpokenQuestsAudioGossip 1660202
+update SpokenQuestsAudioHorde 1660198
+update SpokenQuestsAudioShared 1660199
+update SpokenReadablesAudio 1701520
+# Baganator does nothing without Syndicator.
+update Syndicator 988370
+update WhatsTraining 324944
+start Drawer install_own_addon Drawer
+start Lush install_own_addon Lush
+start Soulbound install_own_addon Soulbound
+wait_all
+
+if [ "$failed" -gt 0 ]; then
+    say 31 "$failed addon(s) failed"
+    exit 1
+elif [ "$changed" -eq 0 ]; then
+    say 32 'All addons up to date'
+elif [ "$check" -eq 1 ]; then
+    say 33 "$changed update(s) available; run wow addons to install"
+else
+    say 32 "Updated $changed addon(s)"
+    if pgrep -fi '_forever_.*\.exe' >/dev/null; then
+        say 33 'WoW Forever is running; /reload in game to load updated addons'
+    fi
+fi

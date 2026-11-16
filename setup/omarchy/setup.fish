@@ -5,7 +5,6 @@ systemctl --user is-enabled --quiet hypridle; or systemctl --user enable hypridl
 command -q flea; or omarchy pkg add flea && flea --default >/dev/null
 flea --ui-state | string match -q '*"keys": "mac"*'; or flea --ui-state '{"keys":"mac"}' >/dev/null; or return $status
 command -q trash; or omarchy pkg add trash-cli
-make --silent -C ~/.config/hypr/plugins/hypr-expandr; or return $status
 omarchy plugin list | grep -q typecraft.omacast; or omarchy plugin add https://github.com/typecraft-dev/oma-cast.git --enable --yes; or return $status
 
 omarchy webapp remove all >/dev/null

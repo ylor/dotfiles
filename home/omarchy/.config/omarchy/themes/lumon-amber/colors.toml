@@ -1,0 +1,108 @@
+# Lumon, re-lit with AmberConsole's plasma/neon palette.
+# Amber values are AmberConsole tokens verbatim (src/tokens/colors.css, neon):
+#   --ac-screen        #100600  base panel
+#   --ac-screen-raised #1b0c02  lifted region
+#   --ac-screen-well   #060200  recessed well
+#   --ac-emit-100      #ffa86d  hot highlight / focus      10.5:1  L .805
+#   --ac-emit-90       #ff6b08  primary ink, fill, stroke   7.0:1  L .702
+#   --ac-emit-70       #dd5800  secondary ink               5.2:1  L .625
+#   --ac-emit-50       #ab4500  dim / disabled              3.4:1  L .520
+#   --ac-emit-30       #5b2500  trace / ghost, decorative only
+#   --ac-on-fill       #1e0c00  text on an emit-90 fill (inverse video)
+# Halo triples are glow-only and appear in hyprland.lua, never as ink.
+mode = "dark"
+
+accent = "#ff6b08"
+muted = "#5b2500"
+
+# Subtle row/meter highlight is a trace; real text selection is inverse video.
+selection = "#5b2500"
+selection_background = "#ff6b08"
+selection_foreground = "#1e0c00"
+
+# Three surfaces only, so dark and darker share the well.
+#   background          editors, terminals, most apps
+#   dark_background     Qt app windows and views, hermes status bar,
+#                       neovim sidebars (aether dark_bg)
+#   darker_background   neovim only (aether darker_bg)
+#   lighter_background  cursorline, completion menus, cards, btop graph floor
+background = "#100600"
+dark_background = "#060200"
+darker_background = "#060200"
+lighter_background = "#1b0c02"
+
+foreground = "#ff6b08"
+dark_foreground = "#dd5800"
+light_foreground = "#ffa86d"
+bright_foreground = "#ffa86d"
+
+# Focus stroke is emit-100, trace stroke emit-30. These feed the shell's
+# borders (lock, notifications, popups, menus); hyprland.lua repeats them
+# because a theme's own hyprland.lua replaces the generated one.
+hyprland_active_border = "rgb(ffa86d)"
+hyprland_inactive_border = "rgba(5b250099)"
+
+# App icons. Every role is the token AmberConsole gives that job:
+#   main      emit-90   primary discharge; flat, as law 3 bars decorative gradients
+#   mark      emit-100  hot highlight: cursors, playheads, crop corners
+#   edge      emit-50   stroke-dim, the dimmest 2px rule that clears 3:1
+#   body/paper well     a panel is a hole in the bezel
+#   ink       emit-50   text lines on those wells (3.4:1)
+#   shadow    screen    law 3, no shadows-as-depth: it lands on the ground
+#   red/orange emit-50 / emit-100  paint dabs; not errors, so no second hue
+# Chosen by exhaustive search over the ramp with each role limited to those
+# jobs, scored on the boundary pixels where roles touch across all 64 icons:
+# 83% of information-carrying boundary at >= 3:1, against 59% for the
+# looser mapping this replaced.
+icon_main = "#ff6b08"
+icon_main_end = "#ff6b08"
+icon_mark = "#993d00"
+icon_edge = "#9e3f00"
+icon_body = "#060200"
+icon_paper = "#ffede0"
+icon_ink = "#9e3f00"
+icon_shadow = "#100600"
+icon_red = "#9e3f00"
+icon_orange = "#5b2500"
+
+# ANSI. Three tiers, as in Lumon, where every hue slot sits below the ink
+# and the brights climb toward it:
+#   ink      emit-90   white, green
+#   colored  emit-70   bright blue, magenta, cyan
+#   dim      emit-50   blue, magenta, cyan
+#   hot      emit-100  yellow, bright yellow, bright white
+#
+# Yellow is hot rather than ink so warnings stand out from plain text.
+#   trace    emit-30   bright black / muted (comments, autosuggestions)
+#
+# Red and bright green leave the hue, so "error" and "ok" read at a glance.
+#
+# Red is matched to the amber by its place in the sRGB gamut, not by
+# luminance. In OKLCH, emit-90 sits exactly on its hue's gamut cusp (the most
+# vivid color that hue has). Red takes the same position at h 20, a crimson
+# 25 degrees from the ink (h 44.7). CRT P22 red (h 29.2) sat only 15 degrees
+# away, and since red and ink differ by just 1.38:1 in luminance, hue is the
+# whole signal. Bright red is 10% of the way from that cusp toward white at
+# full gamut chroma. Amber's emit-100 goes 26.6%, but red turns salmon well
+# before that.
+#   red          #ff0043  h20 cusp                 5.09:1, OKLCH L .633 C .254
+#   bright_red   #ff465a  10% cusp->white         5.99:1, OKLCH L .669 C .220
+# A luminance match (#ff6666 at 7:1) is pastel: red's cusp is darker than
+# 7:1, so equal contrast can only be reached by mixing toward white.
+#
+#   bright_green #00b05b  CRT P1 --ac-emit-90 (7.02:1 on --ac-screen)
+red = "#ff0043"
+yellow = "#ffa86d"
+orange = "#ff6b08"
+green = "#ff6b08"
+cyan = "#ab4500"
+blue = "#ab4500"
+magenta = "#ab4500"
+brown = "#5b2500"
+
+bright_red = "#ff465a"
+bright_yellow = "#ffa86d"
+bright_green = "#00b05b"
+bright_cyan = "#dd5800"
+bright_blue = "#dd5800"
+bright_magenta = "#dd5800"

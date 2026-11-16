@@ -55,18 +55,19 @@ tabbar tabboxchild {
 }
 
 /* Tabs show the bar's glass. An inset outline marks state without shifting
-   layout. Each state takes a palette key rather than a mix, so a theme with a
-   strict palette stays on it. Bare tab selectors also match the dragged copy,
-   which lives in dnd. */
+   layout, and the selected tab adds a heavier bottom edge. Each state takes a
+   palette key rather than a mix, so a theme with a strict palette stays on it.
+   Bare tab selectors also match the dragged copy, which lives in dnd. */
 tab {
   --ink: var(--faint);
   --line: var(--trace);
+  --edge: transparent;
   min-height: 0;
   border-radius: 0;
   font-size: 0.85em;
   background: none;
   color: var(--ink);
-  box-shadow: inset 0 0 0 1px var(--line);
+  box-shadow: inset 0 0 0 1px var(--line), inset 0 -2px 0 var(--edge);
 }
 
 tab:hover {
@@ -77,6 +78,7 @@ tab:hover {
 tab:selected {
   --ink: var(--fg);
   --line: var(--fg);
+  --edge: var(--line);
 }
 
 /* An unfocused window steps down so the focused one stands out. */
@@ -87,6 +89,13 @@ tab:backdrop {
 tab:selected:backdrop {
   --ink: var(--dim);
   --line: var(--faint);
+}
+
+/* Pressed, on any tab: a trace fill with the brightest ink and outline. */
+tab:active {
+  --ink: var(--bright);
+  --line: var(--bright);
+  background-color: var(--trace);
 }
 
 /* A dragged tab floats outside the bar, so it carries the bar's color. */

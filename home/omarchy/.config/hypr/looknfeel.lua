@@ -1,14 +1,5 @@
 -- Change the default Omarchy look'n'feel.
 
-local function theme_color(key)
-  local file = io.open(os.getenv("HOME") .. "/.local/state/omarchy/current/theme/colors.toml")
-  local text = file and file:read("a") or ""
-  if file then file:close() end
-  return text:match("%f[%w_]" .. key .. '%s*=%s*"#(%x+)"')
-end
-
-local shadow = theme_color("darker_background") or "000000"
-
 -- https://wiki.hypr.land/Configuring/Basics/Variables/#general
 hl.config({
   general = {
@@ -22,30 +13,28 @@ hl.config({
   },
 })
 
+-- https://wiki.hypr.land/Configuring/Basics/Variables/#binds
+hl.config({
+  binds = {
+    -- Let Super+arrow move focus out of a fullscreen window in the scrolling layout.
+    movefocus_cycles_fullscreen = true,
+  },
+})
+
 -- https://wiki.hypr.land/Configuring/Basics/Variables/#decoration
 hl.config({
   decoration = {
     -- Use round window corners.
-    rounding = 1,
+    rounding = 2,
     rounding_power = 4,
 
     -- -- Dim unfocused windows (0.0 = no dim, 1.0 = fully dimmed).
-    dim_inactive = true,
-    dim_strength = 0.10,
+    -- dim_inactive = true,
+    -- dim_strength = 0.10,
 
     -- Dim around windows with dim_around, like the 1Password auth modal.
     -- Matches Omarchy's polkit backdrop.
-    dim_around = 0.5,
-
-    -- Subtle shadow for floating windows, close to end-4.
-    -- A big single-layer shadow looks muddy.
-    shadow = {
-      enabled = true,
-      range = 20,
-      render_power = 3,
-      color = "rgba(" .. shadow .. "50)",
-      color_inactive = "rgba(" .. shadow .. "25)",
-    },
+    -- dim_around = 0.5,
   },
 })
 
@@ -77,6 +66,7 @@ hl.window_rule({
 hl.workspace_rule({
   workspace = "w[tv1]s[false]",
   no_border = true,
+  no_shadow = true,
   gaps_out = 4,
 })
 
@@ -85,12 +75,6 @@ hl.window_rule({
   match = { float = true },
   rounding = 8,
   border_size = 0,
-})
-
--- No rule can enable shadows per window, so they are on globally and off for tiled windows.
-hl.window_rule({
-  match = { float = false },
-  no_shadow = true,
 })
 
 -- Omarchy floats Steam; tile the main window and drop its decorations instead.

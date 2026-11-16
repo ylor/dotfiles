@@ -1,6 +1,6 @@
 {
-  "lastChangelogVersion": "1.5.1",
-  "defaultModel": "deepseek/deepseek-v4.1-flash-1017",
+  "lastChangelogVersion": "1.5.2",
+  "defaultModel": "~deepseek/deepseek-flash-latest",
   "defaultProvider": "openrouter",
   "defaultTools": [
     "+codemode"
@@ -11,9 +11,9 @@
     "https://github.com/earendil-works/pi-claude-code"
   ],
   "enabledModels": [
-    "openrouter/deepseek/deepseek-v4.1-flash-1017",
     "claude-code/claude-opus-5-5",
-    "claude-code/claude-sonnet-5-5"
+    "claude-code/claude-sonnet-5-5",
+    "openrouter/~deepseek/deepseek-flash-latest"
   ],
   "warnings": {
     "anthropicExtraUsage": false

@@ -9,9 +9,10 @@ set -l computer_name (scutil --get ComputerName)
 if string match -q "*’s*" $computer_name; and gum confirm "change computer name? current: "(string lower -- $computer_name)
     set -l new_name (gum input --prompt "new computer name: " --placeholder (string lower -- $computer_name))
     if test -n "$new_name"
+        set -l host_name (string lower -- $new_name)
         sudo scutil --set ComputerName "$new_name"
-        and sudo scutil --set HostName "$new_name"
-        and sudo scutil --set LocalHostName "$new_name"
+        and sudo scutil --set HostName "$host_name"
+        and sudo scutil --set LocalHostName "$host_name"
         or return $status
     end
 end
