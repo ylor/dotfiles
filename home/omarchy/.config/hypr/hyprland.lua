@@ -51,10 +51,7 @@ require("default.hypr.toggles")
 
 -- Add any other personal Hyprland configuration below.
 
--- Glassy terminals only: same blur and 0.75 opacity as omarchy's Glassy windows toggle,
--- limited to terminal-tagged windows.
-require("default.hypr.glass")()
-o.window({ tag = "terminal" }, { opacity = "0.75 0.75" })
+require("hypr.override-glassy-windows")
 
 -- Glassy mode, but the focused window is opaque, except terminals. Must come after
 -- the toggles so it overrides glassy's 0.75 rule.
