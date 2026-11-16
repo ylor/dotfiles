@@ -46,12 +46,10 @@ if package.searchpath("hypr.local", package.path) then
   require("hypr.local")
 end
 
--- Toggle config flags dynamically.
-require("default.hypr.toggles")
+-- Toggle config flags dynamically (wraps default.hypr.toggles).
+require("hypr.override-glassy-windows")
 
 -- Add any other personal Hyprland configuration below.
-
-require("hypr.override-glassy-windows")
 
 -- Glassy mode, but the focused window is opaque, except terminals. Must come after
 -- the toggles so it overrides glassy's 0.75 rule.

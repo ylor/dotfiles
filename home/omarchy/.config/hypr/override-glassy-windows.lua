@@ -1,19 +1,20 @@
--- Appearance > Window Opacity > Glassy, limited to windows that are already
--- transparent under the default setting. Glassy fades every window (".*"); keep
--- its blur and value, but only for the transparent-window ruleset (terminals,
--- Nautilus, 1Password, ... and anything toggled with Super+Backspace).
--- Must load after default.hypr.toggles so these rules win.
-local paths = require("default.hypr.paths")
+-- Load Omarchy's toggles, but narrow Appearance > Window Opacity > Glassy from
+-- every window to the ones Omarchy makes transparent by default, at Glassy's
+-- own opacity. If Glassy stops fading ".*", this does nothing and stock Glassy applies.
+local window = o.window
 
-local glassy = io.open(paths.state_home .. "/omarchy/toggles/hypr/window-glassy.lua", "r")
-if not glassy then
-  return
+o.window = function(match, rules)
+  if match == ".*" and rules.opacity then
+    -- class = ".*" is not redundant: Hyprland 0.57.2 drops a tag-only rule on
+    -- every other re-evaluation, which each title change triggers.
+    match = { class = ".*", tag = "transparent-window" }
+
+    -- qconsole dims everything behind it by 0.6, so its glass would blur a
+    -- near-black backdrop.
+    hl.config({ decoration = { dim_special = 0.2 } })
+  end
+  return window(match, rules)
 end
-glassy:close()
 
-o.window(".*", { opacity = "1 1" })
-o.window({ tag = "transparent-window" }, { opacity = "0.75 0.75" })
-
--- qconsole dims everything behind a special workspace by 0.6, so its glass
--- blurs a near-black backdrop. Dim less so the console reads as glass.
-hl.config({ decoration = { dim_special = 0.2 } })
+require("default.hypr.toggles")
+o.window = window
