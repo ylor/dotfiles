@@ -1,74 +1,72 @@
--- Learn how to configure Hyprland: https://wiki.hypr.land/Configuring/Start/
-
--- Omarchy's bootstrap keeps path setup out of this user config.
 dofile((os.getenv("OMARCHY_PATH") or "/usr/share/omarchy") .. "/default/hypr/bootstrap.lua")
 
--- Disable all Omarchy default bindings. Add your own in hypr/bindings.lua.
--- omarchy_default_bindings = false
---
--- Or disable only bindings for Omarchy's preinstalled apps/web apps while
--- keeping core window-manager bindings:
 omarchy_preinstalled_bindings = false
 
--- Load Omarchy defaults.
 require("default.hypr.omarchy")
 
--- Map D3D12 descriptor heaps directly to Vulkan to reduce CPU translation overhead.
--- Check around November 2026 whether this has become the default.
-hl.env("VKD3D_CONFIG", "descriptor_heap")
+require("hypr.monitors")
+require("hypr.input")
+require("hypr.bindings")
+require("hypr.looknfeel")
+require("hypr.autostart")
+
+require("hypr.expandr")
+require("hypr.workspace-fix")
+
+-- Load Omarchy's toggles, but narrow Appearance > Window Opacity > Glassy from
+-- every window to the ones Omarchy makes transparent by default, at Glassy's
+-- own opacity. If Glassy stops fading ".*", this does nothing and stock Glassy applies.
+local window = o.window
+o.window = function(match, rules)
+  if match == ".*" and rules.opacity then
+    -- class = ".*" is not redundant: Hyprland 0.57.2 drops a tag-only rule on
+    -- every other re-evaluation, which each title change triggers.
+    match = { class = ".*", tag = "transparent-window" }
+
+    -- qconsole dims everything behind it by 0.6, so its glass would blur a
+    -- near-black backdrop.
+    hl.config({ decoration = { dim_special = 0.2 } })
+  end
+  return window(match, rules)
+end
+require("default.hypr.toggles")
+o.window = window
+
+-------------------------------
+---- ENVIRONMENT VARIABLES ----
+-------------------------------
+
 hl.env("DXVK_NVAPI_DRS_NGX_DLSS_SR_OVERRIDE", "on")
 hl.env("DXVK_NVAPI_DRS_NGX_DLSS_SR_OVERRIDE_RENDER_PRESET_SELECTION", "render_preset_latest")
 hl.env("DXVK_NVAPI_DRS_NGX_DLSS_RR_OVERRIDE", "on")
 hl.env("DXVK_NVAPI_DRS_NGX_DLSS_RR_OVERRIDE_RENDER_PRESET_SELECTION", "render_preset_latest")
 hl.env("DXVK_NVAPI_DRS_NGX_DLSS_FG_OVERRIDE", "on")
 hl.env("DXVK_NVAPI_DRS_NGX_DLSS_FG_OVERRIDE_RENDER_PRESET_SELECTION", "render_preset_latest")
-
--- Run Proton games as native Wayland windows instead of through XWayland.
 hl.env("PROTON_ENABLE_WAYLAND", "1")
+-- Map D3D12 descriptor heaps directly to Vulkan to reduce CPU translation overhead.
+-- Still opt-in as of vkd3d-proton 3.1 (GE-Proton11-12, checked Nov 2026).
+hl.env("VKD3D_CONFIG", "descriptor_heap")
 
--- GTK's default Vulkan renderer adds a GL->Vulkan copy per frame for GL apps
--- like Ghostty, which lags on NVIDIA. Use the GL renderer instead.
-hl.env("GSK_RENDERER", "ngl")
+--------------------------------
+---- WINDOWS AND WORKSPACES ----
+--------------------------------
 
--- Put your personal overrides in these files. They're loaded after Omarchy's
--- defaults so package updates can improve the defaults without rewriting your
--- ~/.config/hypr files.
-require("hypr.monitors")
-require("hypr.input")
-require("hypr.bindings")
-require("hypr.looknfeel")
-require("hypr.autostart")
-require("hypr.expandr")
--- TODO: Remove once omacom/omarchy PR #16349 is merged and installed.
-require("hypr.workspace-fix")
+hl.window_rule({
+  match = { class = "^helium$" },
+  no_auto_hdr = true,
+})
 
-if package.searchpath("hypr.local", package.path) then
-  require("hypr.local")
-end
+hl.window_rule({
+  match = { tag = "chromium-based-browser", workspace = "w[tv1]s[false]", float = false },
+  border_size = 1,
+})
 
--- Toggle config flags dynamically (wraps default.hypr.toggles).
-require("hypr.override-glassy-windows")
-
--- Add any other personal Hyprland configuration below.
-
--- Glassy mode, but the focused window is opaque, except terminals. Must come after
--- the toggles so it overrides glassy's 0.75 rule.
--- o.window({ focus = true, tag = "negative:terminal" }, { opacity = "1.0 override" })
-
--- Hyprland drops that override whenever a window's rules are re-evaluated, which Chromium
--- triggers on every title change (closing a tab). Re-apply it for the focused window.
--- local function keep_focused_opaque(window)
---   if not window or not window.address then return end
---   local focused = hl.get_active_window()
---   if not focused or focused.address ~= window.address then return end
---   for _, tag in ipairs(window.tags or {}) do
---     if tag:gsub("%*$", "") == "terminal" then return end
---   end
---   hl.dispatch(hl.dsp.window.set_prop({ prop = "opacity", value = "1", window = "address:" .. window.address }))
--- end
--- hl.on("window.title", keep_focused_opaque)
--- hl.on("window.update_rules", keep_focused_opaque)
--- o.window("qemu", { workspace = "5" })
+hl.window_rule({
+  match = { class = "^wowb?\\.exe$" },
+  fullscreen = true,
+  -- Out of fullscreen it would float, since it asks for a fixed size.
+  float = false,
+})
 
 -- Azeroth Survivors (Bevy) panics when it can't get a frame, which happens when the
 -- window is resized out of fullscreen or hidden. Keep it fullscreen and rendering.
@@ -80,61 +78,14 @@ o.window({ initial_title = "^Azeroth Survivors$" }, {
   idle_inhibit = "always",
 })
 
--- -- 1Password's auth modal should hold focus and dim around it, like the polkit prompt.
--- -- The modal and the main window open identically: floating, "1Password", 875x600.
--- -- The modal shrinks within ~33ms, so hide new windows briefly and split them by width.
--- o.window({ class = "^com\\.onepassword\\.OnePassword$", title = "^1Password$" }, { no_anim = true })
+hl.layer_rule({ match = { namespace = "^omacast$" }, no_anim = true, animation = "none" })
 
--- -- The new window is still floating here, so it never finds itself.
--- local function tiled_onepassword()
---   for _, window in ipairs(hl.get_windows()) do
---     if window.class == "com.onepassword.OnePassword" and not window.floating then
---       return window
---     end
---   end
--- end
+--------------
+---- MISC ----
+--------------
 
--- hl.on("window.open", function(window)
---   if window.class ~= "com.onepassword.OnePassword" then
---     return
---   end
-
---   local target = "address:" .. window.address
---   local function set_prop(prop, value)
---     hl.dispatch(hl.dsp.window.set_prop({ prop = prop, value = value, window = target }))
---   end
-
---   set_prop("opacity", "0")
-
---   hl.timer(function()
---     local is_modal = window.size.x < 600
---     if is_modal then
---       set_prop("stay_focused", "1")
---       set_prop("dim_around", "1")
---     else
---       -- Only the main window tiles. Settings and other extras float centered over it.
---       local main = tiled_onepassword()
---       if main then
---         local x = main.at.x + (main.size.x - window.size.x) // 2
---         local y = main.at.y + (main.size.y - window.size.y) // 2
---         hl.dispatch(hl.dsp.window.move({ x = x, y = y, window = target }))
---       else
---         hl.dispatch(hl.dsp.window.float({ action = "off", window = target }))
---       end
---     end
-
---     set_prop("opacity", "1")
---   end, { type = "oneshot", timeout = 50 })
--- end)
-
-hl.config({
-  dwindle = {
-    force_split = 2,
-  },
-})
-
--- Omarchy's qconsole.lua seeds the console with `omarchy-agent [flags]`, which starts in ~.
--- Match the prefix so new upstream flags don't silently bypass this.
+-- Start omarchy-agent in ~/.dotfiles instead of ~/Work. Covers qconsole only, not
+-- Omarchy's Agent bind, the agents panel or the app launcher.
 local exec_cmd = hl.exec_cmd
 hl.exec_cmd = function(cmd, rules)
   if type(cmd) == "string" and (cmd == "omarchy-agent" or cmd:find("^omarchy%-agent ")) then

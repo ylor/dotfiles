@@ -1,46 +1,23 @@
--- Keep only your personal keybinding overrides here. Add new bindings with
--- o.bind or replace defaults with o.rebind.
-
--- See current bindings and descriptions:
---   omarchy menu keybindings --print
-
--- To disable every Omarchy default binding, set this in
--- ~/.config/hypr/hyprland.lua before require("default.hypr.omarchy"), then add
--- only the bindings you want below:
---   omarchy_default_bindings = false
-
--- To disable all preinstalled app/webapp bindings, set:
---   omarchy_preinstalled_bindings = false
-
--- Add a new binding.
--- o.bind("SUPER + SHIFT + R", "SSH", "alacritty -e ssh your-server")
-
--- Change an existing binding. o.rebind takes the same arguments as o.bind.
--- This example replaces the default file manager with Flea.
--- o.rebind("SUPER + SHIFT + F", "File manager", { launch = "flea" })
-
--- Disable a default binding without replacing it.
--- hl.unbind("SUPER + SHIFT + B")
-
--- Logitech MX Keys examples:
--- o.bind("SUPER + SHIFT + S", nil, "omarchy-capture-screenshot")
--- o.bind("SUPER + H", nil, "voxtype record toggle")
--- o.bind("SUPER + PERIOD", nil, { panel = "omarchy.emojis" })
-
 local hyper = "CTRL + ALT + SUPER"
+
+hl.config({
+  binds = {
+    movefocus_cycles_fullscreen = true,
+  },
+})
 
 ---------------------------------------------------------------------------
 -- Launchers and apps
 ---------------------------------------------------------------------------
 
 hl.unbind("SUPER + W")
-o.bind("SUPER + I", "Browser", { omarchy = "browser" })
+o.rebind("SUPER + I", "Browser", { omarchy = "browser" })
 o.rebind("SUPER + SHIFT + N", "Browser (private)", { omarchy = "browser --private" })
 
 o.rebind("ALT + SPACE", "omacast launcher", hl.dsp.global("omacast:toggle"))
 o.rebind("SUPER + SPACE", "omacast launcher", hl.dsp.global("omacast:toggle"))
-hl.layer_rule({ match = { namespace = "^omacast$" }, no_anim = true, animation = "none" })
 o.bind(hyper .. " + SPACE", "Omarchy menu", { menu = "root" })
+o.bind(hyper .. " + RETURN", "Agent in dotfiles", "cd ~/.dotfiles && omarchy-agent --pick")
 
 -- flea --default: begin. Written by `flea --default`; `flea --default off` removes the block whole.
 hl.unbind("SUPER + SHIFT + F")
@@ -68,13 +45,21 @@ o.bind(hyper .. " + V", "Volume mixer", { panel = "omarchy.audio" })
 
 -- Step volume onto the next multiple of 5, so a level set by hand (e.g. 37%)
 -- snaps back to the 5% grid. Shell, because reading the volume in Lua blocks Hyprland.
-local volume_up = [[v=$(LC_ALL=C pactl get-sink-volume "$(omarchy-audio-output-sink)" | grep -oP '[0-9]+(?=%)' | head -n1); omarchy-audio-output-volume +$((5 - v % 5))]]
-local volume_down = [[v=$(LC_ALL=C pactl get-sink-volume "$(omarchy-audio-output-sink)" | grep -oP '[0-9]+(?=%)' | head -n1); omarchy-audio-output-volume -$(((v + 4) % 5 + 1))]]
+local read_volume = [[v=$(LC_ALL=C pactl get-sink-volume "$(omarchy-audio-output-sink)" | grep -oP '[0-9]+(?=%)' | head -n1); ]]
+local volume_up = read_volume .. [[omarchy-audio-output-volume +$((5 - v % 5))]]
+local volume_down = read_volume .. [[omarchy-audio-output-volume -$(((v + 4) % 5 + 1))]]
 
 o.rebind("XF86AudioRaiseVolume", "Volume up", volume_up, { locked = true, repeating = true })
 o.rebind("XF86AudioLowerVolume", "Volume down", volume_down, { locked = true, repeating = true })
 
--- The bar is the monitor's reserved top strip, minus 10% at each end.
+---------------------------------------------------------------------------
+-- Mouse wheel
+---------------------------------------------------------------------------
+
+-- Default 300ms drops most wheel notches on scroll binds like volume. Applies to
+-- every wheel bind, including ALT + wheel brightness under Display.
+hl.config({ binds = { scroll_event_delay = 30 } })
+
 local function over_bar()
   local cursor = hl.get_cursor_pos()
   local monitor = hl.get_monitor_at_cursor()
@@ -90,17 +75,30 @@ end
 o.bind("mouse_up", "Volume up over Omarchy bar", function() if over_bar() then hl.exec_cmd(volume_up) end end, { locked = true, non_consuming = true })
 o.bind("mouse_down", "Volume down over Omarchy bar", function() if over_bar() then hl.exec_cmd(volume_down) end end, { locked = true, non_consuming = true })
 
+-- The low scroll_event_delay above would let one wheel flick skip several
+-- workspaces, so workspace scrolling waits 300ms itself.
+local workspace_scroll_cooling = false
+
+local function scroll_workspace(direction)
+  if workspace_scroll_cooling then return end
+  workspace_scroll_cooling = true
+  hl.timer(function() workspace_scroll_cooling = false end, { timeout = 300, type = "oneshot" })
+  hl.dispatch(hl.dsp.focus({ workspace = direction }))
+end
+
+o.rebind("SUPER + mouse_down", "Scroll active workspace forward", function() scroll_workspace("m+1") end)
+o.rebind("SUPER + mouse_up", "Scroll active workspace backward", function() scroll_workspace("m-1") end)
+
 ---------------------------------------------------------------------------
 -- Display: brightness and monitor input
 ---------------------------------------------------------------------------
 
-o.bind(hyper .. " + UP", "Brightness up", "omarchy-brightness-display +5%", { locked = true, repeating = true })
-o.bind(hyper .. " + DOWN", "Brightness down", "omarchy-brightness-display 5%-", { locked = true, repeating = true })
+o.bind(hyper .. " + UP", "Brightness up", { brightness = "raise" }, { locked = true, repeating = true })
+o.bind(hyper .. " + DOWN", "Brightness down", { brightness = "lower" }, { locked = true, repeating = true })
 o.bind(hyper .. " + BACKSPACE", "Brightness 0%", "omarchy-brightness-display 0%", { locked = true })
-o.bind("ALT + mouse_up", "Brightness up", "omarchy-brightness-display +5%", { locked = true })
-o.bind("ALT + mouse_down", "Brightness down", "omarchy-brightness-display 5%-", { locked = true })
+o.bind("ALT + mouse_up", "Brightness up", { brightness = "raise" }, { locked = true })
+o.bind("ALT + mouse_down", "Brightness down", { brightness = "lower" }, { locked = true })
 
--- Step to the next multiple of 20 (p = current %), skipping when it falls outside 0-100.
 -- The lock drops a tick while the previous DDC read+write (~300ms) is still running.
 -- DDC floors 0% to 1%, so 1 counts as 0.
 local function brightness_step(next_percent)
@@ -114,7 +112,7 @@ end
 -- Keyboard repeat (40Hz) outruns DDC, so holding steps on a slower timer instead.
 local brightness_hold
 local function stop_brightness_hold()
-  if brightness_hold then brightness_hold:set_enabled(false) end
+  if brightness_hold then brightness_hold:set_enabled(false); brightness_hold = nil end
 end
 local function brightness_hold_bind(key, description, next_percent)
   local cmd = brightness_step(next_percent)
@@ -164,16 +162,27 @@ end
 o.rebind("SUPER + TAB", "Next window in active workspace", function() cycle_window(true) end)
 o.rebind("SUPER + SHIFT + TAB", "Previous window in active workspace", function() cycle_window(false) end)
 
-hl.bind("SUPER + M", function()
-  if hl.get_workspace("special:minimized") then
-    hl.dispatch(hl.dsp.window.move({
-      workspace = hl.get_active_workspace(),
-      window = "tag:minimized",
-    }))
-    hl.dispatch(hl.dsp.window.clear_tags({ window = "tag:minimized" }))
+-- Floating workspaces keep Omarchy's dock minimize; workspace-modes.lua tags
+-- their windows. Tiled workspaces have no dock, so SUPER+M toggles one window
+-- in and out of a stash of its own.
+local function on_floating_workspace(window)
+  for _, tag in ipairs(window and window.tags or {}) do
+    if tag:find("^omarchy%-floating%-workspace") then return true end
+  end
+  return false
+end
+
+o.rebind("SUPER + M", "Minimize window", function()
+  if on_floating_workspace(hl.get_active_window()) then
+    hl.exec_cmd("omarchy-hyprland-window-minimize")
+    return
+  end
+
+  local stash = hl.get_workspace("special:stash")
+  if stash then
+    hl.dispatch(hl.dsp.window.move({ workspace = hl.get_active_workspace(), window = stash.last_window }))
   else
-    hl.dispatch(hl.dsp.window.tag({ tag = "minimized", window = hl.get_active_window() }))
-    hl.dispatch(hl.dsp.window.move({ workspace = "special:minimized", follow = false }))
+    hl.dispatch(hl.dsp.window.move({ workspace = "special:stash", follow = false }))
   end
 end)
 
@@ -184,85 +193,41 @@ end)
 o.rebind("ALT + TAB", "Next workspace", hl.dsp.focus({ workspace = "m+1" }))
 o.rebind("ALT + SHIFT + TAB", "Previous workspace", hl.dsp.focus({ workspace = "m-1" }))
 
--- scroll_event_delay is low for volume, so workspace scrolling waits 300ms
--- itself; otherwise one wheel flick skips several workspaces.
-local workspace_scroll_cooling = false
-
-local function scroll_workspace(direction)
-  if workspace_scroll_cooling then return end
-  workspace_scroll_cooling = true
-  hl.timer(function() workspace_scroll_cooling = false end, { timeout = 300, type = "oneshot" })
-  hl.dispatch(hl.dsp.focus({ workspace = direction }))
-end
-
-o.rebind("SUPER + mouse_down", "Scroll active workspace forward", function() scroll_workspace("m+1") end)
-o.rebind("SUPER + mouse_up", "Scroll active workspace backward", function() scroll_workspace("m-1") end)
-
 ---------------------------------------------------------------------------
 -- Layout: tiling / scrolling
 ---------------------------------------------------------------------------
 
 o.rebind("SUPER + Home", "Rebalance window split", hl.dsp.layout("splitratio 1.0 exact"))
 
--- -- Neighbouring columns peek in at the edges so they stay findable.
--- local peek = 0.03
+-- Toggles the column to 0.9 wide so a neighbour peeks in from the edge; alone,
+-- fullscreen_on_one_column draws it full. looknfeel.lua's auto-sizing leaves
+-- columns of 0.9 or wider alone, so this sticks. Toggling back restores the width it had before.
+local WIDE = 0.9
+local width_before_widen = {} -- by stable_id: addresses get reused
 
--- local function monitor_width()
---   local monitor = hl.get_active_monitor()
---   return monitor.width / monitor.scale
--- end
+local function toggle_wide_column()
+  local active = hl.get_active_window()
+  local column = active and active.layout and active.layout.column
+  if not column then return end
 
--- -- Stacked windows share their column's x, so they count as neither side.
--- local function neighbours(window)
---   local left, right = 0, 0
---   for _, other in ipairs(hl.get_active_workspace():get_windows()) do
---     if not other.floating then
---       if other.at.x < window.at.x then left = 1 end
---       if other.at.x > window.at.x then right = 1 end
---     end
---   end
---   return left, right
--- end
+  -- Widths are 32-bit floats, so 0.9 reads back as 0.8999999762.
+  if column.width > WIDE - 0.01 then
+    local previous = width_before_widen[active.stable_id] or hl.get_config("scrolling.column_width")
+    width_before_widen[active.stable_id] = nil
+    hl.dispatch(hl.dsp.layout("colresize " .. previous))
+    -- Shrinking doesn't pull the view back, so empty space would be left. Focusing
+    -- the first column scrolls to the start; refocusing this one then scrolls just
+    -- far enough to show it.
+    local first = active
+    for _, window in ipairs(active.workspace:get_windows()) do
+      if not window.floating and window.at.x < first.at.x then first = window end
+    end
+    hl.dispatch(hl.dsp.focus({ window = "address:" .. first.address }))
+    hl.dispatch(hl.dsp.focus({ window = "address:" .. active.address }))
+  else
+    width_before_widen[active.stable_id] = column.width
+    hl.dispatch(hl.dsp.layout("colresize " .. WIDE))
+  end
+end
 
--- -- The view only scrolls to fit the column, so shift it to leave room for each peek.
--- local function center_between_peeks()
---   local window = hl.get_active_window()
---   local left, right = neighbours(window)
---   local width = monitor_width()
---   local target_x = hl.get_active_monitor().x + (width - window.size.x + (left - right) * peek * width) / 2
---   hl.dispatch(hl.dsp.layout(string.format("move %+d", math.floor(target_x - window.at.x + 0.5))))
--- end
-
--- local function is_wide(window)
---   return window.size.x > 0.9 * monitor_width()
--- end
-
--- -- Full width, minus room for the neighbours to peek. Acts on the active window.
--- local function widen(window)
---   local left, right = neighbours(window)
---   hl.dispatch(hl.dsp.layout("colresize " .. (1 - (left + right) * peek)))
---   center_between_peeks()
--- end
-
--- -- Helium windows start as a full-width column. Column resizes only act on the
--- -- active window, so a window opened silently is widened when first focused.
--- -- stable_id, unlike address, is never reused by a later window.
--- local helium_seen = {}
-
--- -- Focusing a neighbour scrolls it into view; coming back must restore both peeks.
--- hl.on("window.active", function()
---   local window = hl.get_active_window()
---   if not window then return end
-
---   local first_helium = window.class == "helium" and not helium_seen[window.stable_id]
---   if first_helium then helium_seen[window.stable_id] = true end
-
---   local scrolling = hl.get_active_workspace().tiled_layout == "scrolling"
---   if window.floating or not scrolling then return end
-
---   if is_wide(window) then
---     center_between_peeks()
---   elseif first_helium then
---     widen(window)
---   end
--- end)
+o.bind("SUPER + SHIFT + F", "Toggle wide column", toggle_wide_column)

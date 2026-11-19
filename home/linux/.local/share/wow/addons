@@ -15,8 +15,8 @@ parse_args "$@"
 game_version=1.60.1
 interface=16001
 
-# Stops jobs still running, removes downloads and shows the cursor again, which the live
-# status rows hide. Background jobs ignore Ctrl-C, so without the kill an interrupted run
+# Stops jobs still running, removes downloads and shows the cursor again, which the progress
+# line hides. Background jobs ignore Ctrl-C, so without the kill an interrupted run
 # leaves curl downloading voice packs into the deleted temp folder.
 cleanup() {
     for job in $pending; do
@@ -228,7 +228,6 @@ install_addon() {
 # Usage: start NAME COMMAND... Runs the command in the background with its own temp
 # dir, log and status file, so downloads overlap.
 pending=
-spinner='-'
 start() {
     name=$1
     shift
@@ -250,113 +249,114 @@ update() {
     start "$1" install_addon "$@"
 }
 
-running() {
-    for job in $pending; do
-        ! kill -0 "${job%%:*}" 2>/dev/null || return 0
-    done
-    return 1
+# Usage: report NAME. Prints a finished addon's row, once, and counts it. Piped, rows for
+# up-to-date addons are left out, so only rows worth reading are printed.
+report() {
+    name=$1
+    read -r state text <"$tmp/$name.status"
+    mark_color=
+    case "$state" in
+        # Green check, gray text: done, but nothing changed.
+        ok)
+            mark='✓'
+            color=90
+            mark_color=32
+            case "$text" in
+                unversioned) text='up to date (no version number)' ;;
+                *) text="$text up to date" ;;
+            esac
+            ;;
+        new)
+            mark='✓'
+            color=32
+            text="$text installed"
+            ;;
+        updated)
+            mark='✓'
+            color=32
+            ;;
+        available)
+            mark='↑'
+            color=33
+            ;;
+        *)
+            mark='✗'
+            color=31
+            ;;
+    esac
+    case "$color" in
+        90) current=$((current + 1)) ;;
+        31) failed=$((failed + 1)) ;;
+        *) changed=$((changed + 1)) ;;
+    esac
+    if [ "$tty" -eq 1 ]; then
+        # Clear the progress line first; the row takes its place.
+        printf '\r\033[K\033[%sm%s\033[0m %-'"$name_width"'s \033[%sm%s\033[0m\n' \
+            "${mark_color:-$color}" "$mark" "$name" "$color" "$text"
+    elif [ "$state" != ok ]; then
+        printf '%s %s: %s\n' "$mark" "$name" "$text"
+    fi
 }
 
-# Prints one status row per addon. In a terminal every row shows, so the rows can be
-# redrawn in place; otherwise only rows worth reading are printed.
-draw() {
-    for job in $pending; do
-        name=${job#*:}
-        read -r state text <"$tmp/$name.status"
-        mark_color=
-        case "$state" in
-            busy)
-                mark=$spinner
-                color=90
-                ;;
-            # Green check, gray text: done, but nothing changed.
-            ok)
-                mark='✓'
-                color=90
-                mark_color=32
-                text="$text up to date"
-                ;;
-            new)
-                mark='✓'
-                color=32
-                text="$text installed"
-                ;;
-            updated)
-                mark='✓'
-                color=32
-                ;;
-            available)
-                mark='↑'
-                color=33
-                ;;
-            failed)
-                mark='✗'
-                color=31
-                ;;
-        esac
-        if [ "$tty" -eq 1 ]; then
-            # Cut long text so a row never wraps, which would break the redraw.
-            printf '\033[K\033[%sm%s\033[0m %-26s \033[%sm%.*s\033[0m\n' \
-                "${mark_color:-$color}" "$mark" "$name" "$color" "$width" "$text"
-        elif [ "$state" != ok ]; then
-            printf '%s %s: %s\n' "$mark" "$name" "$text"
-        fi
-    done
-}
-
-# Shows live rows until every job ends, then the final rows and totals.
+# Prints each addon's row as its job ends, in the order they were started, under which a
+# terminal gets one progress line, the only output ever redrawn. Sets $failed, $changed
+# and $current.
 wait_all() {
     # $pending is a space-separated list; splitting it is the point.
     # shellcheck disable=SC2086
     set -- $pending
-    rows=$#
-    width=$(($(tput cols 2>/dev/null || echo 80) - 30))
-    if [ "$tty" -eq 1 ]; then
-        # Redrawing the rows moves the cursor up past all of them, which fails when they
-        # outgrow the terminal; then redraw a single progress line instead.
-        rows_fit=0
-        [ "$rows" -ge "$(tput lines 2>/dev/null || echo 24)" ] || rows_fit=1
-        printf '\033[?25l'
-        frame=0
-        while running; do
-            case $((frame % 4)) in 0) spinner='⠋' ;; 1) spinner='⠙' ;; 2) spinner='⠸' ;; 3) spinner='⠴' ;; esac
-            if [ "$rows_fit" -eq 1 ]; then
-                draw
-                printf '\033[%sA' "$rows"
-            else
-                finished=0
-                for job in $pending; do
-                    read -r state _ <"$tmp/${job#*:}.status"
-                    [ "$state" = busy ] || finished=$((finished + 1))
-                done
-                printf '\r\033[K\033[90m%s %s/%s addons checked\033[0m' "$spinner" "$finished" "$rows"
-            fi
-            frame=$((frame + 1))
-            # Redraw every 0.1 s, but notice finished jobs within 0.02 s.
-            tick=0
-            while [ "$tick" -lt 5 ] && running; do
-                sleep 0.02
-                tick=$((tick + 1))
-            done
-        done
-        [ "$rows_fit" -eq 1 ] || printf '\r\033[K'
-    fi
-
-    failed=0
-    changed=0
+    total=$#
+    name_width=0
     for job in $pending; do
         name=${job#*:}
-        if ! wait "${job%%:*}"; then
-            failed=$((failed + 1))
-            reason=$(grep . "$tmp/$name.log" | tail -n 1 | sed 's/^Error: //')
-            status_file=$tmp/$name.status status failed "${reason:-unknown error}"
-        else
-            read -r state _ <"$tmp/$name.status"
-            [ "$state" = ok ] || changed=$((changed + 1))
-        fi
+        [ "${#name}" -le "$name_width" ] || name_width=${#name}
     done
-    width=1000
-    draw
+    cols=$(tput cols 2>/dev/null || echo 80)
+    failed=0
+    changed=0
+    current=0
+    left=$pending
+    frame=0
+    [ "$tty" -eq 0 ] || printf '\033[?25l'
+    while :; do
+        still=
+        running=0
+        for job in $left; do
+            name=${job#*:}
+            if kill -0 "${job%%:*}" 2>/dev/null; then
+                running=$((running + 1))
+            fi
+            # A row waits for the rows above it, so rows keep the order of the list.
+            if [ -n "$still" ] || [ "$running" -gt 0 ]; then
+                still="$still $job"
+                continue
+            fi
+            if ! wait "${job%%:*}"; then
+                reason=$(grep . "$tmp/$name.log" | tail -n 1 | sed 's/^Error: //')
+                status_file=$tmp/$name.status status failed "${reason:-unknown error}"
+            fi
+            report "$name"
+        done
+        left=$still
+        [ -n "$left" ] || break
+        if [ "$tty" -eq 1 ]; then
+            case $((frame % 4)) in 0) spinner='⠋' ;; 1) spinner='⠙' ;; 2) spinner='⠸' ;; 3) spinner='⠴' ;; esac
+            # Name one job that is past checking, such as a voice pack downloading.
+            activity=
+            for job in $left; do
+                read -r state text <"$tmp/${job#*:}.status"
+                [ "$text" = checking ] || {
+                    activity=" · ${job#*:} $text"
+                    break
+                }
+            done
+            # Cut to the terminal width, since a wrapped line can't be cleared with \r.
+            printf '\r\033[K%.*s' "$((cols - 1))" "$spinner $((total - running))/$total checked$activity"
+            frame=$((frame + 1))
+        fi
+        sleep 0.05
+    done
+    [ "$tty" -eq 0 ] || printf '\r\033[K'
 }
 
 # Our own addons, kept in the dotfiles and copied in on every run.
@@ -443,16 +443,28 @@ start Lush install_own_addon Lush
 start Soulbound install_own_addon Soulbound
 wait_all
 
-if [ "$failed" -gt 0 ]; then
-    say 31 "$failed addon(s) failed"
-    exit 1
-elif [ "$changed" -eq 0 ]; then
-    say 32 'All addons up to date'
-elif [ "$check" -eq 1 ]; then
-    say 33 "$changed update(s) available; run wow addons to install"
-else
-    say 32 "Updated $changed addon(s)"
-    if pgrep -fi '_forever_.*\.exe' >/dev/null; then
-        say 33 'WoW Forever is running; /reload in game to load updated addons'
-    fi
+# One summary line, e.g. "1 update available, 1 failed, 33 up to date".
+if [ "$failed" -eq 0 ] && [ "$changed" -eq 0 ]; then
+    say 32 "All $current addons up to date"
+    exit 0
 fi
+summary=
+color=32
+if [ "$changed" -gt 0 ] && [ "$check" -eq 1 ]; then
+    summary="$changed update(s) available"
+    color=33
+elif [ "$changed" -gt 0 ]; then
+    summary="Updated $changed addon(s)"
+fi
+if [ "$failed" -gt 0 ]; then
+    summary="${summary:+$summary, }$failed failed"
+    color=31
+fi
+[ "$current" -eq 0 ] || summary="$summary, $current up to date"
+say "$color" "$summary"
+if [ "$changed" -gt 0 ] && [ "$check" -eq 1 ]; then
+    say 33 'Run wow addons to install'
+elif [ "$changed" -gt 0 ] && pgrep -fi '_forever_.*\.exe' >/dev/null; then
+    say 33 'WoW Forever is running; /reload in game to load updated addons'
+fi
+[ "$failed" -eq 0 ]

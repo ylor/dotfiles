@@ -1,0 +1,15 @@
+{
+  "schemaVersion": 1,
+  "id": "local.omaidle",
+  "name": "Omaidle",
+  "version": "1.0.0",
+  "author": "local",
+  "description": "Suspends after an hour idle, honoring Wayland, D-Bus ScreenSaver and logind idle inhibitors.",
+  "kinds": [
+    "service"
+  ],
+  "keepLoaded": true,
+  "entryPoints": {
+    "service": "Service.qml"
+  }
+}

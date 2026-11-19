@@ -1,165 +1,143 @@
 #!/bin/bash
 
-# Have the default agent check an Omarchy upgrade against my config and print
-# its findings inline in the `omarchy update` output. Covers both omarchy and
-# omarchy-settings, which are built from the same repo at the same commit
-# (settings ships the repo's etc/ into /etc). The hook narrows the upstream
-# diff to what touches my config first, and skips the agent when nothing does.
+# After an Omarchy upgrade, have Claude print a short changelog of what it did:
+# what needs action, what changed, what was removed, what's new. Covers omarchy
+# and omarchy-settings, which are built from the same repo at the same commit
+# (settings ships the repo's etc/ into /etc). Claude gets the whole upstream
+# diff minus noise, and greps my dotfiles for anything that needs action.
+#
+# Replay a past upgrade without touching the review state:
+#   bash review-update.hook --range 4bf10ed..dceae18
 
 set -e
+
+[[ $1 == --range ]] && replay=$2
 
 agent=$(omarchy-default-agent)
 [[ -n $agent ]] || exit 0
 
 echo -e "\e[32m\nAgentic update review\e[0m"
+if [[ $agent != claude ]]; then
+  echo "Update review supports only claude; your default agent is $agent."
+  exit 0
+fi
+
 nothing() { echo "Nothing to review"; exit 0; }
+review_failed() { echo -e "\e[33mOmarchy update review failed; it will run again on the next update.\e[0m" >&2; exit 0; }
 
 pkg=$(pacman -Qqo /usr/bin/omarchy 2>/dev/null) || nothing
-new=$(pacman -Q "$pkg" | cut -d' ' -f2)
-
-state=~/.local/state/omarchy/update-review
-mark_reviewed() { mkdir -p "${state%/*}" && echo "$new" >"$state"; }
-
-[[ -f $state && $(<"$state") == "$new" ]] && nothing
-reviewed_nothing() { mark_reviewed; nothing; }
-
-old=$(grep -oP "upgraded \Q$pkg\E \(\K\S+(?= -> \Q$new\E\))" /var/log/pacman.log | tail -1)
-# Nothing to compare against (first run, or Omarchy wasn't upgraded).
-[[ -n $old ]] || reviewed_nothing
-
 repo=$(pacman -Qi "$pkg" | sed -n 's/^URL *: //p')
-ref() { [[ $1 =~ \.g([0-9a-f]+)- ]] && echo "${BASH_REMATCH[1]}" || echo "v${1%-*}"; }
-range="$(ref "$old")..$(ref "$new")"
+state=~/.local/state/omarchy/update-review
+
+if [[ -n $replay ]]; then
+  range=$replay old=${replay%%..*} new=${replay##*..}
+  mark_reviewed() { :; }
+else
+  new=$(pacman -Q "$pkg" | cut -d' ' -f2)
+  mark_reviewed() { mkdir -p "${state%/*}" && echo "$new" >"$state"; }
+  [[ -f $state && $(<"$state") == "$new" ]] && nothing
+  old=$(grep -oP "upgraded \Q$pkg\E \(\K\S+(?= -> \Q$new\E\))" /var/log/pacman.log | tail -1)
+  # Nothing to compare against (first run, or Omarchy wasn't upgraded).
+  [[ -n $old ]] || { mark_reviewed; nothing; }
+  ref() { [[ $1 =~ \.g([0-9a-f]+)- ]] && echo "${BASH_REMATCH[1]}" || echo "v${1%-*}"; }
+  range="$(ref "$old")..$(ref "$new")"
+fi
 
 dotfiles=${DOTFILES:-$HOME/.dotfiles}
+omarchy_path=${OMARCHY_PATH:-/usr/share/omarchy}
 work=$(mktemp -d)
 trap 'rm -rf "$work"' EXIT
 retry_later() { echo -e "\e[33mCould not fetch $range from $repo; will retry on the next update.\e[0m" >&2; exit 0; }
 
-git clone -q --filter=blob:none --no-checkout "$repo" "$work/omarchy" 2>/dev/null || retry_later
-changed=$(git -C "$work/omarchy" diff --name-only --no-renames "$range" 2>/dev/null) || retry_later
+up=$work/omarchy
+git clone -q --filter=blob:none --no-checkout "$repo" "$up" 2>/dev/null || retry_later
 
-# grep -r skips symlinked files, so search the dotfiles they point into as well
-# as the live config they're linked into.
-config_roots=("$dotfiles"/home/* ~/.config/hypr ~/.config/omarchy)
-theme=$(cat ~/.local/state/omarchy/current/theme.name 2>/dev/null || true)
+# Commands added, removed or renamed, straight from git so the agent can't miss one.
+commands=$(git -C "$up" diff --name-status -M "$range" -- 'bin/omarchy-*' 2>/dev/null | awk -F'\t' '
+  $1 == "A" { sub(/.*\//, "", $2); print "- added " $2 }
+  $1 == "D" { sub(/.*\//, "", $2); print "- removed " $2 }
+  $1 ~ /^R/ { sub(/.*\//, "", $2); sub(/.*\//, "", $3); print "- renamed " $2 " -> " $3 }
+') || retry_later
 
-# A config target is mine when my dotfiles carry it, or it's one of the live
-# roots I edit in place. Seeded copies Omarchy dropped into ~/.config don't count.
-mine() { [[ $1 == .config/hypr || $1 == .config/omarchy ]] || compgen -G "$dotfiles/home/*/$1" >/dev/null; }
-
-relevant=()
-notes=""
-while IFS= read -r file; do
-  IFS=/ read -r _ sub sub2 _ <<<"$file"
-  reason="" target=""
-  case "$file" in
-  test/* | docs/* | .github/* | *.md) continue ;;
-  migrations/*) reason="migration (may rewrite user config)" ;;
-  shell/*)
-    [[ -e ~/.config/omarchy/plugins || -e ~/.config/omarchy/shell.json ]] &&
-      reason="shell change; you have shell.json/plugins"
-    ;;
-  themes/*)
-    [[ -e ~/.config/omarchy/themes/$sub || $sub == "$theme" ]] && reason="theme $sub is active or overlaid"
-    ;;
-  bin/omarchy-*)
-    route=${sub#omarchy-}
-    hits=$(grep -rlF --exclude-dir=.git -e "$sub" -e "omarchy ${route//-/ }" "${config_roots[@]}" 2>/dev/null | head -5)
-    [[ -n $hits ]] && reason="referenced by: ${hits//$'\n'/ }"
-    ;;
-  etc/profile.d/*) reason="login shell environment" ;;
-  # Everything else maps a repo path to the home-relative config it seeds or
-  # defaults; relevant when that config is mine.
-  config/* | default/*) target=.config/$sub ;;
-  etc/xdg/*) target=.config/$sub2 ;;
-  etc/systemd/user*) target=.config/systemd/user ;;
-  etc/*) target=.config/$sub ;;
-  esac
-  [[ -n $target ]] && mine "$target" && reason="affects $target, which you customize"
-  if [[ -n $reason ]]; then
-    relevant+=("$file")
-    notes+="  $file -- $reason"$'\n'
-  fi
-done <<<"$changed"
-
-((${#relevant[@]})) || reviewed_nothing
-
-git -C "$work/omarchy" log --oneline "$range" -- "${relevant[@]}" >"$work/changes.log"
+# Everything but tests, CI, docs and translations. The English manual stays:
+# it's the clearest account of user-visible changes.
+noise=(':!test' ':!.github' ':!docs' ':!default/i18n' ':(exclude,glob)manual/*/**')
 # The partial clone fetches blobs lazily here, and that fetch prints progress.
-git -C "$work/omarchy" diff "$range" -- "${relevant[@]}" >"$work/changes.diff" 2>/dev/null || retry_later
+git -C "$up" diff -w --no-renames "$range" -- . "${noise[@]}" >"$work/changes.diff" 2>/dev/null || retry_later
+# Keep the first message well inside the context window; the budget caps cost.
+cap=262144
+diff_block=$(head -c $cap "$work/changes.diff")
+(($(stat -c%s "$work/changes.diff") > cap)) && diff_block+=$'\n'"[diff truncated; full diff at $work/changes.diff]"
 
-prompt="Omarchy was just upgraded: $pkg $old -> $new, along with omarchy-settings,
-which is built from the same repo and installs its etc/ into /etc.
+commits=$(git -C "$up" log --no-merges --format='- %s' "$range" | grep -viE '^- update translations' | head -150 || true)
+hw="$(uname -m); $(lspci 2>/dev/null | grep -E 'VGA|3D|Display' | sed 's/^[^:]*: //; s/ (rev.*//' | paste -sd ';' - || true)"
+mapfile -t layers < <(fish "$dotfiles/main.fish" layers)
 
-Tell me what, if anything, about MY custom config breaks or changes behavior
-as a result. Only these upstream files were judged relevant to my config:
+prompt="Omarchy was upgraded: $pkg $old -> $new (omarchy-settings too; it installs the
+repo's etc/ into /etc). Migrations have already run. This machine: $hw.
+The new Omarchy is installed at $omarchy_path.
 
-$notes
-Commits: $work/changes.log
-Diff of just those files: $work/changes.diff
-Installed Omarchy: $OMARCHY_PATH. Update log: /tmp/omarchy-update.log.
+Commits:
+$commits
 
-My config: dotfiles repo $dotfiles (layers home/base, home/linux, home/omarchy
-are symlinked into \$HOME), plus live ~/.config/hypr and ~/.config/omarchy.
+Commands added, removed or renamed:
+${commands:-(none)}
 
-Read the diff, then check only the parts of my config it could affect; don't
-survey the rest. Report, most important first:
-  Breaks: things in my config that no longer work.
-  Changes: changed defaults under settings I rely on.
-  Adopt: new options relevant to things I've customized.
-Rules:
-  - One bullet per finding, one or two short lines, citing file:line.
-  - Omit any category with no findings; never write 'nothing' or 'none'.
-  - Never mention things that are fine, unaffected, or hardware-gated.
-  - Skip findings that need no action (e.g. a changed default I'd never notice).
-  - No title, preamble, or closing summary.
-  - Use plain markdown only: '## Breaks' style headings, '- ' bullets, and
-    backticks for paths and commands. No bold, no tables, no numbering.
-If there are no findings, reply with exactly NONE and nothing else.
-Read-only review printed to a terminal: edit nothing, keep it compact."
+Diff (tests, CI, docs and translations left out):
+\`\`\`diff
+$diff_block
+\`\`\`
 
-add_dirs=(--add-dir "$work" --add-dir ~/.config --add-dir "${OMARCHY_PATH:-/usr/share/omarchy}" --add-dir /etc)
+My config: dotfiles layers ${layers[*]} under $dotfiles/home, symlinked into
+\$HOME, plus live ~/.config/hypr and ~/.config/omarchy. Grep it for anything
+removed, renamed or changed in a way that would affect it.
 
-# Each agent's non-interactive "print and exit" mode.
-# claude and codex resolve through Omarchy's mise wrappers, which pick the
-# selected subscription account.
-case "$agent" in
-claude)
-  # No MCP servers or skills, and only the tools a review needs: read and
-  # search files, inspect the live system, and look up upstream context.
-  command=(claude -p --model sonnet --permission-mode auto
-    --strict-mcp-config --disable-slash-commands --tools Read Grep Glob Bash WebFetch
-    "${add_dirs[@]}" -- "$prompt")
-  ;;
-codex)
-  command=(codex exec --model gpt-6-luna --sandbox read-only "${add_dirs[@]}" -- "$prompt")
-  ;;
-pi) command=(pi -p "$prompt") ;;
-opencode) command=(opencode run "$prompt") ;;
-*)
-  echo "No inline review mode set up for agent '$agent'; skipping." >&2
-  exit 0
-  ;;
-esac
+Write a changelog I'll read once in the terminal right after the update. Only
+these sections, in this order, leaving out any that are empty:
+## Action needed: what I must do. My config calls something renamed or removed,
+a migration overwrote something I set, a relogin or reboot is needed. Cite my
+file:line. The only section that may mention my config.
+## Changed: behavior I'll notice without doing anything: hotkeys, defaults,
+menus, how a command behaves.
+## Removed: commands, hotkeys, packages or options that are gone.
+## New: at most 5 user-visible features worth knowing.
 
-cd "$dotfiles"
-# gum spin draws the spinner on stderr and passes stdout through; its stderr is
-# dropped, so the wrapper keeps the agent's for the failure report.
+At most 12 bullets in all, one short line each; when more qualify, keep the ones
+most likely to change my day-to-day use and drop polish (UI tweaks, wording,
+edge-case fixes). Skip hardware work that doesn't match this machine, and
+anything internal I'd never notice. Ignore *.sample files. Never say that
+something does not affect my config. Plain markdown: '## ' headings, flat '- '
+bullets, backticks for paths, commands and keys. No nesting, bold, tables,
+numbering, title, preamble or summary. If nothing is worth telling me, reply
+with exactly NONE. Edit nothing."
+
+# Short system prompt, no MCP servers, skills or session file, read-only tools,
+# and a hard cost cap; JSON output carries the cost. claude resolves through
+# Omarchy's mise wrapper, which picks the selected subscription account.
+command=(claude -p --model sonnet --output-format json --no-session-persistence
+  --system-prompt "You write terse, exact Omarchy upgrade changelogs for one user."
+  --strict-mcp-config --disable-slash-commands --tools "Read Grep Glob" --max-budget-usd 1
+  --add-dir "$work" --add-dir "$dotfiles" --add-dir ~/.config --add-dir "$omarchy_path" --add-dir /etc)
+# The prompt goes in on stdin: a single argument is capped at 128 KB.
+echo "$prompt" >"$work/prompt"
+
+# Run outside the dotfiles so no project instructions get pulled in. gum spin
+# drops its own stderr, so the wrapper keeps the agent's for the failure report.
+cd "$work"
 if ! review=$(gum spin --spinner dot --title "Reviewing..." --show-output -- \
-  bash -c 'err=$1; shift; exec "$@" 2>"$err"' _ "$work/agent.err" "${command[@]}" </dev/null); then
+  bash -c 'err=$1 in=$2; shift 2; exec "$@" <"$in" 2>"$err"' _ "$work/agent.err" "$work/prompt" "${command[@]}" </dev/null); then
   cat "$work/agent.err" >&2
-  echo -e "\e[33mOmarchy update review failed; it will run again on the next update.\e[0m" >&2
-  exit 0
+  review_failed
 fi
+[[ $(jq -r .is_error <<<"$review" 2>/dev/null) == false ]] || { head -c 2000 <<<"$review" >&2; review_failed; }
+usage=$(jq -r '"\(.num_turns) turns, $\(.total_cost_usd * 1000 | round / 1000)"' <<<"$review")
+review=$(jq -r .result <<<"$review")
 mark_reviewed
 
-verdict=$(tr -d '[:space:]' <<<"$review")
-if [[ -z $verdict || $verdict == NONE ]]; then
+if [[ $(tr -d '[:space:]' <<<"$review") =~ ^(NONE)?$ ]]; then
   echo "Nothing needs your attention"
-  exit 0
+else
+  # Render the markdown with terminal styling; fall back to the raw text.
+  gum format <<<"$review" 2>/dev/null || echo "$review"
 fi
-
-echo -e "\e[33m\nFindings\e[0m"
-# Render the markdown with terminal styling; fall back to the raw text.
-gum format <<<"$review" 2>/dev/null || echo "$review"
+echo -e "\e[2m$usage\e[0m"

@@ -1,122 +1,25 @@
--- Change the default Omarchy look'n'feel.
-
--- https://wiki.hypr.land/Configuring/Basics/Variables/#general
 hl.config({
   general = {
-    -- No gaps between windows or borders.
     gaps_in = 2,
     gaps_out = 2,
-    -- border_size = 1,
-
-    -- Change to niri-like side-scrolling layout.
     layout = "scrolling",
   },
-})
-
--- https://wiki.hypr.land/Configuring/Basics/Variables/#binds
-hl.config({
-  binds = {
-    -- Let Super+arrow move focus out of a fullscreen window in the scrolling layout.
-    movefocus_cycles_fullscreen = true,
+  misc = {
+    -- A new window drops the fullscreen one out of fullscreen instead of
+    -- taking fullscreen over from it (Omarchy's default, 1).
+    on_focus_under_fullscreen = 2,
   },
-})
-
--- https://wiki.hypr.land/Configuring/Basics/Variables/#decoration
-hl.config({
   decoration = {
-    -- Use round window corners.
-    rounding = 2,
+    rounding = 1,
     rounding_power = 4,
-
-    -- -- Dim unfocused windows (0.0 = no dim, 1.0 = fully dimmed).
-    -- dim_inactive = true,
-    -- dim_strength = 0.10,
-
-    -- Dim around windows with dim_around, like the 1Password auth modal.
-    -- Matches Omarchy's polkit backdrop.
-    -- dim_around = 0.5,
   },
 })
 
--- Omarchy keeps fullscreen apps in SDR. Switch to HDR so HDR games
--- (RenoDX, DXVK_HDR) actually reach the display in HDR mode.
-hl.config({
-  render = {
-    -- hdredid: use the monitor's own brightness range; plain hdr looks washed out.
-    cm_auto_hdr = 2,
-  },
-})
-
-hl.window_rule({
-  match = { class = "^helium$" },
-  -- Fullscreen Helium is offered HDR and always submits it, even for SDR video,
-  -- which washes it out. Keep it in SDR; HDR video is tone-mapped instead.
-  no_auto_hdr = true,
-})
-
--- https://wiki.hypr.land/Configuring/Basics/Variables/#animations
--- hl.config({
---   animations = {
---     -- Disable all animations.
---     enabled = false,
---   },
--- })
-
--- A lone tiled window on a regular workspace needs no border to stand out.
-hl.workspace_rule({
-  workspace = "w[tv1]s[false]",
-  no_border = true,
-  no_shadow = true,
-  gaps_out = 4,
-})
-
--- Floating windows: rounder corners and no border.
-hl.window_rule({
-  match = { float = true },
-  rounding = 8,
-  border_size = 0,
-})
-
--- Omarchy floats Steam; tile the main window and drop its decorations instead.
-hl.window_rule({
-  match = { class = "steam", title = "Steam" },
-  float = false,
-  decorate = false,
-})
-
--- Keep WoW launched through Steam's Battle.net fullscreen, ignoring its own requests.
-hl.window_rule({
-  match = { class = "^steam_app_battlenet$", title = "^World of Warcraft$" },
-  fullscreen = true,
-  suppress_event = "fullscreen maximize",
-})
-
--- WoW as a native Wayland window (proton-hdr). Fullscreen, so Hyprland's auto HDR
--- switches the display to HDR.
-hl.window_rule({
-  match = { class = "^wowb?\\.exe$" },
-  fullscreen = true,
-  -- Out of fullscreen it would float, since it asks for a fixed size.
-  float = false,
-  suppress_event = "fullscreen maximize",
-})
-
--- Out of fullscreen, WoW gets a full-width column.
-hl.on("window.open", function(window)
-  if window.class and window.class:match("^wowb?%.exe$") then
-    hl.dispatch(hl.dsp.layout("colresize 1.0"))
-  end
-end)
-
--- Opt another application in to Omarchy's standard transparency.
--- Find its class with: hyprctl clients
--- o.transparent_window("my-app")
--- o.transparent_window("my-app", "0.9 0.85") -- Custom active/inactive opacity.
-
--- Scrolling columns are 0.49 wide so a third window peeks in from the edge.
--- With exactly two there is nothing to peek, so they fill the screen instead.
--- A column the user widened to full is left alone. Its stored width is the
--- user's, unlike a lone column that fullscreen_on_one_column only draws full.
+-- Scrolling columns are Omarchy's column_width (just under half) so a third
+-- window peeks in from the edge. With exactly two there is nothing to peek, so
+-- they fill the screen instead. A column the user widened to 0.9 or more is left
+-- alone. Its stored width is the user's, unlike a lone column that
+-- fullscreen_on_one_column only draws full.
 local function auto_sized_count()
   local workspace = hl.get_active_workspace()
   if not workspace or workspace.tiled_layout ~= "scrolling" then return 0 end
@@ -125,7 +28,9 @@ local function auto_sized_count()
   for _, window in ipairs(workspace:get_windows()) do
     if not window.floating then
       local column = window.layout and window.layout.column
-      if column and column.width > 0.9 then return 0 end
+      -- SUPER+SHIFT+F's peeking width (0.9, bindings.lua) counts as widened. Widths
+      -- are 32-bit floats, so 0.9 reads back as 0.8999999762.
+      if column and column.width > 0.89 then return 0 end
       tiled = tiled + 1
     end
   end
@@ -143,7 +48,7 @@ end
 -- The opening window is already counted here.
 hl.on("window.open_early", function()
   if auto_sized_count() == 3 then
-    hl.dispatch(hl.dsp.layout("colresize all 0.49"))
+    hl.dispatch(hl.dsp.layout("colresize all " .. hl.get_config("scrolling.column_width")))
   end
 end)
 hl.on("window.open", fill_two_columns)

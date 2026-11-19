@@ -1,9 +1,9 @@
--- Text expander: typing a trigger replaces it with the snippet.
--- The plugin source is in plugins/hypr-expandr, built to hypr-expandr.so there.
 local dir = os.getenv("HOME") .. "/.config/hypr/plugins/hypr-expandr"
 local plugin = dir .. "/hypr-expandr.so"
 
-if io.open(plugin) then
+local built = io.open(plugin)
+if built then
+  built:close()
   hl.plugin.load(plugin)
 end
 

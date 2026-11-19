@@ -2,8 +2,6 @@
 -- merged and installed (check Omarchy's default/hypr/monitor-workspaces.lua):
 --   https://github.com/omacom/omarchy/pull/16349 (fixes issue #16328)
 --
--- Workaround for omacom/omarchy#16328.
---
 -- When a monitor drops out and returns, Hyprland parks it on an empty
 -- placeholder workspace under the lowest free number, usually 1. Omarchy's
 -- reconcile() then can't give the returning workspaces their old numbers back
@@ -13,10 +11,8 @@
 local workspaces = o.workspaces
 local reconcile = workspaces.reconcile
 
-local MERGED_FILE = (os.getenv("XDG_STATE_HOME") or (os.getenv("HOME") .. "/.local/state"))
-  .. "/omarchy/monitors/workspaces-merged"
+local MERGED_FILE = require("default.hypr.paths").state_home .. "/omarchy/monitors/workspaces-merged"
 
--- Original ids of workspaces that were merged into another monitor's block.
 local function merged_origins()
   local origins = {}
   local file = io.open(MERGED_FILE, "r")

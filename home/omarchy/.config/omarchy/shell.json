@@ -105,6 +105,9 @@
   "plugins": [
     {
       "id": "typecraft.omacast"
+    },
+    {
+      "id": "local.omaidle"
     }
   ],
   "version": 1

@@ -1,7 +1,8 @@
 command -q 1password; or omarchy install service 1password
 command -q ghostty; or omarchy default terminal --install ghostty
-command -q hypridle; or omarchy pkg add hypridle
-systemctl --user is-enabled --quiet hypridle; or systemctl --user enable hypridle
+if systemctl --user is-enabled --quiet hypridle 2>/dev/null
+    systemctl --user disable --now hypridle; or return $status
+end
 command -q flea; or omarchy pkg add flea && flea --default >/dev/null
 flea --ui-state | string match -q '*"keys": "mac"*'; or flea --ui-state '{"keys":"mac"}' >/dev/null; or return $status
 command -q trash; or omarchy pkg add trash-cli
