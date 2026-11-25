@@ -1,8 +1,9 @@
 # shellcheck disable=SC2034
 # Shared helpers for the wow commands. Sourced, not run.
-# A command sets allow_check=1 before parse_args if it accepts --check.
+# A command sets allow_check=1 before parse_args if it accepts --check and --test.
 
 check=0
+simulate=0
 forever=
 allow_check=0
 
@@ -10,6 +11,7 @@ usage() {
     printf '%s\n' \
         'Usage: wow [play] [--forever-dir PATH]             Update addons, then launch through Battle.net' \
         '       wow addons [--check] [--forever-dir PATH]  Install or update addons' \
+        '       wow addons --test [--check]                Simulate an update; no network or file changes' \
         '       wow toons [--forever-dir PATH]             List characters, copy to clipboard' \
         'After addons, run /reload in game to load updates. Addon settings are preserved.'
 }
@@ -19,13 +21,17 @@ fail() {
     exit 1
 }
 
-# Parses the flags every command shares. Sets $check and $forever.
+# Parses the flags every command shares. Sets $check, $simulate and $forever.
 parse_args() {
     while [ "$#" -gt 0 ]; do
         case "$1" in
             --check)
                 [ "$allow_check" -eq 1 ] || fail '--check only applies to wow addons'
                 check=1
+                ;;
+            --test)
+                [ "$allow_check" -eq 1 ] || fail '--test only applies to wow addons'
+                simulate=1
                 ;;
             --forever-dir)
                 [ "$#" -ge 2 ] || fail '--forever-dir needs a path'

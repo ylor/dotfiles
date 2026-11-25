@@ -381,15 +381,57 @@ install_own_addon() {
     fi
 }
 
-for tool in curl jq unzip; do
-    command -v "$tool" >/dev/null 2>&1 || fail "Required command not found: $tool"
-done
+# --test: every job is simulated, with random delays and outcomes (about 1 in 10 fails),
+# so the progress line, rows and summary can be checked without the network, the game
+# or touching any files. Combine with --check to simulate a check.
+if [ "$simulate" -eq 1 ]; then
+    # Prints a random number from 0 to 65535.
+    roll() { od -An -N2 -tu2 /dev/urandom | tr -d ' '; }
+    # Usage: simulate_job NAME
+    simulate_job() {
+        r=$(roll)
+        sleep "0.$((r % 9 + 1))"
+        case $((r % 10)) in
+            0) fail 'simulated failure' ;;
+            1 | 2) outcome=updated ;;
+            3) outcome=new ;;
+            *)
+                status ok "1.0.$((r % 7))"
+                return 0
+                ;;
+        esac
+        if [ "$check" -eq 1 ]; then
+            status available "1.0.0 -> $1-1.1.0.zip"
+            return 0
+        fi
+        status busy "downloading $1-1.1.0.zip"
+        # Voice packs are the slow downloads in a real run.
+        case "$1" in
+            Spoken*Audio*) sleep "$((r % 3 + 2)).$((r % 10))" ;;
+            *) sleep "0.$((r % 9 + 1))" ;;
+        esac
+        status busy 'installing 1.1.0'
+        sleep 0.3
+        if [ "$outcome" = new ]; then
+            status new 1.1.0
+        else
+            status updated '1.0.0 -> 1.1.0'
+        fi
+    }
+    install_addon() { simulate_job "$1"; }
+    install_own_addon() { simulate_job "$1"; }
+    tmp=$(mktemp -d)
+else
+    for tool in curl jq unzip; do
+        command -v "$tool" >/dev/null 2>&1 || fail "Required command not found: $tool"
+    done
 
-find_forever
-addons_dir=$forever/Interface/AddOns
-# Keep downloads next to AddOns so installing is a rename, not a multi-GB copy.
-mkdir -p "$addons_dir"
-tmp=$(mktemp -d "$addons_dir/../.wow.XXXXXX")
+    find_forever
+    addons_dir=$forever/Interface/AddOns
+    # Keep downloads next to AddOns so installing is a rename, not a multi-GB copy.
+    mkdir -p "$addons_dir"
+    tmp=$(mktemp -d "$addons_dir/../.wow.XXXXXX")
+fi
 tty=0
 [ ! -t 1 ] || tty=1
 trap cleanup 0
@@ -417,6 +459,7 @@ update ForeverLootSparkles 1729017
 # Herbs & Ores: restores the herb/ore/quest-object sparkles ForeverLootSparkles 2.0 dropped.
 update ForeverLootSparkles_Coloring 1788216
 update ForeverQuestTint 1703732
+update GlowingBars 1754997
 update HDRTuner 1701739
 update KeepOrToss 1737994
 update Leatrix_Plus 94855
@@ -464,7 +507,7 @@ fi
 say "$color" "$summary"
 if [ "$changed" -gt 0 ] && [ "$check" -eq 1 ]; then
     say 33 'Run wow addons to install'
-elif [ "$changed" -gt 0 ] && pgrep -fi '_forever_.*\.exe' >/dev/null; then
+elif [ "$changed" -gt 0 ] && [ "$simulate" -eq 0 ] && pgrep -fi '_forever_.*\.exe' >/dev/null; then
     say 33 'WoW Forever is running; /reload in game to load updated addons'
 fi
 [ "$failed" -eq 0 ]

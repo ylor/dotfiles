@@ -5,6 +5,8 @@ here=$(dirname "$0")
 # shellcheck source=lib.sh
 . "$here/lib.sh"
 parse_args "$@"
+# Taken now, before the addon update, so switching away during it doesn't change it.
+workspace=$(hyprctl activeworkspace -j 2>/dev/null | jq -r .id)
 
 find_forever
 # Update addons first. A failure doesn't block the launch.
@@ -13,8 +15,26 @@ prefix=${forever%%/drive_c/*}
 launcher=$prefix/drive_c/Program\ Files\ \(x86\)/Battle.net/Battle.net.exe
 logs=$prefix/drive_c/users/steamuser/AppData/Local/Battle.net/Logs
 # proton-hdr: the game inherits Battle.net's environment, so HDR is set on Battle.net.
-set -- env WINEPREFIX="$prefix" NVPRESENT_ENABLE_SMOOTH_MOTION=1 PROTONPATH=GE-Proton \
+# Pinned: PROTONPATH=GE-Proton makes umu fetch the newest release, and
+# GE-Proton11-13 kills Battle.net as it opens its window (11-12 works).
+proton=$HOME/.local/share/Steam/compatibilitytools.d/GE-Proton11-12-x86_64
+set -- env WINEPREFIX="$prefix" NVPRESENT_ENABLE_SMOOTH_MOTION=1 PROTONPATH="$proton" \
     GAMEID=umu-battlenet PROTON_VERB=run proton-hdr umu-run "$launcher"
+
+# Send new Battle.net and WoW windows to the workspace this was started from, with
+# a window rule so they open there instead of wherever you are by then. WoW asks to go
+# fullscreen on a monitor, which would move it to that monitor's current workspace, so
+# that (and its focus requests) are ignored while the rule is on. The rule is
+# turned off once WoW's window opens (or after 10 minutes), so later launches aren't caught.
+if [ -n "$workspace" ]; then
+    rule() { hyprctl eval "hl.window_rule({ name = 'wow-play-workspace', $1 })"; }
+    rule "match = { class = '^(battle[.]net|wowb?)[.]exe\$' }, workspace = '$workspace silent', suppress_event = 'fullscreenoutput activate activatefocus', enabled = true" >/dev/null
+    (
+        timeout 600 socat -U - "UNIX-CONNECT:$XDG_RUNTIME_DIR/hypr/$HYPRLAND_INSTANCE_SIGNATURE/.socket2.sock" |
+            grep -qEm1 '^openwindow>>[^,]*,[^,]*,wowb?[.]exe,' || true
+        rule 'enabled = false'
+    ) >/dev/null 2>&1 &
+fi
 
 # A cold-started Battle.net ignores --exec, so start it, wait for its login,
 # then hand the launch to the running instance (the game needs it for -launcherlogin).
@@ -28,27 +48,23 @@ if ! pgrep -f 'Battle\.net\.exe' >/dev/null; then
         sleep 1
         log=$(newest_log)
         # Login alone isn't enough: until WoW's versioning finishes, Battle.net drops --exec.
+        # Versioning is logged after login, so it alone means both are done.
         [ "$log" != "$before" ] || continue
-        grep -aq 'Logged into Battle.net successfully' "$log" &&
-            grep -aq 'Game finished versioning wowf' "$log" && break
+        grep -aq 'Game finished versioning wowf' "$log" && break
     done
 fi
 
 # Battle.net can still drop the launch (a slow login, or log lines worded differently), so
-# check that a new Wow.exe appears, and ask once more if not. PIDs from before don't count,
-# so a game that was already running isn't taken for this launch.
-game_pids() { pgrep -f '_forever_.Wow\.exe' | tr '\n' ' '; }
-old_games=" $(game_pids)"
+# check that a new Wow.exe appears, and ask once more if not. A game that was already
+# running isn't taken for this launch: only a newest Wow.exe that wasn't newest before counts.
+newest_game() { pgrep -nf '_forever_.Wow\.exe' || true; }
+old_game=$(newest_game)
 for attempt in 1 2; do
     "$@" --exec='launch WoWF' >/dev/null 2>&1 &
     for _ in $(seq 60); do
         sleep 1
-        for pid in $(game_pids); do
-            case "$old_games" in
-                *" $pid "*) ;;
-                *) exit 0 ;;
-            esac
-        done
+        game=$(newest_game)
+        [ -z "$game" ] || [ "$game" = "$old_game" ] || exit 0
     done
     [ "$attempt" -eq 2 ] || printf 'WoW has not started after 60s; asking Battle.net again\n' >&2
 done

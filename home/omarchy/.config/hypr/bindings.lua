@@ -75,6 +75,22 @@ end
 o.bind("mouse_up", "Volume up over Omarchy bar", function() if over_bar() then hl.exec_cmd(volume_up) end end, { locked = true, non_consuming = true })
 o.bind("mouse_down", "Volume down over Omarchy bar", function() if over_bar() then hl.exec_cmd(volume_down) end end, { locked = true, non_consuming = true })
 
+-- Left + right click together over the same area switches the audio output.
+-- A held button expires after a second in case Hyprland skips its release.
+local mouse_held = {}
+local function chord_button(button, other)
+  local key = "mouse:" .. button
+  o.bind(key, "Switch audio output over Omarchy bar (with mouse:" .. other .. ")", function()
+    mouse_held[button] = true
+    hl.timer(function() mouse_held[button] = nil end, { timeout = 1000, type = "oneshot" })
+    if mouse_held[other] and over_bar() then hl.exec_cmd("omarchy-audio-output-switch") end
+  end, { locked = true, non_consuming = true })
+  hl.bind(key, function() mouse_held[button] = nil end,
+    { release = true, transparent = true, ignore_mods = true, non_consuming = true, locked = true })
+end
+chord_button(272, 273)
+chord_button(273, 272)
+
 -- The low scroll_event_delay above would let one wheel flick skip several
 -- workspaces, so workspace scrolling waits 300ms itself.
 local workspace_scroll_cooling = false

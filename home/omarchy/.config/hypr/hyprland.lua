@@ -12,6 +12,7 @@ require("hypr.autostart")
 
 require("hypr.expandr")
 require("hypr.workspace-fix")
+require("hypr.polyfill-scrolling")
 
 -- Load Omarchy's toggles, but narrow Appearance > Window Opacity > Glassy from
 -- every window to the ones Omarchy makes transparent by default, at Glassy's
@@ -46,6 +47,8 @@ hl.env("PROTON_ENABLE_WAYLAND", "1")
 -- Map D3D12 descriptor heaps directly to Vulkan to reduce CPU translation overhead.
 -- Still opt-in as of vkd3d-proton 3.1 (GE-Proton11-12, checked Nov 2026).
 hl.env("VKD3D_CONFIG", "descriptor_heap")
+-- Stop Qt apps (e.g. Ladybird) drawing their own title bar on Wayland.
+hl.env("QT_WAYLAND_DISABLE_WINDOWDECORATION", "1")
 
 --------------------------------
 ---- WINDOWS AND WORKSPACES ----

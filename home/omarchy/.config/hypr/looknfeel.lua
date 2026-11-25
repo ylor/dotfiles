@@ -8,6 +8,9 @@ hl.config({
     -- A new window drops the fullscreen one out of fullscreen instead of
     -- taking fullscreen over from it (Omarchy's default, 1).
     on_focus_under_fullscreen = 2,
+    -- Hyprland's default (Omarchy sets 0): an app's first window opens on the
+    -- workspace it was launched from, even if you've switched away since.
+    initial_workspace_tracking = 1,
   },
   decoration = {
     rounding = 1,

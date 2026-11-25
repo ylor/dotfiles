@@ -1,17 +1,25 @@
 #!/bin/bash
 
-# After an Omarchy upgrade, have Claude print a short changelog of what it did:
-# what needs action, what changed, what was removed, what's new. Covers omarchy
-# and omarchy-settings, which are built from the same repo at the same commit
-# (settings ships the repo's etc/ into /etc). Claude gets the whole upstream
-# diff minus noise, and greps my dotfiles for anything that needs action.
+# After an Omarchy or Hyprland upgrade, have Claude print a short changelog of
+# what it did: what needs action, what changed, what was removed, what's new.
+# Covers omarchy and omarchy-settings, which are built from the same repo at the
+# same commit (settings ships the repo's etc/ into /etc), and Hyprland releases.
+# Claude gets the whole Omarchy diff minus noise and Hyprland's release notes,
+# and greps my dotfiles for anything that needs action.
 #
-# Replay a past upgrade without touching the review state:
-#   bash review-update.hook --range 4bf10ed..dceae18
+# Replay a past upgrade without touching the review state (either or both):
+#   bash review-update.hook --range 4bf10ed..dceae18 --hyprland 0.56.0..0.57.2
 
 set -e
 
-[[ $1 == --range ]] && replay=$2
+while (($#)); do
+  case $1 in
+    --range) replay=$2 ;;
+    --hyprland) hypr_replay=$2 ;;
+    *) echo "Usage: $0 [--range old..new] [--hyprland old..new]" >&2; exit 1 ;;
+  esac
+  shift 2
+done
 
 agent=$(omarchy-default-agent)
 [[ -n $agent ]] || exit 0
@@ -28,54 +36,68 @@ review_failed() { echo -e "\e[33mOmarchy update review failed; it will run again
 pkg=$(pacman -Qqo /usr/bin/omarchy 2>/dev/null) || nothing
 repo=$(pacman -Qi "$pkg" | sed -n 's/^URL *: //p')
 state=~/.local/state/omarchy/update-review
+hypr_state=$state-hyprland
 
-if [[ -n $replay ]]; then
-  range=$replay old=${replay%%..*} new=${replay##*..}
+# The version $1 was last upgraded from to reach $2.
+upgraded_from() { grep -oP "upgraded \Q$1\E \(\K\S+(?= -> \Q$2\E\))" /var/log/pacman.log | tail -1; }
+reviewed() { [[ -f $1 && $(<"$1") == "$2" ]]; }
+
+if [[ -n $replay$hypr_replay ]]; then
+  old=${replay%%..*} new=${replay##*..}
+  hypr_old=${hypr_replay%%..*} hypr_new=${hypr_replay##*..}
   mark_reviewed() { :; }
 else
   new=$(pacman -Q "$pkg" | cut -d' ' -f2)
-  mark_reviewed() { mkdir -p "${state%/*}" && echo "$new" >"$state"; }
-  [[ -f $state && $(<"$state") == "$new" ]] && nothing
-  old=$(grep -oP "upgraded \Q$pkg\E \(\K\S+(?= -> \Q$new\E\))" /var/log/pacman.log | tail -1)
-  # Nothing to compare against (first run, or Omarchy wasn't upgraded).
-  [[ -n $old ]] || { mark_reviewed; nothing; }
-  ref() { [[ $1 =~ \.g([0-9a-f]+)- ]] && echo "${BASH_REMATCH[1]}" || echo "v${1%-*}"; }
-  range="$(ref "$old")..$(ref "$new")"
+  hypr_new=$(pacman -Q hyprland 2>/dev/null | cut -d' ' -f2)
+  mark_reviewed() {
+    mkdir -p "${state%/*}" && echo "$new" >"$state"
+    [[ -z $hypr_new ]] || echo "$hypr_new" >"$hypr_state"
+  }
+  reviewed "$state" "$new" || old=$(upgraded_from "$pkg" "$new")
+  [[ -z $hypr_new ]] || reviewed "$hypr_state" "$hypr_new" || hypr_old=$(upgraded_from hyprland "$hypr_new")
 fi
+# Hyprland tags carry no pkgrel, and a rebuild of the same release has nothing new.
+hypr_from=${hypr_old%-*} hypr_to=${hypr_new%-*}
+if [[ $hypr_from == "$hypr_to" ]]; then hypr_from=; fi
+# Nothing to compare against (first run, or neither was upgraded).
+[[ -n $old || -n $hypr_from ]] || { mark_reviewed; nothing; }
 
 dotfiles=${DOTFILES:-$HOME/.dotfiles}
 omarchy_path=${OMARCHY_PATH:-/usr/share/omarchy}
 work=$(mktemp -d)
 trap 'rm -rf "$work"' EXIT
-retry_later() { echo -e "\e[33mCould not fetch $range from $repo; will retry on the next update.\e[0m" >&2; exit 0; }
+retry_later() { echo -e "\e[33mCould not fetch $1; will retry on the next update.\e[0m" >&2; exit 0; }
+
+if [[ -n $old ]]; then
+ref() { [[ $1 =~ \.g([0-9a-f]+)- ]] && echo "${BASH_REMATCH[1]}" || echo "v${1%-*}"; }
+range=$(ref "$old")..$(ref "$new")
+[[ -n $replay ]] && range=$replay
 
 up=$work/omarchy
-git clone -q --filter=blob:none --no-checkout "$repo" "$up" 2>/dev/null || retry_later
+git clone -q --filter=blob:none --no-checkout "$repo" "$up" 2>/dev/null || retry_later "$range from $repo"
 
 # Commands added, removed or renamed, straight from git so the agent can't miss one.
 commands=$(git -C "$up" diff --name-status -M "$range" -- 'bin/omarchy-*' 2>/dev/null | awk -F'\t' '
   $1 == "A" { sub(/.*\//, "", $2); print "- added " $2 }
   $1 == "D" { sub(/.*\//, "", $2); print "- removed " $2 }
   $1 ~ /^R/ { sub(/.*\//, "", $2); sub(/.*\//, "", $3); print "- renamed " $2 " -> " $3 }
-') || retry_later
+') || retry_later "$range from $repo"
 
 # Everything but tests, CI, docs and translations. The English manual stays:
 # it's the clearest account of user-visible changes.
 noise=(':!test' ':!.github' ':!docs' ':!default/i18n' ':(exclude,glob)manual/*/**')
 # The partial clone fetches blobs lazily here, and that fetch prints progress.
-git -C "$up" diff -w --no-renames "$range" -- . "${noise[@]}" >"$work/changes.diff" 2>/dev/null || retry_later
+git -C "$up" diff -w --no-renames "$range" -- . "${noise[@]}" >"$work/changes.diff" 2>/dev/null || retry_later "$range from $repo"
 # Keep the first message well inside the context window; the budget caps cost.
 cap=262144
 diff_block=$(head -c $cap "$work/changes.diff")
 (($(stat -c%s "$work/changes.diff") > cap)) && diff_block+=$'\n'"[diff truncated; full diff at $work/changes.diff]"
 
 commits=$(git -C "$up" log --no-merges --format='- %s' "$range" | grep -viE '^- update translations' | head -150 || true)
-hw="$(uname -m); $(lspci 2>/dev/null | grep -E 'VGA|3D|Display' | sed 's/^[^:]*: //; s/ (rev.*//' | paste -sd ';' - || true)"
-mapfile -t layers < <(fish "$dotfiles/main.fish" layers)
 
-prompt="Omarchy was upgraded: $pkg $old -> $new (omarchy-settings too; it installs the
-repo's etc/ into /etc). Migrations have already run. This machine: $hw.
-The new Omarchy is installed at $omarchy_path.
+omarchy_section="Omarchy was upgraded: $pkg $old -> $new (omarchy-settings too; it installs the
+repo's etc/ into /etc). Migrations have already run. The new Omarchy is installed
+at $omarchy_path.
 
 Commits:
 $commits
@@ -88,9 +110,36 @@ Diff (tests, CI, docs and translations left out):
 $diff_block
 \`\`\`
 
-My config: dotfiles layers ${layers[*]} under $dotfiles/home, symlinked into
-\$HOME, plus live ~/.config/hypr and ~/.config/omarchy. Grep it for anything
-removed, renamed or changed in a way that would affect it.
+"
+fi
+
+# Hyprland's source diff is far too big; its release notes list the breaking
+# changes. Every release after the old version up to the new one, oldest first.
+if [[ -n $hypr_from ]]; then
+  hypr_releases=https://api.github.com/repos/hyprwm/Hyprland/releases?per_page=100
+  notes=$(curl -fsSL "$hypr_releases" | jq -r --arg old "$hypr_from" --arg new "$hypr_to" '
+    def v: ltrimstr("v") | split(".") | map(tonumber? // 0);
+    [.[] | select((.draft | not) and (.tag_name | v) > ($old | v) and (.tag_name | v) <= ($new | v))]
+    | sort_by(.tag_name | v) | .[] | "### \(.tag_name)\n\(.body)\n"') || retry_later "Hyprland releases"
+  hypr_cap=98304
+  ((${#notes} > hypr_cap)) && notes="${notes:0:hypr_cap}"$'\n[release notes truncated]'
+  [[ -n $notes ]] && hypr_section="Hyprland was upgraded: $hypr_from -> $hypr_to. Release notes:
+$notes
+
+"
+fi
+[[ -n $omarchy_section$hypr_section ]] || { mark_reviewed; nothing; }
+
+hw="$(uname -m); $(lspci 2>/dev/null | grep -E 'VGA|3D|Display' | sed 's/^[^:]*: //; s/ (rev.*//' | paste -sd ';' - || true)"
+mapfile -t layers < <(fish "$dotfiles/main.fish" layers)
+
+prompt="This machine: $hw.
+
+${omarchy_section}${hypr_section}My config: dotfiles layers ${layers[*]} under $dotfiles/home, symlinked into
+\$HOME, plus live ~/.config/hypr and ~/.config/omarchy. Omarchy's own Hyprland
+config is in $omarchy_path/default/hypr. Grep them for anything removed, renamed
+or changed in a way that would affect them, Hyprland options and dispatchers
+included.
 
 Write a changelog I'll read once in the terminal right after the update. Only
 these sections, in this order, leaving out any that are empty:
@@ -115,7 +164,7 @@ with exactly NONE. Edit nothing."
 # and a hard cost cap; JSON output carries the cost. claude resolves through
 # Omarchy's mise wrapper, which picks the selected subscription account.
 command=(claude -p --model sonnet --output-format json --no-session-persistence
-  --system-prompt "You write terse, exact Omarchy upgrade changelogs for one user."
+  --system-prompt "You write terse, exact Omarchy and Hyprland upgrade changelogs for one user."
   --strict-mcp-config --disable-slash-commands --tools "Read Grep Glob" --max-budget-usd 1
   --add-dir "$work" --add-dir "$dotfiles" --add-dir ~/.config --add-dir "$omarchy_path" --add-dir /etc)
 # The prompt goes in on stdin: a single argument is capped at 128 KB.

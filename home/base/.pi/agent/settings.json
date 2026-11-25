@@ -1,5 +1,5 @@
 {
-  "lastChangelogVersion": "1.5.2",
+  "lastChangelogVersion": "1.6.0",
   "defaultModel": "~deepseek/deepseek-flash-latest",
   "defaultProvider": "openrouter",
   "defaultTools": [
@@ -26,5 +26,6 @@
   },
   "extensionChangelogVersions": {
     "{\"source\":\"npm:@gotgenes/pi-anthropic-auth\",\"scope\":\"user\"}": "3.4.4"
-  }
+  },
+  "collapseChangelog": true
 }

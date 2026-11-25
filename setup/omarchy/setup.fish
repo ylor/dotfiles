@@ -1,4 +1,8 @@
 command -q 1password; or omarchy install service 1password
+if command -q zen-browser; and not grep -Fxq zen-bin /etc/1password/custom_allowed_browsers 2>/dev/null
+    sudo mkdir -p /etc/1password; or return
+    printf '%s\n' zen-bin | sudo tee --append /etc/1password/custom_allowed_browsers >/dev/null; or return
+end
 command -q ghostty; or omarchy default terminal --install ghostty
 if systemctl --user is-enabled --quiet hypridle 2>/dev/null
     systemctl --user disable --now hypridle; or return $status
