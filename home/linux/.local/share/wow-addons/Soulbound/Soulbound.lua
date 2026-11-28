@@ -118,13 +118,6 @@ local function EnforceTracking()
     end
 end
 
--- Raid-style party frames are part of the Edit Mode layout, which is left to the player: say so at login if they are off.
-local function RemindRaidStyle()
-    if not EditModeManagerFrame:UseRaidStylePartyFrames() then
-        print("|cffffd200Soulbound:|r turn on Edit Mode > Party Frames > Use Raid-Style Party Frames.")
-    end
-end
-
 local f = CreateFrame("Frame")
 
 local function ApplyAll()
@@ -165,7 +158,6 @@ end
 local function OnLogin()
     ApplyAll()
     ReapplyRawMouse()
-    RemindRaidStyle()
 end
 
 f:RegisterEvent("PLAYER_ENTERING_WORLD")

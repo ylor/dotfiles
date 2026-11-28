@@ -15,10 +15,7 @@ prefix=${forever%%/drive_c/*}
 launcher=$prefix/drive_c/Program\ Files\ \(x86\)/Battle.net/Battle.net.exe
 logs=$prefix/drive_c/users/steamuser/AppData/Local/Battle.net/Logs
 # proton-hdr: the game inherits Battle.net's environment, so HDR is set on Battle.net.
-# Pinned: PROTONPATH=GE-Proton makes umu fetch the newest release, and
-# GE-Proton11-13 kills Battle.net as it opens its window (11-12 works).
-proton=$HOME/.local/share/Steam/compatibilitytools.d/GE-Proton11-12-x86_64
-set -- env WINEPREFIX="$prefix" NVPRESENT_ENABLE_SMOOTH_MOTION=1 PROTONPATH="$proton" \
+set -- env WINEPREFIX="$prefix" NVPRESENT_ENABLE_SMOOTH_MOTION=1 PROTONPATH=GE-Proton \
     GAMEID=umu-battlenet PROTON_VERB=run proton-hdr umu-run "$launcher"
 
 # Send new Battle.net and WoW windows to the workspace this was started from, with
@@ -26,13 +23,19 @@ set -- env WINEPREFIX="$prefix" NVPRESENT_ENABLE_SMOOTH_MOTION=1 PROTONPATH="$pr
 # fullscreen on a monitor, which would move it to that monitor's current workspace, so
 # that (and its focus requests) are ignored while the rule is on. The rule is
 # turned off once WoW's window opens (or after 10 minutes), so later launches aren't caught.
+# Proton names every window steam_app_<GAMEID>.
+# WoW is also made fullscreen and tiled: Wine opens it floating and sized for scale 1,
+# so on a scaled monitor it is twice the screen's size, and on_focus_under_fullscreen = 2
+# drops it out of fullscreen when another window is focused.
 if [ -n "$workspace" ]; then
-    rule() { hyprctl eval "hl.window_rule({ name = 'wow-play-workspace', $1 })"; }
-    rule "match = { class = '^(battle[.]net|wowb?)[.]exe\$' }, workspace = '$workspace silent', suppress_event = 'fullscreenoutput activate activatefocus', enabled = true" >/dev/null
+    rule() { hyprctl eval "hl.window_rule({ name = '$1', $2 })"; }
+    rule wow-play-workspace "match = { class = '^steam_app_battlenet\$' }, workspace = '$workspace silent', suppress_event = 'fullscreenoutput activate activatefocus', enabled = true" >/dev/null
+    rule wow-play-fullscreen "match = { class = '^steam_app_battlenet\$', title = '^World of Warcraft\$' }, fullscreen = true, tile = true, enabled = true" >/dev/null
     (
         timeout 600 socat -U - "UNIX-CONNECT:$XDG_RUNTIME_DIR/hypr/$HYPRLAND_INSTANCE_SIGNATURE/.socket2.sock" |
-            grep -qEm1 '^openwindow>>[^,]*,[^,]*,wowb?[.]exe,' || true
-        rule 'enabled = false'
+            grep -qEm1 '^openwindow>>[^,]*,[^,]*,steam_app_battlenet,World of Warcraft$' || true
+        rule wow-play-workspace 'enabled = false'
+        rule wow-play-fullscreen 'enabled = false'
     ) >/dev/null 2>&1 &
 fi
 

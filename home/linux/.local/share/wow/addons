@@ -165,7 +165,9 @@ install_addon() {
         { split($0, parts, "/"); if (index(parts[1], prefix) != 1) exit 1 }
     ' || fail "$addon: unsafe archive paths"
     # The folders this release installs, recorded so the next update can remove any it drops.
-    folders=$(unzip -Z1 "$tmp/addon.zip" | awk -F/ 'NF > 1 && $1 !~ /_Debug$/ && !seen[$1]++ { print $1 }')
+    # Skips debug builds (_Debug) and non-English locale packs (Polestar_deDE and the like).
+    folders=$(unzip -Z1 "$tmp/addon.zip" |
+        awk -F/ 'NF > 1 && $1 !~ /_Debug$/ && ($1 !~ /_[a-z][a-z][A-Z][A-Z]$/ || $1 ~ /_en(US|GB)$/) && !seen[$1]++ { print $1 }')
     folders_file=$addons_dir/$addon/.wow-addons-folders
 
     unzip -p "$tmp/addon.zip" "$toc" >"$tmp/addon.toc" 2>/dev/null || fail "$addon: $toc not in archive"
@@ -192,10 +194,8 @@ install_addon() {
             target=$addons_dir/$name
             [ ! -L "$target" ] || fail "Refusing to replace symlink: $target"
             rm -rf "$target"
-            # Skip debug builds (folders ending in _Debug).
-            case "$name" in
-                *_Debug) continue ;;
-            esac
+            # Skip debug builds and non-English locale packs, as in $folders.
+            printf '%s\n' "$folders" | grep -qxF "$name" || continue
             mv "$dir" "$target"
         done
         # Remove folders the previous release installed that this one no longer ships,
@@ -448,7 +448,6 @@ update BetterBlizzPlates 913377 BetterBlizzPlates_Camelot.toc
 update DBM-Core 3358 DBM-Core.toc '' DBM- DeadlyBossMods/DeadlyBossMods
 # Dungeon modules; Forever's are in DBM-Party-Forever.
 update DBM-Party-Forever 314994 DBM-Party-Forever.toc '' DBM-
-update DialogueUI 989270
 # Number keys pick gossip options, quests and rewards. Not the Aeonzara fork: it
 # draws a selection border that can't be turned off.
 update DialogKey_Numy 1098587
@@ -461,13 +460,9 @@ update ForeverLootSparkles_Coloring 1788216
 update ForeverQuestTint 1703732
 update GlowingBars 1754997
 update HDRTuner 1701739
-update KeepOrToss 1737994
-update Leatrix_Plus 94855
 update OpenMap 1735937
-# Pawn once labelled an alpha a release (Pawn-2.13.17-ForeverAlpha1.zip).
 # Leveling guides with a waypoint arrow; ships ~28 Polestar_* folders.
 update Polestar 1744437
-update Pawn 4646 Pawn.toc '^Pawn-[0-9.]+-Forever\.zip$'
 update PrettyTooltip 1720719 PrettyTooltip_Camelot.toc
 update Spoken 1700375
 # English voice packs for Spoken; it is silent without them. Each is 300-500 MB.

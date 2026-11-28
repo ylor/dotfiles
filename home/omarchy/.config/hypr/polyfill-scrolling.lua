@@ -125,7 +125,12 @@ local function clamped_center(window)
     hl.dispatch(hl.dsp.layout(string.format("move +%.3f", centered - limit)))
     local active = hl.get_active_window()
     if not active or active.address ~= window.address then
+      -- The focus action warps the pointer to the window's middle; a click
+      -- re-center must leave it where the user clicked.
+      local no_warps = hl.get_config("cursor.no_warps")
+      hl.config({ cursor = { no_warps = true } })
       hl.dispatch(hl.dsp.focus({ window = "address:" .. window.address }))
+      hl.config({ cursor = { no_warps = no_warps } })
     end
   end
   busy = false
